@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M003",
+  "canonical_work_id": "CensusACL2024findingsacl233",
+  "paper": "Can Large Language Models Mine Interpretable Financial Factors More Effectively? A Neural-Symbolic Factor Mining Agent Model",
+  "fidelity_label": "in_spirit_reconstruction",
+  "status": "frozen_before_jkp_result",
+  "paper_source": {
+    "path": "literature_review/papers/10_can_large_language_models_mine_interpretable_financial_factors_more_effectively_a_neural_s.pdf",
+    "sha256": "327bbaf4011b739107b4c891220fc845c48f974f64abfccdeb8229d789648296",
+    "primary_url": "https://aclanthology.org/2024.findings-acl.233.pdf"
+  },
+  "strict_evidence": {
+    "verdict_path": "paper_runs/us_jkp_headline/M003_fama/verdict.md",
+    "audit_manifest_path": "paper_runs/paper_replication_audits/fama/manifest.json",
+    "audit_manifest_sha256": "d3b2c07ff42dd3e09005e43f3c3305c6e29d4a30a7bc0101d02a110c5f633d1c",
+    "initial_factor_inventory_path": "paper_runs/paper_replication_audits/fama/initial_factor_inventory.csv",
+    "initial_factor_inventory_sha256": "57e7e1f0582516cc556180a57d9688ed90539dc5a3ecadfd231cab043f3d4f5f"
+  },
+  "headline_mechanism": "FAMA combines correlation-diverse cross-sample selection with a RankIC-ordered chain of experience to guide symbolic factor generation; FAMA(CI-7) is the strongest headline configuration in Table 1.",
+  "source_anchors": [
+    {
+      "section": "2.3 and Equation 1",
+      "role": "objective",
+      "claim": "Factors are evaluated by cross-sectional rank correlation between formation exposure and subsequent return."
+    },
+    {
+      "section": "3.2, Equations 6-13",
+      "role": "cross_sample_selection",
+      "claim": "CSS clusters factors by correlation-related distance and draws diverse context factors from different categories."
+    },
+    {
+      "section": "3.3, Equations 14-15 and Algorithm 1",
+      "role": "chain_of_experience",
+      "claim": "Experience chains order factors by RankIC and retain a newly generated factor when it improves on the matched chain."
+    },
+    {
+      "section": "4.1 and Table 1",
+      "role": "configuration",
+      "claim": "The experiment starts from Alpha101-style factors, uses seven categories and two cross-samples, and highlights the seven-iteration combined CSS/CoE configuration."
+    }
+  ],
+  "preserved_elements": [
+    "symbolic price/volume factor seeds and a fixed arithmetic expression grammar",
+    "formation-to-next-return monthly RankIC objective",
+    "seven correlation-diversity groups",
+    "two selected cross-sample representatives",
+    "RankICIR-ordered experience selection",
+    "strictly past-only repeated factor selection"
+  ],
+  "approximated_elements": [
+    "six available JKP price/volume characteristics replace 38 unreleased paper-selected Alpha101 seeds",
+    "correlation of trailing monthly candidate RankIC paths replaces correlation of the paper's factor-value vectors",
+    "a deterministic four-operator grammar replaces text-davinci-002 symbolic generation",
+    "a 60-month rolling history replaces the paper's fixed 2015-2019 training interval",
+    "the top two diverse experience representatives are rank-combined into one stock score"
+  ],
+  "invented_elements": [
+    "the exact six JKP seed identities",
+    "the identity, pairwise mean, difference, and product candidate grammar",
+    "deterministic farthest-first seven-medoid grouping of RankIC histories",
+    "minimum 24 finite training RankIC months and numerical tie-breaking",
+    "common monthly value-weighted long/short decile portfolio and costs"
+  ],
+  "seed_characteristics": [
+    "ret_12_1",
+    "ret_6_1",
+    "ret_1_0",
+    "prc_highprc_252d",
+    "turnover_126d",
+    "rvol_21d"
+  ],
+  "symbolic_grammar": {
+    "identity": 6,
+    "pairwise_mean": 15,
+    "ordered_pairwise_difference": 15,
+    "pairwise_product": 15,
+    "total_candidates": 51,
+    "cross_sectional_input_transform": "percentile_rank_mapped_to_minus_one_plus_one"
+  },
+  "chronological_selection": {
+    "prehistory_formation_start": "1994-07-31",
+    "common_formation_start": "1999-07-31",
+    "training_window_months": 60,
+    "minimum_finite_rankic_months": 24,
+    "cluster_count": 7,
+    "selected_cross_samples": 2,
+    "cluster_distance": "one_minus_absolute_correlation_of_trailing_candidate_rankic_paths",
+    "cluster_representative": "highest_absolute_rankicir_within_cluster",
+    "experience_order": "descending_absolute_rankicir_then_expression_id",
+    "score_orientation": "sign_of_trailing_mean_rankic",
+    "score_aggregation": "mean_of_oriented_cross_sectional_ranks_for_top_two_experience_representatives",
+    "update_frequency": "monthly",
+    "final_common_returns_used_for_selection": false
+  },
+  "portfolio_adapter": "Frozen us_jkp_headline_v1 top-1000 monthly value-weighted long/short deciles with 10 bp one-way primary cost.",
+  "claim_boundary": "This is a researcher-authored FAMA-inspired symbolic-search reconstruction, not the unreleased FAMA model, its generated factors, or a reproduction of the paper's reported return and RankIC results."
+}
