@@ -93,7 +93,7 @@ def evaluate(root: Path, output: Path) -> None:
 
     settings = contract["starting_settings_retained_from_corrected_us_study"]
     extended_settings = dict(settings)
-    extended_settings["formation_start"] = policy["prehistory_formation_start"]
+    extended_settings["formation_start"] = recipe["belief_policy"]["prehistory_formation_start"]
     analysts = recipe["analysts"]
     features = list(dict.fromkeys(feature for values in analysts.values() for feature in values))
     print("loading FinCon prehistory and common formations", flush=True)
