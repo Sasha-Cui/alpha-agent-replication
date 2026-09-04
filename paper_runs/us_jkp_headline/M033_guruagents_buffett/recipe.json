@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M033",
+  "canonical_work_id": "CensusArxiv251001664",
+  "paper": "GuruAgents: Emulating Wise Investors with Prompt-Guided LLM Agents",
+  "paper_url": "https://arxiv.org/abs/2510.01664v1",
+  "paper_pdf_sha256": "f0afdafbaa65bed37a4fa6e2cf064194735d78425a2312e7e063c2c33a52b4bc",
+  "source_url": "https://github.com/yejining99/GuruAgents",
+  "source_commit": "74ad2e6ce2e604c73a6fc2829d48ab58fe6be050",
+  "source_prompt_file": "agents/WarrenBuffett_agent.py",
+  "source_prompt_sha256": "d720f8f10ee5583e8a793614d123ae6f4bd61d9f33963931f8fcc567246982f5",
+  "candidate_id": "guruagents_buffett_deterministic_score",
+  "headline_strategy": "Evaluate the paper-highlighted Warren Buffett GuruAgent sleeve by executing the official prompt's disclosed deterministic quality-value score and score-proportional long-only portfolio on the common monthly U.S./JKP universe.",
+  "headline_selection_basis": "The abstract identifies the Buffett GuruAgent as the paper's highest-performing agent (reported 42.2% CAGR). This selection uses the paper's headline claim and source formula before inspecting the new JKP result; it is not selected from prior JKP proxy performance.",
+  "source_rule": {
+    "winsorization": "cross-sectional 5th to 95th percentiles",
+    "scaling": "min-max to [0,1], with 0.50 when a metric has no spread",
+    "per_ticker_missing_rule": "drop missing components and renormalize remaining weights proportionally",
+    "valuation": "0.55*scaled_FCFYield + 0.25*(1-scaled_PB) + 0.20*(1-scaled_PE)",
+    "base": "0.28*ROE + 0.22*InterestCoverage + 0.18*ProfitMargin + 0.12*AssetTurnover + 0.10*Valuation + 0.05*CurrentRatio + 0.05*WorkingCapitalRatio",
+    "quality_plus": "+0.18*ROCE +0.10*CashConversion +0.06*MarginStability +0.04*BuybackYield -0.06*CapExIntensity",
+    "final_score": "clip(Base + QualityPlus + bonuses - penalties, 0, 1)",
+    "portfolio": "include all eligible tickers with weights proportional to score"
+  },
+  "jkp_input_mapping": [
+    {"source_metric": "DebtToEquity", "jkp_formula": "at_be - 1", "fidelity": "balance-sheet identity adapter for total liabilities divided by book equity"},
+    {"source_metric": "InterestCoverage", "jkp_formula": "ebit_int", "fidelity": "direct JKP EBIT-to-interest ratio"},
+    {"source_metric": "ROE", "jkp_formula": "ni_be", "fidelity": "direct JKP net-income-to-book-equity ratio"},
+    {"source_metric": "ProfitMargin", "jkp_formula": "ni_sale", "fidelity": "direct JKP net-income-to-sales ratio"},
+    {"source_metric": "AssetTurnover", "jkp_formula": "at_turnover", "fidelity": "direct JKP sales-to-assets ratio"},
+    {"source_metric": "FCFYield", "jkp_formula": "fcf_me", "fidelity": "direct JKP free-cash-flow-to-market-equity ratio"},
+    {"source_metric": "PB", "jkp_formula": "1 / be_me for positive be_me", "fidelity": "algebraic inverse of direct JKP book-to-market"},
+    {"source_metric": "PE", "jkp_formula": "1 / ni_me for positive ni_me", "fidelity": "algebraic inverse of direct JKP earnings-to-price"},
+    {"source_metric": "CurrentRatio", "jkp_formula": "ca_cl", "fidelity": "direct JKP current-assets-to-current-liabilities ratio"},
+    {"source_metric": "WorkingCapitalRatio", "jkp_formula": "nwc_at", "fidelity": "direct JKP net-working-capital-to-assets ratio"},
+    {"source_metric": "CashConversion", "jkp_formula": "ocf_me / ni_me", "fidelity": "algebraic JKP reconstruction of operating-cash-flow-to-net-income"},
+    {"source_metric": "ROCE", "jkp_formula": "ebit_at*(1-clip(tax_pi,0,0.35))/(1-cl_at-cash_at), where cl_at=nwc_at/(ca_cl-1)", "fidelity": "ratio reconstruction of the source NOPAT-to-invested-capital definition"},
+    {"source_metric": "OwnerEarningsYield", "jkp_formula": "ocf_me - 0.6*abs(capx_at)*at_me", "fidelity": "source maintenance-capex convention reconstructed on a market-equity denominator"},
+    {"source_metric": "CapExIntensity", "jkp_formula": "abs(capx_at) / at_turnover", "fidelity": "algebraic JKP reconstruction of CapEx-to-sales"}
+  ],
+  "intentionally_missing_source_metrics": [
+    {"metric": "MarginStability", "reason": "JKP's available quarterly-margin volatility uses a different estimation window from the source's last-four-quarter standard deviation."},
+    {"metric": "BuybackYield", "reason": "JKP payout and share-change fields do not exactly reproduce the source's first-versus-last share count over its last four observations."}
+  ],
+  "quality_missing_renormalization": "Preserve the source's +0.38 positive and -0.06 negative QualityPlus budgets separately. Renormalize the available positive ROCE/CashConversion weights to +0.38; retain the available CapExIntensity weight at -0.06.",
+  "common_task_adaptations": {
+    "formation_frequency": "monthly instead of source quarterly",
+    "universe": "formation-date largest 1,000 U.S. stocks instead of a static NASDAQ-100 file",
+    "accounting_availability": "JKP point-in-time conventions instead of source quarter-label next-day availability",
+    "scorer": "deterministic execution of the disclosed formula instead of GPT-4o arithmetic/table generation",
+    "weights": "continuous score-proportional weights instead of integer percentages, avoiding a 100-percentage-point rounding collapse in a 1,000-stock universe",
+    "holding_period": "one month",
+    "primary_cost_bps_one_way": 10,
+    "missing_return_policy": "zero without reweighting",
+    "factor_benchmark": "ff5_mom_jkp132"
+  },
+  "excluded_source_behaviors": [
+    "LLM persona prose and one-sentence rationales",
+    "the other four GuruAgents",
+    "the meta-agent path",
+    "paper/source 2023-2025 return paths",
+    "unimplemented one-basis-point source cost",
+    "non-point-in-time source quarter availability"
+  ],
+  "prior_outcome_boundary": "Prior GuruAgents workbook, prompt replay and narrative-proxy outcomes are known. The Buffett sleeve and exact disclosed source formula were selected from the paper/source before this new JKP run; results are exploratory, not a pristine holdout.",
+  "status": "frozen_for_execution"
+}
