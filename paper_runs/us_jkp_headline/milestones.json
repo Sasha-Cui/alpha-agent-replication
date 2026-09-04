@@ -6,11 +6,11 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 67,
+    "closed": 68,
     "completed_adapted": 1,
-    "completed_partial": 14,
+    "completed_partial": 15,
     "closed_not_evaluable": 52,
-    "in_progress": 1,
+    "in_progress": 0,
     "queued": 1
   },
   "terminal_statuses": [
@@ -1165,16 +1165,16 @@
       "title": "Alpha-GPT: Human-AI Interactive Alpha Mining for Quantitative Investment",
       "system_ids": "SYS-ALPHA-GPT",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "in_progress",
-      "recipe_path": "",
-      "implementation_path": "",
-      "run_manifest_path": "",
-      "monthly_returns_path": "",
-      "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing Alpha-GPT lineage audit and original paper/source; identify the central human-in-the-loop alpha output or strongest attributable formula before new JKP outcome inspection, then execute the strongest defensible monthly adaptation or close with concrete evidence.",
-      "closure_reason": ""
+      "status": "completed_partial",
+      "recipe_path": "paper_runs/us_jkp_headline/M068_alphagpt/recipe.json",
+      "implementation_path": "scripts/run_alphagpt_headline.py",
+      "run_manifest_path": "paper_runs/us_jkp_headline/M068_alphagpt/run_manifest.json",
+      "monthly_returns_path": "paper_runs/us_jkp_headline/M068_alphagpt/primary_monthly_returns.csv",
+      "metrics_path": "paper_runs/us_jkp_headline/M068_alphagpt/metrics.csv",
+      "verdict_path": "paper_runs/us_jkp_headline/M068_alphagpt/verdict.md",
+      "evaluated_scope": "The first source-ordered arity-valid Alpha-GPT formula, 20-bar volume-price correlation with cross-sectional z-scoring, is evaluated in its literal orientation on monthly JKP bars using the common U.S. top-1,000 value-weighted decile portfolio, costs, missingness, and JKP133 attribution. This is not the interactive mining/search system.",
+      "next_action": "Closed. Keep the source-order formula path fixed and exploratory; do not repair the invalid Flow-of-Funds expression or interpret this result as Alpha-GPT human interaction, LLM generation, GP search, generated alpha set, or paper performance.",
+      "closure_reason": "The strongest source-ordered executable formula partial produced a complete 305-month common-benchmark path. At 10 bp one-way costs its CAGR is 3.73%, Sharpe 0.281, maximum drawdown -50.27%, and rolling JKP133 residual mean 3.82% annually (HAC t=1.353, p=0.1759)."
     },
     {
       "milestone_id": "M069",
