@@ -1,0 +1,21 @@
+{
+  "milestone_id": "M042",
+  "status": "bounded_common_task_feasibility_complete",
+  "reused_evidence": [
+    "paper_runs/paper_replication_audits/alpha_r1/README.md",
+    "paper_runs/paper_replication_audits/alpha_r1/manifest.json",
+    "paper_runs/paper_replication_audits/alpha_r1/paper_specification_gaps.csv",
+    "paper_runs/paper_replication_audits/alpha_r1/source_mechanism_conformance.csv",
+    "paper_runs/paper_replication_audits/alpha_r1/public_fork_census.json",
+    "/nfs/roberts/scratch/pi_btk22/zc362/alpha_r1_paper/paper.pdf",
+    "/nfs/roberts/scratch/pi_btk22/zc362/alpha_r1_paper/source/sections/05_methodology.tex",
+    "/nfs/roberts/scratch/pi_btk22/zc362/alpha_r1_paper/source/sections/06_experiments.tex"
+  ],
+  "bounded_checks": [
+    "Re-read the original methodology/experiment source and visually inspected paper pages for semantic gating, reward/GRPO, rotating-slot/VWAP execution and headline results.",
+    "Checked for a source-anchored individual factor or deterministic gate; the paper releases neither the 82/40 factor identities nor betas/selections, so no central partial remains.",
+    "Separated the trained semantic gate from Lasso, IC Momentum, untrained Qwen and the old thematic JKP proxy.",
+    "Rechecked the official repository on 2026-09-04; the three-commit head remains a single README with code and weights Coming Soon."
+  ],
+  "outcome": "Alpha-R1's portfolio mechanics are described, but its actual signal is the unreleased daily output of a trained semantic gate over unreleased factors, betas, profiles and state. No factor or policy can be attributed to Alpha-R1 on JKP."
+}

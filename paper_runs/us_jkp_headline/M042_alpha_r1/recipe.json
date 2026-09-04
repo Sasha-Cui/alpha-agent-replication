@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M042",
+  "canonical_work_id": "CensusArxiv251223515",
+  "paper": "Alpha-R1: Alpha Screening with LLM Reasoning via Reinforcement Learning",
+  "paper_url": "https://arxiv.org/abs/2512.23515v1",
+  "paper_pdf_sha256": "3b88ec9d3231b097d3633de6d9c0e9840873c99497c29df85e33b20b110d00de",
+  "paper_source_sha256": "013e3201472be17a97c37a832e77fe1edf1b122d0cc6eeea1294c3cab8cf7e01",
+  "source_url": "https://github.com/FinStep-AI/Alpha-R1",
+  "source_commit": "61feaa359bd57761f5ac58f75af46ddfed2d2d7b",
+  "headline_strategy": "A GRPO-trained Qwen3-8B reasoning model semantically gates factors from a retained Alpha101 zoo using factor profiles, weekly market memory and daily price/news state; fixed four-year regression betas score stocks, and equal-weight top-10 selections are traded through five rotating daily slots.",
+  "headline_selection_basis": "The framework, methodology and main experiment identify the trained context-conditioned semantic gate—not an individual factor, Lasso, IC momentum, or the base Qwen model—as Alpha-R1's proposed strategy.",
+  "paper_configuration": {
+    "backbone": "Qwen3-8B",
+    "training_method": "GRPO",
+    "retained_factor_zoo_size": 82,
+    "testing_candidate_factors": 40,
+    "training_samples_per_date": 300,
+    "training_subset_factors": 40,
+    "beta_estimation_period": "2020-01-01 through 2023-12-31",
+    "training_period": "2024-07-01 through 2024-12-31",
+    "testing_period": "2025-01-01 through 2025-06-30",
+    "training_universe": "CSI300",
+    "testing_universes": ["CSI300", "CSI1000"],
+    "holding_days": 5,
+    "slots": 5,
+    "top_n_per_slot": 10,
+    "execution": "09:31-10:00 30-minute VWAP",
+    "cost_bps_each_buy_and_sell": 10,
+    "inference_temperature": 0,
+    "inference_top_p": 0.7,
+    "reported_runs": 5
+  },
+  "missing_headline_objects": [
+    "the identities and exact implementations of the 82 retained Alpha101 factors",
+    "the historically selected fixed 40-factor test set and selection tie/missing rules",
+    "all four-year beta coefficients and intercept plus estimator/target conventions",
+    "weekly memory inputs, prompts, model calls and final global memory",
+    "factor semantic profiles, performance vectors, prompts, model calls and schema",
+    "daily price/news descriptions, state prompts, raw-to-text models and outputs",
+    "the Alpha-R1 input prompt, output schema, trained checkpoint and tokenizer revision",
+    "judge model/prompt/rubric plus structural-penalty formula and weights",
+    "GRPO group size, optimizer, learning rate, batches, epochs, epsilon, KL beta and seeds",
+    "point-in-time memberships, market/news/macro data, calendars and adjustment rules",
+    "per-run factor selections, scores, actions, VWAP fills, holdings, returns and NAVs",
+    "baseline implementations, metric definitions, aggregation order and result arrays"
+  ],
+  "release_evidence": {
+    "paper_numeric_table_cells": 124,
+    "paper_heatmap_numeric_cells": 528,
+    "displayed_numeric_cells": 652,
+    "native_numeric_cells_reproduced": 0,
+    "audited_implementation_dimensions": 70,
+    "implementation_matches_or_analogues": 0,
+    "live_checked_date_utc": "2026-09-04",
+    "live_head_unchanged": true,
+    "live_tracked_files": 1,
+    "live_file": "README.md",
+    "live_file_bytes": 1101,
+    "live_commits": 3,
+    "live_tags": 0,
+    "live_releases": 0,
+    "readme_status": "inference code and model weights Coming Soon"
+  },
+  "release_claim_conflict": "The paper states that the full implementation and resources are available at the official repository, while the repository contains one README and marks inference code and model weights Coming Soon.",
+  "rejected_substitutes": [
+    {
+      "route": "Use the previous quality/profitability/momentum/low-risk JKP score",
+      "reason": "Its factors and signs are a researcher-created narrative motif; none is selected by Alpha-R1's semantic gate."
+    },
+    {
+      "route": "Use the paper's Lasso or IC-Momentum gate",
+      "reason": "They are comparison baselines, the 40-factor set is absent, and both are operationally underdefined."
+    },
+    {
+      "route": "Train a new gate from public Alpha101 implementations",
+      "reason": "The paper's factor identities/conventions, betas, states, profiles, prompts, reward, GRPO settings and data are missing; this would create a new policy."
+    },
+    {
+      "route": "Use the untrained Qwen3-8B backbone",
+      "reason": "The ablation identifies the unaligned base model as a distinct losing baseline rather than Alpha-R1."
+    },
+    {
+      "route": "Infer selections or paths from heatmaps/NAV rasters",
+      "reason": "Aggregate images do not identify daily factor gates, stock scores, holdings, fills or per-run paths."
+    }
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/alpha_r1",
+  "result_policy": "No thematic proxy, heuristic baseline, independently trained gate, base model, or raster-inferred path is entered as an Alpha-R1 monthly return. Reopen when the promised inference code, model and factor artifacts are released.",
+  "status": "closed_not_evaluable"
+}
