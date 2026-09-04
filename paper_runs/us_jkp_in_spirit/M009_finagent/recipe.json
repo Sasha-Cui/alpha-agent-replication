@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M009",
+  "canonical_work_id": "CensusArxiv240218485",
+  "paper": "A Multimodal Foundation Agent for Financial Trading: Tool-Augmented, Diversified, and Generalist",
+  "fidelity_label": "in_spirit_reconstruction",
+  "status": "frozen_before_jkp_result",
+  "paper_source": {
+    "path": "literature_review/papers/30_a_multimodal_foundation_agent_for_financial_trading_tool_augmented_diversified_and_general.pdf",
+    "sha256": "c5964450c7dd29c00cc92cbc845cd14223d08f04429f6b4b0c612c8678b69922",
+    "primary_url": "https://arxiv.org/pdf/2402.18485v3"
+  },
+  "strict_evidence": {
+    "verdict_path": "paper_runs/us_jkp_headline/M009_finagent/verdict.md",
+    "audit_manifest_path": "paper_runs/paper_replication_audits/finagent/manifest.json",
+    "audit_manifest_sha256": "ce7d418955c91d4f43e9ee911421acf9964d8603fae08e0b13882375964aaa5b",
+    "mechanism_path": "paper_runs/paper_replication_audits/finagent/paper_mechanism_conformance.csv",
+    "mechanism_sha256": "3a17fac0729d09c2aaf8114a5e1ae071ac689f0d2ab2008ed5338c8b0365e0b1",
+    "strategy_inventory_path": "paper_runs/paper_replication_audits/finagent/released_strategy_record_inventory.csv",
+    "strategy_inventory_sha256": "c6d819ea64bf2fb022e823c431e4e0c83d2ac3895c881bf409b55845023c89a0"
+  },
+  "headline_mechanism": "FinAgent fuses market-intelligence text and price-chart modalities, retrieves diversified memories, performs low-level price-movement and high-level decision reflection, consults trading tools, and emits Buy/Hold/Sell.",
+  "source_anchors": [
+    {
+      "section": "4.1 and Figure 3",
+      "role": "multimodal_intelligence",
+      "claim": "Latest and retrieved market intelligence is summarized alongside Kline price charts over short, medium, and long horizons."
+    },
+    {
+      "section": "4.2",
+      "role": "diversified_memory",
+      "claim": "Separate query types retrieve the top K historical intelligence records from multiple perspectives."
+    },
+    {
+      "section": "4.3 and Table 2",
+      "role": "dual_reflection",
+      "claim": "Low-level reflection relates information and charts to price changes; high-level reflection reviews past decisions and subsequent outcomes."
+    },
+    {
+      "section": "4.4",
+      "role": "tool_augmented_decision",
+      "claim": "The final decision combines intelligence, both reflections, trader preference, and augmented technical strategy tools."
+    }
+  ],
+  "preserved_elements": [
+    "separate market-intelligence and price-chart modality scores",
+    "short, medium, and long horizon representations",
+    "three diversified retrieval queries with top-five memories each",
+    "low-level outcome-conditioned modality synthesis",
+    "high-level correction from prior decision outcomes",
+    "selection among augmented momentum, reversal, and breakout strategy tools"
+  ],
+  "approximated_elements": [
+    "JKP fundamental and attention characteristics replace news/report summaries",
+    "one-, three-, and six-month price signals replace 1-, 7-, and 14-day Kline images",
+    "numeric cosine retrieval replaces GPT-generated query embeddings",
+    "rolling ridge synthesis replaces multimodal low-level LLM reflection",
+    "a past decision-correctness memory vote replaces high-level natural-language reflection"
+  ],
+  "invented_elements": [
+    "the exact JKP modality feature bundles",
+    "60-month memory and model windows",
+    "top-five similarity-weighted outcome vote",
+    "past-only Sharpe selection among three technical tools",
+    "fixed reflection/tool mixing weights and common decile portfolio adapter"
+  ],
+  "modalities": {
+    "market_intelligence_proxy": ["be_me", "gp_at", "ocf_at", "ret_1_0", "turnover_126d"],
+    "price_chart_proxy": ["ret_1_0", "ret_3_1", "ret_6_1", "rvol_21d", "prc_highprc_252d"]
+  },
+  "diversified_memory": {
+    "query_horizons_months": [1, 3, 6],
+    "memory_window_months": 60,
+    "top_k_per_query": 5,
+    "retrieval_similarity": "cosine_of_cross_sectionally_ranked_numeric_state",
+    "memory_outcome": "fully_realized_next_month_excess_return"
+  },
+  "reflection": {
+    "low_level": "rolling_ridge_of_intelligence_chart_and_memory_votes_on_past_next_month_returns",
+    "high_level": "similar_past_decision_correctness_vote",
+    "training_window_months": 60,
+    "ridge_penalty": 1.0,
+    "high_level_weight": 0.25
+  },
+  "augmented_tools": {
+    "candidates": ["medium_term_momentum", "short_term_reversal", "price_breakout"],
+    "selection": "highest_trailing_60_month_absolute_rankic_information_ratio",
+    "tool_weight": 0.25
+  },
+  "chronological_policy": {
+    "prehistory_formation_start": "1994-07-31",
+    "common_formation_start": "1999-07-31",
+    "all_retrieval_and_fitting_uses_strictly_earlier_formations": true,
+    "final_common_returns_used_for_policy_choice": false
+  },
+  "portfolio_adapter": "The reflected multimodal confidence is ranked within the frozen monthly top-1,000 universe and mapped to common value-weighted long/short deciles with 10 bp one-way cost.",
+  "claim_boundary": "This is a researcher-authored FinAgent-inspired numeric multimodal policy, not the released agent's missing FMP inputs, chart images, GPT-4/GPT-4V memories and reflections, actions, or native results."
+}
