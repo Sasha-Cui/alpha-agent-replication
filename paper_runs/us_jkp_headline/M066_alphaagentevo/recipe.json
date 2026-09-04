@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "status": "closed_not_evaluable",
+  "milestone_id": "M066",
+  "canonical_work_id": "CensusORlNmZrawUMu",
+  "title": "AlphaAgentEvo: Evolution-Oriented Alpha Mining via Self-Evolving Agentic Reinforcement Learning",
+  "central_strategy": "Train a multi-turn Qwen3 policy with agentic reinforcement learning to make up to four factor-generation/evaluation tool calls, optimize a five-component hierarchical reward over quality, diversity, novelty, validity, and tool efficiency, retain the best alpha offspring, and form a cross-sectional top-10-percent portfolio rebalanced every five trading days.",
+  "paper_source": {
+    "version": "accepted ICLR 2026",
+    "openreview_id": "lNmZrawUMu",
+    "url": "https://openreview.net/forum?id=lNmZrawUMu",
+    "official_pdf_sha256": "5d26b8d22ef091fb89e1ae2b968821092f6f6b6ccc048f95b365713c4b182fd5",
+    "official_pages": 18
+  },
+  "reused_audit_evidence": {
+    "manifest": "paper_runs/paper_replication_audits/alphaagentevo/manifest.json",
+    "manifest_sha256": "e20a7dd715a0952379ee79691796dc8bf6264b28a0767684ee87408697405c51",
+    "source_provenance_sha256": "467b255c8722c47911b46ed45f2500af3f165ef44a4f1cc6af69735bcb27a4e3",
+    "method_specification_sha256": "c1f01ea4103be22eacafa6ee29e4da6fef679e29d1c22bef63edfb9e1243f2d5",
+    "candidate_release_audit_sha256": "f3e4bd52f7439733d9fd2c1bca528613eb1ffec91e74a5386da36e56f8860167",
+    "published_numeric_result_units": 147,
+    "native_numeric_units_regenerated": 0,
+    "empirical_panels": 21,
+    "native_empirical_panels_regenerated": 0,
+    "printed_figure_numeric_annotations": 40,
+    "native_figure_annotations_regenerated": 0
+  },
+  "current_release_check": {
+    "checked_at_utc": "2026-09-04",
+    "official_supplement_listed": true,
+    "official_supplement_immutable_status": 404,
+    "openreview_api_status": 403,
+    "official_supplement_recovered": false,
+    "paper_author_code_or_checkpoint_found": false,
+    "third_party_candidate_count": 2,
+    "third_party_candidates_with_native_credit": 0
+  },
+  "monthly_jkp_assessment": {
+    "required_but_missing": [
+      "The listed supplementary ZIP containing the promised dataset and training/evaluation source; current immutable access is 404 and API access is 403.",
+      "AlphaEvo500/Alpha158 inputs, HS300/CSI500 point-in-time market data, exact splits, evaluator, parser, and backtest server.",
+      "Paper prompts, Qwen3 checkpoints, multi-turn trajectories, native tool calls, reward components, offspring factors, signs, and selected alpha pool.",
+      "Training environment, complete Verl/GRPO configuration, seeds, repeated runs, baselines, validation/test outputs, and result arrays.",
+      "Portfolio weighting, costs/slippage, holdings, returns, figure arrays, and result generator."
+    ],
+    "why_paper_specification_is_not_a_signal": "The paper describes the agent/tool/reward architecture and portfolio shell but prints no final alpha formula, factor pool, checkpoint action, or formation-date score.",
+    "why_third_party_candidates_are_excluded": "Neither candidate is attributable to a paper author. One is a mismatched 0.6B step-50 checkpoint; the other uses Vietnam data, a different reward and split, exceeds the tool-call cap, stops at step 90, and omits the parser/backtest backend.",
+    "why_local_proxy_is_excluded": "The local monthly evolved-seed proxy is a favorable motif translation with no AlphaAgentEvo policy, reward, tool, factor, or result lineage.",
+    "why_jkp_cannot_fill_the_gap": "JKP can evaluate a disclosed alpha but cannot infer the missing learned agent policy or its offspring formulas. Choosing a generic evolved factor would manufacture the strategy output.",
+    "reward_ambiguity": "The printed tool-cost term can be zero or negative while serving as a denominator, with no floor or sign rule; third-party floors are adaptations rather than recovered paper semantics."
+  },
+  "classification": "closed_not_evaluable",
+  "closure_rule": "Do not promote unaffiliated checkpoints, partial third-party training, the local motif proxy, or a newly generated JKP factor to AlphaAgentEvo. Reopen if the official supplement or attributable factor/checkpoint/action lineage becomes accessible."
+}

@@ -6,11 +6,11 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 65,
+    "closed": 66,
     "completed_adapted": 1,
     "completed_partial": 14,
-    "closed_not_evaluable": 50,
-    "in_progress": 1,
+    "closed_not_evaluable": 51,
+    "in_progress": 0,
     "queued": 3
   },
   "terminal_statuses": [
@@ -1131,16 +1131,16 @@
       "title": "AlphaAgentEvo: Evolution-Oriented Alpha Mining via Self-Evolving Agentic Reinforcement Learning",
       "system_ids": "SYS-ALPHA-AGENT-EVO",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M066_alphaagentevo/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier and original paper/source; identify AlphaAgentEvo's central self-evolved alpha output or strongest attributable formula before new JKP outcome inspection, then execute the strongest defensible monthly adaptation or close with concrete evidence.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M066_alphaagentevo/verdict.md",
+      "evaluated_scope": "No common-task return: the accepted paper specifies a self-evolving agentic RL miner but releases no accessible supplement, author code, learned checkpoint, offspring factor, score, holdings, or result arrays. Two later third-party candidates materially diverge and lack author attribution.",
+      "next_action": "Closed. Do not promote unaffiliated checkpoints, partial third-party training, the local motif proxy, or newly generated JKP factors to AlphaAgentEvo. Reopen if the official supplement or attributable factor/checkpoint/action lineage becomes accessible.",
+      "closure_reason": "The listed supplement remains 404 and the OpenReview API returns 403; no alternative author release exists. JKP can evaluate a disclosed alpha but cannot infer the missing learned policy or offspring formulas, and the third-party candidates are not faithful substitutes."
     },
     {
       "milestone_id": "M067",
