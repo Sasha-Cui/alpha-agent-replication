@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "status": "closed_not_evaluable",
+  "milestone_id": "M057",
+  "canonical_work_id": "CensusArxiv260523007",
+  "title": "MadEvolve: Evolutionary Optimization of Trading Systems with Large Language Models",
+  "central_strategy": "Use multiple frontier LLMs across five evolutionary islands to mutate both a BTCUSD alpha forecaster and its trading-system code through differential patches and holistic rewrites; retain diverse elites with MAP-Elites, migrate candidates every five generations, and select the best evolved program under a limit-order simulator with explicit fill, fee, and market-impact mechanics.",
+  "paper_source": {
+    "version": "v1",
+    "url": "https://arxiv.org/abs/2605.23007v1",
+    "official_pdf_sha256": "9a8c776fddbeab3ca753dcaed8f04e74884b18d40e818e5d23ab9c0051751c16",
+    "source_archive_sha256": "e05e19e79fcf119e462c72bf7cd484b2c1cd9694fdca31d6f10ffbdafd4671ab",
+    "source_file_count": 19
+  },
+  "official_framework": {
+    "site": "https://madevolve.org",
+    "repository": "https://github.com/tianyi-stack/MadEvolve",
+    "attribution": "The manuscript links the framework site, which links coauthor Tianyi Li's repository.",
+    "audited_head_sha": "8b881d3a45d8f68050c28c8d64c2bb653001103a",
+    "current_head_sha": "8b881d3a45d8f68050c28c8d64c2bb653001103a"
+  },
+  "reused_audit_evidence": {
+    "manifest": "paper_runs/paper_replication_audits/madevolve_trading/manifest.json",
+    "manifest_sha256": "0cc0a5badc6e7705cf58da2d41e6f860c1d0f957d2c127135a6406a43a1403b0",
+    "source_provenance_sha256": "5fa649c56ccc243b090e066bddf61d5df3e3d265e375d27f653bccbf1d286a11",
+    "release_execution_sha256": "4426ebdacb29977aee288fba42aa404fea1a36dc4c0526457e173174e60af6c4",
+    "native_framework_component_checks_passed": 5,
+    "published_numeric_result_units": 214,
+    "native_numeric_units_regenerated": 0,
+    "empirical_panels": 21,
+    "native_empirical_panels_regenerated": 0
+  },
+  "current_release_check": {
+    "checked_at_utc": "2026-09-04",
+    "framework_site_status": 200,
+    "repository_default_branch": "main",
+    "current_head_matches_audited_release": true,
+    "repository_pushed_at_utc": "2026-03-03T22:38:45Z",
+    "branch_count": 1,
+    "tag_count": 0,
+    "release_count": 0,
+    "new_trading_code_or_evolved_program_found": false
+  },
+  "monthly_jkp_assessment": {
+    "preserved_components": [
+      "General differential-patch and holistic-rewrite mutation machinery.",
+      "MAP-Elites partitioning, island migration, elite-vault, and SQLite artifact-lineage components.",
+      "Native and Slurm execution orchestration in the general framework."
+    ],
+    "required_but_missing": [
+      "The BTCUSD/Polygon OHLCV adapter, frozen market snapshot, alpha forecaster, trading-system implementation, and complete simulator/evaluator.",
+      "The five paper configurations, initial programs, random seeds, model routing probabilities, prompts, requests/responses, candidates, lineages, and run reports.",
+      "The best evolved strategy code, feature programs, 200-proposal Claude Code trees, successful candidates, and selection traces.",
+      "The two 120-trial Optuna studies, trial tables, parameters, objective arrays, and chosen settings.",
+      "Orders, fills, inventory, fees, market-impact states, holdings, returns, baselines, table arrays, and plot arrays."
+    ],
+    "why_framework_is_not_a_strategy": "The released package is domain-general evolutionary infrastructure and contains no trading-specific code, candidate, score, or portfolio. Its five synthetic component checks cannot emit a market action.",
+    "why_appendix_skeleton_is_insufficient": "The paper's baseline pseudocode has omissions and unresolved project-specific classes/data; it is neither the evolved headline program nor a standalone score-producing baseline.",
+    "why_jkp_cannot_fill_the_gap": "JKP can provide a common monthly U.S. panel, but there is no released MadEvolve candidate program to run on it. Designing a new factor, simulator, objective, and evolution search would create a new system rather than transfer the paper's strategy.",
+    "why_btc_execution_cannot_be_silently_replaced": "The paper makes limit-order fill, fee, and market-impact mechanics part of the optimized trading system. Replacing them with a generic monthly decile score would discard the object that MadEvolve evolves."
+  },
+  "classification": "closed_not_evaluable",
+  "closure_rule": "Do not promote general framework fixtures, appendix pseudocode, a newly designed JKP evolution problem, or reconstructed plot curves to MadEvolve. Reopen for attributable trading code, evolved candidate programs, or paper run lineage."
+}

@@ -6,11 +6,11 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 56,
+    "closed": 57,
     "completed_adapted": 1,
     "completed_partial": 11,
-    "closed_not_evaluable": 44,
-    "in_progress": 1,
+    "closed_not_evaluable": 45,
+    "in_progress": 0,
     "queued": 12
   },
   "terminal_statuses": [
@@ -978,16 +978,16 @@
       "title": "MadEvolve: Evolutionary Optimization of Trading Systems with Large Language Models",
       "system_ids": "SYS-MAD-EVOLVE",
       "prior_evidence_route": "public_code_available",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M057_madevolve/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier and current paper/source; identify MadEvolve's central evolved trading system or strongest attributable source strategy before new JKP outcome inspection, then execute the strongest defensible monthly adaptation or close with concrete evidence.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M057_madevolve/verdict.md",
+      "evaluated_scope": "No common-task return: the first-party release provides general evolutionary infrastructure and five passing component fixtures, but no trading code, paper configuration, candidate program, evolved system, market data, actions, holdings, or result arrays. Appendix pseudocode is incomplete and not the headline output.",
+      "next_action": "Closed. Preserve framework-component checks separately; do not promote general fixtures, appendix skeletons, or a newly invented JKP evolution problem to MadEvolve. Reopen for attributable trading code, evolved candidates, or run lineage.",
+      "closure_reason": "The repository remains at the fully audited head with no trading payload, tags, or releases. Because the object MadEvolve optimizes is unreleased trading-system code with limit-order execution, no monthly U.S./JKP score can be formed without designing a different system."
     },
     {
       "milestone_id": "M058",
