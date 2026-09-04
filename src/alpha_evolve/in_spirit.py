@@ -1104,3 +1104,151 @@ def fincon_rolling_scores(
             row[f"belief_weight__{name}"] = float(beliefs[name])
         diagnostics.append(row)
     return result, pd.DataFrame(diagnostics)
+
+
+def aapm_rolling_scores(
+    frame: pd.DataFrame,
+    stock_report_features: list[str],
+    manual_factors: list[str],
+    asset_features: list[str],
+    *,
+    common_start: str,
+    report_memory_weight: float = 0.5,
+    pretraining_months: int = 120,
+    ridge_penalty: float = 10.0,
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Run a hybrid AAPM report/manual/asset pricing reconstruction."""
+    if [len(stock_report_features), len(manual_factors), len(asset_features)] != [5, 6, 3]:
+        raise ValueError("AAPM requires frozen 5/6/3 feature blocks")
+    if not 0 <= report_memory_weight < 1:
+        raise ValueError("AAPM report-memory weight must be in [0, 1)")
+    features = list(dict.fromkeys([*stock_report_features, *manual_factors, *asset_features]))
+    missing = {"month", "security_id", "weight", "ret", "ret_exc_lead1m", *features} - set(frame)
+    if missing:
+        raise ValueError(f"missing AAPM inputs: {sorted(missing)}")
+    ranked = cross_sectional_unit_rank(frame, features)
+
+    smoothed_report = pd.DataFrame(np.nan, index=frame.index, columns=stock_report_features)
+    month_number = (
+        pd.to_datetime(frame["month"]).dt.year * 12
+        + pd.to_datetime(frame["month"]).dt.month
+    ).to_numpy(dtype=int)
+    for indices in frame.groupby("security_id", sort=False).groups.values():
+        positions = frame.index.get_indexer(indices)
+        positions = positions[np.argsort(month_number[positions], kind="mergesort")]
+        previous = np.full(len(stock_report_features), np.nan)
+        previous_month: int | None = None
+        for position in positions:
+            current = ranked.iloc[position][stock_report_features].to_numpy(dtype=float)
+            if (
+                previous_month is not None
+                and month_number[position] == previous_month + 1
+                and np.isfinite(previous).all()
+                and np.isfinite(current).all()
+            ):
+                current = (
+                    (1.0 - report_memory_weight) * current
+                    + report_memory_weight * previous
+                )
+            smoothed_report.iloc[position] = current
+            previous = current
+            previous_month = month_number[position]
+
+    macro_rows = []
+    previous_macro = np.zeros(3)
+    for month, indices in frame.groupby("month", sort=True).groups.items():
+        weight = pd.to_numeric(frame.loc[indices, "weight"], errors="coerce")
+        current_return = pd.to_numeric(frame.loc[indices, "ret"], errors="coerce")
+        valid = weight.notna() & current_return.notna() & weight.gt(0)
+        normalized = weight.loc[valid] / weight.loc[valid].sum()
+        market_return = float(np.sum(normalized * current_return.loc[valid]))
+        market_volatility = float(
+            np.sqrt(np.sum(normalized * (current_return.loc[valid] - market_return) ** 2))
+        )
+        breadth = float(current_return.loc[valid].gt(0).mean())
+        current_macro = np.array([market_return, market_volatility, breadth])
+        current_macro = (
+            (1.0 - report_memory_weight) * current_macro
+            + report_memory_weight * previous_macro
+        )
+        previous_macro = current_macro
+        macro_rows.append((pd.Timestamp(month), current_macro.copy()))
+    macro_by_month = dict(macro_rows)
+    macro = np.vstack([macro_by_month[pd.Timestamp(month)] for month in frame["month"]])
+
+    stock_mean = smoothed_report.mean(axis=1).to_numpy(dtype=float)
+    manual = ranked[manual_factors].to_numpy(dtype=float)
+    asset = ranked[asset_features].to_numpy(dtype=float)
+    interactions = np.column_stack(
+        [
+            np.tanh(stock_mean[:, None] * macro),
+            np.tanh(asset * manual[:, :3]),
+        ]
+    )
+    hybrid = np.column_stack([smoothed_report.to_numpy(dtype=float), macro, manual, asset, interactions])
+    hybrid_columns = [
+        *[f"report__{name}" for name in stock_report_features],
+        "macro__market_return",
+        "macro__market_volatility",
+        "macro__positive_breadth",
+        *[f"manual__{name}" for name in manual_factors],
+        *[f"asset__{name}" for name in asset_features],
+        "interaction__report_market_return",
+        "interaction__report_market_volatility",
+        "interaction__report_positive_breadth",
+        *[f"interaction__asset_manual_{number}" for number in range(1, 4)],
+    ]
+    if hybrid.shape[1] != len(hybrid_columns):
+        raise AssertionError("AAPM hybrid feature names do not align")
+
+    outcomes = pd.to_numeric(frame["ret_exc_lead1m"], errors="coerce").to_numpy(dtype=float)
+    month_cross_products: dict[pd.Timestamp, tuple[np.ndarray, np.ndarray, int]] = {}
+    for month, indices in frame.groupby("month", sort=True).groups.items():
+        positions = frame.index.get_indexer(indices)
+        x = hybrid[positions]
+        y = outcomes[positions]
+        valid = np.isfinite(x).all(axis=1) & np.isfinite(y)
+        design = np.column_stack([np.ones(valid.sum()), x[valid]])
+        month_cross_products[pd.Timestamp(month)] = (
+            design.T @ design,
+            design.T @ y[valid],
+            int(valid.sum()),
+        )
+
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    diagnostics: list[dict[str, object]] = []
+    month_groups = frame.groupby("month", sort=False).groups
+    months = sorted(pd.Timestamp(month) for month in frame.loc[frame["month"] >= common_start, "month"].unique())
+    all_months = sorted(month_cross_products)
+    for month in months:
+        history_months = [value for value in all_months if value < month][-pretraining_months:]
+        if len(history_months) != pretraining_months:
+            raise ValueError(f"AAPM pretraining is incomplete at {month.date()}")
+        xtx = sum((month_cross_products[value][0] for value in history_months), np.zeros_like(next(iter(month_cross_products.values()))[0]))
+        xty = sum((month_cross_products[value][1] for value in history_months), np.zeros_like(next(iter(month_cross_products.values()))[1]))
+        observations = sum(month_cross_products[value][2] for value in history_months)
+        penalty = np.eye(xtx.shape[0]) * ridge_penalty
+        penalty[0, 0] = 0.0
+        model = np.linalg.solve(xtx + penalty, xty)
+        indices = month_groups[month]
+        positions = frame.index.get_indexer(indices)
+        current_x = hybrid[positions]
+        current = np.full(len(indices), np.nan)
+        valid = np.isfinite(current_x).all(axis=1)
+        current[valid] = model[0] + current_x[valid] @ model[1:]
+        result.loc[indices] = current
+        diagnostics.append(
+            {
+                "formation_month": str(month.date()),
+                "pretraining_start": str(history_months[0].date()),
+                "pretraining_end": str(history_months[-1].date()),
+                "pretraining_months": len(history_months),
+                "pretraining_observations": observations,
+                "hybrid_feature_count": hybrid.shape[1],
+                "stock_report_coverage": int(smoothed_report.loc[indices].notna().all(axis=1).sum()),
+                "finite_scores": int(np.isfinite(current).sum()),
+                "coefficient_norm": float(np.linalg.norm(model[1:])),
+            }
+        )
+    catalog = pd.DataFrame({"feature": hybrid_columns})
+    return result, pd.DataFrame(diagnostics), catalog
