@@ -10,8 +10,8 @@
     "completed_adapted": 1,
     "completed_partial": 6,
     "closed_not_evaluable": 26,
-    "in_progress": 0,
-    "queued": 36
+    "in_progress": 1,
+    "queued": 35
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -587,7 +587,7 @@
       "title": "QuantAgents: Towards Multi-agent Financial System via Simulated Trading",
       "system_ids": "SYS-QUANT-AGENTS",
       "prior_evidence_route": "public_code_available",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
