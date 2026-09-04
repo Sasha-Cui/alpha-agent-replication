@@ -10,8 +10,8 @@
     "completed_adapted": 1,
     "completed_partial": 10,
     "closed_not_evaluable": 42,
-    "in_progress": 0,
-    "queued": 16
+    "in_progress": 1,
+    "queued": 15
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -927,7 +927,7 @@
       "title": "Strat-LLM: Stratified Strategy Alignment for LLM-based Stock Trading with Real-time Multi-Source Signals",
       "system_ids": "SYS-STRAT-LLM",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
@@ -935,7 +935,7 @@
       "metrics_path": "",
       "verdict_path": "",
       "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
+      "next_action": "Reuse the existing dossier and current paper/source; identify Strat-LLM's central stratified alignment policy and released signal/action artifacts before new JKP outcome inspection, then execute the strongest defensible monthly adaptation or close with concrete evidence.",
       "closure_reason": ""
     },
     {
