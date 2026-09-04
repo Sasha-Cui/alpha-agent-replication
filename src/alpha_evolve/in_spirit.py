@@ -5,6 +5,7 @@ from itertools import combinations
 
 import numpy as np
 import pandas as pd
+from scipy.spatial import cKDTree
 
 
 def cross_sectional_unit_rank(frame: pd.DataFrame, columns: list[str]) -> pd.DataFrame:
@@ -871,5 +872,126 @@ def finagent_rolling_scores(
         for query in FINAGENT_MEMORY_QUERIES:
             row[f"{query}_memory_coverage"] = int(memories.loc[indices, query].notna().sum())
             row[f"{query}_mean_retrieved"] = float(retrieved_arrays[query][frame.index.get_indexer(indices)].mean())
+        diagnostics.append(row)
+    return result, pd.DataFrame(diagnostics)
+
+
+def llmfactor_rolling_scores(
+    frame: pd.DataFrame,
+    factor_candidates: list[str],
+    peer_features: list[str],
+    peer_inputs: list[str],
+    *,
+    common_start: str,
+    training_months: int = 60,
+    selected_factors: int = 5,
+    ridge_penalty: float = 1.0,
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Run a numeric relation/factor/five-price LLMFactor reconstruction."""
+    required = {
+        "month",
+        "security_id",
+        "ret",
+        "ret_exc_lead1m",
+        *factor_candidates,
+        *peer_features,
+        *peer_inputs,
+    }
+    missing = required - set(frame)
+    if missing:
+        raise ValueError(f"missing LLMFactor inputs: {sorted(missing)}")
+    if len(factor_candidates) != 8 or selected_factors != 5:
+        raise ValueError("LLMFactor requires eight candidates and five selected factors")
+    all_rank_features = list(dict.fromkeys([*factor_candidates, *peer_features, *peer_inputs]))
+    ranked = cross_sectional_unit_rank(frame, all_rank_features)
+
+    relation = pd.DataFrame(np.nan, index=frame.index, columns=[f"peer__{name}" for name in peer_inputs])
+    relation_coverage: dict[pd.Timestamp, int] = {}
+    for month, indices in frame.groupby("month", sort=True).groups.items():
+        states = ranked.loc[indices, peer_features]
+        valid = states.notna().all(axis=1)
+        valid_indices = states.index[valid]
+        if len(valid_indices) < 2:
+            relation_coverage[pd.Timestamp(month)] = 0
+            continue
+        tree = cKDTree(states.loc[valid_indices].to_numpy(dtype=float))
+        _, nearest = tree.query(states.loc[valid_indices].to_numpy(dtype=float), k=2)
+        neighbor_indices = valid_indices.to_numpy()[nearest[:, 1]]
+        relation.loc[valid_indices] = ranked.loc[neighbor_indices, peer_inputs].to_numpy(dtype=float)
+        relation_coverage[pd.Timestamp(month)] = len(valid_indices)
+
+    price_history = pd.DataFrame(index=frame.index)
+    ordered = frame[["security_id", "month", "ret"]].sort_values(
+        ["security_id", "month"], kind="mergesort"
+    )
+    groups = ordered.groupby("security_id", sort=False)
+    for lag in range(5):
+        values = pd.to_numeric(groups["ret"].shift(lag), errors="coerce")
+        observed_month = groups["month"].shift(lag)
+        expected_month = ordered["month"] - pd.offsets.MonthEnd(lag)
+        price_history.loc[ordered.index, f"price_lag_{lag}"] = values.where(observed_month.eq(expected_month))
+    price_rank_frame = pd.concat([frame[["month"]], price_history], axis=1)
+    price_history = cross_sectional_unit_rank(price_rank_frame, list(price_history))
+
+    factor_scores = ranked[factor_candidates]
+    rankics = monthly_rankic(frame, factor_scores)
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    diagnostics: list[dict[str, object]] = []
+    month_groups = frame.groupby("month", sort=False).groups
+    months = sorted(pd.Timestamp(month) for month in frame.loc[frame["month"] >= common_start, "month"].unique())
+    for month in months:
+        history = rankics.loc[rankics.index < month].tail(training_months)
+        if len(history) != training_months:
+            raise ValueError(f"LLMFactor warm-up is incomplete at {month.date()}")
+        mean, quality = _rankicir(history, 24)
+        selected = sorted(
+            quality.dropna().index,
+            key=lambda name: (-float(quality[name]), name),
+        )[:selected_factors]
+        if len(selected) != selected_factors:
+            raise ValueError("too few LLMFactor factor candidates")
+        prediction_inputs = pd.concat(
+            [
+                factor_scores[selected],
+                relation,
+                price_history,
+            ],
+            axis=1,
+        )
+        training = frame["month"].isin(history.index)
+        x = prediction_inputs.loc[training].to_numpy(dtype=float)
+        realized = pd.to_numeric(frame.loc[training, "ret_exc_lead1m"], errors="coerce").to_numpy(dtype=float)
+        y = np.sign(realized)
+        valid = np.isfinite(x).all(axis=1) & np.isfinite(realized) & (y != 0)
+        x, y = x[valid], y[valid]
+        if len(y) < 1000:
+            raise ValueError("too few finite LLMFactor classification observations")
+        design = np.column_stack([np.ones(len(x)), x])
+        penalty = np.eye(design.shape[1]) * ridge_penalty
+        penalty[0, 0] = 0.0
+        model = np.linalg.solve(design.T @ design + penalty, design.T @ y)
+        indices = month_groups[month]
+        current_x = prediction_inputs.loc[indices].to_numpy(dtype=float)
+        current = np.full(len(indices), np.nan)
+        current_valid = np.isfinite(current_x).all(axis=1)
+        current[current_valid] = model[0] + current_x[current_valid] @ model[1:]
+        result.loc[indices] = current
+        predicted = design @ model
+        accuracy = float(np.mean(np.sign(predicted) == y))
+        row: dict[str, object] = {
+            "formation_month": str(month.date()),
+            "training_start": str(history.index[0].date()),
+            "training_end": str(history.index[-1].date()),
+            "training_months": len(history),
+            "training_observations": len(y),
+            "training_direction_accuracy": accuracy,
+            "peer_relation_coverage": relation_coverage[month],
+            "five_price_history_coverage": int(price_history.loc[indices].notna().all(axis=1).sum()),
+            "finite_scores": int(np.isfinite(current).sum()),
+        }
+        for number, name in enumerate(selected, start=1):
+            row[f"factor_{number}"] = name
+            row[f"factor_{number}_rankicir"] = float(quality[name])
+            row[f"factor_{number}_mean_rankic"] = float(mean[name])
         diagnostics.append(row)
     return result, pd.DataFrame(diagnostics)
