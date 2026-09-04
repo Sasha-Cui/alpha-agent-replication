@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M041",
+  "canonical_work_id": "CensusArxiv251118850",
+  "paper": "Cognitive Alpha Mining via LLM-Driven Code-Based Evolution",
+  "paper_url": "https://arxiv.org/abs/2511.18850v4",
+  "paper_pdf_sha256": "20c6c76a0e9ea5fdf869ee0a20a3594ab61181fee9913b1ec9361b3669ecea45",
+  "paper_source_sha256": "9106f0b56ff27219d78b35d9d5e3f113e02e60211263a0eb2825282bcef7967f",
+  "source_url": "https://github.com/uwFengyuan/CogAlpha_Prompt",
+  "source_commit": "6294d9ffa9dfc286fb14e82343f8f22a5f928c1c",
+  "candidate_id": "cogalpha_evolved_price_impact",
+  "source_function": "factor_price_impact_per_vol_tanh_1d",
+  "source_formula": "tanh(abs(close-open)/(volume*close+1e-9))",
+  "headline_strategy": "Evaluate CogAlpha's showcased evolved liquidity-impact alpha—the final code in its worked multi-round evolution example—using the common monthly U.S./JKP score-to-portfolio adapter.",
+  "headline_selection_basis": "The main text uses this initial/mutated/evolved chain to demonstrate CogAlpha's central code-evolution mechanism and reports that the final factor improves to IC 0.0141 and RankIC 0.0087. It is selected from the paper before its new JKP outcome, not from the old thematic proxy or JKP performance.",
+  "paper_factor": {
+    "semantic_intent": "absolute price impact per dollar volume, bounded by tanh; larger values predict higher subsequent return",
+    "daily_inputs": ["open", "close", "volume"],
+    "native_prediction_horizon_days": 10,
+    "reported_ic": 0.0141,
+    "reported_rankic": 0.0087,
+    "direction": "positive"
+  },
+  "jkp_mapping": {
+    "monthly_absolute_price_move": "abs(ret)*abs(prc)",
+    "monthly_dollar_volume": "dolvol",
+    "monthly_factor": "tanh(abs(ret)*abs(prc)/(dolvol+1e-9))",
+    "ret_definition": "JKP/CRSP total return observed during the formation month, including delisting adjustment where applicable",
+    "prc_definition": "absolute CRSP month-end price",
+    "dolvol_definition": "CRSP monthly price times share volume, rescaled from hundred-share units to dollars",
+    "semantic_assessment": "central partial adaptation: the price-impact numerator and dollar-volume denominator are preserved, but a month-end total-return move replaces same-day close-minus-open because JKP contains no opening price"
+  },
+  "common_task_adaptations": {
+    "cadence": "monthly instead of daily",
+    "prediction_horizon": "next month instead of 10 trading days",
+    "universe": "formation-date largest 1,000 U.S. stocks instead of the paper's primary CSI300",
+    "portfolio": "common value-weighted long/short deciles because the listing is a score, not a complete portfolio",
+    "primary_cost_bps_one_way": 10,
+    "missing_return_policy": "zero without reweighting",
+    "factor_benchmark": "ff5_mom_jkp132"
+  },
+  "full_system_not_reproduced": [
+    "the 21-agent seven-level hierarchy and random selection of 13 agents",
+    "the approximately 80-factor initial pool and 32-factor parent pool",
+    "the 96-child multi-operator evolution cycles and selection thresholds",
+    "gpt-oss-120b serving/checkpoint, sampling, requests and seeds",
+    "quality-checker judgments, repairs, leakage checks and adaptive memory",
+    "LightGBM/Ridge multifactor learner and top-50/drop-5 Qlib portfolio",
+    "paper datasets, memberships, daily open execution, fees, holdings and results"
+  ],
+  "release_evidence": {
+    "prompt_templates": 39,
+    "runtime_code_included": false,
+    "published_factor_listings_executed_on_synthetic_fixture": 3,
+    "current_empirical_units": 306,
+    "native_empirical_units_regenerated": 0,
+    "live_checked_date_utc": "2026-09-04",
+    "official_head_unchanged": true,
+    "official_commits": 1,
+    "official_tags": 0,
+    "official_releases": 0,
+    "public_forks": 2,
+    "both_fork_heads_equal_official": true
+  },
+  "prior_outcome_boundary": "The earlier thematic CogAlpha proxy outcome is known but rejected. The exact published evolved listing and positive direction were fixed from the paper before executing this new monthly path; inference is exploratory, not a pristine holdout.",
+  "result_policy": "Report this as a central published-factor partial only. Do not attribute its return to the unreleased CogAlpha search, multifactor learner, native portfolio, or reported paper metrics.",
+  "status": "frozen_for_execution"
+}
