@@ -10,8 +10,8 @@
     "completed_adapted": 1,
     "completed_partial": 9,
     "closed_not_evaluable": 34,
-    "in_progress": 0,
-    "queued": 25
+    "in_progress": 1,
+    "queued": 24
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -774,7 +774,7 @@
       "title": "Janus-Q: End-to-End Event-Driven Trading via Hierarchical-Gated Reward Modeling",
       "system_ids": "SYS-JANUS-Q",
       "prior_evidence_route": "public_code_available",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
@@ -782,7 +782,7 @@
       "metrics_path": "",
       "verdict_path": "",
       "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
+      "next_action": "Reuse the existing dossier and current paper/source; identify the central event-driven Janus-Q trading policy before any new JKP outcome inspection, then execute the strongest defensible full or partial monthly adaptation or close with concrete evidence.",
       "closure_reason": ""
     },
     {
