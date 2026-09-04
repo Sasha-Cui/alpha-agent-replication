@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M040",
+  "canonical_work_id": "CensusArxiv251112599",
+  "paper": "FINRS: A Risk-Sensitive Trading Framework for Real Financial Markets",
+  "paper_url": "https://arxiv.org/abs/2511.12599v1",
+  "paper_pdf_sha256": "1f7ae10ed56436a1b48392ffbda98dfd02c4822c1b08eb9c60cbf8a5a0fdc112",
+  "paper_source_sha256": "8c6711fcee25842ef9593eda5a10824f8026abe962cc9f5e98d4e9a32d66d01a",
+  "source_url": "",
+  "headline_strategy": "FinRS filters daily market/news/filing information into hierarchical memory, uses a GPT-4o direction agent plus a quantity/risk agent informed by scaled Kelly, CVaR, current exposure and volatility, and reflects on a future 1/7/30-day multi-scale reward.",
+  "headline_selection_basis": "The architecture and ablation identify Risk-Sensitive Reasoning, Financial Insight Prompting, Market News Integration and Multi-Timescale Reward as the proposed full FinRS policy. The shared printed FinPos equations alone are not the novel risk-sensitive strategy.",
+  "paper_configuration": {
+    "modules": ["market perception and analysis", "risk-sensitive decision making", "multi-scale reward reflection"],
+    "decision_agents": ["direction", "quantity and risk"],
+    "named_risk_references": ["scaled Kelly Criterion", "CVaR", "volatility adjustment", "account exposure"],
+    "position_update": "position_t = position_(t-1) + d_t*q_t",
+    "future_reward_horizons_days": [1, 7, 30],
+    "future_reward": "-(M_t)^2 if position unchanged, else position_t*M_t",
+    "model": "GPT-4o family",
+    "temperature": 0.7,
+    "native_assets": ["TSLA", "AAPL", "AMZN", "NFLX", "COIN"],
+    "training_period": "2024-01 through 2025-02",
+    "test_period": "2025-03 through 2025-04",
+    "data_providers": ["Yahoo Finance daily OHLCV", "Finnhub company/macro news", "SEC EDGAR 10-K/10-Q"]
+  },
+  "missing_headline_objects": [
+    "all domain filtering/analysis implementations and risk-focused prompts",
+    "hierarchical-memory allocation, retrieval, promotion/discard and persistence",
+    "the direction and quantity/risk agent runtime prompts, responses and parser",
+    "the scaled-Kelly equation, scale, probability/odds inputs and portfolio constraints",
+    "the CVaR confidence level, horizon, estimator, units and conversion to quantity",
+    "the volatility-adjustment formula, window, units and interaction with exposure",
+    "the GPT-4o immutable snapshot, decoding configuration, seeds and repetitions",
+    "initial account state, trade units, timing, fills, costs, slippage, borrowing and liquidation",
+    "immutable provider rows, publication timestamps, actions, positions, PnL and account paths",
+    "metric definitions, result generator, raw arrays and uncertainty protocol"
+  ],
+  "paper_component_credit": {
+    "paper_derived_mechanics_executed": 3,
+    "controlled_checks_passed": 3,
+    "components": ["multi-timescale score", "position update", "literal reward"],
+    "components_identical_to_finpos_v1": 3,
+    "author_native_result_credit": false,
+    "displayed_empirical_cells": 225,
+    "author_native_cells_regenerated": 0,
+    "empirical_figure_panels": 0
+  },
+  "cross_paper_lineage": {
+    "comparison_paper": "FinPos v1",
+    "published_days_earlier": 16,
+    "exact_display_matches": 216,
+    "total_cells": 225,
+    "main_table_exact_matches": 180,
+    "main_table_cells": 180,
+    "ablation_exact_matches": 36,
+    "ablation_cells": 45,
+    "interpretation": "displayed-value reuse, not an independent empirical replication"
+  },
+  "material_paper_conflicts": [
+    "The allegedly risk-adjusted reward contains no volatility, drawdown, CVaR, Kelly or downside term.",
+    "The prose says sliding-window account P&L and horizon scaling, while the equation is an unweighted sum of raw future dollar-price differences.",
+    "The reward uses total position rather than action/change and is asset-price-scale dependent.",
+    "The decision section introduces future 1/7/30-day differences without an explicit test-time exclusion.",
+    "The March-April 2025 test is described as including the November 2024 U.S. election."
+  ],
+  "live_release_recheck": {
+    "checked_date_utc": "2026-09-04",
+    "github_repository_search_arxiv": 0,
+    "github_repository_search_title": 0,
+    "coauthor_finrs_code_matches": 0,
+    "attributable_implementation_found": false
+  },
+  "rejected_substitutes": [
+    {
+      "route": "Treat the three FinPos-identical equations as the FinRS strategy",
+      "reason": "They describe state/training feedback, do not choose an action or risk size, and contain none of the named risk-sensitive mechanics."
+    },
+    {
+      "route": "Trade the future multi-timescale score",
+      "reason": "It directly consumes future 1/7/30-day prices and would be lookahead."
+    },
+    {
+      "route": "Insert a conventional scaled-Kelly/CVaR/volatility implementation",
+      "reason": "Many incompatible definitions and calibrations are possible; choosing one would create a new risk policy."
+    },
+    {
+      "route": "Run a current GPT-4o agent from the prose",
+      "reason": "No prompts, memory, model snapshot, inputs, sizing rules or execution contract identify the paper policy."
+    },
+    {
+      "route": "Treat the reused FinPos table as independent FinRS evidence",
+      "reason": "216/225 exact display matches establish result reuse, not a separate generated return path or policy."
+    }
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/finrs",
+  "result_policy": "No shared paper equation, future reward, researcher-selected risk implementation, current-model prose completion, or reused table result is entered as a FinRS monthly return.",
+  "status": "closed_not_evaluable"
+}

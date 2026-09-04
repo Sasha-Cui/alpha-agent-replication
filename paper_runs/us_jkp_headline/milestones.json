@@ -6,11 +6,11 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 39,
+    "closed": 40,
     "completed_adapted": 1,
     "completed_partial": 6,
-    "closed_not_evaluable": 32,
-    "in_progress": 1,
+    "closed_not_evaluable": 33,
+    "in_progress": 0,
     "queued": 29
   },
   "terminal_statuses": [
@@ -689,16 +689,16 @@
       "title": "FINRS: A Risk-Sensitive Trading Framework for Real Financial Markets",
       "system_ids": "SYS-FIN-RS",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M040_finrs/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M040_finrs/verdict.md",
+      "evaluated_scope": "No common-task return: FinRS's claimed risk-sensitive direction/sizing policy names scaled Kelly, CVaR and volatility adjustment without defining them; its only executable equations are FinPos-v1 training/state components and 216/225 displayed cells are exact FinPos reuse.",
+      "next_action": "Closed. Preserve the three shared mechanics and cross-paper lineage; do not promote future reward values, chosen risk formulas, current-model prose completions, or reused tables to FinRS. Run the forty-milestone release gate before M041.",
+      "closure_reason": "No causal direction/quantity mapping exists: all novel risk-sizing mechanics, prompts, memory, provider state, execution/accounting and outputs are absent. Shared equations do not choose trades and the near-total result reuse is not independent evidence."
     },
     {
       "milestone_id": "M041",

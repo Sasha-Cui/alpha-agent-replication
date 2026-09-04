@@ -1,0 +1,22 @@
+{
+  "milestone_id": "M040",
+  "status": "bounded_common_task_feasibility_complete",
+  "reused_evidence": [
+    "paper_runs/paper_replication_audits/finrs/README.md",
+    "paper_runs/paper_replication_audits/finrs/manifest.json",
+    "paper_runs/paper_replication_audits/finrs/source_provenance.json",
+    "paper_runs/paper_replication_audits/finrs/component_execution_audit.csv",
+    "paper_runs/paper_replication_audits/finrs/cross_paper_result_lineage.csv",
+    "paper_runs/paper_replication_audits/finrs/method_specification_audit.csv",
+    "paper_runs/paper_replication_audits/finrs/internal_consistency_audit.csv",
+    "/nfs/roberts/scratch/pi_btk22/zc362/finrs_audit/primary/official-v1.pdf",
+    "/nfs/roberts/scratch/pi_btk22/zc362/finrs_audit/source-v1/sec/3_Architecture_of_FinPos.tex"
+  ],
+  "bounded_checks": [
+    "Re-read the original source and visually inspected paper pages containing the reward equations, result table, experiment/ablation and conclusion.",
+    "Separated three FinPos-identical paper-derived mechanics from the claimed novel risk-sensitive action/sizing policy.",
+    "Verified the 216/225 cross-paper exact-display lineage and retained it as reuse evidence rather than independent result credit.",
+    "Rechecked exact-title/arXiv repositories and coauthor code on 2026-09-04; no attributable FinRS implementation appeared."
+  ],
+  "outcome": "FinRS names scaled Kelly, CVaR and volatility adjustment but defines none of them. Its only executable equations are inherited FinPos training/state components, and almost all printed results are exact FinPos reuse. No causal action/quantity policy can be formed."
+}
