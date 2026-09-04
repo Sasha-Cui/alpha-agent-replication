@@ -10,8 +10,8 @@
     "completed_adapted": 1,
     "completed_partial": 10,
     "closed_not_evaluable": 43,
-    "in_progress": 0,
-    "queued": 15
+    "in_progress": 1,
+    "queued": 14
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -944,7 +944,7 @@
       "title": "SHARP: A Self-Evolving Human-Auditable Rubric Policy for Financial Trading Agents",
       "system_ids": "SYS-SHARP",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
@@ -952,7 +952,7 @@
       "metrics_path": "",
       "verdict_path": "",
       "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
+      "next_action": "Reuse the existing dossier and current paper/source; identify SHARP's central evolved rubric policy, its source-fixed final rubric or action outputs, and the strongest executable component before new JKP outcome inspection, then evaluate or close with concrete evidence.",
       "closure_reason": ""
     },
     {
