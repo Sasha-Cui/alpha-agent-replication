@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M011",
+  "canonical_work_id": "CensusArxiv240706567",
+  "paper": "FinCon: A Synthesized LLM Multi-Agent System with Conceptual Verbal Reinforcement for Enhanced Financial Decision Making",
+  "fidelity_label": "in_spirit_reconstruction",
+  "status": "frozen_before_jkp_result",
+  "paper_source": {
+    "path": "literature_review/papers/29_fincon_a_synthesized_llm_multi_agent_system_with_conceptual_verbal_reinforcement_for_enhan.pdf",
+    "sha256": "3c09f3f3d9d2d2e50ef91e0ab6759dc2793755b94acd5a41e272dd63f9d54723",
+    "primary_url": "https://proceedings.neurips.cc/paper_files/paper/2024/file/f7ae4fe91d96f50abc2211f09b6a7e49-Paper-Conference.pdf"
+  },
+  "strict_evidence": {
+    "verdict_path": "paper_runs/us_jkp_headline/M011_fincon/verdict.md",
+    "audit_manifest_path": "paper_runs/paper_replication_audits/fincon/manifest.json",
+    "audit_manifest_sha256": "fc7d7dda87dc0c9eacaf30241d4d09c2fcbf28b70589684a0d9c50cf19556465",
+    "mechanism_path": "paper_runs/paper_replication_audits/fincon/source_mechanism_conformance.csv",
+    "mechanism_sha256": "58612922a53cd51d7b49629b603fe8777dee521c80f359f91f15002028cb41c7",
+    "gaps_path": "paper_runs/paper_replication_audits/fincon/paper_specification_gaps.csv",
+    "gaps_sha256": "8b4243c08ff2a0a21277a397539bc2c57b6d9de7d06a0532c9a1942e92181dcd"
+  },
+  "headline_mechanism": "FinCon coordinates specialized analysts through one manager, monitors within-episode downside with CVaR, and updates manager/analyst beliefs across episodes through conceptual verbal reinforcement.",
+  "source_anchors": [
+    {
+      "section": "3.1",
+      "role": "manager_analyst_hierarchy",
+      "claim": "Specialized analysts distill multimodal inputs and the manager alone synthesizes their perspectives into trading decisions."
+    },
+    {
+      "section": "3.1 and Algorithm 1",
+      "role": "within_episode_risk",
+      "claim": "A deterioration in the average worst 1% PnL triggers risk-averse manager reflection."
+    },
+    {
+      "section": "3.1 and Table 1",
+      "role": "conceptual_verbal_reinforcement",
+      "claim": "Profitable versus losing episodes update conceptual investment beliefs and selectively propagate guidance to relevant analysts."
+    },
+    {
+      "section": "3.2",
+      "role": "memory",
+      "claim": "Working, procedural, and episodic memories preserve observations, decisions, outcomes, and updated beliefs."
+    }
+  ],
+  "preserved_elements": [
+    "specialized market, fundamental, attention, and risk analyst scores",
+    "one manager combining analyst perspectives",
+    "procedural memory of trailing analyst effectiveness",
+    "episodic belief updates from profitable and losing historical outcomes",
+    "within-episode downside-tail risk adjustment",
+    "selective belief propagation through changing analyst weights"
+  ],
+  "approximated_elements": [
+    "JKP characteristic bundles replace price, news, filings, research, and earnings-call audio",
+    "trailing analyst RankIC replaces natural-language distilled insights",
+    "exponentiated numerical belief updates replace conceptual verbal reinforcement and prompt edits",
+    "rolling 5% monthly security CVaR replaces worst-1% daily portfolio PnL CVaR",
+    "risk-adjusted score ranking replaces direction-constrained mean-variance portfolio optimization"
+  ],
+  "invented_elements": [
+    "the four analyst feature bundles",
+    "60-month procedural and downside-memory windows",
+    "belief learning rate and softmax update",
+    "CVaR penalty magnitude",
+    "common value-weighted long/short decile portfolio adapter"
+  ],
+  "analysts": {
+    "market": ["ret_12_1", "ret_6_1", "rvol_21d"],
+    "fundamental": ["be_me", "gp_at", "ocf_at", "f_score"],
+    "attention": ["ret_1_0", "rmax5_21d", "turnover_126d"],
+    "risk": ["z_score", "o_score", "rvol_21d"]
+  },
+  "belief_policy": {
+    "prehistory_formation_start": "1994-07-31",
+    "common_formation_start": "1999-07-31",
+    "procedural_memory_months": 60,
+    "minimum_rankic_months": 24,
+    "initial_analyst_weights": "equal",
+    "update": "softmax_of_trailing_signed_rankic_with_exponential_smoothing",
+    "belief_learning_rate": 0.25,
+    "update_frequency": "monthly"
+  },
+  "risk_control": {
+    "return_history_months": 60,
+    "monthly_cvar_tail_probability": 0.05,
+    "cvar_penalty": 0.5,
+    "security_outcome": "past_next_month_excess_return"
+  },
+  "chronological_policy": {
+    "all_beliefs_and_risk_estimates_use_strictly_earlier_realized_outcomes": true,
+    "final_common_returns_used_for_policy_choice": false
+  },
+  "portfolio_adapter": "The CVaR-adjusted manager score is ranked within the frozen monthly top-1,000 universe and mapped to common value-weighted long/short deciles with 10 bp one-way cost; native mean-variance weights are not used so cross-paper exposure remains comparable.",
+  "claim_boundary": "This is a researcher-authored FinCon-inspired numerical hierarchy and dual-risk-control policy, not the unavailable GPT-4 manager/analysts, memories, CVRF prompts, multimodal inputs, native optimizer, or paper results."
+}
