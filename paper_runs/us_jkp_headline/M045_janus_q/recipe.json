@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "status": "closed_not_evaluable",
+  "milestone_id": "M045",
+  "canonical_work_id": "CensusArxiv260219919",
+  "title": "Janus-Q: End-to-End Event-Driven Trading via Hierarchical-Gated Reward Modeling",
+  "central_strategy": "An unnamed language-model checkpoint is supervised and then GRPO-tuned with the Hierarchical Gated Reward Model to map each point-in-time financial-news event into event type, predicted CAR, direction, and strong/weak execution. Strong positive or negative decisions become event-weighted trades entered at the next open and exited at a subsequent two-day close.",
+  "paper_version": {
+    "version": "v2",
+    "submitted_at_utc": "2026-02-27",
+    "url": "https://arxiv.org/abs/2602.19919v2",
+    "pdf_sha256": "d0fc34563769816985a0b5fcbc519a9d5f71adeae374cfb4f239c4dbac06cff5",
+    "source_archive_sha256": "a57e323865be314127bb8bf02f8dd73b9717a8b2698db8bdd3408e8559923e49"
+  },
+  "current_release_check": {
+    "checked_at_utc": "2026-09-04",
+    "repository": "https://github.com/Jackson906E/Janus-Q-demo",
+    "main_head": "526ac4e32d1e6904f5f3e2af25ea18886b61d325",
+    "gh_page_head": "4455e10202865d9fe0c167ed0bdea57af266fdc1",
+    "main_readme_bytes": 1,
+    "main_readme_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "native_training_inference_or_backtest_source_found": false
+  },
+  "reused_audit_evidence": {
+    "manifest": "paper_runs/paper_replication_audits/janus_q/manifest.json",
+    "manifest_sha256": "b5a1dc255385963276298271320a420c4b52313e0acdf068813ca23d5772e0d1",
+    "method_specification_sha256": "5ce36d65aa443de156a5098f0544b6e2ba9bb653cee083a069ab2ba817952092",
+    "release_search_sha256": "a2cfed75a377bdff511d7a0aab9c08b671e798599ce6d2b1e0a1fffb2cd6bfef",
+    "released_event_stock_rows": 64326,
+    "released_jsonl_records": 31999,
+    "author_native_table_cells_regenerated": 0,
+    "author_native_system_source_files": 0
+  },
+  "monthly_jkp_assessment": {
+    "required_but_missing": [
+      "The named base model, immutable checkpoint, tokenizer, SFT output, and GRPO output.",
+      "Executable prompt parsing, prediction, reward, event aggregation, portfolio, and backtest code.",
+      "Selected reward constants and weights, inference decoding, seeds, and model responses.",
+      "Point-in-time U.S. news events aligned to the JKP top-1,000 formation universe.",
+      "An event-overlap/conflict rule, capital budget, leverage, fills, costs, and missing-price policy."
+    ],
+    "why_released_labels_are_not_a_strategy": "Released direction and strength labels are deterministic functions of realized future CAR. Treating them as actions on JKP would use future returns and create direct lookahead.",
+    "why_numeric_proxy_is_not_defensible": "JKP contains monthly security characteristics and returns but no news text, event taxonomy, predicted CAR, or learned event policy. A generic momentum, sentiment, or event-type factor would replace rather than preserve Janus-Q's central mechanism.",
+    "bounded_alternative_checked": "The author-linked event dataset can validate label arithmetic and static NAV consistency, but it is China-specific historical output and cannot generate causal monthly U.S. decisions without a released model or a new text dataset/training project."
+  },
+  "classification": "closed_not_evaluable",
+  "closure_rule": "Do not train an unrelated classifier, replay future-CAR labels, substitute static author NAVs, or attribute a generic JKP factor to Janus-Q. Reopen only if a transferable checkpoint/inference policy or complete causal decision code becomes available."
+}

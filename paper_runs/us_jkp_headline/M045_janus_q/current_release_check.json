@@ -1,0 +1,15 @@
+{
+  "checked_at_utc": "2026-09-04",
+  "paper_version": "v2",
+  "paper_pdf_sha256": "d0fc34563769816985a0b5fcbc519a9d5f71adeae374cfb4f239c4dbac06cff5",
+  "paper_source_archive_sha256": "a57e323865be314127bb8bf02f8dd73b9717a8b2698db8bdd3408e8559923e49",
+  "repository": "https://github.com/Jackson906E/Janus-Q-demo",
+  "remote_heads": {
+    "refs/heads/gh-page": "4455e10202865d9fe0c167ed0bdea57af266fdc1",
+    "refs/heads/main": "526ac4e32d1e6904f5f3e2af25ea18886b61d325"
+  },
+  "main_readme_bytes": 1,
+  "main_readme_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+  "new_native_source_or_checkpoint_found": false,
+  "finding": "The v2 manuscript revises authorship/presentation but does not make the learned event policy executable; the public repository heads remain the static release boundary documented by the existing audit."
+}

@@ -6,11 +6,11 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 44,
+    "closed": 45,
     "completed_adapted": 1,
     "completed_partial": 9,
-    "closed_not_evaluable": 34,
-    "in_progress": 1,
+    "closed_not_evaluable": 35,
+    "in_progress": 0,
     "queued": 24
   },
   "terminal_statuses": [
@@ -774,16 +774,16 @@
       "title": "Janus-Q: End-to-End Event-Driven Trading via Hierarchical-Gated Reward Modeling",
       "system_ids": "SYS-JANUS-Q",
       "prior_evidence_route": "public_code_available",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M045_janus_q/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier and current paper/source; identify the central event-driven Janus-Q trading policy before any new JKP outcome inspection, then execute the strongest defensible full or partial monthly adaptation or close with concrete evidence.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M045_janus_q/verdict.md",
+      "evaluated_scope": "No common-task return: the central policy is an unreleased SFT+GRPO language model over point-in-time news. Released Chinese event labels are deterministic functions of future CAR and cannot be replayed causally; JKP has no event-text input.",
+      "next_action": "Closed. Preserve dataset/NAV integrity evidence separately; do not train an unrelated classifier, replay future-CAR labels, or attribute a generic numerical JKP proxy to Janus-Q. Reopen for a released checkpoint or complete causal policy.",
+      "closure_reason": "The current v2 paper and fresh repository-head check expose no checkpoint, model identity, inference/training code, selected reward parameters, predictions, orders, or portfolio engine. The one plausible released-data shortcut is direct lookahead, and JKP cannot supply the defining news/event state."
     },
     {
       "milestone_id": "M046",
