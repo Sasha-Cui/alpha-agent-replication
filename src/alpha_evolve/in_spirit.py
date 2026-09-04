@@ -1252,3 +1252,115 @@ def aapm_rolling_scores(
         )
     catalog = pd.DataFrame({"feature": hybrid_columns})
     return result, pd.DataFrame(diagnostics), catalog
+
+
+def finvision_consensus_scores(
+    frame: pd.DataFrame,
+    *,
+    common_start: str,
+    reliability_months: int = 60,
+    minimum_rankic_months: int = 24,
+    softmax_temperature: float = 10.0,
+    hold_threshold: float = 0.1,
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Run a numerical FinVision news/chart/reflection consensus."""
+    features = [
+        "niq_su",
+        "saleq_su",
+        "ret_1_0",
+        "turnover_126d",
+        "ret_3_1",
+        "ret_6_1",
+        "prc_highprc_252d",
+        "rvol_21d",
+    ]
+    missing = {"month", "security_id", "ret_exc_lead1m", *features} - set(frame)
+    if missing:
+        raise ValueError(f"missing FinVision agent inputs: {sorted(missing)}")
+    if reliability_months < minimum_rankic_months or softmax_temperature <= 0:
+        raise ValueError("invalid FinVision reliability configuration")
+    ranked = cross_sectional_unit_rank(frame, features)
+    agents = pd.DataFrame(index=frame.index)
+    agents["news_summary"] = ranked[
+        ["niq_su", "saleq_su", "ret_1_0", "turnover_126d"]
+    ].mean(axis=1)
+    agents["technical_chart"] = pd.concat(
+        [
+            ranked["ret_3_1"],
+            ranked["ret_6_1"],
+            ranked["prc_highprc_252d"],
+            -ranked["rvol_21d"],
+        ],
+        axis=1,
+    ).mean(axis=1)
+
+    short = pd.Series(np.nan, index=frame.index, dtype="float64")
+    medium = pd.Series(np.nan, index=frame.index, dtype="float64")
+    outcomes_all = pd.to_numeric(frame["ret_exc_lead1m"], errors="coerce").to_numpy(dtype=float)
+    frame_months = pd.to_datetime(frame["month"])
+    month_number = (frame_months.dt.year * 12 + frame_months.dt.month).to_numpy(dtype=int)
+    for indices in frame.groupby("security_id", sort=False).groups.values():
+        positions = frame.index.get_indexer(indices)
+        positions = positions[np.argsort(month_number[positions], kind="mergesort")]
+        months = month_number[positions]
+        outcomes = outcomes_all[positions]
+        for current_position, global_position in enumerate(positions):
+            lag = months[current_position] - months[:current_position]
+            for horizon, destination in ((3, short), (12, medium)):
+                history_positions = np.flatnonzero((lag >= 1) & (lag <= horizon))
+                values = outcomes[history_positions]
+                values = values[np.isfinite(values)]
+                if len(values):
+                    destination.iloc[global_position] = float(values.mean())
+    reflection_frame = pd.DataFrame(
+        {"month": frame["month"], "short_reflection": short, "medium_reflection": medium},
+        index=frame.index,
+    )
+    reflection_rank = cross_sectional_unit_rank(
+        reflection_frame, ["short_reflection", "medium_reflection"]
+    )
+    agents = pd.concat([agents, reflection_rank], axis=1)
+    agents = cross_sectional_unit_rank(
+        pd.concat([frame[["month"]], agents], axis=1), list(agents)
+    )
+    rankics = monthly_rankic(frame, agents)
+
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    diagnostics: list[dict[str, object]] = []
+    month_groups = frame.groupby("month", sort=False).groups
+    months = sorted(pd.Timestamp(month) for month in frame.loc[frame["month"] >= common_start, "month"].unique())
+    for month in months:
+        history = rankics.loc[rankics.index < month].tail(reliability_months)
+        if len(history) != reliability_months:
+            raise ValueError(f"FinVision reliability history is incomplete at {month.date()}")
+        count = history.count()
+        mean = history.mean().where(count >= minimum_rankic_months)
+        if mean.isna().any():
+            raise ValueError("FinVision agent RankIC history is incomplete")
+        logits = softmax_temperature * mean
+        reliability = np.exp(logits - logits.max())
+        reliability /= reliability.sum()
+        indices = month_groups[month]
+        consensus = agents.loc[indices].mul(reliability, axis=1).sum(
+            axis=1, min_count=len(agents.columns)
+        )
+        result.loc[indices] = consensus
+        finite = consensus.dropna()
+        position_size = np.ceil(10.0 * finite.abs()).clip(1, 10)
+        hold = finite.abs() <= hold_threshold
+        row: dict[str, object] = {
+            "formation_month": str(month.date()),
+            "reliability_start": str(history.index[0].date()),
+            "reliability_end": str(history.index[-1].date()),
+            "reliability_months": len(history),
+            "finite_scores": len(finite),
+            "buy_count": int((finite > hold_threshold).sum()),
+            "sell_count": int((finite < -hold_threshold).sum()),
+            "hold_count": int(hold.sum()),
+            "average_active_position_size": float(position_size.loc[~hold].mean()),
+        }
+        for name in agents:
+            row[f"agent_rankic__{name}"] = float(mean[name])
+            row[f"reliability_weight__{name}"] = float(reliability[name])
+        diagnostics.append(row)
+    return result, pd.DataFrame(diagnostics)
