@@ -1949,3 +1949,146 @@ def rd_agent_search_scores(
             row[f"validation_score__{branch}"] = winner_validation[branch]
         diagnostics.append(row)
     return result, pd.DataFrame(diagnostics)
+
+
+def mountainlion_fusion_scores(
+    frame: pd.DataFrame,
+    modalities: dict[str, list[tuple[str, int]]],
+    ml_features: list[str],
+    *,
+    common_start: str,
+    ml_training_months: int = 60,
+    fusion_history_months: int = 24,
+    minimum_fusion_rankic_months: int = 18,
+    ridge_lambda: float = 1.0,
+    fusion_temperature: float = 10.0,
+    alpha_floor: float = 0.1,
+    alpha_ceiling: float = 0.9,
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Run a deterministic MountainLion-style dual-track adaptive fusion."""
+    expected_modalities = [
+        "technical",
+        "market_dynamics",
+        "fundamental_quality",
+        "valuation_safety",
+    ]
+    if list(modalities) != expected_modalities:
+        raise ValueError("MountainLion requires the four frozen modalities in order")
+    if not 0 < alpha_floor < alpha_ceiling < 1:
+        raise ValueError("MountainLion alpha bounds must lie strictly inside (0, 1)")
+    features = list(
+        dict.fromkeys(
+            feature
+            for specifications in modalities.values()
+            for feature, _ in specifications
+        )
+    )
+    if not set(ml_features).issubset(features):
+        raise ValueError("MountainLion ML features must be modality inputs")
+    missing = {"month", "ret_exc_lead1m", *features} - set(frame)
+    if missing:
+        raise ValueError(f"missing MountainLion inputs: {sorted(missing)}")
+    for specifications in modalities.values():
+        if not specifications or any(sign not in {-1, 1} for _, sign in specifications):
+            raise ValueError("MountainLion modality signs must be -1 or 1")
+
+    ranked = cross_sectional_unit_rank(frame, features)
+    modality_raw: dict[str, pd.Series] = {}
+    for modality, specifications in modalities.items():
+        signed = pd.concat(
+            [ranked[feature] * sign for feature, sign in specifications],
+            axis=1,
+        )
+        modality_raw[modality] = signed.mean(axis=1, skipna=False)
+    modality_scores = cross_sectional_unit_rank(
+        pd.concat([frame[["month"]], pd.DataFrame(modality_raw)], axis=1),
+        expected_modalities,
+    )
+
+    recommendation = modality_scores.mean(axis=1, skipna=False)
+    semantic_consensus = modality_scores.median(axis=1, skipna=False)
+    agreement = modality_scores.apply(np.sign).mean(axis=1, skipna=False).abs()
+    llm_raw = (0.5 * recommendation + 0.5 * semantic_consensus) * (0.5 + 0.5 * agreement)
+
+    all_months = sorted(pd.Timestamp(month) for month in frame["month"].unique())
+    month_groups = frame.groupby("month", sort=False).groups
+    ml_raw = pd.Series(np.nan, index=frame.index, dtype="float64", name="ml")
+    ridge_diagnostics: dict[pd.Timestamp, dict[str, object]] = {}
+    for position in range(ml_training_months, len(all_months)):
+        month = all_months[position]
+        training = all_months[position - ml_training_months : position]
+        training_indices = frame.index[frame["month"].isin(training)]
+        current_indices = month_groups[month]
+        x_train = ranked.loc[training_indices, ml_features].fillna(0.0).to_numpy(dtype=float)
+        y_train = pd.to_numeric(
+            frame.loc[training_indices, "ret_exc_lead1m"],
+            errors="coerce",
+        )
+        training_month_labels = frame.loc[training_indices, "month"]
+        y_train = y_train - y_train.groupby(training_month_labels).transform("mean")
+        valid = np.isfinite(y_train.to_numpy(dtype=float))
+        if valid.sum() < len(ml_features) + 1:
+            raise ValueError(f"MountainLion ridge history is incomplete at {month.date()}")
+        x_valid = x_train[valid]
+        y_valid = y_train.to_numpy(dtype=float)[valid]
+        gram = x_valid.T @ x_valid + ridge_lambda * np.eye(len(ml_features))
+        coefficients = np.linalg.solve(gram, x_valid.T @ y_valid)
+        current = ranked.loc[current_indices, ml_features].fillna(0.0).to_numpy(dtype=float)
+        ml_raw.loc[current_indices] = current @ coefficients
+        ridge_diagnostics[month] = {
+            "ml_training_start": str(training[0].date()),
+            "ml_training_end": str(training[-1].date()),
+            "ml_training_months": len(training),
+            "ml_training_rows": int(valid.sum()),
+            "ridge_coefficient_norm": float(np.linalg.norm(coefficients)),
+        }
+
+    track_scores = cross_sectional_unit_rank(
+        pd.DataFrame({"month": frame["month"], "llm": llm_raw, "ml": ml_raw}),
+        ["llm", "ml"],
+    )
+    rankics = monthly_rankic(frame, track_scores)
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    diagnostics: list[dict[str, object]] = []
+    common_months = sorted(
+        pd.Timestamp(month)
+        for month in frame.loc[frame["month"] >= common_start, "month"].unique()
+    )
+    for month in common_months:
+        history = rankics.loc[rankics.index < month].tail(fusion_history_months)
+        if len(history) != fusion_history_months:
+            raise ValueError(f"MountainLion fusion history is incomplete at {month.date()}")
+        count = history.count()
+        if (count < minimum_fusion_rankic_months).any():
+            raise ValueError(f"MountainLion track history is ineligible at {month.date()}")
+        mean = history.mean()
+        win_rate = history.gt(0).sum() / count
+        quality = mean + 0.10 * (win_rate - 0.5)
+        logit = fusion_temperature * float(quality["llm"] - quality["ml"])
+        alpha = 1.0 / (1.0 + np.exp(-logit))
+        alpha = float(np.clip(alpha, alpha_floor, alpha_ceiling))
+        indices = month_groups[month]
+        current = track_scores.loc[indices]
+        score = alpha * current["llm"] + (1.0 - alpha) * current["ml"]
+        score = score.where(current.notna().all(axis=1))
+        result.loc[indices] = score
+        modality_current = modality_scores.loc[indices]
+        sign_count = modality_current.apply(np.sign).nunique(axis=1)
+        row: dict[str, object] = {
+            "formation_month": str(month.date()),
+            **ridge_diagnostics[month],
+            "fusion_start": str(history.index[0].date()),
+            "fusion_end": str(history.index[-1].date()),
+            "fusion_history_months": len(history),
+            "agent_count": 4,
+            "modality_count": len(modalities),
+            "llm_mean_rankic": float(mean["llm"]),
+            "ml_mean_rankic": float(mean["ml"]),
+            "llm_directional_win_rate": float(win_rate["llm"]),
+            "ml_directional_win_rate": float(win_rate["ml"]),
+            "llm_alpha": alpha,
+            "modality_disagreement_rate": float(sign_count.gt(1).mean()),
+            "finite_scores": int(score.notna().sum()),
+        }
+        diagnostics.append(row)
+    return result, pd.DataFrame(diagnostics)
