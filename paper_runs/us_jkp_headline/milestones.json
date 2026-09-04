@@ -10,8 +10,8 @@
     "completed_adapted": 1,
     "completed_partial": 5,
     "closed_not_evaluable": 25,
-    "in_progress": 0,
-    "queued": 38
+    "in_progress": 1,
+    "queued": 37
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -553,7 +553,7 @@
       "title": "Trading-R1: Financial Trading with LLM Reasoning via Reinforcement Learning",
       "system_ids": "SYS-TRADING-R1",
       "prior_evidence_route": "public_code_available",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
