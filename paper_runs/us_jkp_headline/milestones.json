@@ -10,8 +10,8 @@
     "completed_adapted": 1,
     "completed_partial": 11,
     "closed_not_evaluable": 45,
-    "in_progress": 0,
-    "queued": 12
+    "in_progress": 1,
+    "queued": 11
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -995,7 +995,7 @@
       "title": "Macro Economists in the Machine: A Multi-Agent LLM Framework for Commodity-Related ETF Portfolio Construction",
       "system_ids": "SYS-MACRO-ECONOMISTS-MACHINE",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
@@ -1003,7 +1003,7 @@
       "metrics_path": "",
       "verdict_path": "",
       "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
+      "next_action": "Reuse the existing dossier and current paper/source; identify the central multi-agent commodity-ETF allocation rule, released forecasts or weights, and any U.S.-stock-transferable score before new JKP outcome inspection, then evaluate or close with concrete evidence.",
       "closure_reason": ""
     },
     {
