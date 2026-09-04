@@ -264,7 +264,7 @@ This result answers how one transparent MASS-inspired heterogeneous-agent simula
         "benchmark_sha256": digest(factor_path),
         "paper_evidence_sha256": pinned,
         "investor_type_count": len(features),
-        "agents_per_type": policy["agents_per_type"],
+        "agents_per_type": recipe["simulation_policy"]["agents_per_type"],
         "policy_update_months": len(policy_history),
         "average_accepted_proposals": average_accepted,
         "private_holdings_path": str(holdings_path),
