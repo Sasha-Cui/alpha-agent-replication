@@ -6,11 +6,11 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 68,
+    "closed": 69,
     "completed_adapted": 1,
-    "completed_partial": 15,
+    "completed_partial": 16,
     "closed_not_evaluable": 52,
-    "in_progress": 1,
+    "in_progress": 0,
     "queued": 0
   },
   "terminal_statuses": [
@@ -1182,16 +1182,16 @@
       "title": "Automate Strategy Finding with LLM in Quant Investment",
       "system_ids": "SYS-AUTOMATE-STRATEGY",
       "prior_evidence_route": "public_code_available",
-      "status": "in_progress",
-      "recipe_path": "",
-      "implementation_path": "",
-      "run_manifest_path": "",
-      "monthly_returns_path": "",
-      "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier and current paper/source; identify the central automated strategy-finding output or strongest attributable released strategy before new JKP outcome inspection, then execute the strongest defensible monthly adaptation or close with concrete evidence. After closure, run final cross-paper checks and the full release gate before one push/CI.",
-      "closure_reason": ""
+      "status": "completed_partial",
+      "recipe_path": "paper_runs/us_jkp_headline/M069_strategy_finding/recipe.json",
+      "implementation_path": "scripts/run_automate_strategy_headline.py",
+      "run_manifest_path": "paper_runs/us_jkp_headline/M069_strategy_finding/run_manifest.json",
+      "monthly_returns_path": "paper_runs/us_jkp_headline/M069_strategy_finding/primary_monthly_returns.csv",
+      "metrics_path": "paper_runs/us_jkp_headline/M069_strategy_finding/metrics.csv",
+      "verdict_path": "paper_runs/us_jkp_headline/M069_strategy_finding/verdict.md",
+      "evaluated_scope": "The first Table 3 selected alpha, CLOSE minus its 14-bar lag, preserves its paper-era formula and positive author-workbook IC direction on monthly JKP bars, then uses the common U.S. top-1,000 value-weighted decile portfolio, costs, missingness, and JKP133 attribution. This is not the integrated GPT/DNN strategy.",
+      "next_action": "Closed. Keep the source-selected component fixed and exploratory; do not interpret it as GPT-4o comparison, the complete SAF, 12-alpha learned weights, DNN prediction, top-13/drop-5 execution, or the paper's integrated return. Proceed to final cross-paper synthesis and release validation.",
+      "closure_reason": "The strongest source-selected executable component produced a complete 305-month common-benchmark path. At 10 bp one-way costs its CAGR is 3.20%, Sharpe 0.256, maximum drawdown -39.11%, and rolling JKP133 residual mean 2.11% annually (HAC t=0.924, p=0.3557)."
     }
   ]
 }
