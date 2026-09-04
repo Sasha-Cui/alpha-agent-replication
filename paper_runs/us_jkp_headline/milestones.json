@@ -10,8 +10,8 @@
     "completed_adapted": 1,
     "completed_partial": 6,
     "closed_not_evaluable": 33,
-    "in_progress": 0,
-    "queued": 29
+    "in_progress": 1,
+    "queued": 28
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -706,7 +706,7 @@
       "title": "Cognitive Alpha Mining via LLM-Driven Code-Based Evolution",
       "system_ids": "SYS-COG-ALPHA",
       "prior_evidence_route": "public_code_available",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
