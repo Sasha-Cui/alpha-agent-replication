@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "status": "frozen_for_execution",
+  "milestone_id": "M044",
+  "canonical_work_id": "CensusArxiv260214670",
+  "title": "FactorMiner: A Self-Evolving Agent with Skills and Experience Memory for Financial Alpha Discovery",
+  "candidate_id": "factorminer_v2_top40_ic_weighted_110_library",
+  "selection_reason": "The current v2 paper releases all 110 admitted formulas and identifies a Top-40 factor combination with weights and signs determined on the training year. The IC-weighted combination is the strongest simple ensemble in the main table and the authors state that simple ensembles capture most of FactorMiner's exploitable predictive power. It was selected before its monthly JKP result was computed.",
+  "paper_version": {
+    "version": "v2",
+    "submitted_at_utc": "2026-08-19",
+    "url": "https://arxiv.org/abs/2602.14670v2",
+    "pdf_sha256": "f061594f1410ca963607e55a97e67e06077d18af062a5b29113600a38708b29a",
+    "source_archive_sha256": "36fea5dc198f772362166f3e59a5751cefd07e2cbfbb7a105c9ef583da79b669",
+    "appendix_factor_tex_sha256": "c65a7b94daae1d59feebb9cefce8a2478ae489c9c07365f0f33b32c46821fd4f",
+    "license": "CC BY 4.0"
+  },
+  "paper_headline": {
+    "library": "110 admitted A-share formulas",
+    "selection": "Top 40 selected on CSI500 in 2024 by absolute mean Spearman IC",
+    "combination": "IC-weighted factor combination with signs and weights fixed on 2024",
+    "test": "2025 across CSI500, CSI1000, CSI300, and Crypto",
+    "reported_csi500_ic": 0.1511,
+    "reported_csi500_icir": 1.31,
+    "source_sections": ["Section 4.2.1", "Section 4.2.3", "Appendix A", "Appendix D"]
+  },
+  "formula_evidence": {
+    "tracked_ledger": "paper_runs/paper_replication_audits/factorminer/formula_component_ledger.csv",
+    "tracked_ledger_sha256": "fb1d26440c14acd27a729d0b97ebbbc71479b266dfcd0b44eb81d7990f988fae",
+    "formula_count": 110,
+    "v1_v2_formula_strings_identical_after_tex_normalization": true,
+    "author_native_operator_runtime_released": false,
+    "accessible_interpreter_repository": "https://github.com/minihellboy/factorminer",
+    "accessible_interpreter_commit": "201309cfe3df51f84af8eeb509354d3853ae512a",
+    "accessible_interpreter_attributed_to_paper_authors": false,
+    "accessible_interpreter_role": "declared replacement semantics for the exact printed formulas; not author-native result evidence"
+  },
+  "fixed_learning_policy": {
+    "training_months": 12,
+    "selection": "rank all 110 factors by absolute mean monthly cross-sectional Spearman IC over the first 12 formation months; deterministic factor-ID tie break; keep 40",
+    "direction": "sign of each selected factor's mean training IC",
+    "weight": "absolute mean training IC divided by the sum across the selected 40",
+    "signal_standardization": "within-month percentile rank centered to [-1,1]; missing factor values contribute zero without weight renormalization",
+    "out_of_sample": "selection, signs, and weights remain fixed for every later formation month",
+    "guard": "The first 12 months are cash and training outcomes never enter their own strategy returns."
+  },
+  "jkp_mapping": {
+    "$close": "abs(prc) at formation month end",
+    "$high": "abs(prc_high) within the formation month",
+    "$low": "abs(prc_low) within the formation month",
+    "$open": "abs(prc)/(1+ret) when ret>-1; prior-close-implied proxy because JKP has no monthly open",
+    "$volume": "tvol, monthly share volume",
+    "$amt": "dolvol, monthly dollar trading volume",
+    "$vwap": "dolvol/tvol where both are positive; monthly dollar-volume/share-volume proxy",
+    "$returns": "ret, formation-month total return",
+    "period_translation": "Every printed integer lookback is retained exactly and interpreted as monthly observations.",
+    "universe": "largest 1,000 eligible U.S. stocks by formation-date market equity each month",
+    "label": "next-month return, used only by the first-12-month selection rule"
+  },
+  "portfolio_adapter": {
+    "reason": "The paper reports predictive IC/ICIR but no holdings or investable portfolio rule.",
+    "rule": "common value-weighted long/short deciles from the frozen combined score",
+    "primary_cost": "10 bp one-way linear cost",
+    "missing_returns": "zero primary and -100% adverse sensitivity"
+  },
+  "classification_if_executed": "completed_partial",
+  "full_system_not_reproduced": [
+    "The Gemini 3.0 Flash Ralph Loop, prompts, memory states, candidates, admission trajectory, and exact model calls.",
+    "The unreleased author-native 60+ operator runtime; an explicitly unaffiliated interpreter supplies semantics.",
+    "The 10-minute A-share/Binance panels, point-in-time constituents, and 2024/2025 arrays.",
+    "The exact reported IC/ICIR or the claimed 40-worker GPU/C backend.",
+    "An author-specified portfolio and trading return, because the paper reports only predictive scores.",
+    "A pristine confirmatory test; prior project and JKP outcomes were already visible."
+  ],
+  "outcome_selection_guard": "Do not change the 110 formulas, first-12-month Top-40 selection, IC weighting, interpreter, mappings, direction policy, portfolio, or costs after observing the JKP result. A negative or benchmark-explained result closes the milestone."
+}
