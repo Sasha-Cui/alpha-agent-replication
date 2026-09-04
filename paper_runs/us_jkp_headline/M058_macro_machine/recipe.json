@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "status": "closed_not_evaluable",
+  "milestone_id": "M058",
+  "canonical_work_id": "CensusArxiv260608283",
+  "title": "Macro Economists in the Machine: A Multi-Agent LLM Framework for Commodity-Related ETF Portfolio Construction",
+  "central_strategy": "Three specialist LLM macroeconomists consume weekly prices, seven release-aware macro series, news/narratives, and a printed ETF-loading matrix; reconcile disagreements through up to two debate rounds; convert probability contracts into ETF tilts; multiply a 50/50 equal-weight and 26-week inverse-volatility base by the tilts; then project through cyclical, single-name, and turnover controls for a 15-ETF weekly portfolio.",
+  "paper_source": {
+    "version": "v1",
+    "url": "https://arxiv.org/abs/2606.08283v1",
+    "official_pdf_sha256": "e166ba0c9baed18a4e38fd072a813847395fa3e8df53b913a624c6954add72cf",
+    "source_archive_sha256": "2eff2ba685242f4734d267807a0d4027f718c8a8a53aae331cc54bb33ce51171",
+    "source_file_count": 7
+  },
+  "reused_audit_evidence": {
+    "manifest": "paper_runs/paper_replication_audits/macro_economists_machine/manifest.json",
+    "manifest_sha256": "f4a83615bef1dd04b8fa9ef9cf7b91819f87a48fc1e3cc621a6fa98f86591539",
+    "source_provenance_sha256": "c4089e566f5684c0a6501cbea3cad2ee003cf18bad3fbd83b0364b1f41fee4d7",
+    "method_specification_sha256": "107b32bc9d735c7eec392a0faf1772bcf6b5efbf1a6e4231de8c1a579f06fb9c",
+    "component_execution_sha256": "a1af15e1a11d93d2c5d6ef4a199f6edc3e40689f2f89e39cbdef3e744ec45d1a",
+    "internal_consistency_sha256": "65af1a2a3cda12794a22f4e3a6290b9cabd74d484e7dd459675b5053ecf6f3d9",
+    "paper_derived_components_passing_controlled_checks": 22,
+    "fail_closed_underspecified_core_operations": 4,
+    "active_empirical_table_cells": 132,
+    "author_native_table_cells_regenerated": 0,
+    "empirical_figure_panels": 12,
+    "author_native_empirical_panels_regenerated": 0
+  },
+  "current_release_check": {
+    "checked_at_utc": "2026-09-04",
+    "paper_contains_native_implementation_url": false,
+    "paper_contains_public_dataset_or_checkpoint_url": false,
+    "paper_says_materials_available_on_request": true,
+    "github_repository_exact_arxiv_id_matches": 0,
+    "github_repository_exact_title_matches": 0,
+    "attributable_code_data_contract_or_weight_release_found": false
+  },
+  "monthly_jkp_assessment": {
+    "preserved_components": [
+      "The complete 15-by-7 rule-loading matrix, raw tilt and discretization mechanics, disagreement threshold, and debate averaging.",
+      "The 26-week inverse-volatility and equal-weight blend, multiplicative tilt, normalization, turnover scaling, and stated transaction-cost equation.",
+      "Published annual metric and drawdown equations on controlled fixtures."
+    ],
+    "required_but_missing": [
+      "The processed weekly Yahoo/FRED panel with exact dates, adjusted-price and calendar rules, vintages, release alignment, and macro/narrative inputs.",
+      "The dated gpt-4o-mini snapshot, complete common/role/dynamic prompts, required JSON schema, request settings, retries, and cached model contracts.",
+      "The generated narratives, agent probabilities/tilts/confidences, debate messages, revisions, terminations, and validation records.",
+      "The cyclical ETF set, regime-probability constants/ordering, risk-cap values, and unique ordering/projection algorithm for cyclical, name, and turnover constraints.",
+      "Portfolio weights, trades, turnovers, returns, NAVs, bootstrap implementation/seed/draws, figure arrays, and result generator."
+    ],
+    "why_equation_components_are_not_a_strategy": "The 22 controlled mechanics consume agent contracts or portfolio inputs that are not released. They validate local equations but cannot produce dated ETF weights without the missing probabilities, narratives, and risk-control algorithm.",
+    "why_rule_only_proxy_is_not_the_headline": "Applying the printed loading matrix directly to macro surprises would bypass the three LLM agents, debate, probability contracts, narrative inputs, and unspecified regime conversion that define the paper's method.",
+    "why_etf_to_stock_transfer_is_not_identified": "The native action space is a 15-name commodity-related ETF allocation. The paper provides no mapping from ETF tilts to individual U.S. equities, sectors, or JKP characteristics; inventing one would change both assets and mechanism.",
+    "why_base_portfolio_is_insufficient": "The 50/50 equal/inverse-volatility base is a disclosed input and benchmark, not the multi-agent headline strategy; it also needs ETF prices rather than a cross-sectional stock score.",
+    "internal_result_conflict": "The transaction-cost figure and corresponding table report materially different Sharpe ratios and rankings, so printed aggregates cannot safely substitute for missing raw paths."
+  },
+  "classification": "closed_not_evaluable",
+  "closure_rule": "Do not promote controlled equations, the base ETF allocator, direct loading-matrix rules, or an invented ETF-to-stock mapping to the headline system. Reopen for cached contracts/weights and processed data or an attributable implementation."
+}

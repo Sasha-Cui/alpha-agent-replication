@@ -1,0 +1,11 @@
+{
+  "checked_at_utc": "2026-09-04",
+  "paper_version": "v1",
+  "paper_pdf_sha256": "e166ba0c9baed18a4e38fd072a813847395fa3e8df53b913a624c6954add72cf",
+  "paper_contains_native_implementation_url": false,
+  "paper_contains_public_dataset_or_checkpoint_url": false,
+  "paper_says_materials_available_on_request": true,
+  "github_repository_exact_arxiv_id_matches": 0,
+  "github_repository_exact_title_matches": 0,
+  "attributable_code_data_contract_or_weight_release_found": false
+}

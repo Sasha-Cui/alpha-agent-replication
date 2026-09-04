@@ -6,11 +6,11 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 57,
+    "closed": 58,
     "completed_adapted": 1,
     "completed_partial": 11,
-    "closed_not_evaluable": 45,
-    "in_progress": 1,
+    "closed_not_evaluable": 46,
+    "in_progress": 0,
     "queued": 11
   },
   "terminal_statuses": [
@@ -995,16 +995,16 @@
       "title": "Macro Economists in the Machine: A Multi-Agent LLM Framework for Commodity-Related ETF Portfolio Construction",
       "system_ids": "SYS-MACRO-ECONOMISTS-MACHINE",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M058_macro_machine/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier and current paper/source; identify the central multi-agent commodity-ETF allocation rule, released forecasts or weights, and any U.S.-stock-transferable score before new JKP outcome inspection, then evaluate or close with concrete evidence.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M058_macro_machine/verdict.md",
+      "evaluated_scope": "No common-task return: 22 paper-derived ETF allocation mechanics pass controlled checks, but the weekly data, LLM contracts, debate outputs, core risk-control projection, weights, and returns are unavailable. The paper defines no transfer from its 15 ETFs to individual U.S. stocks or JKP scores.",
+      "next_action": "Closed. Preserve equation-level component checks separately; do not promote the ETF base allocator, direct rule-matrix proxy, or an invented ETF-to-stock mapping to the headline system. Reopen for processed data and cached contracts/weights or native code.",
+      "closure_reason": "The paper provides no implementation/artifact URL and fresh exact searches found no release. Missing LLM probabilities and portfolio projection prevent the native ETF weights, while converting the method into a JKP stock score would change both its assets and central multi-agent mechanism."
     },
     {
       "milestone_id": "M059",
