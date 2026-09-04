@@ -1678,3 +1678,121 @@ def hedgeagents_conference_scores(
             row[f"allocation__{name}"] = float(allocation[position])
         diagnostics.append(row)
     return result, pd.DataFrame(diagnostics)
+
+
+def mass_simulation_scores(
+    frame: pd.DataFrame,
+    investor_features: list[str],
+    *,
+    common_start: str,
+    agents_per_type: int = 32,
+    candidate_pool_size: int = 20,
+    selections_per_agent: int = 5,
+    aggregation_alpha: float = 0.5,
+    history_months: int = 60,
+    annealing_initial_temperature: float = 40.0,
+    annealing_iterations: int = 100,
+    annealing_cooling: float = 0.95,
+    objective_scale: float = 1000.0,
+    risk_penalty: float = 0.5,
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Run a deterministic heterogeneous-agent MASS simulation."""
+    if len(investor_features) != 16 or len(set(investor_features)) != 16:
+        raise ValueError("MASS requires 16 unique investor types")
+    if [agents_per_type, candidate_pool_size, selections_per_agent] != [32, 20, 5]:
+        raise ValueError("MASS agent and candidate-pool cardinalities changed")
+    missing = {"month", "security_id", "ret_exc_lead1m", *investor_features} - set(frame)
+    if missing:
+        raise ValueError(f"missing MASS investor inputs: {sorted(missing)}")
+    base_types = cross_sectional_unit_rank(frame, investor_features)
+    type_signals = pd.DataFrame(np.nan, index=frame.index, columns=investor_features)
+    month_groups = frame.groupby("month", sort=False).groups
+    for month, indices in frame.groupby("month", sort=True).groups.items():
+        ordered_indices = frame.loc[indices].sort_values("security_id", kind="mergesort").index.to_numpy()
+        n = len(ordered_indices)
+        if n < candidate_pool_size:
+            raise ValueError("MASS candidate universe is smaller than 20 stocks")
+        month_code = pd.Timestamp(month).year * 12 + pd.Timestamp(month).month
+        for type_number, feature in enumerate(investor_features):
+            values = base_types.loc[ordered_indices, feature].to_numpy(dtype=float)
+            votes = np.zeros(n)
+            for agent in range(agents_per_type):
+                start = (month_code * 13 + type_number * 17 + agent * 31) % n
+                pool = (start + np.arange(candidate_pool_size) * 37) % n
+                pool_values = values[pool]
+                valid = np.isfinite(pool_values)
+                if valid.sum() < selections_per_agent:
+                    continue
+                candidates = pool[valid]
+                selected = candidates[
+                    np.argsort(-values[candidates], kind="mergesort")[:selections_per_agent]
+                ]
+                votes[selected] += 1.0
+            vote_frame = pd.DataFrame({"month": month, "vote": votes}, index=ordered_indices)
+            type_signals.loc[ordered_indices, feature] = cross_sectional_unit_rank(
+                vote_frame, ["vote"]
+            )["vote"]
+    rankics = monthly_rankic(frame, type_signals)
+
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    diagnostics: list[dict[str, object]] = []
+    months = sorted(pd.Timestamp(month) for month in frame.loc[frame["month"] >= common_start, "month"].unique())
+    for month in months:
+        history = rankics.loc[rankics.index < month].tail(history_months)
+        if len(history) != history_months or history.isna().any().any():
+            raise ValueError(f"MASS annealing history is incomplete at {month.date()}")
+        signs = np.where(history.mean().to_numpy(dtype=float) >= 0, 1.0, -1.0)
+        oriented_history = history.to_numpy(dtype=float) * signs
+        mean = oriented_history.mean(axis=0)
+        covariance = np.cov(oriented_history, rowvar=False, ddof=1)
+        tail_count = max(1, int(np.ceil(0.05 * len(history))))
+        cvar = np.sort(oriented_history, axis=0)[:tail_count].mean(axis=0)
+
+        def objective(weights: np.ndarray) -> float:
+            expected = float(weights @ mean)
+            variance = float(weights @ covariance @ weights)
+            downside = float(abs(weights @ cvar))
+            return expected - risk_penalty * variance - risk_penalty * downside
+
+        rng = np.random.default_rng(month.year * 100 + month.month)
+        allocation = np.full(len(investor_features), 1.0 / len(investor_features))
+        current_objective = objective(allocation)
+        accepted = 0
+        temperature = annealing_initial_temperature
+        for _ in range(annealing_iterations):
+            source, target = rng.choice(len(allocation), size=2, replace=False)
+            amount = min(float(allocation[source]), float(rng.uniform(0.0, 0.1)))
+            proposal = allocation.copy()
+            proposal[source] -= amount
+            proposal[target] += amount
+            proposed_objective = objective(proposal)
+            improvement = proposed_objective - current_objective
+            if improvement >= 0 or rng.random() < np.exp(objective_scale * improvement / temperature):
+                allocation = proposal
+                current_objective = proposed_objective
+                accepted += 1
+            temperature *= annealing_cooling
+        indices = month_groups[month]
+        current_types = type_signals.loc[indices].to_numpy(dtype=float) * signs
+        learned = current_types @ allocation
+        shared = np.nanmean(current_types, axis=1)
+        score_values = aggregation_alpha * learned + (1.0 - aggregation_alpha) * shared
+        valid = np.isfinite(current_types).all(axis=1)
+        score_values = np.where(valid, score_values, np.nan)
+        result.loc[indices] = score_values
+        row: dict[str, object] = {
+            "formation_month": str(month.date()),
+            "annealing_start": str(history.index[0].date()),
+            "annealing_end": str(history.index[-1].date()),
+            "annealing_history_months": len(history),
+            "annealing_iterations": annealing_iterations,
+            "accepted_proposals": accepted,
+            "final_objective": current_objective,
+            "total_agent_selections": len(investor_features) * agents_per_type * selections_per_agent,
+            "finite_scores": int(np.isfinite(score_values).sum()),
+        }
+        for position, feature in enumerate(investor_features):
+            row[f"orientation__{feature}"] = int(signs[position])
+            row[f"type_weight__{feature}"] = float(allocation[position])
+        diagnostics.append(row)
+    return result, pd.DataFrame(diagnostics)
