@@ -10,8 +10,8 @@
     "completed_adapted": 1,
     "completed_partial": 12,
     "closed_not_evaluable": 46,
-    "in_progress": 0,
-    "queued": 10
+    "in_progress": 1,
+    "queued": 9
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -1029,7 +1029,7 @@
       "title": "MetaPS: Adaptive Programmatic Strategy Selection for Market Agents",
       "system_ids": "SYS-METAPS",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
@@ -1037,7 +1037,7 @@
       "metrics_path": "",
       "verdict_path": "",
       "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
+      "next_action": "Reuse the existing dossier and current paper/source; identify MetaPS's central programmatic strategy-selection policy, released strategy programs or action outputs, and any defensible monthly U.S. score before new JKP outcome inspection, then evaluate or close with concrete evidence.",
       "closure_reason": ""
     },
     {
