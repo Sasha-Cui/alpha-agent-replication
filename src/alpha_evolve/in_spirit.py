@@ -187,3 +187,107 @@ def fama_rolling_scores(
             }
         )
     return result, pd.DataFrame(diagnostics)
+
+
+def flag_trader_rolling_scores(
+    frame: pd.DataFrame,
+    features: list[str],
+    semantic_prior: list[float],
+    *,
+    common_start: str,
+    replay_months: int = 60,
+    minimum_training_months: int = 24,
+    ridge_penalty: float = 1.0,
+    learning_rate: float = 0.0005,
+    clip_coefficient: float = 0.2,
+    maximum_gradient_norm: float = 0.5,
+    action_memory_weight: float = 0.2,
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Run a transparent past-only actor/critic surrogate for FLAG-TRADER."""
+    missing = {"month", "security_id", "ret_exc_lead1m", *features} - set(frame)
+    if missing:
+        raise ValueError(f"missing FLAG-TRADER state: {sorted(missing)}")
+    if len(features) != len(semantic_prior) or len(set(features)) != len(features):
+        raise ValueError("FLAG-TRADER features and prior weights must align uniquely")
+    if not 0 <= action_memory_weight < 1:
+        raise ValueError("action-memory weight must be in [0, 1)")
+    ranked = cross_sectional_unit_rank(frame, features)
+    prior = np.asarray(semantic_prior, dtype=float)
+    if not np.isfinite(prior).all() or np.linalg.norm(prior) == 0:
+        raise ValueError("semantic prior must be finite and nonzero")
+    actor = prior / np.linalg.norm(prior)
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    diagnostics: list[dict[str, object]] = []
+    previous_scores = pd.Series(dtype="float64")
+    month_groups = frame.groupby("month", sort=False).groups
+    months = sorted(pd.Timestamp(month) for month in frame.loc[frame["month"] >= common_start, "month"].unique())
+    for month in months:
+        history_months = sorted(pd.Timestamp(value) for value in frame.loc[frame["month"] < month, "month"].unique())[-replay_months:]
+        if len(history_months) != replay_months or len(history_months) < minimum_training_months:
+            raise ValueError(f"FLAG-TRADER warm-up is incomplete at {month.date()}")
+        history_mask = frame["month"].isin(history_months)
+        x = ranked.loc[history_mask, features].to_numpy(dtype=float)
+        y = pd.to_numeric(frame.loc[history_mask, "ret_exc_lead1m"], errors="coerce").to_numpy(dtype=float)
+        valid = np.isfinite(x).all(axis=1) & np.isfinite(y)
+        x, y = x[valid], y[valid]
+        if len(y) < 1000:
+            raise ValueError("too few finite replay observations")
+        design = np.column_stack([np.ones(len(x)), x])
+        penalty = np.eye(design.shape[1]) * ridge_penalty
+        penalty[0, 0] = 0.0
+        critic = np.linalg.solve(design.T @ design + penalty, design.T @ y)
+        predicted = design @ critic
+        advantage = y - predicted
+        advantage_deviation = advantage.std(ddof=1)
+        if not np.isfinite(advantage_deviation) or advantage_deviation == 0:
+            raise ValueError("FLAG-TRADER replay advantage is degenerate")
+        advantage = (advantage - advantage.mean()) / advantage_deviation
+        expected_action = np.tanh(x @ actor)
+        gradient = np.mean(
+            x * (advantage * (1.0 - expected_action**2))[:, None],
+            axis=0,
+        )
+        raw_gradient_norm = float(np.linalg.norm(gradient))
+        if raw_gradient_norm > maximum_gradient_norm:
+            gradient *= maximum_gradient_norm / raw_gradient_norm
+        clipped_gradient_norm = float(np.linalg.norm(gradient))
+        delta = np.clip(
+            learning_rate * gradient,
+            -clip_coefficient,
+            clip_coefficient,
+        )
+        actor = actor + delta
+
+        indices = month_groups[month]
+        current_x = ranked.loc[indices, features].to_numpy(dtype=float)
+        current = np.full(len(indices), np.nan)
+        current_valid = np.isfinite(current_x).all(axis=1)
+        current[current_valid] = np.tanh(current_x[current_valid] @ actor)
+        securities = frame.loc[indices, "security_id"]
+        lagged = securities.map(previous_scores).to_numpy(dtype=float)
+        remembered = np.isfinite(current) & np.isfinite(lagged)
+        current[remembered] = (
+            (1.0 - action_memory_weight) * current[remembered]
+            + action_memory_weight * lagged[remembered]
+        )
+        result.loc[indices] = current
+        previous_scores = pd.Series(current, index=securities.to_numpy())
+        centered = y - y.mean()
+        critic_r2 = 1.0 - float(np.sum((y - predicted) ** 2) / np.sum(centered**2))
+        diagnostic: dict[str, object] = {
+            "formation_month": str(month.date()),
+            "training_start": str(history_months[0].date()),
+            "training_end": str(history_months[-1].date()),
+            "training_months": len(history_months),
+            "training_observations": len(y),
+            "critic_r2": critic_r2,
+            "raw_gradient_norm": raw_gradient_norm,
+            "clipped_gradient_norm": clipped_gradient_norm,
+            "parameter_delta_norm": float(np.linalg.norm(delta)),
+            "finite_current_scores": int(np.isfinite(current).sum()),
+            "action_memory_weight": action_memory_weight,
+        }
+        diagnostic.update({f"actor_weight__{name}": float(value) for name, value in zip(features, actor)})
+        diagnostic.update({f"critic_weight__{name}": float(value) for name, value in zip(["intercept", *features], critic)})
+        diagnostics.append(diagnostic)
+    return result, pd.DataFrame(diagnostics)
