@@ -6,12 +6,12 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 26,
+    "closed": 27,
     "completed_adapted": 1,
     "completed_partial": 5,
-    "closed_not_evaluable": 20,
+    "closed_not_evaluable": 21,
     "in_progress": 1,
-    "queued": 42
+    "queued": 41
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -468,16 +468,16 @@
       "title": "AlphaAgents: Large Language Model based Multi-Agents for Equity Portfolio Constructions",
       "system_ids": "SYS-ALPHA-AGENTS",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M027_alphaagents/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M027_alphaagents/verdict.md",
+      "evaluated_scope": "No common-task return: exact source-only February 2024 multi-agent holdings are recovered, but no causal repeatable selection rule exists for prior months; backcasting the future-selected list would violate no-lookahead.",
+      "next_action": "Closed. Preserve the exact source memberships; do not backcast them, pad a four-month event with decades of cash, substitute comparator/community portfolios, or promote M0 factor proxies to AlphaAgents.",
+      "closure_reason": "The central portfolio is identifiable only as a one-off 2024 output. Without agent code, inputs and historical recommendations, a 305-month path requires direct future-selection leakage or an invented formation rule."
     },
     {
       "milestone_id": "M028",
@@ -485,7 +485,7 @@
       "title": "From Flat to Hierarchical: Evolving Tree-structured Thoughts for Fine-grained Alpha Mining",
       "system_ids": "SYS-TREEVO",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",

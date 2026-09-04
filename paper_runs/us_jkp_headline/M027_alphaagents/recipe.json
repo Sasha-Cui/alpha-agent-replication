@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M027",
+  "canonical_work_id": "CensusArxiv250811152",
+  "paper": "AlphaAgents: Large Language Model based Multi-Agents for Equity Portfolio Constructions",
+  "paper_url": "https://arxiv.org/abs/2508.11152v1",
+  "paper_pdf_sha256": "ce48953985eaac0faf04dbf7c1b8c4e94396cd7924d56dee37d767112a3fed65",
+  "paper_source_sha256": "ce5a31c38b75ad89496dc6176a081f83c0afe084067a01f92e42782f5478b5f5",
+  "headline_strategy": "GPT-4o AutoGen group chat combining valuation, fundamental, and sentiment equity specialists under risk-neutral or risk-averse prompts to issue BUY/SELL decisions and form equal-weight technology-stock portfolios",
+  "headline_portfolio": {
+    "risk_profile": "risk-neutral",
+    "method": "multi-agent",
+    "decision_date": "2024-02-01",
+    "equal_weighted": true,
+    "source_only_tickers": ["MSFT", "CDNS", "INTU", "CRM", "ORCL", "NOW", "CRWD", "MDB", "ADBE", "ADSK", "NTNX", "DDOG", "PANW"]
+  },
+  "portfolio_selection_reason": "Risk-neutral multi-agent is the direct combined-agent headline portfolio and its 13 memberships are exactly recoverable from the official TeX source. It is source evidence, not a repeatable formation rule.",
+  "common_task_portability": "not defensibly backtestable over 1999-2024 because the only recovered holdings were selected once using January 2024 information",
+  "recovered_component_credit": {
+    "source_only_portfolios": 7,
+    "source_only_ticker_memberships": 77,
+    "risk_neutral_multi_agent_tickers": 13,
+    "verbatim_prompt_fragments": 7,
+    "native_agent_pipeline": false
+  },
+  "missing_headline_objects": [
+    "author-linked implementation, AutoGen version, group-chat termination and complete scheduling",
+    "risk-neutral/risk-averse persona prompts, model snapshot, sampling settings, seeds and retries",
+    "Bloomberg news, filing accessions, Yahoo price snapshot, tool code and RAG state",
+    "agent recommendations, debate histories, human review, Phoenix evaluations and repeated trials",
+    "a point-in-time repeatable rule producing memberships before February 2024",
+    "execution timing, prices, corporate actions, costs/slippage and portfolio return arrays"
+  ],
+  "rejected_substitutes": [
+    {
+      "route": "Backcast the 13 February-2024-selected tickers through the 1999-2024 JKP calendar",
+      "reason": "That directly uses future membership information and survivorship, violating the common no-lookahead contract."
+    },
+    {
+      "route": "Hold cash until February 2024 and evaluate only the four-month paper window",
+      "reason": "A 301-month cash path plus one short one-off decision is not the common repeatable monthly strategy requested by the study."
+    },
+    {
+      "route": "Treat the 15-stock benchmark or individual-agent portfolios as the headline",
+      "reason": "They are comparators/ablations and do not reproduce the combined multi-agent selection mechanism."
+    },
+    {
+      "route": "Use one of five community implementations",
+      "reason": "All are unaffiliated and materially change data, models, orchestration, universe, dates, or benchmark."
+    },
+    {
+      "route": "Use the two local AlphaAgents factor proxies",
+      "reason": "They are M0 narrative translations with invented formulas, deciles, weights and return streams."
+    }
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/alphaagents",
+  "result_policy": "The exact 2024 membership list is preserved as source-only portfolio evidence, but no common return is assigned. Backcasting it would be lookahead; generic factors or community agents would be a different strategy.",
+  "status": "closed_not_evaluable"
+}
