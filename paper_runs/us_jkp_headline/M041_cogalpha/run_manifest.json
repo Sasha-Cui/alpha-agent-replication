@@ -1,0 +1,60 @@
+{
+  "status": "evaluated_partial",
+  "milestone_id": "M041",
+  "candidate_id": "cogalpha_evolved_price_impact",
+  "benchmark_id": "us_jkp_headline_v1",
+  "completed_at_utc": "2026-09-04T03:36:40.778698+00:00",
+  "hostname": "a1132u33n04.mghpcc.ycrc.yale.edu",
+  "code_commit": "ff0144060e060168a31bcd34b5f6d77e08287b96",
+  "contract_sha256": "9ce6783c8d4d303510173548088af66fc3add92602f404008c73212f8322ea77",
+  "recipe_sha256": "78648ee00360584304a4835a90334cf88c84bdaa12510066923665013d14247d",
+  "component_execution_sha256": "1f46ae5e76da0514ad1d74f88ac344e25c094fa9bc138b288bee15143ea9bca9",
+  "runtime": {
+    "python": "3.12.4",
+    "numpy": "2.0.2",
+    "pandas": "2.3.3",
+    "platform": "Linux"
+  },
+  "primary_result": {
+    "case": "zero_cost_10",
+    "primary": true,
+    "missing_return_policy": "zero",
+    "cost_bps_one_way": 10.0,
+    "full_months": 305,
+    "full_arithmetic_annualized_return": -0.033533752734567795,
+    "full_cagr": -0.040290245988538365,
+    "full_cumulative_return": -0.6483942126930055,
+    "full_annualized_volatility": 0.11942358380329651,
+    "full_annualized_sharpe": -0.2807967376845891,
+    "full_maximum_drawdown": -0.6874126927683348,
+    "evaluation_months": 185,
+    "evaluation_start": "2009-08-31",
+    "evaluation_end": "2024-12-31",
+    "jkp_residual_mean_annualized": -0.015639347557296207,
+    "jkp_residual_se_annualized": 0.017479578120475084,
+    "jkp_residual_t_hac": -0.894721111087728,
+    "jkp_residual_p_two_sided": 0.370936190549776,
+    "exploratory_bonferroni69_p": 1.0,
+    "hac_lags": 4,
+    "average_traded_notional": 1.629916064239653,
+    "annualized_linear_cost_drag": 0.019558992770875836,
+    "minimum_finite_signal_count": 992,
+    "maximum_missing_forward_gross_weight": 0.1317244718173161
+  },
+  "private_holdings_path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/us_jkp_headline/v1/M041_formation_holdings.parquet",
+  "private_holdings_sha256": "fe34d39cbece2f321b4b3ca058e32ff5beb7893f1efb915a29405af9924158c4",
+  "prior_jkp_outcomes_seen": true,
+  "confirmatory_claim": false,
+  "implementation_sha256": {
+    "scripts/run_cogalpha_evolved_factor_milestone.py": "207ec3e2c664ed325acdef4fa318ade8c4d6a8ea0f7e182b3102a930ad2bb42e",
+    "src/alpha_evolve/headline_backtest.py": "2e3be61a09b03bbf1d5059a823a8058aded4153980dd0ca30c301398958d6f9f",
+    "src/alpha_evolve/submission_analysis.py": "24989a95c01cb7c4b9f933361a0fd1f50b5ece7e31a98f73359c47e32553d5d2",
+    "scripts/run_broad_jkp_crossfit.py": "6c84c990f39bd586b49c76812efb2f70a36823ada52c372e8483502e10379d73"
+  },
+  "output_sha256": {
+    "monthly_returns.csv": "d417c9c14174126ff88869b121c6578ed47a214cc316bdd00acf9042a42001dc",
+    "primary_monthly_returns.csv": "9551649583a7461a946ebc63b85d2b1e8cd5858fb604a26c56c0a0972ba9954a",
+    "metrics.csv": "7a280604646d5fa5ddcb4ffe1bcf5dcf51a9146afb805a60436fe3472f814061",
+    "attribution_residuals.csv": "d7e0c362e92dcef0ee0677973ef7cf93e962fa27b29a848ba44bcce7a2f5d274"
+  }
+}

@@ -1,0 +1,11 @@
+# M041: CogAlpha evolved liquidity factor on monthly U.S./JKP data
+
+Status: **completed partial evaluation**, not a replay of the 21-agent CogAlpha mining system or its native multifactor portfolio.
+
+The selected object is the paper's showcased final evolved factor, `factor_price_impact_per_vol_tanh_1d`. The paper uses it as the worked demonstration that mutation/evolution improves a liquidity-impact signal, reporting IC 0.0141 and RankIC 0.0087 with a positive subsequent-return direction. The exact listing computes `tanh(abs(close-open)/(volume*close+1e-9))`. It was selected and committed before this JKP result was observed; the earlier favorable thematic proxy was rejected.
+
+JKP has no opening price, so the declared monthly adapter replaces the daily close-open move with `abs(ret)*abs(prc)`, where `ret` is the just-completed formation-month total return and `prc` is month-end price. The denominator is JKP/CRSP monthly dollar volume. The score is still bounded by `tanh` and is mapped to the common value-weighted long/short deciles. This preserves price impact per traded dollar, but changes cadence and horizon and is therefore a central partial adaptation.
+
+At 10 bp one-way costs, the complete August 1999-December 2024 path has CAGR **-4.03%**, annualized Sharpe **-0.281**, and maximum drawdown **-68.74%**. Over the 185-month rolling attribution window, the JKP133 residual is **-1.56% annually** (HAC t=**-0.895**, two-sided p=**0.3709**; descriptive 69-test bound=1.0000). Even with zero costs, CAGR is -2.13% and the residual is +0.59% with p=0.7363. Average traded notional is 1.630 per month, creating a 1.96% annual linear cost drag at 10 bp. Missing held-return gross weight averages 0.96%, peaks at 13.17%, and the deliberately adverse-100% sensitivity nearly exhausts NAV.
+
+This is a genuine negative common-task result. It is closest to option **B**: a defensible published factor component was implemented, but it fails on the common monthly JKP transfer. It neither reproduces nor directly falsifies the paper's positive daily CSI300 IC claim because the opening price, daily cadence, 10-day horizon, learned multifactor model, and top-50/drop-5 portfolio are not preserved.
