@@ -1,0 +1,111 @@
+factor_id,name,rows,finite_rows,finite_fraction
+001,Intraday Range Position,305000,305000,1.0
+002,EMA Deviation,305000,305000,1.0
+003,Vol-VWAP Divergence,305000,295943,0.9703049180327868
+004,High-Volume Relative Weakness,305000,304780,0.9992786885245901
+005,Range-Position Vol-Volume Cov Reversal,305000,304779,0.9992754098360656
+006,VWAP Deviation,305000,305000,1.0
+007,Price-Volume Mean Reversal,305000,282398,0.9258950819672132
+008,Normalized Money Strength Reversal,305000,305000,1.0
+009,Volatility-Filtered Return Reversal,305000,300621,0.9856426229508197
+010,Price-Volume Divergence Reversal,305000,305000,1.0
+011,Price-VWAP Momentum Overextension,305000,279507,0.9164163934426229
+012,Volume-Augmented VWAP Reversal,305000,305000,1.0
+013,Illiquidity-Augmented VWAP Reversal,305000,304999,0.9999967213114754
+014,Resilience-Momentum Blend Reversal,305000,305000,1.0
+015,Volatility-Balanced Momentum Reversal,305000,288171,0.9448229508196722
+016,VWAP-Deviation Acceleration Reversal,305000,305000,1.0
+017,VWAP-Acceleration Volatility Reversal,305000,305000,1.0
+018,Range-Position Volume Regime Reversal,305000,305000,1.0
+019,VWAP-Gap Regime Range Reversal,305000,305000,1.0
+020,Volume-Price Delta Divergence TsRank,305000,305000,1.0
+021,Volume-Shock VWAP-Momentum Reversal,305000,305000,1.0
+022,Lower-Shadow Ratio Reversal,305000,304781,0.9992819672131148
+023,Normalized-Momentum TsRank Reversal,305000,305000,1.0
+024,Open-Close Momentum Divergence,305000,305000,1.0
+025,Open-Close Momentum Divergence V2,305000,305000,1.0
+026,Price-Volume Covariance Position Long,305000,305000,1.0
+027,Open-Volume Covariance Position,305000,305000,1.0
+028,Close-Low × Volume Ratio,305000,304931,0.9997737704918033
+029,High-Close × Volume Ratio,305000,304931,0.9997737704918033
+030,Delta(High-Close)3 × Volume Ratio,305000,288172,0.9448262295081967
+031,Price Trend Conditional Strategy,305000,305000,1.0
+032,Returns-Volume Delta Divergence,305000,305000,1.0
+033,Volume-Range Correlation Shock,305000,291634,0.9561770491803279
+034,Price Trend Conditional Momentum V2,305000,305000,1.0
+035,High-Low Expansion vs Close Accel,305000,291634,0.9561770491803279
+036,Volatility Switch Candle Reversal,305000,304780,0.9992786885245901
+037,Price-Volume Momentum Synchrony,305000,305000,1.0
+038,Vol-Regime Conditional Divergence V2,305000,305000,1.0
+039,Kurtosis-Filtered Momentum,305000,282374,0.9258163934426229
+040,Price Intensity Skewness Blend,305000,304781,0.9992819672131148
+041,Price Range Skewness Interaction,305000,304781,0.9992819672131148
+042,Regime-Switching Skew Factor,305000,304781,0.9992819672131148
+043,Skewed Volume Momentum,305000,305000,1.0
+044,Kurtotic Volume Intensity,305000,304999,0.9999967213114754
+045,Kurtosis-Regime Range Reversal,305000,305000,1.0
+046,Volatility-Regime Reversal Divergence,305000,299883,0.9832229508196721
+047,Volume-weighted Alpha101-1 variant V2,305000,279799,0.9173737704918032
+048,Volatility-Price Rank Divergence TsRank V2,305000,305000,1.0
+049,Regime_C0_F10_F21,305000,298320,0.9780983606557377
+050,Regime_C0_F11_F20,305000,284538,0.9329114754098361
+051,Regime_C1_F11_F21,305000,299179,0.9809147540983607
+052,Regime_C1_F12_F20,305000,281562,0.9231540983606558
+053,Alpha101_1_V,305000,304409,0.9980622950819672
+054,Amount_Regime_Reversal,305000,299086,0.9806098360655737
+055,Return_Correlation_Regime,305000,290190,0.9514426229508197
+056,Kurtosis_Regime_Amount_Efficiency,305000,288449,0.9457344262295082
+057,TsRank_Price_Volume_Momentum_Divergence,305000,305000,1.0
+058,Regime_Amt_Efficiency_Switch_V2,305000,305000,1.0
+059,Regime_Triple_Vol_Amt_Skew,305000,293313,0.9616819672131147
+060,Regime_Amt_Vol_Divergence_Switch,305000,291506,0.9557573770491803
+061,Alpha101_12_Modern,305000,305000,1.0
+062,Amount_Stability_Adjusted_Returns,305000,304935,0.9997868852459016
+063,Triple_Rank_Synchrony_V8,305000,305000,1.0
+064,Regime_Price_Volume_Corr_Switch_V3,305000,290535,0.9525737704918033
+065,Regime_Volatility_Regime_Switch_V2,305000,288614,0.9462754098360656
+066,Regime_Kurt_Amt_Flow_Switch,305000,304319,0.9977672131147541
+067,Alpha101_54_Amt_Divergence,305000,279799,0.9173737704918032
+068,Skewness_Regime_PV_Divergence_Fixed,305000,289087,0.9478262295081967
+069,Regime_Kurt_Volatility_Switch_Fixed,305000,288179,0.9448491803278688
+070,Price_Pos_Vol_Interaction,305000,305000,1.0
+071,Range_Position_Vol_Stability_Interaction_Fixed,305000,305000,1.0
+072,Kurt_Regime_PV_Corr_Switch,305000,305000,1.0
+073,Amt_Velocity_Regime_Switch_V2,305000,304810,0.9993770491803279
+074,Range_Pos_Vol_Skew_Interaction_Fixed,305000,305000,1.0
+075,Amt_Efficiency_Rank_Interaction,305000,304798,0.9993377049180328
+076,Amt_Velocity_Volatility_Reversal,305000,304475,0.9982786885245901
+077,Vol_of_Volume_Price_Reversal,305000,305000,1.0
+078,Amt_Efficiency_Kurtosis_Interaction,305000,304798,0.9993377049180328
+079,Regime_Vol_Range_Pos_Switch_Fixed,305000,305000,1.0
+080,Rsquare_Resi_Adaptive,305000,305000,1.0
+081,Regime_Trend_Vol_Corrected,305000,304780,0.9992786885245901
+082,Regime_Logical_Shadow_Slope_Follow,305000,304780,0.9992786885245901
+083,Rsquare_Stability_Filtered_Momentum,305000,304780,0.9992786885245901
+084,Volatility_Sign_Agreement_Resi_Switch,305000,305000,1.0
+085,Rsquare_Stability_Resi_Interaction,305000,301357,0.9880557377049181
+086,Resi_Acceleration_Sign_Logic_Fixed,305000,305000,1.0
+087,Kurt_Regime_Resi_Momentum,305000,305000,1.0
+088,Amt_Efficiency_Skew_Interaction,305000,304780,0.9992786885245901
+089,Extreme_Divergence_Or_Logic,305000,305000,1.0
+090,Trend_Reliability_Switch_Logic_V2,305000,305000,1.0
+091,Amt_Efficiency_TsRank_Kurt_Interaction,305000,305000,1.0
+092,Amt_Efficiency_EMA_Smooth_Rank,305000,304780,0.9992786885245901
+093,Amt_Efficiency_Delta_TsRank,305000,305000,1.0
+094,And_HighVol_LowKurt_Switch,305000,300158,0.9841245901639344
+095,Higher_Moment_Regime_Switch,305000,305000,1.0
+096,Amt_Efficiency_PV_Corr_Interaction,305000,305000,1.0
+097,Amt_Efficiency_Med_Smooth_Rank,305000,304980,0.9999344262295082
+098,Smoothed_Efficiency_Acceleration,305000,304460,0.9982295081967213
+099,Amt_Efficiency_Double_EMA_Cross,305000,304780,0.9992786885245901
+100,Residual_of_Residual_Acceleration,305000,288252,0.9450885245901639
+101,Median_Returns_Switch,305000,305000,1.0
+102,High_Log_Resi_Divergence,305000,304954,0.9998491803278688
+103,Open_Resi_Skew_Hybrid,305000,304780,0.9992786885245901
+104,Median_LogSwap,305000,305000,1.0
+105,Median_Skew_Open,305000,304999,0.9999967213114754
+106,Median_Volatility_Extreme,305000,305000,1.0
+107,VWAP_Vol_HighVol_Switch,305000,305000,1.0
+108,VWAP_Vol_Skew_Switch,305000,305000,1.0
+109,VWAP_Vol_Rsquare_Switch,305000,305000,1.0
+110,PricePos_Skew_Slope,305000,304781,0.9992819672131148

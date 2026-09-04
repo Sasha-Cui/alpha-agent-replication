@@ -6,11 +6,11 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 43,
+    "closed": 44,
     "completed_adapted": 1,
-    "completed_partial": 8,
+    "completed_partial": 9,
     "closed_not_evaluable": 34,
-    "in_progress": 1,
+    "in_progress": 0,
     "queued": 25
   },
   "terminal_statuses": [
@@ -757,16 +757,16 @@
       "title": "FactorMiner: A Self-Evolving Agent with Skills and Experience Memory for Financial Alpha Discovery",
       "system_ids": "SYS-FACTOR-MINER",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "in_progress",
-      "recipe_path": "",
-      "implementation_path": "",
-      "run_manifest_path": "",
-      "monthly_returns_path": "",
-      "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; identify the central released or fully specified FactorMiner strategy before any new JKP outcome inspection, then execute the strongest defensible full or partial adaptation or close with concrete evidence.",
-      "closure_reason": ""
+      "status": "completed_partial",
+      "recipe_path": "paper_runs/us_jkp_headline/M044_factorminer/recipe.json",
+      "implementation_path": "scripts/run_factorminer_top40_milestone.py",
+      "run_manifest_path": "paper_runs/us_jkp_headline/M044_factorminer/run_manifest.json",
+      "monthly_returns_path": "paper_runs/us_jkp_headline/M044_factorminer/primary_monthly_returns.csv",
+      "metrics_path": "paper_runs/us_jkp_headline/M044_factorminer/metrics.csv",
+      "verdict_path": "paper_runs/us_jkp_headline/M044_factorminer/verdict.md",
+      "evaluated_scope": "All 110 formulas in the current v2 paper, a fixed first-12-month Top-40 absolute-IC selection with signed IC weights, and the common monthly U.S. top-1,000 value-weighted decile portfolio. Formula semantics use a pinned independent interpreter because no author-native runtime is released.",
+      "next_action": "Closed. Preserve the frozen negative result and high-turnover cost diagnosis; reopen only if the authors release native operator semantics, selection IDs/weights, or result arrays.",
+      "closure_reason": "The complete v2 formula library and central IC-weighted combination produced a 305-month path with 293 out-of-sample months. Zero-cost CAGR is -0.23%; at 10 bp one-way, 3.06 monthly traded notional drives CAGR to -3.84%, Sharpe -0.278, drawdown -67.40%, and JKP133 residual -2.36% annually (HAC t=-0.914, p=0.361)."
     },
     {
       "milestone_id": "M045",
