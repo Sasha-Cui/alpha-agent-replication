@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "status": "closed_not_evaluable",
+  "milestone_id": "M061",
+  "canonical_work_id": "CensusArxiv260629194",
+  "title": "AI Trading's Alpha Singularity: Emergent Market Reasoning through Agent-to-Agent Self-Evolution",
+  "central_strategy": "A five-role, nine-client agent society proposes AlphaGen programs and evaluation metrics through role-scoped records and promotions, evolves skill libraries and per-round registries, relays selected signals into an incrementally trained MaskablePPO policy, and trades a dynamic CSI1000 universe from a top-30 alpha pool with five-day next-open execution.",
+  "paper_source": {
+    "version": "v1",
+    "url": "https://arxiv.org/abs/2606.29194v1",
+    "official_pdf_sha256": "8e340c26444145bcb00c0f8761b9adc4404c757ca741ffc9c3281ef88833a40a",
+    "source_archive_sha256": "5e77d5f98b8e60a0d6b425a318e314274480e4a46f03eab10d5be30c05c182e1",
+    "source_file_count": 25
+  },
+  "reused_audit_evidence": {
+    "manifest": "paper_runs/paper_replication_audits/agora/manifest.json",
+    "manifest_sha256": "f6362dcef21e4ac5ac36a0b36ab64b95515103a23c7af86e31bb56331d48e2f5",
+    "source_provenance_sha256": "3a6e5b236e68fa4599172dfb32122a2d5158483494e8f428ad097a2410072f93",
+    "method_specification_sha256": "c5112043d4e3bce1b664eece96b16e8578ed6f0d93f8cb9930ca946c0c95ee38",
+    "metric_execution_sha256": "4f631c7f56f56a539187fb6dd5d8acda7a49c939b4294ae6ea4750ef000b04d9",
+    "complete_paper_metric_programs_executed": 2,
+    "active_quantitative_table_cells": 293,
+    "author_native_table_cells_regenerated": 0,
+    "active_empirical_figure_panels": 4,
+    "author_native_empirical_panels_regenerated": 0
+  },
+  "current_release_check": {
+    "checked_at_utc": "2026-09-04",
+    "paper_contains_repository_url": false,
+    "github_repository_exact_arxiv_id_matches": 0,
+    "github_repository_exact_title_matches": 0,
+    "github_code_top_alpha_registry_matches": 0,
+    "attributable_code_registry_alpha_pool_checkpoint_or_action_release_found": false
+  },
+  "monthly_jkp_assessment": {
+    "preserved_components": [
+      "Complete printed monotonicity_score_v1 and excess_drawdown_penalty_v1 metric programs execute deterministically.",
+      "Published target, temporal split, top-30/decile portfolio shell, five-day rebalance, and next-open timing are identifiable in prose.",
+      "Several baseline and PPO configuration values are documented."
+    ],
+    "required_but_missing": [
+      "The dynamic CSI1000/RiceQuant snapshot, memberships, OHLCV/VWAP, trading masks, and immutable date arrays.",
+      "All role prompts, nine-client model snapshots and calls, skill stores, per-round registries, rejected trials, and promotion histories.",
+      "The 94 AlphaGen programs, their scores and factor panels, source-selected top-30 pool, signs, and combination records.",
+      "PPO environments, 15,000-step trajectories, checkpoints, policy actions, and relay state.",
+      "Backtester, weights, orders, fills, daily returns, baseline outputs, full seeds, table arrays, figure arrays, and result generator."
+    ],
+    "why_metric_programs_are_not_a_strategy": "The two complete listings score already-supplied alpha predictions or drawdowns; they do not generate an alpha score, select the top-30 pool, or emit a trading action.",
+    "why_portfolio_shell_is_insufficient": "Top-30 selection, deciles, and next-open timing require the missing 94 alpha programs, factor values, pool signs, and PPO relay. The shell has no signal to rank.",
+    "why_jkp_cannot_fill_the_gap": "JKP supplies a monthly U.S. universe and returns but cannot infer the missing AlphaGen programs or trained PPO actions. Substituting generic JKP factors would bypass agent-to-agent search and self-evolution.",
+    "release_claim_conflict": "The contribution section says implementation, baselines, leakage audit, and registries are released, while Appendix A.8 says the release will include them; neither source contains a repository URL.",
+    "result_consistency_boundary": "Multiple printed values conflict, including per-alpha summaries and increasing long-short returns at higher stated costs, so aggregate exhibits cannot replace the missing raw paths."
+  },
+  "classification": "closed_not_evaluable",
+  "closure_rule": "Do not promote metric programs, portfolio-shell prose, unaffiliated later repositories, or generic JKP factors to AGORA. Reopen for attributable registries/alpha programs, PPO checkpoints/actions, or complete experiment lineage."
+}

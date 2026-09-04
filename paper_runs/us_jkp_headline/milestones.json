@@ -6,11 +6,11 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 60,
+    "closed": 61,
     "completed_adapted": 1,
     "completed_partial": 12,
-    "closed_not_evaluable": 47,
-    "in_progress": 1,
+    "closed_not_evaluable": 48,
+    "in_progress": 0,
     "queued": 8
   },
   "terminal_statuses": [
@@ -1046,16 +1046,16 @@
       "title": "AI Trading's Alpha Singularity: Emergent Market Reasoning through Agent-to-Agent Self-Evolution",
       "system_ids": "SYS-AGORA",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M061_agora/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier and current paper/source; identify AGORA's central agent-to-agent self-evolved market policy, released prompts/actions or strongest attributable strategy component before new JKP outcome inspection, then evaluate or close with concrete evidence.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M061_agora/verdict.md",
+      "evaluated_scope": "No common-task return: two complete paper metric programs execute, but they score supplied outputs rather than generate a security signal. The claimed release, 94 alpha programs, top-30 pool, registries, PPO checkpoint/actions, holdings, and returns are unavailable.",
+      "next_action": "Closed. Preserve metric-program execution separately; do not promote metric code, portfolio-shell prose, later unaffiliated repositories, or generic JKP factors to AGORA. Reopen for attributable alpha registries/programs, PPO actions, or run lineage.",
+      "closure_reason": "Fresh exact searches still find no release despite contradictory release claims. JKP cannot instantiate the missing AlphaGen pool or trained PPO relay, and the executable metric components provide no score or action for a monthly portfolio."
     },
     {
       "milestone_id": "M062",
