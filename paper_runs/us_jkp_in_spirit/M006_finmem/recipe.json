@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M006",
+  "canonical_work_id": "CensusArxiv231113743",
+  "paper": "FinMem: A Performance-Enhanced LLM Trading Agent with Layered Memory and Character Design",
+  "fidelity_label": "in_spirit_reconstruction",
+  "status": "frozen_before_jkp_result",
+  "paper_source": {
+    "path": "literature_review/papers/28_finmem_a_performance_enhanced_llm_trading_agent_with_layered_memory_and_character_design.pdf",
+    "sha256": "acb7527d02871cfad7d2754314b9a803f917b326847a456579df9cf7b0a648b9",
+    "primary_url": "https://arxiv.org/pdf/2311.13743"
+  },
+  "strict_evidence": {
+    "verdict_path": "paper_runs/us_jkp_headline/M006_finmem/verdict.md",
+    "audit_manifest_path": "paper_runs/paper_replication_audits/finmem/manifest.json",
+    "audit_manifest_sha256": "071103d5ab3af93ccd22ec9b0a69444c886db24da18cdd7e634e82627eb43799",
+    "action_metric_path": "paper_runs/paper_replication_audits/finmem/historical_action_metric_reproduction.csv",
+    "action_metric_sha256": "45cb1f133ccbf28bdc8a902e0173df56c7bd283a37a0c69071ef9f461b16fc9a",
+    "configuration_path": "paper_runs/paper_replication_audits/finmem/source_config_conformance.csv",
+    "configuration_sha256": "35792b9154a31aa19710844bb4acb00c24af81c9f83ecb40615172b5d742cd4f"
+  },
+  "headline_mechanism": "FinMem retrieves top-ranked shallow, intermediate, and deep memories using recency, relevance, and importance, reflects over them with current market facts, and conditions Buy/Sell/Hold decisions on an adaptive risk character.",
+  "source_anchors": [
+    {
+      "section": "3.1 and Figure 1",
+      "role": "adaptive_character",
+      "claim": "The agent switches between risk-seeking and risk-averse profiles according to recent cumulative performance."
+    },
+    {
+      "section": "3.2 and Figures 2-3",
+      "role": "layered_memory",
+      "claim": "Working memory reflects over top-K events retrieved from shallow, intermediate, and deep long-term memory."
+    },
+    {
+      "section": "Equations 2-5",
+      "role": "retrieval",
+      "claim": "Memory retrieval combines layer-specific recency, relevance, and importance scores with different decay rates."
+    },
+    {
+      "section": "3.3",
+      "role": "decision",
+      "claim": "Immediate reflection synchronizes current price direction, layered memory, and character to produce Buy, Sell, or Hold."
+    }
+  ],
+  "preserved_elements": [
+    "three distinct shallow, intermediate, and deep memory representations",
+    "top five retrieved memories per layer",
+    "recency, relevance, and importance retrieval components",
+    "paper layer-specific component weights and decay ordering",
+    "reflection combining current market facts and all three memory layers",
+    "self-adaptive risk-seeking versus risk-averse character"
+  ],
+  "approximated_elements": [
+    "JKP characteristic vectors replace text embeddings of news and filings",
+    "cosine similarity of numeric layer states replaces OpenAI embedding similarity",
+    "absolute realized past return represents event importance",
+    "formation-date three-month market performance replaces the agent's recent account return for character switching",
+    "a deterministic weighted memory vote replaces GPT-4-Turbo reflection text and discrete action generation"
+  ],
+  "invented_elements": [
+    "the exact JKP features assigned to each memory layer",
+    "a 60-month searchable memory horizon",
+    "21 trading days per monthly decay step",
+    "equal reflection weight for current facts and each layer vote",
+    "a 0.25 risk-character adjustment and common decile portfolio adapter"
+  ],
+  "memory_layers": {
+    "shallow": {
+      "features": ["ret_1_0", "rmax5_21d", "turnover_126d"],
+      "daily_decay_alpha": 0.9,
+      "retrieval_weights": {"recency": 0.8, "relevance": 0.15, "importance": 0.05}
+    },
+    "intermediate": {
+      "features": ["ret_6_1", "ret_12_1", "rvol_21d"],
+      "daily_decay_alpha": 0.967,
+      "retrieval_weights": {"recency": 0.05, "relevance": 0.8, "importance": 0.15}
+    },
+    "deep": {
+      "features": ["be_me", "gp_at", "ocf_at", "f_score"],
+      "daily_decay_alpha": 0.988,
+      "retrieval_weights": {"recency": 0.05, "relevance": 0.15, "importance": 0.8}
+    }
+  },
+  "chronological_policy": {
+    "prehistory_formation_start": "1994-07-31",
+    "common_formation_start": "1999-07-31",
+    "memory_horizon_months": 60,
+    "top_k_per_layer": 5,
+    "trading_days_per_month": 21,
+    "current_fact": "cross_sectional_rank_of_ret_1_0",
+    "character_switch": "risk_seeking_if_trailing_three_month_value_weighted_market_return_nonnegative_else_risk_averse",
+    "risk_feature": "rvol_21d",
+    "risk_adjustment_magnitude": 0.25,
+    "final_common_returns_used_for_policy_choice": false
+  },
+  "portfolio_adapter": "The deterministic reflected memory score is ranked within the frozen monthly top-1,000 universe and mapped to the common value-weighted long/short deciles with 10 bp one-way cost.",
+  "claim_boundary": "This is a researcher-authored FinMem-inspired numeric layered-memory policy, not the unavailable textual memories, GPT-4-Turbo reflections, five-trial actions, or a reproduction of the paper's native results."
+}
