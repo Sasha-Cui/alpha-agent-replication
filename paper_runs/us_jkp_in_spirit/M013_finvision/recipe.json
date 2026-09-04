@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M013",
+  "canonical_work_id": "CensusArxiv241108899",
+  "paper": "FinVision: A Multi-Agent Framework for Stock Market Prediction",
+  "fidelity_label": "in_spirit_reconstruction",
+  "status": "frozen_before_jkp_result",
+  "paper_source": {
+    "path": "literature_review/papers/40_a_multi_agent_framework_for_stock_market_prediction.pdf",
+    "sha256": "8483714696f009ffecd5e818ce2b8937e88be03343476bb23344b4f38b080921",
+    "primary_url": "https://arxiv.org/pdf/2411.08899v1"
+  },
+  "strict_evidence": {
+    "verdict_path": "paper_runs/us_jkp_headline/M013_finvision/verdict.md",
+    "audit_manifest_path": "paper_runs/paper_replication_audits/finvision/manifest.json",
+    "audit_manifest_sha256": "9471f485d3b5892346986d5f8b1dfe4724fb455fb945770595dd9ddf7fed7887",
+    "prompt_path": "paper_runs/paper_replication_audits/finvision/prompt_inventory.csv",
+    "prompt_sha256": "821939dee0858a961f79eef0d3ecd23f2ab40c3a13072d649d5945b12078782e",
+    "method_path": "paper_runs/paper_replication_audits/finvision/method_specification_audit.csv",
+    "method_sha256": "d33615078c2547897f1daaeb284298f42d18dfca4dfe87f21746708df7241d88"
+  },
+  "headline_mechanism": "FinVision coordinates news-summary, visual technical-analysis, short/medium reflection, and final prediction agents; the last agent emits Buy/Sell/Hold, a 1-10 position size, and an explanation.",
+  "source_anchors": [
+    {
+      "section": "3 and Equation 1",
+      "role": "news_agent",
+      "claim": "The summarizer converts prior-day news into concise factual trading information."
+    },
+    {
+      "section": "3 and Equation 2",
+      "role": "technical_agent",
+      "claim": "A vision agent interprets a 60-day candlestick and technical-indicator chart."
+    },
+    {
+      "section": "3 and Equations 3-4",
+      "role": "reflection_agents",
+      "claim": "One reflection agent analyzes recent trade performance and another reviews a 30-day signal chart."
+    },
+    {
+      "section": "3 and Equation 5",
+      "role": "prediction_agent",
+      "claim": "The decision agent synthesizes news, technical analysis, and both reflections into action, 1-10 size, and explanation."
+    }
+  ],
+  "preserved_elements": [
+    "separate news-summary and technical-analysis agent scores",
+    "two distinct short- and medium-horizon reflection scores",
+    "one final prediction agent aggregating all four upstream perspectives",
+    "rolling feedback from realized earlier outcomes",
+    "Buy/Sell/Hold diagnostics with 1-10 confidence sizing",
+    "transparent per-agent reliability history"
+  ],
+  "approximated_elements": [
+    "earnings, attention, and recent-return characteristics replace unavailable daily news summaries",
+    "three-month momentum/volatility characteristics replace 60-day chart images",
+    "three- and twelve-month past-return memories replace textual and visual reflection agents",
+    "rolling RankIC-based reliability weights replace LangGraph LLM deliberation",
+    "continuous consensus confidence replaces sampled action and position-size text"
+  ],
+  "invented_elements": [
+    "the exact JKP feature bundles for news and chart agents",
+    "the monthly reflection horizons",
+    "60-month agent-reliability window",
+    "softmax reliability temperature and action thresholds",
+    "common value-weighted long/short decile portfolio adapter"
+  ],
+  "agents": {
+    "news_summary": ["niq_su", "saleq_su", "ret_1_0", "turnover_126d"],
+    "technical_chart": ["ret_3_1", "ret_6_1", "prc_highprc_252d", "rvol_21d"],
+    "short_reflection": "mean_of_prior_three_realized_security_returns",
+    "medium_reflection": "mean_of_prior_twelve_realized_security_returns"
+  },
+  "prediction_policy": {
+    "prehistory_formation_start": "1994-07-31",
+    "common_formation_start": "1999-07-31",
+    "reliability_window_months": 60,
+    "minimum_rankic_months": 24,
+    "aggregation": "softmax_of_signed_trailing_agent_rankic",
+    "softmax_temperature": 10.0,
+    "action_hold_threshold": 0.1,
+    "position_size_rule": "ceil_10_times_absolute_consensus_clipped_1_to_10",
+    "update_frequency": "monthly",
+    "final_common_returns_used_for_policy_choice": false
+  },
+  "portfolio_adapter": "The continuous multi-agent consensus is ranked within the frozen monthly top-1,000 universe and mapped to common value-weighted long/short deciles with 10 bp one-way cost; action and size remain diagnostics.",
+  "claim_boundary": "This is a researcher-authored FinVision-inspired numerical multi-agent consensus, not the unavailable LangGraph system, news/chart inputs, GPT/o1 responses, action trajectory, position ledger, or native results."
+}
