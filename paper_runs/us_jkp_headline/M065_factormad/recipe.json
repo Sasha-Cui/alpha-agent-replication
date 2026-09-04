@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "status": "closed_not_evaluable",
+  "milestone_id": "M065",
+  "canonical_work_id": "CensusDOI10114537682923770377",
+  "title": "FactorMAD: A Multi-Agent Debate Framework Based on Large Language Models for Interpretable Stock Alpha Factor Mining",
+  "central_strategy": "Initialize two LLM agents from sampled examples and different perspectives, alternate factor proposals and critiques through debate, choose existing versus newly generated seeds, convert accepted ideas into validated/corrected factor programs, admit factors through predictive-metric and correlation thresholds, and feed 100 mined factors into LR/MLP/LightGBM models and a daily equal-weight Top-50 ten-day-hold portfolio.",
+  "paper_source": {
+    "doi": "10.1145/3768292.3770377",
+    "url": "https://doi.org/10.1145/3768292.3770377",
+    "official_pdf_sha256": "5fb011bceea232aa52cd36ee0dc14a3238d3e5f5311bfc25af742127298afeab",
+    "official_pages": 9,
+    "source_archive_available": false
+  },
+  "reused_audit_evidence": {
+    "manifest": "paper_runs/paper_replication_audits/factormad/manifest.json",
+    "manifest_sha256": "77db38576b854aca7d49e623a4daee02b60ae48eda6ec42b66957581169fb250",
+    "source_provenance_sha256": "a455112873121cf8ba3e8e19c156e3799196b2f99de04036ccb747aef1d50e64",
+    "method_specification_sha256": "5c095faca183f47f9593e03f0396cc57f25b1505cbca3f967ab388a24b654ea6",
+    "component_execution_sha256": "d225bdb4a70441ae2d6c13b945143edbb14ba0c097b8fb63680ca18c526efad1",
+    "paper_derived_components_passing_controlled_checks": 13,
+    "fail_closed_underspecified_core_operations": 7,
+    "active_empirical_table_cells": 30,
+    "author_native_table_cells_regenerated": 0,
+    "empirical_figure_panels": 8,
+    "author_native_empirical_panels_regenerated": 0
+  },
+  "current_release_check": {
+    "checked_at_utc": "2026-09-04",
+    "paper_contains_native_implementation_url": false,
+    "paper_contains_public_dataset_model_or_result_url": false,
+    "github_repository_exact_name_matches": 2,
+    "github_repository_exact_doi_matches": 0,
+    "exact_name_matches_are_unaffiliated_secondary_skills": true,
+    "attributable_code_factor_library_or_result_release_found": false
+  },
+  "monthly_jkp_assessment": {
+    "preserved_components": [
+      "Future-VWAP label identity, alternating proposer schedule, seed-source branch, acceptance-gate shape, and equal-weight Top-k operation.",
+      "Seven explicit fail-closed findings for agent initialization, validator/correction, model training, overlapping holdings, metrics, and LLM calls.",
+      "Original publisher paper, complete result denominator, and bounded release evidence."
+    ],
+    "required_but_missing": [
+      "The initial factor library, debate examples, p_seed, acceptance thresholds, comparison factors, sampling policy, seeds, and all prompts/responses.",
+      "Every generated factor program, debate/correction trace, validator implementation, maximum retries, accepted 100-factor pools, and signs.",
+      "The 5,255-stock A-share snapshot, memberships, daily price/VWAP/amount/volume rows, provider, adjustments, and calendar.",
+      "LR/MLP/LightGBM hyperparameters, fitted models, predictions, baseline configurations, and trial records.",
+      "Overlapping Top-50 sleeve treatment, transaction-cost timing, holdings, returns, metric definitions, plot arrays, and result generator."
+    ],
+    "why_components_are_not_a_signal": "The 13 controlled mechanics validate isolated equations and schedule shapes but include no generated factor formula, score, sign, trained prediction, or dated holding.",
+    "why_local_proxy_is_excluded": "The prior paper_factormad_debate_interpretable candidate is a title-derived JKP multifactor with no agents, debate, code generation, validation, A-share data, paper model, or native portfolio and has no FactorMAD lineage.",
+    "why_secondary_skills_are_not_a_release": "The two current exact-name repositories are unaffiliated post-paper skills/adaptations, not author code or recovered experiment artifacts.",
+    "why_jkp_cannot_fill_the_gap": "JKP can evaluate a disclosed factor but cannot infer the missing debate-generated programs or trained ensemble score. Selecting a generic interpretable factor would manufacture the central output.",
+    "portfolio_boundary": "The daily Top-50 ten-day hold is not executable because overlapping vintages and cost application are unspecified even if scores existed."
+  },
+  "classification": "closed_not_evaluable",
+  "closure_rule": "Do not promote isolated equations, unaffiliated skills, title-derived JKP proxies, or generic factors to FactorMAD. Reopen for attributable generated factor programs, debate/validation traces, or a causal score/holding release."
+}

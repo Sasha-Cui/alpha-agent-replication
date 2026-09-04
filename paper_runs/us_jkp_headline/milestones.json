@@ -6,11 +6,11 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 64,
+    "closed": 65,
     "completed_adapted": 1,
     "completed_partial": 14,
-    "closed_not_evaluable": 49,
-    "in_progress": 1,
+    "closed_not_evaluable": 50,
+    "in_progress": 0,
     "queued": 4
   },
   "terminal_statuses": [
@@ -1114,16 +1114,16 @@
       "title": "FactorMAD: A Multi-Agent Debate Framework Based on Large Language Models for Interpretable Stock Alpha Factor Mining",
       "system_ids": "SYS-FACTOR-MAD",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M065_factormad/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier and original paper/source; identify FactorMAD's central debate-mined factor output or strongest attributable formula before new JKP outcome inspection, then execute the strongest defensible monthly adaptation or close with concrete evidence.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M065_factormad/verdict.md",
+      "evaluated_scope": "No common-task return: 13 paper-derived mechanics pass controlled checks, but the debate-generated factor programs, library, prompts, thresholds, validation/correction traces, fitted models, predictions, holdings, and returns are unavailable. No attributable score formula exists.",
+      "next_action": "Closed. Preserve equation-level checks separately; do not promote unaffiliated skills, the title-derived local proxy, or generic interpretable factors to FactorMAD. Reopen for generated factors, debate/validation traces, or a causal score release.",
+      "closure_reason": "Fresh search finds only two unaffiliated post-paper skills and no DOI-linked release. JKP can evaluate disclosed factors but cannot infer the missing debate output, while the local narrative proxy has no FactorMAD method or result lineage."
     },
     {
       "milestone_id": "M066",

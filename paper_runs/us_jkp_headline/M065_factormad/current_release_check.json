@@ -1,0 +1,10 @@
+{
+  "checked_at_utc": "2026-09-04",
+  "paper_doi": "10.1145/3768292.3770377",
+  "paper_contains_native_implementation_url": false,
+  "paper_contains_public_dataset_model_or_result_url": false,
+  "github_repository_exact_name_matches": 2,
+  "github_repository_exact_doi_matches": 0,
+  "exact_name_matches_are_unaffiliated_secondary_skills": true,
+  "attributable_code_factor_library_or_result_release_found": false
+}
