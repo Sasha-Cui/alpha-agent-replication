@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "status": "closed_not_evaluable",
+  "milestone_id": "M051",
+  "canonical_work_id": "CensusArxiv260409601",
+  "title": "Hubble: An LLM-Driven Agentic Framework for Safe, Diverse, and Reproducible Alpha Factor Discovery",
+  "central_strategy": "A constrained LLM generates AST-safe formulaic factors from positive/negative RAG, deterministic evaluation scores them on RankIC, Pearson IC, long-short return, turnover, coverage, complexity, and similarity, and family-aware selection fixes a top-five range/volatility/trend factor set for held-out U.S. evaluation.",
+  "paper_source": {
+    "version": "v2",
+    "url": "https://arxiv.org/abs/2604.09601v2",
+    "official_pdf_sha256": "774c98f53a6fb1e32535ea0ab51a234548c3dbdb29b594a0cf537cf96275a288",
+    "source_archive_sha256": "97acc42edc0ea803a8187f3c8d08f2007a3dec505be57a1f4affeb9b1c455318"
+  },
+  "reused_audit_evidence": {
+    "manifest": "paper_runs/paper_replication_audits/hubble/manifest.json",
+    "manifest_sha256": "0bae112d04ad47149aacd3f993a38a063a8449a7fd1e4d7b0bed45fc1bc5f750",
+    "method_specification_sha256": "d767828a71da96831eda00fbc8b9fb7026661eb49a265906d55ef9fc3585b67e",
+    "model_release_chronology_sha256": "604bd24e52caace7a6650e175b8f715df85b8b2a43ad46de5f3229442f14598e",
+    "sandbox_component_execution_sha256": "aad8448f6def61354ff963fa56d1cc3e2213c82130be1047d2029910f5986ddf",
+    "conditional_sandbox_component_executed": true,
+    "native_empirical_units_regenerated": 0,
+    "native_figure_series_regenerated": 0
+  },
+  "current_release_check": {
+    "checked_at_utc": "2026-09-04",
+    "exact_repository_matches": 0,
+    "arxiv_id_author_native_code_matches": 0,
+    "author_lab_public_repositories": 0,
+    "author_factor_formula_or_artifact_release_found": false
+  },
+  "monthly_jkp_assessment": {
+    "required_but_missing": [
+      "The five winning formulas, exact hyperparameters, candidate identities, signs, and family-selection records.",
+      "The operator registry/executor, prompts, positive/negative RAG corpora and indexes, model requests/responses, and scoring constants.",
+      "Frozen U.S. universe/data snapshots, included-date arrays, missing-data rules, and formula values.",
+      "Candidate/error records, seeds, runtime environment, raw IC/return/turnover arrays, and persisted diagnostics.",
+      "A transaction-cost-aware investable portfolio rule; v2 reports simple factor diagnostics without costs."
+    ],
+    "intentional_withholding": "The v2 paper explicitly withholds the exact top-five formulas and hyperparameters, so range/volatility/trend family labels cannot identify executable scores.",
+    "why_family_proxy_is_not_hubble": "Choosing a generic range, volatility, or trend factor from JKP would manufacture a formula and bypass Hubble's defining constrained generation and family-aware selection.",
+    "chronology_problem": "The two named v2 LLM backends became public after the claimed OOS window began, contradicting a literal pre-OOS formula freeze absent timestamped prompts/formulas/artifacts.",
+    "why_sandbox_component_is_insufficient": "The local AST fixture validates conditional safe execution only and has no released Hubble candidate identity, data, score, selection, or paper-result lineage."
+  },
+  "classification": "closed_not_evaluable",
+  "closure_rule": "Do not infer formulas from family labels or plot heights, promote the AST fixture, or choose a favorable generic technical factor. Reopen for the top-five formulas or an attributable generation/evaluation artifact release."
+}
