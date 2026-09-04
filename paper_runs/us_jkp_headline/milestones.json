@@ -6,11 +6,11 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 63,
+    "closed": 64,
     "completed_adapted": 1,
-    "completed_partial": 13,
+    "completed_partial": 14,
     "closed_not_evaluable": 49,
-    "in_progress": 1,
+    "in_progress": 0,
     "queued": 5
   },
   "terminal_statuses": [
@@ -1097,16 +1097,16 @@
       "title": "AlphaSchema: Exploring the Space of Trading Semantics for LLM-Based Alpha Mining",
       "system_ids": "SYS-ALPHA-SCHEMA",
       "prior_evidence_route": "public_code_available",
-      "status": "in_progress",
-      "recipe_path": "",
-      "implementation_path": "",
-      "run_manifest_path": "",
-      "monthly_returns_path": "",
-      "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier and current paper/source; identify AlphaSchema's central semantics-discovery output or strongest attributable schema/factor formula before new JKP outcome inspection, then execute the strongest defensible monthly adaptation or close with concrete evidence.",
-      "closure_reason": ""
+      "status": "completed_partial",
+      "recipe_path": "paper_runs/us_jkp_headline/M064_alphaschema/recipe.json",
+      "implementation_path": "scripts/run_alphaschema_headline.py",
+      "run_manifest_path": "paper_runs/us_jkp_headline/M064_alphaschema/run_manifest.json",
+      "monthly_returns_path": "paper_runs/us_jkp_headline/M064_alphaschema/primary_monthly_returns.csv",
+      "metrics_path": "paper_runs/us_jkp_headline/M064_alphaschema/metrics.csv",
+      "verdict_path": "paper_runs/us_jkp_headline/M064_alphaschema/verdict.md",
+      "evaluated_scope": "The paper's complete example schema-realized factor preserves its source plan, best period 20, positive Rank-IC direction, price-volume synergy, reference distance, cooldown, and event-memory semantics on monthly JKP bars, then uses the common U.S. top-1,000 value-weighted decile portfolio, costs, missingness, and JKP133 attribution.",
+      "next_action": "Closed. Keep the example-factor path fixed and exploratory; do not interpret it as AlphaSchema semantic search, LLM realization/repair, production pools, LightGBM combination, Top-50/drop-5, or paper performance.",
+      "closure_reason": "The strongest source-selected executable factor produced a complete 305-month common-benchmark path. At 10 bp one-way costs its CAGR is 0.70%, Sharpe 0.127, maximum drawdown -62.63%, and rolling JKP133 residual mean 1.88% annually (HAC t=0.627, p=0.5305)."
     },
     {
       "milestone_id": "M065",
