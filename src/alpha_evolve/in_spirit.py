@@ -460,3 +460,126 @@ def alphaquanter_rolling_scores(
             }
         )
     return result, pd.DataFrame(diagnostics)
+
+
+def finmem_layered_scores(
+    frame: pd.DataFrame,
+    layers: dict[str, dict[str, object]],
+    *,
+    common_start: str,
+    memory_horizon_months: int = 60,
+    top_k: int = 5,
+    trading_days_per_month: int = 21,
+    risk_adjustment_magnitude: float = 0.25,
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Retrieve numeric shallow/intermediate/deep memories using past outcomes."""
+    if list(layers) != ["shallow", "intermediate", "deep"]:
+        raise ValueError("FinMem layers must be shallow, intermediate, and deep")
+    feature_names = list(
+        dict.fromkeys(
+            feature
+            for layer in layers.values()
+            for feature in layer["features"]  # type: ignore[index]
+        )
+    )
+    missing = {"month", "security_id", "weight", "ret", "ret_exc_lead1m", *feature_names} - set(frame)
+    if missing:
+        raise ValueError(f"missing FinMem inputs: {sorted(missing)}")
+    ranked = cross_sectional_unit_rank(frame, feature_names)
+    importance = (
+        pd.to_numeric(frame["ret_exc_lead1m"], errors="coerce")
+        .abs()
+        .groupby(frame["month"], sort=False)
+        .rank(method="average", pct=True)
+    )
+    votes = {name: pd.Series(np.nan, index=frame.index, dtype="float64") for name in layers}
+    retrieved = {name: pd.Series(0, index=frame.index, dtype="int64") for name in layers}
+    month_number = pd.to_datetime(frame["month"]).dt.year * 12 + pd.to_datetime(frame["month"]).dt.month
+    for _, indices in frame.groupby("security_id", sort=False).groups.items():
+        ordered_indices = frame.loc[indices].sort_values("month", kind="mergesort").index.to_numpy()
+        ordered_months = month_number.loc[ordered_indices].to_numpy(dtype=int)
+        ordered_returns = pd.to_numeric(
+            frame.loc[ordered_indices, "ret_exc_lead1m"], errors="coerce"
+        ).to_numpy(dtype=float)
+        ordered_importance = importance.loc[ordered_indices].to_numpy(dtype=float)
+        for position, current_index in enumerate(ordered_indices):
+            if pd.Timestamp(frame.at[current_index, "month"]) < pd.Timestamp(common_start):
+                continue
+            lag = ordered_months[position] - ordered_months[:position]
+            memory_positions = np.flatnonzero((lag >= 1) & (lag <= memory_horizon_months))
+            if len(memory_positions) == 0:
+                continue
+            for layer_name, specification in layers.items():
+                features = list(specification["features"])  # type: ignore[arg-type]
+                current_state = ranked.loc[current_index, features].to_numpy(dtype=float)
+                memory_state = ranked.loc[ordered_indices[memory_positions], features].to_numpy(dtype=float)
+                outcomes = ordered_returns[memory_positions]
+                event_importance = ordered_importance[memory_positions]
+                valid = (
+                    np.isfinite(current_state).all()
+                    & np.isfinite(memory_state).all(axis=1)
+                    & np.isfinite(outcomes)
+                    & np.isfinite(event_importance)
+                )
+                if not np.any(valid):
+                    continue
+                positions = memory_positions[valid]
+                memory_state = memory_state[valid]
+                outcomes = outcomes[valid]
+                event_importance = event_importance[valid]
+                denominator = np.linalg.norm(memory_state, axis=1) * np.linalg.norm(current_state)
+                relevance = np.divide(
+                    memory_state @ current_state,
+                    denominator,
+                    out=np.zeros(len(memory_state)),
+                    where=denominator > 0,
+                )
+                relevance = (np.clip(relevance, -1.0, 1.0) + 1.0) / 2.0
+                alpha = float(specification["daily_decay_alpha"])
+                recency = alpha ** (trading_days_per_month * lag[positions])
+                weights = specification["retrieval_weights"]
+                retrieval_score = (
+                    float(weights["recency"]) * recency  # type: ignore[index]
+                    + float(weights["relevance"]) * relevance  # type: ignore[index]
+                    + float(weights["importance"]) * event_importance  # type: ignore[index]
+                )
+                chosen = np.lexsort((positions, -retrieval_score))[:top_k]
+                chosen_weight = retrieval_score[chosen]
+                if chosen_weight.sum() <= 0:
+                    continue
+                votes[layer_name].at[current_index] = float(
+                    np.average(outcomes[chosen], weights=chosen_weight)
+                )
+                retrieved[layer_name].at[current_index] = len(chosen)
+
+    common = frame["month"] >= common_start
+    vote_frame = pd.DataFrame({name: value for name, value in votes.items()})
+    ranked_votes = pd.concat([frame[["month"]], vote_frame], axis=1)
+    ranked_votes = cross_sectional_unit_rank(ranked_votes, list(layers))
+    current_fact = cross_sectional_unit_rank(frame, ["ret_1_0"])["ret_1_0"]
+    risk = cross_sectional_unit_rank(frame, ["rvol_21d"])["rvol_21d"]
+    market_rows = []
+    for month, indices in frame.groupby("month", sort=True).groups.items():
+        weight = pd.to_numeric(frame.loc[indices, "weight"], errors="coerce")
+        current_return = pd.to_numeric(frame.loc[indices, "ret"], errors="coerce").fillna(0.0)
+        market_rows.append((pd.Timestamp(month), float(np.sum(weight * current_return) / weight.sum())))
+    market = pd.Series(dict(market_rows)).sort_index()
+    trailing_market = (1.0 + market).rolling(3, min_periods=3).apply(np.prod, raw=True) - 1.0
+    character = frame["month"].map(pd.Series(np.where(trailing_market >= 0, 1.0, -1.0), index=trailing_market.index))
+    components = pd.concat([current_fact.rename("current_fact"), ranked_votes], axis=1)
+    reflected = components.mean(axis=1, skipna=True)
+    score = reflected + risk_adjustment_magnitude * character * risk
+    score = score.where(common & components.notna().sum(axis=1).ge(2))
+    diagnostics = []
+    for month, indices in frame.loc[common].groupby("month", sort=True).groups.items():
+        row: dict[str, object] = {
+            "formation_month": str(pd.Timestamp(month).date()),
+            "trailing_three_month_market_return": float(trailing_market.loc[pd.Timestamp(month)]),
+            "risk_character": "risk_seeking" if character.loc[indices].iloc[0] > 0 else "risk_averse",
+            "finite_scores": int(score.loc[indices].notna().sum()),
+        }
+        for layer_name in layers:
+            row[f"{layer_name}_memory_coverage"] = int(votes[layer_name].loc[indices].notna().sum())
+            row[f"{layer_name}_mean_retrieved"] = float(retrieved[layer_name].loc[indices].mean())
+        diagnostics.append(row)
+    return score, pd.DataFrame(diagnostics)
