@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "status": "closed_not_evaluable",
+  "milestone_id": "M052",
+  "canonical_work_id": "CensusArxiv260417327",
+  "title": "Signal or Noise in Multi-Agent LLM-based Stock Recommendations?",
+  "central_strategy": "Four specialist LLM agents (News, Fundamentals, Dynamics, Macro) feed a synthesis agent that emits a five-class monthly recommendation. On the first Friday of each month, all strong-buy stocks in fixed S&P 500/100 cohorts are held equal weight for one month; thesis/agent text embeddings are separately decomposed by normalized NNLS for attribution.",
+  "paper_source": {
+    "version": "v1",
+    "url": "https://arxiv.org/abs/2604.17327v1",
+    "official_pdf_sha256": "a9ba1f0627708d9a766ce12d258733753153bc905e84fc856e5a291c0f8805ad",
+    "source_archive_sha256": "5670ddbb7f3db545e5d8aeeb6c9105da1818413fe8e1698ca6814f3ca89fd6f6",
+    "source_tex_sha256": "092ecfe6218f3cce14defcd7fdba1d2047606d471fa82e53a2d9f539c007cc04"
+  },
+  "reused_audit_evidence": {
+    "manifest": "paper_runs/paper_replication_audits/marketsenseai/manifest.json",
+    "manifest_sha256": "d8fe3bcf1adf616f06a1de3978493626b3a0bedfbceefa3e19a2697c87ef4170",
+    "mechanism_conformance_sha256": "586c0c58db6656e933fa570dd820f9e9d5f45bc513d9cc7157f23c15bf479eb1",
+    "specification_gaps_sha256": "ac82b9dc63df46a877456bd3d430217eec4f38764e4dcb04e82ac0441210c3fe",
+    "published_2026_ledger_sha256": "6f7e18ac23fa8c770e650dd921b5026726294cf2923e4898086016c3e6e63e50",
+    "sp500_stock_date_rows": 8873,
+    "sp100_stock_date_rows": 3290,
+    "native_2026_result_units_regenerated": 0,
+    "native_signal_or_portfolio_outputs_found": false
+  },
+  "current_release_check": {
+    "checked_at_utc": "2026-09-04",
+    "exact_repository_matches": 0,
+    "arxiv_id_author_native_code_matches": 0,
+    "new_research_record": "HCH725/alpha-strategy-research",
+    "new_research_record_status": "research-only, implementation_status: not-implemented",
+    "new_research_record_native_credit": false
+  },
+  "monthly_jkp_assessment": {
+    "required_but_missing": [
+      "The 467- and 94-stock cohort ticker lists, formation vintage, exact first-Friday timestamps, and price/return fields.",
+      "Specialist/synthesis model identities, snapshots, prompts, parameters, live request timestamps, and raw responses.",
+      "All 12,163 specialist summaries, synthesis theses, five-class recommendation labels, and strong-buy membership by date.",
+      "The text-embedding-3-small requests and 1,536-dimensional thesis/agent embedding arrays.",
+      "The fixed Monte Carlo seed/arrays, NNLS implementation/tolerances, dated IC arrays, costs, holdings, and NAV paths."
+    ],
+    "why_aggregate_counts_are_not_actions": "Published class counts and average 35.1/9.9 strong-buy picks do not identify which securities were selected on any date; countless incompatible portfolios share the same aggregates.",
+    "why_nnls_is_not_the_signal": "NNLS decomposes already-generated thesis embeddings for attribution. Without the texts/embeddings and recommendation labels, it cannot generate the strong-buy portfolio.",
+    "why_jkp_cannot_fill_the_gap": "JKP supplies monthly securities and returns but not the deployed system's multimodal inputs, LLM outputs, cohort mapping, or strong-buy identities. Applying the aggregate 7.5% rate to arbitrary JKP names would fabricate decisions.",
+    "why_new_record_is_not_a_release": "The September 4 research record summarizes the paper and explicitly declares research-only, not-implemented status; it contains no code, recommendations, holdings, or result arrays."
+  },
+  "classification": "closed_not_evaluable",
+  "closure_rule": "Do not reconstruct holdings from class counts, use future returns to infer strong buys, or treat the research memo/NNLS component as the strategy. Reopen for the dated recommendation panel or attributable operational release."
+}

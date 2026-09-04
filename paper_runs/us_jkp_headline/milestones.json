@@ -6,11 +6,11 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 51,
+    "closed": 52,
     "completed_adapted": 1,
     "completed_partial": 10,
-    "closed_not_evaluable": 40,
-    "in_progress": 1,
+    "closed_not_evaluable": 41,
+    "in_progress": 0,
     "queued": 17
   },
   "terminal_statuses": [
@@ -893,16 +893,16 @@
       "title": "Signal or Noise in Multi-Agent LLM-based Stock Recommendations?",
       "system_ids": "SYS-MARKET-SENSE-AI",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M052_marketsenseai/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier and current paper/source; identify the central multi-agent recommendation-to-portfolio rule and any released recommendations before new JKP outcome inspection, then execute the strongest defensible monthly adaptation or close with concrete evidence.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M052_marketsenseai/verdict.md",
+      "evaluated_scope": "No common-task return: the central equal-weight monthly strong-buy portfolio is identifiable in form but none of the 12,163 stock-date recommendations, cohort tickers, agent/synthesis texts, embeddings, or dated selected sets is public. Aggregate counts cannot reconstruct holdings.",
+      "next_action": "Closed. Preserve manuscript arithmetic/NNLS audits separately; do not infer holdings from aggregate class counts or relabel the new not-implemented research memo as a release. Reopen for the dated recommendation panel or operational system output.",
+      "closure_reason": "The paper specifies monthly strong-buy equal weighting but omits every security-date label and cohort identity needed to form it. A fresh search found no author release; the new same-day repository explicitly says not implemented. JKP cannot infer deployed LLM decisions from aggregate counts."
     },
     {
       "milestone_id": "M053",
