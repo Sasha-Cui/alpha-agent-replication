@@ -94,7 +94,14 @@ def evaluate(root: Path, output: Path) -> None:
     settings = contract["starting_settings_retained_from_corrected_us_study"]
     extended_settings = dict(settings)
     extended_settings["formation_start"] = policy["prehistory_formation_start"]
-    features = list(dict.fromkeys(feature for values in recipe["modalities"].values() for feature in values))
+    features = list(
+        dict.fromkeys(
+            [
+                *(feature for values in recipe["modalities"].values() for feature in values),
+                "ret_12_1",
+            ]
+        )
+    )
     print("loading FinAgent prehistory and common formations", flush=True)
     extended = load_formations(source_path, features, extended_settings)
     scores, policy_history = finagent_rolling_scores(
