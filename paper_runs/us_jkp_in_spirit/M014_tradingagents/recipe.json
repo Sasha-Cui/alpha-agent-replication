@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M014",
+  "canonical_work_id": "CensusArxiv241220138",
+  "paper": "TradingAgents: Multi-Agents LLM Financial Trading Framework",
+  "fidelity_label": "in_spirit_reconstruction",
+  "status": "frozen_before_jkp_result",
+  "paper_source": {
+    "path": "literature_review/papers/23_tradingagents_multi_agents_llm_financial_trading_framework.pdf",
+    "sha256": "431d0c39365b4c46b43162371fa15b3dcf8d142b377d642b3e5925dc81f3487b",
+    "primary_url": "https://arxiv.org/pdf/2412.20138v7"
+  },
+  "strict_evidence": {
+    "verdict_path": "paper_runs/us_jkp_headline/M014_tradingagents/verdict.md",
+    "audit_manifest_path": "paper_runs/paper_replication_audits/tradingagents/manifest.json",
+    "audit_manifest_sha256": "7eb67d3e99bf61454e75a68b0136511fb0d7578769caff75131c61ac72aea2f3",
+    "native_component_path": "paper_runs/paper_replication_audits/tradingagents/native_component.json",
+    "native_component_sha256": "4792643a32d139a5514c18e6464ed9f35ec22d0f418eac2d0d12603f435acaa2",
+    "mechanism_path": "paper_runs/paper_replication_audits/tradingagents/source_mechanism_conformance.csv",
+    "mechanism_sha256": "b3f4145fa9a8ad0c32e152663396684940ef36205f086c9b62c19ff55d4975dc"
+  },
+  "headline_mechanism": "TradingAgents sends market, social, news, and fundamental reports through bull/bear research debate, trader synthesis, three risk-perspective debates, a final manager, and reflection memory.",
+  "source_anchors": [
+    {
+      "section": "3.1",
+      "role": "analysts",
+      "claim": "Four specialized analysts independently examine market, social, news, and fundamental information."
+    },
+    {
+      "section": "3.2",
+      "role": "research_debate",
+      "claim": "Bullish and bearish researchers debate the analyst reports before a trader synthesizes a proposal."
+    },
+    {
+      "section": "3.3",
+      "role": "risk_debate",
+      "claim": "Risk-seeking, neutral, and conservative perspectives debate the trader proposal before the fund manager decides."
+    },
+    {
+      "section": "3.4",
+      "role": "reflection",
+      "claim": "Outcome reflection updates memory so future decisions can learn from earlier successes and mistakes."
+    }
+  ],
+  "preserved_elements": [
+    "four distinct analyst perspectives",
+    "explicit bull and bear evidence aggregation",
+    "a separate trader synthesis stage",
+    "risk-seeking, neutral, and conservative proposal variants",
+    "one final manager decision",
+    "rolling reflection memory from earlier realized outcomes"
+  ],
+  "approximated_elements": [
+    "JKP market, attention, earnings, and fundamental bundles replace external analyst tools and text reports",
+    "positive and negative decompositions of analyst scores replace natural-language bull/bear debate",
+    "past RankIC reliability replaces the trader's LLM synthesis",
+    "volatility scaling replaces the three natural-language risk debaters",
+    "rolling correctness-weight updates replace episodic reflection text"
+  ],
+  "invented_elements": [
+    "the exact JKP analyst feature bundles",
+    "60-month debate and reflection window",
+    "softmax reliability temperature",
+    "risk-seeking, neutral, and conservative volatility multipliers",
+    "common value-weighted long/short decile portfolio adapter"
+  ],
+  "analysts": {
+    "market": ["ret_12_1", "ret_6_1", "prc_highprc_252d", "rvol_21d"],
+    "social": ["ret_1_0", "rmax5_21d", "turnover_126d"],
+    "news": ["niq_su", "saleq_su", "ret_1_0"],
+    "fundamental": ["be_me", "gp_at", "ocf_at", "f_score", "o_score"]
+  },
+  "debate_policy": {
+    "prehistory_formation_start": "1994-07-31",
+    "common_formation_start": "1999-07-31",
+    "reflection_window_months": 60,
+    "minimum_rankic_months": 24,
+    "analyst_reliability": "softmax_of_trailing_signed_rankic",
+    "softmax_temperature": 10.0,
+    "bull_case": "reliability_weighted_positive_analyst_evidence",
+    "bear_case": "reliability_weighted_negative_analyst_evidence",
+    "trader_synthesis": "bull_case_plus_bear_case",
+    "risk_multipliers": {"risk_seeking": 1.25, "neutral": 1.0, "conservative": 0.75},
+    "manager_risk_choice": "conservative_in_top_market_volatility_tercile_risk_seeking_in_bottom_tercile_else_neutral",
+    "final_common_returns_used_for_policy_choice": false
+  },
+  "portfolio_adapter": "The final manager confidence is ranked within the frozen monthly top-1,000 universe and mapped to common value-weighted long/short deciles with 10 bp one-way cost; no unavailable native execution state is invented.",
+  "claim_boundary": "This is a researcher-authored TradingAgents-inspired numerical debate graph, not the paper-time LLM agents, tool reports, prompts, actions, portfolio engine, or native results."
+}
