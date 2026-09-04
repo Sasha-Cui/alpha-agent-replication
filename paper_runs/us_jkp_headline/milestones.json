@@ -10,8 +10,8 @@
     "completed_adapted": 1,
     "completed_partial": 6,
     "closed_not_evaluable": 27,
-    "in_progress": 0,
-    "queued": 35
+    "in_progress": 1,
+    "queued": 34
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -604,7 +604,7 @@
       "title": "Trade in Minutes! Rationality-Driven Agentic System for Quantitative Financial Trading",
       "system_ids": "SYS-TRADE-IN-MINUTES",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
