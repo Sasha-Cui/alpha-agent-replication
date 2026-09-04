@@ -69,7 +69,7 @@ def test_m014_primary_path_and_fixed_positive_result_are_exact():
     assert primary.average_traded_notional == pytest.approx(2.3127578152746384)
 
 
-def test_m014_ledger_closes_skips_discarded_m015_and_activates_m016():
+def test_m014_ledger_closes_and_remains_closed_as_the_study_advances():
     ledger = json.loads((ROOT / "paper_runs/us_jkp_in_spirit/milestones.json").read_text())
     rows = {row["milestone_id"]: row for row in ledger["milestones"]}
     assert rows["M014"]["status"] == "completed_in_spirit"
@@ -77,11 +77,10 @@ def test_m014_ledger_closes_skips_discarded_m015_and_activates_m016():
     assert rows["M014"]["monthly_returns_path"] and rows["M014"]["metrics_path"]
     assert rows["M014"]["verdict_path"]
     assert rows["M015"]["status"] == "discarded_structural_mismatch"
-    assert rows["M016"]["status"] == "in_progress_in_spirit"
-    assert ledger["progress_summary"] == {
-        "carried_common_evaluation": 17,
-        "completed_in_spirit": 11,
-        "discarded_structural_mismatch": 7,
-        "in_progress_in_spirit": 1,
-        "queued_in_spirit": 33,
+    assert rows["M016"]["status"] in {
+        "queued_in_spirit",
+        "in_progress_in_spirit",
+        "completed_in_spirit",
     }
+    assert ledger["progress_summary"]["completed_in_spirit"] >= 11
+    assert sum(ledger["progress_summary"].values()) == 69
