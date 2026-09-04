@@ -14,10 +14,10 @@
   "declared_inference_family_size": 69,
   "progress_summary": {
     "carried_common_evaluation": 17,
-    "completed_in_spirit": 3,
+    "completed_in_spirit": 4,
     "discarded_structural_mismatch": 7,
     "in_progress_in_spirit": 1,
-    "queued_in_spirit": 41
+    "queued_in_spirit": 40
   },
   "milestones": [
     {
@@ -124,15 +124,15 @@
       "strict_recipe_path": "paper_runs/us_jkp_headline/M006_finmem/recipe.json",
       "strict_verdict_path": "paper_runs/us_jkp_headline/M006_finmem/verdict.md",
       "strict_metrics_path": "",
-      "status": "in_progress_in_spirit",
+      "status": "completed_in_spirit",
       "fidelity_label": "in_spirit_reconstruction",
-      "recipe_path": "",
-      "implementation_path": "",
-      "run_manifest_path": "",
-      "monthly_returns_path": "",
-      "metrics_path": "",
-      "verdict_path": "",
-      "next_action": "Freeze one FinMem-inspired researcher reconstruction before inspecting its JKP result."
+      "recipe_path": "paper_runs/us_jkp_in_spirit/M006_finmem/recipe.json",
+      "implementation_path": "scripts/run_finmem_in_spirit.py",
+      "run_manifest_path": "paper_runs/us_jkp_in_spirit/M006_finmem/run_manifest.json",
+      "monthly_returns_path": "paper_runs/us_jkp_in_spirit/M006_finmem/primary_monthly_returns.csv",
+      "metrics_path": "paper_runs/us_jkp_in_spirit/M006_finmem/metrics.csv",
+      "verdict_path": "paper_runs/us_jkp_in_spirit/M006_finmem/verdict.md",
+      "next_action": "Closed with one frozen FinMem-inspired layered-memory policy; do not retune after its observed JKP result."
     },
     {
       "milestone_id": "M007",
@@ -162,7 +162,7 @@
       "strict_recipe_path": "paper_runs/us_jkp_headline/M008_alpha_gpt_2_0/recipe.json",
       "strict_verdict_path": "paper_runs/us_jkp_headline/M008_alpha_gpt_2_0/verdict.md",
       "strict_metrics_path": "",
-      "status": "queued_in_spirit",
+      "status": "in_progress_in_spirit",
       "fidelity_label": "in_spirit_reconstruction",
       "recipe_path": "",
       "implementation_path": "",
@@ -170,7 +170,7 @@
       "monthly_returns_path": "",
       "metrics_path": "",
       "verdict_path": "",
-      "next_action": "Wait until prior active reconstruction is committed."
+      "next_action": "Freeze one Alpha-GPT 2.0-inspired researcher reconstruction before inspecting its JKP result."
     },
     {
       "milestone_id": "M009",
