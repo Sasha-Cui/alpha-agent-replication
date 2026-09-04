@@ -1,0 +1,18 @@
+rank,milestone_id,title,raw_p_two_sided,holm_multiplier,holm_critical_value_5pct,holm_adjusted_p,holm_reject_5pct
+1,M033,GuruAgents: Emulating Wise Investors with Prompt-Guided LLM Agents,0.1724501417591505,69,0.0007246376811594203,1.0,False
+2,M001,GPT-Signal: Generative AI for Semi-automated Feature Engineering in the Alpha Research Process,0.173758587732177,68,0.0007352941176470588,1.0,False
+3,M068,Alpha-GPT: Human-AI Interactive Alpha Mining for Quantitative Investment,0.1759477242282815,67,0.0007462686567164179,1.0,False
+4,M062,XALPHA: A Memory-Driven AI Quant Researcher for Hypothesis-to-Code Alpha Discovery,0.3035864566417675,66,0.0007575757575757576,1.0,False
+5,M069,Automate Strategy Finding with LLM in Quant Investment,0.3556777364281139,65,0.0007692307692307692,1.0,False
+6,M044,FactorMiner: A Self-Evolving Agent with Skills and Experience Memory for Financial Alpha Discovery,0.3605655221302867,64,0.00078125,1.0,False
+7,M026,Chain-of-Alpha: Unleashing the Power of Large Language Models for Alpha Mining in Quantitative Trading,0.3626282238094692,63,0.0007936507936507937,1.0,False
+8,M041,Cognitive Alpha Mining via LLM-Driven Code-Based Evolution,0.370936190549776,62,0.0008064516129032258,1.0,False
+9,M059,AlphaMemo: Structured Search-Process Memory for Self-Evolving Alpha Mining Agents,0.3922916515944743,61,0.000819672131147541,1.0,False
+10,M043,QuantaAlpha: An Evolutionary Framework for LLM-Driven Alpha Mining,0.3971789753750115,60,0.0008333333333333334,1.0,False
+11,M021,Navigating the Alpha Jungle: An LLM-Powered MCTS Framework for Formulaic Factor Mining,0.4775634980562181,59,0.0008474576271186442,1.0,False
+12,M046,FactorEngine: A Program-level Knowledge-Infused Factor Mining Framework for Quantitative Investment,0.4820281672330727,58,0.0008620689655172415,1.0,False
+13,M064,AlphaSchema: Exploring the Space of Trading Semantics for LLM-Based Alpha Mining,0.5304538314694358,57,0.0008771929824561404,1.0,False
+14,M019,AlphaAgent: LLM-Driven Alpha Mining with Regularized Exploration to Counteract Alpha Decay,0.5739413478361304,56,0.0008928571428571429,1.0,False
+15,M023,EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models,0.7036446406222473,55,0.0009090909090909091,1.0,False
+16,M056,From Feedback Loops to Policy Updates: Reinforcement Fine-Tuning for LLM-Based Alpha Factor Discovery,0.8204567871047782,54,0.000925925925925926,1.0,False
+17,M007,QuantAgent: Seeking Holy Grail in Trading by Self-Improving Large Language Model,0.8575646930155906,53,0.0009433962264150943,1.0,False
