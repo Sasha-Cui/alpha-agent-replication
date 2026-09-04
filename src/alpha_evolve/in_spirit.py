@@ -291,3 +291,172 @@ def flag_trader_rolling_scores(
         diagnostic.update({f"critic_weight__{name}": float(value) for name, value in zip(["intercept", *features], critic)})
         diagnostics.append(diagnostic)
     return result, pd.DataFrame(diagnostics)
+
+
+ALPHAQUANTER_TOOL_COLUMNS = [
+    "market_technical",
+    "fundamental",
+    "sentiment_proxy",
+    "macro_proxy",
+]
+
+
+def alphaquanter_tool_scores(frame: pd.DataFrame) -> pd.DataFrame:
+    """Build four disclosed JKP tool-category substitutes without future returns."""
+    primitives = [
+        "ret_12_1",
+        "ret_6_1",
+        "rvol_21d",
+        "be_me",
+        "gp_at",
+        "f_score",
+        "ocf_at",
+        "ret_1_0",
+        "rmax5_21d",
+        "turnover_126d",
+        "beta_60m",
+    ]
+    missing = {"month", "weight", "ret", *primitives} - set(frame)
+    if missing:
+        raise ValueError(f"missing AlphaQuanter tool inputs: {sorted(missing)}")
+    ranked = cross_sectional_unit_rank(frame, primitives)
+    raw = pd.DataFrame(index=frame.index)
+    raw["market_technical"] = (
+        ranked["ret_12_1"] + ranked["ret_6_1"] - ranked["rvol_21d"]
+    ) / 3.0
+    raw["fundamental"] = (
+        ranked["be_me"] + ranked["gp_at"] + ranked["f_score"] + ranked["ocf_at"]
+    ) / 4.0
+    raw["sentiment_proxy"] = (
+        ranked["ret_1_0"] + ranked["rmax5_21d"] + ranked["turnover_126d"]
+    ) / 3.0
+    market_rows = []
+    for month, indices in frame.groupby("month", sort=True).groups.items():
+        weight = pd.to_numeric(frame.loc[indices, "weight"], errors="coerce")
+        current_return = pd.to_numeric(frame.loc[indices, "ret"], errors="coerce").fillna(0.0)
+        market_rows.append((pd.Timestamp(month), float(np.sum(weight * current_return) / weight.sum())))
+    market = pd.Series(dict(market_rows)).sort_index().rolling(6, min_periods=1).mean()
+    regime = frame["month"].map(np.sign(market).replace(0.0, 1.0))
+    raw["macro_proxy"] = ranked["beta_60m"].mul(regime.to_numpy()) - ranked["rvol_21d"]
+    ranked_tools = pd.concat([frame[["month"]], raw], axis=1)
+    return cross_sectional_unit_rank(ranked_tools, ALPHAQUANTER_TOOL_COLUMNS)
+
+
+def multi_horizon_monthly_return(
+    frame: pd.DataFrame,
+    *,
+    horizons: tuple[int, ...] = (1, 3, 6),
+    eta: float = 0.8,
+    return_column: str = "ret_total_lead1m",
+) -> pd.Series:
+    """Construct an exponentially blended forward label for past-only training."""
+    if not horizons or tuple(sorted(set(horizons))) != horizons or horizons[0] < 1:
+        raise ValueError("reward horizons must be unique increasing positive integers")
+    if not 0 < eta < 1:
+        raise ValueError("eta must lie strictly between zero and one")
+    missing = {"month", "security_id", return_column} - set(frame)
+    if missing:
+        raise ValueError(f"missing multi-horizon label inputs: {sorted(missing)}")
+    ordered = frame[["security_id", "month", return_column]].sort_values(
+        ["security_id", "month"], kind="mergesort"
+    )
+    if ordered.duplicated(["security_id", "month"]).any():
+        raise ValueError("duplicate security-month observations")
+    groups = ordered.groupby("security_id", sort=False)
+    labels = []
+    for horizon in horizons:
+        growth = np.ones(len(ordered))
+        valid = np.ones(len(ordered), dtype=bool)
+        for step in range(horizon):
+            shifted_return = groups[return_column].shift(-step)
+            shifted_month = groups["month"].shift(-step)
+            expected_month = ordered["month"] + pd.offsets.MonthEnd(step)
+            values = pd.to_numeric(shifted_return, errors="coerce").to_numpy(dtype=float)
+            step_valid = shifted_month.eq(expected_month).to_numpy() & np.isfinite(values) & (values > -1.0)
+            valid &= step_valid
+            growth *= np.where(step_valid, 1.0 + values, 1.0)
+        labels.append(pd.Series(np.where(valid, growth - 1.0, np.nan), index=ordered.index))
+    weights = np.asarray([eta**number for number in range(len(horizons))], dtype=float)
+    weights /= weights.sum()
+    matrix = np.column_stack([label.to_numpy() for label in labels])
+    blended = np.where(np.isfinite(matrix).all(axis=1), matrix @ weights, np.nan)
+    result = pd.Series(blended, index=ordered.index, name="multi_horizon_return")
+    return result.reindex(frame.index)
+
+
+def alphaquanter_rolling_scores(
+    frame: pd.DataFrame,
+    tools: pd.DataFrame,
+    reward: pd.Series,
+    *,
+    common_start: str,
+    reward_gap_months: int = 6,
+    training_months: int = 60,
+    ridge_penalty: float = 1.0,
+    maximum_selected_tools: int = 2,
+    decision_threshold: float = 0.015,
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Fit a past-only selective-tool policy to fully realized reward labels."""
+    if not tools.index.equals(frame.index) or not reward.index.equals(frame.index):
+        raise ValueError("AlphaQuanter tools, rewards, and frame must align")
+    if list(tools.columns) != ALPHAQUANTER_TOOL_COLUMNS:
+        raise ValueError("AlphaQuanter tool columns differ from the frozen recipe")
+    if not 1 <= maximum_selected_tools <= len(tools.columns):
+        raise ValueError("invalid number of selected tools")
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    diagnostics: list[dict[str, object]] = []
+    month_groups = frame.groupby("month", sort=False).groups
+    months = sorted(pd.Timestamp(month) for month in frame.loc[frame["month"] >= common_start, "month"].unique())
+    for month in months:
+        reward_cutoff = month - pd.offsets.MonthEnd(reward_gap_months)
+        eligible_months = sorted(
+            pd.Timestamp(value)
+            for value in frame.loc[frame["month"] <= reward_cutoff, "month"].unique()
+        )[-training_months:]
+        if len(eligible_months) != training_months:
+            raise ValueError(f"AlphaQuanter warm-up is incomplete at {month.date()}")
+        training = frame["month"].isin(eligible_months)
+        x = tools.loc[training].to_numpy(dtype=float)
+        y = reward.loc[training].to_numpy(dtype=float)
+        valid = np.isfinite(x).all(axis=1) & np.isfinite(y)
+        x, y = x[valid], y[valid]
+        if len(y) < 1000:
+            raise ValueError("too few finite AlphaQuanter reward observations")
+        design = np.column_stack([np.ones(len(x)), x])
+        penalty = np.eye(design.shape[1]) * ridge_penalty
+        penalty[0, 0] = 0.0
+        fitted = np.linalg.solve(design.T @ design + penalty, design.T @ y)
+        coefficient = pd.Series(fitted[1:], index=tools.columns)
+        selected = sorted(
+            tools.columns,
+            key=lambda name: (-abs(float(coefficient[name])), name),
+        )[:maximum_selected_tools]
+        sparse = coefficient.where(coefficient.index.isin(selected), 0.0)
+        indices = month_groups[month]
+        current_x = tools.loc[indices].to_numpy(dtype=float)
+        current = np.full(len(indices), np.nan)
+        current_valid = np.isfinite(current_x).all(axis=1)
+        current[current_valid] = fitted[0] + current_x[current_valid] @ sparse.to_numpy()
+        result.loc[indices] = current
+        predicted = design @ fitted
+        centered = y - y.mean()
+        r2 = 1.0 - float(np.sum((y - predicted) ** 2) / np.sum(centered**2))
+        diagnostics.append(
+            {
+                "formation_month": str(month.date()),
+                "training_start": str(eligible_months[0].date()),
+                "training_end": str(eligible_months[-1].date()),
+                "reward_ready_cutoff": str(reward_cutoff.date()),
+                "training_months": len(eligible_months),
+                "training_observations": len(y),
+                "ridge_r2": r2,
+                "selected_tool_1": selected[0],
+                "selected_tool_2": selected[1],
+                "buy_count": int(np.sum(current > decision_threshold)),
+                "sell_count": int(np.sum(current < -decision_threshold)),
+                "hold_count": int(np.sum(np.isfinite(current) & (np.abs(current) <= decision_threshold))),
+                "finite_current_scores": int(np.isfinite(current).sum()),
+                **{f"coefficient__{name}": float(sparse[name]) for name in tools.columns},
+            }
+        )
+    return result, pd.DataFrame(diagnostics)
