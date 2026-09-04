@@ -10,8 +10,8 @@
     "completed_adapted": 1,
     "completed_partial": 6,
     "closed_not_evaluable": 31,
-    "in_progress": 0,
-    "queued": 31
+    "in_progress": 1,
+    "queued": 30
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -672,7 +672,7 @@
       "title": "FinPos: A Position-Aware Trading Agent System for Real Financial Markets",
       "system_ids": "SYS-FIN-POS",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
