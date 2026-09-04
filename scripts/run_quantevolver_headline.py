@@ -4,11 +4,13 @@ from __future__ import annotations
 
 import argparse
 from datetime import date, datetime, timezone
+import fcntl
 import hashlib
 import json
 import os
 from pathlib import Path
 import platform
+import socket
 import subprocess
 import sys
 
@@ -292,7 +294,36 @@ def main() -> None:
     os.umask(0o077)
     root = args.root.resolve()
     output = args.output if args.output.is_absolute() else root / args.output
-    evaluate(root, output.resolve())
+    private_dir = root / "artifacts/us_jkp_headline/v1"
+    private_dir.mkdir(parents=True, exist_ok=True)
+    os.chmod(private_dir, 0o700)
+    with (private_dir / "operation.lock").open("a+") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        status = {
+            "state": "running",
+            "phase": "run",
+            "milestone_id": "M056",
+            "pid": os.getpid(),
+            "hostname": socket.gethostname(),
+            "slurm_job_id": os.environ.get("SLURM_JOB_ID"),
+            "started_at_utc": datetime.now(timezone.utc).isoformat(),
+            "command": [sys.executable, str(Path(__file__).resolve()), *sys.argv[1:]],
+        }
+        operation_path = private_dir / "operation.json"
+        write_json(operation_path, status)
+        try:
+            evaluate(root, output.resolve())
+        except BaseException as error:
+            status.update(
+                state="failed",
+                finished_at_utc=datetime.now(timezone.utc).isoformat(),
+                error_type=type(error).__name__,
+                error=str(error),
+            )
+            write_json(operation_path, status)
+            raise
+        status.update(state="complete", finished_at_utc=datetime.now(timezone.utc).isoformat())
+        write_json(operation_path, status)
 
 
 if __name__ == "__main__":
