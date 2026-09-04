@@ -48,9 +48,12 @@ def test_m003_in_spirit_recipe_pins_one_chronological_symbolic_search():
     assert len(recipe["invented_elements"]) >= 5
 
 
-def test_m003_is_active_and_has_no_result_before_implementation_freeze():
+def test_m003_recipe_remains_pinned_after_the_ledger_advances():
     ledger = json.loads((ROOT / "paper_runs/us_jkp_in_spirit/milestones.json").read_text())
     milestone = next(row for row in ledger["milestones"] if row["milestone_id"] == "M003")
-    assert milestone["status"] == "in_progress_in_spirit"
-    for name in ("run_manifest.json", "monthly_returns.csv", "metrics.csv", "verdict.md"):
-        assert not (OUTPUT / name).exists()
+    assert milestone["status"] in {"in_progress_in_spirit", "completed_in_spirit"}
+    recipe = json.loads((OUTPUT / "recipe.json").read_text())
+    assert recipe["status"] == "frozen_before_jkp_result"
+    if milestone["status"] == "completed_in_spirit":
+        manifest = json.loads((OUTPUT / "run_manifest.json").read_text())
+        assert manifest["recipe_sha256"] == digest(OUTPUT / "recipe.json")

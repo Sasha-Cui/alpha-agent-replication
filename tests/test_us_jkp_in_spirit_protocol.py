@@ -23,15 +23,14 @@ def test_in_spirit_ledger_preserves_strict_study_and_has_one_active_case():
     assert ledger["strict_ledger_sha256"] == digest(ROOT / "paper_runs/us_jkp_headline/milestones.json")
     assert ledger["strict_final_manifest_sha256"] == digest(ROOT / "paper_runs/us_jkp_headline/final_manifest.json")
     assert ledger["benchmark_contract_sha256"] == digest(ROOT / ledger["benchmark_contract_path"])
-    assert ledger["progress_summary"] == {
-        "carried_common_evaluation": 17,
-        "completed_in_spirit": 0,
-        "discarded_structural_mismatch": 7,
-        "in_progress_in_spirit": 1,
-        "queued_in_spirit": 44,
-    }
+    progress = ledger["progress_summary"]
+    assert progress["carried_common_evaluation"] == 17
+    assert progress["discarded_structural_mismatch"] == 7
+    assert progress["completed_in_spirit"] + progress["in_progress_in_spirit"] + progress["queued_in_spirit"] == 45
+    assert sum(progress.values()) == 69
+    assert progress["in_progress_in_spirit"] in {0, 1}
     active = [row for row in rows if row["status"] == "in_progress_in_spirit"]
-    assert [row["milestone_id"] for row in active] == ["M003"]
+    assert len(active) == progress["in_progress_in_spirit"]
 
 
 def test_only_seven_structural_mismatches_are_discarded():
