@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "status": "closed_not_evaluable",
+  "milestone_id": "M053",
+  "canonical_work_id": "CensusArxiv260505580",
+  "title": "AlphaCrafter: Harnessing Multi-Agent Workflows for Cross-Sectional Quantitative Trading",
+  "central_strategy": "Three LLM miner agents iteratively create and refine executable alpha factors, a screener evaluates and selects their factor pools, and an LLM trader consumes the selected factors and market tools to produce daily CSI 300 or S&P 500 trades under native exchange and transaction-cost rules.",
+  "paper_source": {
+    "version": "v2",
+    "url": "https://arxiv.org/abs/2605.05580v2",
+    "official_pdf_sha256": "50fac266012726355d34b64788c529adf09c8574a751395d55858640dc1a5e67",
+    "source_archive_sha256": "36a34ecb7ef524d8d7efe4a67002e726a0345bc6c3f5414325dd18a080829b84"
+  },
+  "attributable_repository": {
+    "url": "https://github.com/NJU-LINK/AlphaCrafter",
+    "attribution": "NJU-LINK author-organization repository with the exact paper citation, author list, and matching three-role architecture; the paper does not directly link it.",
+    "head_sha": "c6dbc1ba4e0a4ecbc3ea1454c5290dbea4b36b0d",
+    "license": "MIT",
+    "files": 79
+  },
+  "reused_audit_evidence": {
+    "manifest": "paper_runs/paper_replication_audits/alphacrafter/manifest.json",
+    "manifest_sha256": "eac24b6e22142449b795c2ba6033403e8072be6f1a7daf84cf4f29832cd0e897",
+    "source_provenance_sha256": "410239f03cc819b19d5360c7d957e670f26d6db1b44e15c346d79db1b27ed006",
+    "release_execution_audit_sha256": "1bbc435bee29ce580a0802738821e109c6550cae4dd971d2db2c383c2c996a18",
+    "registered_model_override_execution_sha256": "ab2fe4d081a424babc899d41f199750a702b20b9281d0b91f82bc08432b6ceb7",
+    "native_component_checks_passed": 6,
+    "v2_published_numeric_result_units": 304,
+    "v2_native_numeric_units_regenerated": 0,
+    "v2_empirical_panels": 14,
+    "v2_native_empirical_panels_regenerated": 0
+  },
+  "current_release_check": {
+    "checked_at_utc": "2026-09-04",
+    "default_branch": "main",
+    "current_head_sha": "c6dbc1ba4e0a4ecbc3ea1454c5290dbea4b36b0d",
+    "current_head_matches_audited_release": true,
+    "repository_pushed_at_utc": "2026-07-29T04:09:16Z",
+    "branch_count": 1,
+    "tag_count": 0,
+    "release_count": 0,
+    "new_factor_pool_or_result_artifact_found": false
+  },
+  "monthly_jkp_assessment": {
+    "preserved_components": [
+      "Native A-share buy, T+1 unlock, sell, and 2-bp commission behavior executes on controlled data.",
+      "Native U.S. short, cover, margin, and 1-bp commission behavior executes on controlled data.",
+      "The released evaluation component reproduces its total-return and maximum-drawdown contract on controlled NAVs."
+    ],
+    "required_but_missing": [
+      "The paper's point-in-time S&P 500 memberships and stock, fundamental, statement, and news research snapshots.",
+      "Paper-time GPT, Claude, and Gemini requests/responses, model parameters, seeds, and ten-trial records.",
+      "The mined candidate and selected factor pools, factor values, screener decisions, and trader state.",
+      "Security-date actions, orders, fills, holdings, NAV/return arrays, brokerage records, and result generators.",
+      "Baseline implementations and the complete U.S. routing/configuration needed to identify the reported comparison."
+    ],
+    "why_components_are_not_a_signal": "The exchange, fee, and metric components validate accounting mechanics but produce no security score or formation-date holdings without the missing mined factors and trader decisions.",
+    "why_launcher_is_not_operational": "The released config requests gpt-5.3-codex while its registries contain only gpt-5 and gpt-5.2, and the launcher injects A-share instructions/tools even though U.S. components exist.",
+    "why_override_probe_is_not_a_replication": "A copied-tree gpt-5.2 override initialized five native agents and attempted four model requests, but received zero responses and does not match the paper's GPT/Claude/Gemini experiment protocol.",
+    "why_jkp_cannot_fill_the_gap": "JKP can supply the common monthly U.S. universe and accounting characteristics, but it cannot infer the unreleased generated factor pool or stateful LLM trader actions. Choosing a generic JKP factor would replace AlphaCrafter's defining workflow.",
+    "why_historical_proxy_is_excluded": "The older alphacrafter_full_stack_multifactor study is a researcher-authored motif translation without AlphaCrafter factor, action, or result lineage and remains secondary evidence only."
+  },
+  "classification": "closed_not_evaluable",
+  "closure_rule": "Do not promote component fixtures, synthetic fork display metrics, a model-substituted no-response probe, or a generic factor proxy to AlphaCrafter. Reopen for an attributable factor pool, action/holding ledger, or complete paper-result release."
+}

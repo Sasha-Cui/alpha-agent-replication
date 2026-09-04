@@ -6,11 +6,11 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 52,
+    "closed": 53,
     "completed_adapted": 1,
     "completed_partial": 10,
-    "closed_not_evaluable": 41,
-    "in_progress": 1,
+    "closed_not_evaluable": 42,
+    "in_progress": 0,
     "queued": 16
   },
   "terminal_statuses": [
@@ -910,16 +910,16 @@
       "title": "AlphaCrafter: Harnessing Multi-Agent Workflows for Cross-Sectional Quantitative Trading",
       "system_ids": "SYS-ALPHA-CRAFTER",
       "prior_evidence_route": "public_code_available",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M053_alphacrafter/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier and current paper/source; identify AlphaCrafter's central released factor pool or strongest source-produced factor before new JKP outcome inspection, then execute the strongest defensible monthly adaptation or close with concrete evidence.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M053_alphacrafter/verdict.md",
+      "evaluated_scope": "No common-task return: the substantive attributable release executes exchange, fee, and metric components, but it releases no paper stock/news inputs, selected factor pool, model outputs, actions, holdings, or result arrays; the default launcher is internally broken and misroutes the U.S. path.",
+      "next_action": "Closed. Preserve native component checks separately; do not promote a no-response model override, synthetic fork displays, or the older motif proxy to AlphaCrafter. Reopen for an attributable factor/action/holding release.",
+      "closure_reason": "The current source remains at the fully audited head with no tags/releases or result artifacts. Components cannot produce a security score without the missing generated factor pool and stateful trader outputs, while choosing a generic JKP factor would replace the central multi-agent workflow."
     },
     {
       "milestone_id": "M054",

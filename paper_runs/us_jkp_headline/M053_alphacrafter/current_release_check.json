@@ -1,0 +1,15 @@
+{
+  "checked_at_utc": "2026-09-04",
+  "paper_version": "v2",
+  "paper_pdf_sha256": "50fac266012726355d34b64788c529adf09c8574a751395d55858640dc1a5e67",
+  "repository": "NJU-LINK/AlphaCrafter",
+  "default_branch": "main",
+  "audited_head_sha": "c6dbc1ba4e0a4ecbc3ea1454c5290dbea4b36b0d",
+  "current_head_sha": "c6dbc1ba4e0a4ecbc3ea1454c5290dbea4b36b0d",
+  "current_head_matches_audited_release": true,
+  "repository_pushed_at_utc": "2026-07-29T04:09:16Z",
+  "branch_count": 1,
+  "tag_count": 0,
+  "release_count": 0,
+  "new_factor_pool_or_result_artifact_found": false
+}
