@@ -6,11 +6,11 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 34,
+    "closed": 35,
     "completed_adapted": 1,
     "completed_partial": 6,
-    "closed_not_evaluable": 27,
-    "in_progress": 1,
+    "closed_not_evaluable": 28,
+    "in_progress": 0,
     "queued": 34
   },
   "terminal_statuses": [
@@ -604,16 +604,16 @@
       "title": "Trade in Minutes! Rationality-Driven Agentic System for Quantitative Financial Trading",
       "system_ids": "SYS-TRADE-IN-MINUTES",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M035_timi/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M035_timi/verdict.md",
+      "evaluated_scope": "No common-task return: TiMi's central object is an agent-generated, simulation-optimized minute-level grid bot, but no parameterized bot, prompts, feedback history, point-in-time input, execution record, or currently recoverable official supplement is available.",
+      "next_action": "Closed, but reopen if the official OpenReview supplement or attributable implementation becomes accessible. Do not promote the old narrative factor, arbitrary Algorithm 1 parameters, unaffiliated adaptations, or static paper outputs.",
+      "closure_reason": "Every value controlling pair selection, grid prices, quantities, risk scaling and exits is undisclosed, as are the generated bot and optimization lineage. Monthly JKP cannot represent the intraday funding/order/stop state, so any run would be a newly designed strategy."
     },
     {
       "milestone_id": "M036",

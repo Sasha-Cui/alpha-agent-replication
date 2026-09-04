@@ -1,0 +1,21 @@
+{
+  "milestone_id": "M035",
+  "status": "bounded_common_task_feasibility_complete",
+  "reused_evidence": [
+    "paper_runs/paper_replication_audits/timi/README.md",
+    "paper_runs/paper_replication_audits/timi/manifest.json",
+    "paper_runs/paper_replication_audits/timi/source_provenance.json",
+    "paper_runs/paper_replication_audits/timi/method_specification_audit.csv",
+    "paper_runs/paper_replication_audits/timi/internal_consistency_audit.csv",
+    "/nfs/roberts/scratch/pi_btk22/zc362/timi_audit/timi-v2.pdf",
+    "/nfs/roberts/scratch/pi_btk22/zc362/timi_audit/source-v2/sections/method.tex",
+    "/nfs/roberts/scratch/pi_btk22/zc362/timi_audit/source-v2/sections/experiments.tex"
+  ],
+  "bounded_checks": [
+    "Re-read the v2 TeX method/experiment source and visually inspected original-paper pages for the four-agent chain, Algorithm 1, concrete grid deployment, models/markets, and transaction-cost appendix.",
+    "Rechecked the exact official OpenReview supplement through both web and direct endpoints; the logical path remains blocked/challenged with HTTP 403 and the immutable ZIP path remains HTTP 404.",
+    "Separated the optimized generated bot from technical-indicator motifs and verified that every strategy-determining grid, allocation, exit and optimization value remains unavailable.",
+    "Retained the two later public engineering adaptations as unaffiliated and rejected them as native TiMi evidence."
+  ],
+  "outcome": "The original paper exposes the shape of a volatility-qualified grid bot but not a single parameterized bot or the agent/feedback process that generated it. Monthly JKP also lacks the required order-level state. No attributed common-task return can be produced without designing a new strategy."
+}

@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M035",
+  "canonical_work_id": "CensusArxiv251004787",
+  "paper": "Trade in Minutes! Rationality-Driven Agentic System for Quantitative Financial Trading",
+  "paper_url": "https://arxiv.org/abs/2510.04787v2",
+  "paper_pdf_sha256": "2fb945c939b595a2a86af040b667079d2528e00996fef3c9fd6e7b3268f52adb",
+  "paper_source_sha256": "25b7014a6340b1cea08a5a9740c26ea0c3b2dbeb6c1e95c2a32f2252ca5d4c50",
+  "accepted_record_url": "https://openreview.net/forum?id=ROEwZAxqyS",
+  "openreview_id": "ROEwZAxqyS",
+  "headline_strategy": "TiMi uses macro-analysis, pair-specific strategy-adaptation, bot-evolution, and feedback-reflection agents offline to generate and hierarchically optimize a programmatic minute-level grid bot, then deploys the frozen bot with volatility-qualified pairs, layered limit orders, and progressive risk exits.",
+  "headline_selection_basis": "Sections 2-3 and Algorithm 1 identify the optimized generated bot B*—not any one technical indicator—as the proposed policy-deployment-optimization chain and concrete headline strategy.",
+  "paper_configuration": {
+    "agents": ["macro analysis", "strategy adaptation", "bot evolution", "feedback reflection"],
+    "semantic_model": "DeepSeek-V3",
+    "code_model": "Qwen2.5-Coder-32B-Instruct",
+    "reasoning_model": "DeepSeek-R1",
+    "deployment_frequency": "minute-level",
+    "markets": ["CME stock-index futures", "Binance cryptocurrencies"],
+    "reported_supported_pairs": 213,
+    "entry_order_type": "LIMIT",
+    "position_orders": ["TAKE_PROFIT", "STOP"],
+    "risk_exit_order_type": "MARKET",
+    "pair_filter": "volume >= V_req and volatility >= Phi_req",
+    "grid_entry_price": "P_recent * (1 +/- Phi_p) ** M_P[i]",
+    "grid_quantity": "A * M_Q[i] * c_m * c_f",
+    "progressive_exit": "P_entry * (1 +/- Phi) ** H[i]"
+  },
+  "undisclosed_required_values_and_objects": [
+    "runtime prompt templates, filled calls, responses and generated bot source",
+    "execution intervals T1 and volatility lookback T2",
+    "minimum volume V_req and volatility Phi_req",
+    "capital allocation A and position divisor lambda",
+    "price ladder M_P and quantity ladder M_Q",
+    "market-cap, funding-rate and entry scaling coefficients c_m, c_f and c_e",
+    "profit/loss threshold vector H",
+    "the macro strategy set, pair-specific adaptations and initial parameters",
+    "simulation feedback, risk scenarios, constraint matrices and optimization histories",
+    "the complete point-in-time 213-pair universe and frozen K-line/news inputs",
+    "fees, funding schedules, slippage observations, orders, fills, positions and return arrays",
+    "baseline configurations, random seeds, repeat counts and uncertainty outputs"
+  ],
+  "official_supplement": {
+    "listed": true,
+    "immutable_path": "/attachment/a7f4111f00a10d307b4ee29926741553acafbb99.zip",
+    "audit_snapshot_logical_status": 403,
+    "audit_snapshot_immutable_status": 404,
+    "rechecked_date_utc": "2026-09-04",
+    "web_logical_result": "OpenReview browser-verification challenge",
+    "direct_logical_status": 403,
+    "direct_immutable_status": 404,
+    "recovered": false,
+    "interpretation": "The supplement is known to have been listed but remains inaccessible; it is not claimed absent or inspected."
+  },
+  "released_component_credit": {
+    "official_versions": 2,
+    "official_and_rebuilt_pages_visually_checked": 33,
+    "current_empirical_numeric_units": 349,
+    "current_empirical_figure_panels": 8,
+    "native_numeric_units_regenerated": 0,
+    "native_empirical_panels_regenerated": 0,
+    "later_unaffiliated_adaptations_reviewed": 2
+  },
+  "material_paper_findings": [
+    "Figure 6 reports 61 OM and 45 SIGN orders while v2 prose reports 28 and 39.",
+    "The printed ARR equation is total return rather than an annualized return.",
+    "V2 acknowledges potential posterior information in LLM baselines without timestamped provenance.",
+    "Several live baseline coverage values are estimates from partial experiments.",
+    "The v2 backtest and ablations were added without raw run lineage."
+  ],
+  "rejected_substitutes": [
+    {
+      "route": "Use the previous momentum/liquidity/volatility JKP characteristic score",
+      "reason": "Its characteristics and signs are a researcher-created narrative motif and do not execute the generated TiMi bot, grid parameters, optimization, or feedback loop."
+    },
+    {
+      "route": "Choose arbitrary values for Algorithm 1",
+      "reason": "Every parameter that determines pair selection, order levels, position size and exits is undisclosed; choosing them would create a new grid strategy."
+    },
+    {
+      "route": "Use qOeOp/vibe-trading or cajias/nautilus-trading",
+      "reason": "Both implementations appeared after the paper under authors with no paper-author identity match and cannot establish experiment lineage."
+    },
+    {
+      "route": "Treat paper tables or transaction images as returns",
+      "reason": "They contain displayed summaries without orders, fills, portfolio paths or underlying arrays."
+    },
+    {
+      "route": "Translate the futures/crypto minute grid directly to monthly U.S. stocks",
+      "reason": "The grid depends on intraday OHLC, funding, liquidity, maker fees, order-book execution and risk exits that monthly JKP does not represent."
+    }
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/timi",
+  "result_policy": "No thematic factor proxy, arbitrary grid parameterization, unaffiliated implementation, static paper output, or frequency/market substitution is entered as a TiMi monthly return. Reopen if the official supplement or attributable implementation becomes recoverable.",
+  "status": "closed_not_evaluable"
+}
