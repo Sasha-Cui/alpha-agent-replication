@@ -10,8 +10,8 @@
     "completed_adapted": 1,
     "completed_partial": 6,
     "closed_not_evaluable": 30,
-    "in_progress": 0,
-    "queued": 32
+    "in_progress": 1,
+    "queued": 31
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -655,7 +655,7 @@
       "title": "P1GPT: a multi-agent LLM workflow module for multi-modal financial information analysis",
       "system_ids": "SYS-P1GPT",
       "prior_evidence_route": "public_code_available",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
