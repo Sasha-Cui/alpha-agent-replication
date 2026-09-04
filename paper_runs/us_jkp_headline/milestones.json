@@ -10,8 +10,8 @@
     "completed_adapted": 1,
     "completed_partial": 10,
     "closed_not_evaluable": 38,
-    "in_progress": 0,
-    "queued": 20
+    "in_progress": 1,
+    "queued": 19
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -859,7 +859,7 @@
       "title": "Designing Agentic AI-Based Screening for Portfolio Investment",
       "system_ids": "SYS-AGENTIC-AI-SCREENING",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
@@ -867,7 +867,7 @@
       "metrics_path": "",
       "verdict_path": "",
       "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
+      "next_action": "Reuse the existing dossier and current paper/source; identify the central agentic screening portfolio rule and any executable score before new JKP outcome inspection, then run the strongest defensible monthly adaptation or close with concrete evidence. After M050 closure, run the scheduled full Python 3.9/3.12 release gate before activating M051.",
       "closure_reason": ""
     },
     {
