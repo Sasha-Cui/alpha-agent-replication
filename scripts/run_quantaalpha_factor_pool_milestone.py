@@ -237,6 +237,10 @@ def load_source_factors(factor_path: Path) -> list[dict[str, str]]:
     return rows
 
 
+def formation_window_mask(metadata: pd.DataFrame, start: str, end: str) -> np.ndarray:
+    return metadata.month.between(pd.Timestamp(start), pd.Timestamp(end)).to_numpy()
+
+
 def load_monthly_panel(path: Path, settings: dict) -> tuple[pd.DataFrame, pd.DataFrame]:
     warmup = pd.Timestamp(settings["formation_start"]) - pd.offsets.MonthEnd(260)
     end = pd.Timestamp(settings["realized_return_end"])
@@ -271,7 +275,8 @@ def compute_factor_panel(
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     parser, functions = install_author_factor_modules(source_root)
     formation_start = pd.Timestamp(metadata.attrs["formation_start"])
-    formation_mask = metadata.month.ge(formation_start).to_numpy()
+    formation_end = pd.Timestamp(metadata.attrs["formation_end"])
+    formation_mask = formation_window_mask(metadata, str(formation_start), str(formation_end))
     target_index = metadata.index[formation_mask]
     values: dict[str, np.ndarray] = {}
     coverage_rows = []
@@ -542,6 +547,10 @@ def evaluate(root: Path, output: Path, source_root: Path, factor_json: Path) -> 
     settings = contract["starting_settings_retained_from_corrected_us_study"]
     bars, metadata = load_monthly_panel(Path(contract["data"]["path"]), settings)
     metadata.attrs["formation_start"] = settings["formation_start"]
+    metadata.attrs["formation_end"] = settings["formation_end"]
+    target = metadata.loc[formation_window_mask(metadata, settings["formation_start"], settings["formation_end"])]
+    if target.month.nunique() != 305 or target.groupby("month").size().min() != 1000:
+        raise ValueError("monthly common universe is incomplete before factor computation")
     factors = load_source_factors(factor_json)
     features, coverage = compute_factor_panel(bars, metadata, factors, source_root)
     formed = metadata.loc[features.index].copy()

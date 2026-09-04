@@ -71,6 +71,17 @@ def test_source_order_cross_sectional_preprocessing_is_deterministic():
     np.testing.assert_allclose(result["y"], [-0.5766666666666667, 1.73, 0.5766666666666667])
 
 
+def test_formation_window_excludes_the_realization_only_terminal_month():
+    metadata = pd.DataFrame(
+        {"month": pd.to_datetime(["1999-07-31", "2024-11-30", "2024-12-31"])}
+    )
+    assert MODULE.formation_window_mask(metadata, "1999-07-31", "2024-11-30").tolist() == [
+        True,
+        True,
+        False,
+    ]
+
+
 def test_topk_dropout_preserves_incumbents_except_bottom_replacements():
     positions = {f"s{i}": 0.02 for i in range(50)}
     scores = {f"s{i}": float(i) for i in range(55)}
