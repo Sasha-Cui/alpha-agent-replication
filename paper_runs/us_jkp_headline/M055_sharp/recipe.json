@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "status": "closed_not_evaluable",
+  "milestone_id": "M055",
+  "canonical_work_id": "CensusArxiv260506822",
+  "title": "SHARP: A Self-Evolving Human-Auditable Rubric Policy for Financial Trading Agents",
+  "central_strategy": "Starting from a structured condition-action rubric, an LLM analyst predicts each stock's return and confidence and reports activated rule IDs. Five rounds repeatedly backtest the rubric, attribute the 20 worst portfolio days to rule failures, propose at most three atomic edits, and accept candidates through a one-month validation gate. The best frozen rubric scores stocks by predicted return times confidence for a daily equal-weight dollar-neutral 5-long/5-short next-open portfolio.",
+  "paper_source": {
+    "version": "v1",
+    "url": "https://arxiv.org/abs/2605.06822v1",
+    "official_pdf_sha256": "8a53b6ed04d0de7852e4f5311db89df2c2f4457bd3cda23ae7fcf3baf4485394",
+    "source_archive_sha256": "4045a5dc53bbc2612b610e2a25e7a947ca3a5e8681af915b6528e3a0875ed56a",
+    "source_file_count": 14
+  },
+  "reused_audit_evidence": {
+    "manifest": "paper_runs/paper_replication_audits/sharp/manifest.json",
+    "manifest_sha256": "3a5de51116e4310588eeca7aa3aad2cc43c3c7b6c22f615333f83b72e6b10da2",
+    "source_provenance_sha256": "1a427974b03a014c9c6ef870edea6ad01895332c81b906b37a827e9138c49c56",
+    "method_specification_sha256": "daff478a504cc62e924fe17434c43d04d870e590270070c192f560603b283c54",
+    "component_execution_sha256": "139ab0a7fbacc93d1cb792ecc9293ff9a05b71cbe63d5d4b2f716fd8f4eaf4e1",
+    "release_search_sha256": "da9dd2df2ce1d0ce3e3d1a1e2782521ea382d75bedb7399cac574c2cc5cf08c9",
+    "paper_derived_components_passing_controlled_checks": 7,
+    "active_quantitative_table_cells": 210,
+    "active_empirical_figure_panels": 1,
+    "author_native_table_cells_regenerated": 0,
+    "author_native_empirical_panels_regenerated": 0
+  },
+  "current_release_check": {
+    "checked_at_utc": "2026-09-04",
+    "paper_contains_native_implementation_url": false,
+    "cited_dataset_repository": "xiwenc_msid/LLMforTrading-data",
+    "cited_dataset_repository_status": 404,
+    "cited_dataset_owner_status": 404,
+    "github_repository_exact_arxiv_id_matches": 0,
+    "github_repository_exact_title_matches": 0,
+    "unique_rule_code_matches": 1,
+    "unique_rule_code_attributable_matches": 0,
+    "attributable_implementation_dataset_or_result_found": false
+  },
+  "monthly_jkp_assessment": {
+    "preserved_components": [
+      "Composite score equals predicted return times confidence.",
+      "Cross-sectional ranked equal-weight dollar-neutral tail allocation and next-open return timing.",
+      "Printed entry-cost, metric, validation-gate, rubric-size, and mutation-bound mechanics."
+    ],
+    "required_but_missing": [
+      "The final evolved rubrics and complete evolution histories for every model, sector, and walk-forward window; only representative diffs are printed.",
+      "Exact analyst, attribution, and evolution prompts; schemas; temperatures; immutable requests/responses; and activated-rule traces.",
+      "The Yahoo rows and download/adjustment settings, Finnhub article cache, exact three split calendars, and all point-in-time market/news inputs.",
+      "The claimed 1-4 sector-specific initial rules, whose released-code location is unavailable, plus reconciliation of the paper's six-versus-seven shared-rule conflict.",
+      "Daily predicted returns/confidences, scores, weights, trades, turnover/cost events, returns, seeds, baselines, and result generator."
+    ],
+    "why_initial_rules_are_not_a_signal": "The six printed shared rules adjust an LLM's news-derived expected return or confidence; they do not create the base prediction. Sector rules are missing, and the paper also describes a conflicting seventh initial rule.",
+    "why_mechanics_are_not_sharp": "Deterministic component checks reproduce equations and accounting on synthetic fixtures but contain no author model output, evolved rubric, paper input, security score, or empirical return.",
+    "why_jkp_cannot_fill_the_gap": "JKP supplies monthly characteristics and returns, not the daily news-conditioned LLM predictions or the evolved symbolic policy. Replacing expected return with a generic momentum score would remove SHARP's attribution-guided rubric evolution.",
+    "why_reported_diffs_are_insufficient": "Representative before/after rule edits do not recover the complete frozen rubric, its model/window assignment, or the analyst actions required to score any formation date.",
+    "strongest_defensible_credit": "Seven paper-derived mechanics are verified as specification components only; none independently supplies a monthly cross-sectional score, so they cannot receive completed-partial strategy credit."
+  },
+  "classification": "closed_not_evaluable",
+  "closure_rule": "Do not promote printed rubric fragments, synthetic component checks, static/momentum baselines, or a generic JKP score to SHARP. Reopen for an attributable implementation, complete frozen rubrics and prompts, or a causal score/action ledger."
+}

@@ -1,0 +1,14 @@
+{
+  "checked_at_utc": "2026-09-04",
+  "paper_version": "v1",
+  "paper_pdf_sha256": "8a53b6ed04d0de7852e4f5311db89df2c2f4457bd3cda23ae7fcf3baf4485394",
+  "paper_contains_native_implementation_url": false,
+  "cited_dataset_repository": "xiwenc_msid/LLMforTrading-data",
+  "cited_dataset_repository_status": 404,
+  "cited_dataset_owner_status": 404,
+  "github_repository_exact_arxiv_id_matches": 0,
+  "github_repository_exact_title_matches": 0,
+  "unique_rule_code_matches": 1,
+  "unique_rule_code_attributable_matches": 0,
+  "attributable_implementation_dataset_or_result_found": false
+}
