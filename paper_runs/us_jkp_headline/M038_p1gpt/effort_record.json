@@ -1,0 +1,21 @@
+{
+  "milestone_id": "M038",
+  "status": "bounded_common_task_feasibility_complete",
+  "reused_evidence": [
+    "paper_runs/paper_replication_audits/p1gpt/README.md",
+    "paper_runs/paper_replication_audits/p1gpt/manifest.json",
+    "paper_runs/paper_replication_audits/p1gpt/public_component_execution.json",
+    "paper_runs/paper_replication_audits/p1gpt/mechanism_conformance.csv",
+    "paper_runs/paper_replication_audits/p1gpt/specification_gaps.csv",
+    "paper_runs/paper_replication_audits/p1gpt/internal_consistency.csv",
+    "/nfs/roberts/scratch/pi_btk22/zc362/p1gpt_audit/2510.23032v1.pdf",
+    "/nfs/roberts/scratch/pi_btk22/zc362/p1gpt_audit/source_v1.RDcRxI/Main.tex"
+  ],
+  "bounded_checks": [
+    "Re-read the original TeX and visually inspected paper pages for the five-layer workflow, simulation setup, Buy/Sell/Hold execution, result table and future-dated AAPL report content.",
+    "Separated author-output verification from policy reproduction: 498 rendered position values recover most displayed metrics but do not generate actions.",
+    "Reused the complete 36-commit/three-head web-client audit and verified the private main-llm/database boundary and missing paper daily prompt.",
+    "Rechecked all official branch heads, releases and tags on 2026-09-04; the public component remains unchanged and no backend or paper runner appeared."
+  ],
+  "outcome": "P1GPT's layered architecture and simple action accounting are described, but the agents, prompts, fusion and daily decision mapping are not. Author-rendered decisions cover only three 2025 assets and contain a direct lookahead counterexample, so no defensible common-task strategy can be formed."
+}

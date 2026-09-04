@@ -6,11 +6,11 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 37,
+    "closed": 38,
     "completed_adapted": 1,
     "completed_partial": 6,
-    "closed_not_evaluable": 30,
-    "in_progress": 1,
+    "closed_not_evaluable": 31,
+    "in_progress": 0,
     "queued": 31
   },
   "terminal_statuses": [
@@ -655,16 +655,16 @@
       "title": "P1GPT: a multi-agent LLM workflow module for multi-modal financial information analysis",
       "system_ids": "SYS-P1GPT",
       "prior_evidence_route": "public_code_available",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M038_p1gpt/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M038_p1gpt/verdict.md",
+      "evaluated_scope": "No common-task return: P1GPT's layered daily Buy/Sell/Hold workflow depends on unreleased agents, prompts, multimodal inputs, fusion and private model/database services; author-rendered positions verify outputs but do not define a transferable policy.",
+      "next_action": "Closed. Preserve the 11/12 output-cell verification and direct lookahead counterexample; do not promote thematic factors, rendered positions, the web client, baselines, or report inference to P1GPT.",
+      "closure_reason": "The only attributable code is a client for a private backend. No decision-generating implementation exists, the recovered positions cover only three 2025 assets, and one report contains future product information, so a 1999-2024 JKP policy cannot be formed or trusted."
     },
     {
       "milestone_id": "M039",

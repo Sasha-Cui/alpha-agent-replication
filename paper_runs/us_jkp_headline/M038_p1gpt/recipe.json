@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M038",
+  "canonical_work_id": "CensusArxiv251023032",
+  "paper": "P1GPT: a multi-agent LLM workflow module for multi-modal financial information analysis",
+  "paper_url": "https://arxiv.org/abs/2510.23032v1",
+  "paper_pdf_sha256": "de403cff8dd9a645d1499a7fe91b34bdbdcf2783bd9d7d362b079680e72337ad",
+  "paper_source_sha256": "91feaaf3828e49b2907d08203dda7c4c3560e4f999a4a39960f97ad673a63ce8",
+  "source_url": "https://github.com/P1GPT/web_demo",
+  "source_commit": "a88a3a7c731063d0d1ca7ac15946eb600753f358",
+  "headline_strategy": "Each trading day, P1GPT routes multimodal technical, fundamental, sector, news and search analyses through a five-layer planning/agent/integration workflow, produces one Buy/Sell/Hold decision with a rationale and risk assessment, and applies it to a single-stock long-only position at the same day's close.",
+  "headline_selection_basis": "Sections 3-5 and the original workflow figure identify the complete layered agent and integration decision—not an individual indicator or the five rule baselines—as P1GPT's proposed strategy.",
+  "paper_configuration": {
+    "layers": ["Input", "Planning", "Analysis", "Integration", "Decision"],
+    "specialized_agents": ["Controller", "Fundamental", "Technical", "Semiconductor", "News"],
+    "supporting_agents": ["External Search", "Revenue Forecasting", "Trend Analysis", "Investment Recommendation"],
+    "action_space": ["Buy", "Sell", "Hold"],
+    "frequency": "daily",
+    "native_assets": ["AAPL", "GOOGL", "TSLA"],
+    "evaluation_period": "2025-02-01 through 2025-09-30",
+    "buy_rule": "enter at same-day close",
+    "sell_rule": "exit any held position",
+    "hold_rule": "maintain existing position",
+    "transaction_costs": 0,
+    "leverage_claim": "none",
+    "position_scope": "one stock per run"
+  },
+  "missing_headline_objects": [
+    "all paper agent implementations and orchestration code",
+    "LLM/provider/model identities, checkpoints, temperatures, decoding and seeds",
+    "system, developer, tool and daily prompts for each role",
+    "structured message schemas, routing, fusion weights, confidence and conflict/retry rules",
+    "exact market/news/fundamental/search endpoints, query timestamps and frozen responses",
+    "decision time relative to market close and information publication",
+    "initial capital, Buy quantity, repeated-Buy behavior, cash/inventory and position constraints",
+    "daily requests, responses, independent decisions, positions and equity arrays",
+    "the result runner and metric/formatting implementation",
+    "replicates, uncertainty, significance and selection protocol"
+  ],
+  "public_component_credit": {
+    "relationship": "attributable P1GPT/Neurowatt multimodal web client",
+    "tracked_files": 38,
+    "python_files_compiled": 22,
+    "branch_heads_audited": 3,
+    "reachable_commits_audited": 36,
+    "client_prompt_cards": 5,
+    "paper_daily_prompt_present": false,
+    "private_model_endpoint": "http://main-llm:8090/invoke/",
+    "model_service_source_shipped": false,
+    "database_state_shipped": false,
+    "native_result_generation_pipeline_found": false
+  },
+  "live_source_recheck": {
+    "checked_date_utc": "2026-09-04",
+    "branch_heads": {
+      "main": "a88a3a7c731063d0d1ca7ac15946eb600753f358",
+      "develop": "8269b5e2c08481a0b93f202f6f8df64d619680a0",
+      "gke/test": "82a2437e8a025390bc1dd59abe7bcc2bfd91ca9a"
+    },
+    "heads_unchanged": true,
+    "tags": 0,
+    "releases": 0,
+    "forks": 1,
+    "new_backend_agent_or_paper_pipeline_found": false
+  },
+  "result_verification_credit": {
+    "published_table_cells": 72,
+    "published_p1gpt_cells": 12,
+    "author_plot_position_values_recovered": 498,
+    "p1gpt_cells_checked_from_author_outputs": 12,
+    "p1gpt_cells_matching_ordinary_rounding": 11,
+    "baseline_cells_independently_recalculated": 35,
+    "native_p1gpt_cells_regenerated_end_to_end": 0,
+    "native_agent_decisions_regenerated": 0
+  },
+  "material_findings": [
+    "The March 24, 2025 AAPL report discusses iPhone Air introduction/preorders and eSIM approval from September 2025, directly contradicting strict no-lookahead.",
+    "Author plots show integer exposure as high as seven despite the no-leverage claim.",
+    "P1GPT Sharpe cells require 251-day annualization while rule baselines jointly require 252 days.",
+    "The AAPL P1GPT Sharpe computes to 3.3877, which normally rounds to 3.39 rather than 3.38.",
+    "The same GOOGL close path cannot recover both printed buy-and-hold return and drawdown with one initial-capital value."
+  ],
+  "rejected_substitutes": [
+    {
+      "route": "Use the prior value/quality/momentum/low-risk JKP characteristic score",
+      "reason": "Its fields and signs are researcher-selected narrative themes and do not execute P1GPT's agents, multimodal inputs, fusion or decision layer."
+    },
+    {
+      "route": "Treat the recovered author plot positions as a common-task policy",
+      "reason": "They are outputs for three assets and one 2025 interval, not a rule that generates decisions for 1999-2024 U.S. stocks."
+    },
+    {
+      "route": "Run the public web client",
+      "reason": "It calls an unreleased private model service/database and lacks the paper daily prompt, agents, backtest and outputs."
+    },
+    {
+      "route": "Use B&H, MACD, SMA, KDJ+RSI or ZMR",
+      "reason": "They are comparison baselines; KDJ+RSI and ZMR are themselves underparameterized."
+    },
+    {
+      "route": "Infer decisions from the investment reports or table values",
+      "reason": "Narratives and aggregate metrics do not identify the missing daily policy and one report contains demonstrable future information."
+    }
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/p1gpt",
+  "result_policy": "No narrative factor proxy, author-output position path, incomplete web client, baseline, report inference, or backcast aggregate result is entered as a P1GPT monthly return.",
+  "status": "closed_not_evaluable"
+}
