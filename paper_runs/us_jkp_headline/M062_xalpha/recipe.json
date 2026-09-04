@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M062",
+  "canonical_work_id": "CensusArxiv260708332",
+  "paper": "XALPHA: A Memory-Driven AI Quant Researcher for Hypothesis-to-Code Alpha Discovery",
+  "paper_url": "https://arxiv.org/abs/2607.08332v2",
+  "headline_agent": "report-grounded memory routing, hypothesis-to-code factor evolution, selected factor library, Ridge fusion, and Qlib Top-50/drop-5 strategy",
+  "headline_component": "main-text representative elite evolved factor",
+  "component_selection_reason": "The complete factor library and fused model are withheld, but the main text singles out one representative elite factor, prints its complete executable code, reports positive signed train/test IC, and the paper audit verifies its output-name contract and prefix causality. This is the strongest source-selected executable partial before new JKP inspection.",
+  "candidate_id": "xalpha_regime_overshoot_pressure_decay_20d_ma20_vol20",
+  "source_function": "regime_overshoot_pressure_decay_20d_ma20_vol20",
+  "source_direction": "positive; the paper reports signed test IC = 0.0440 for this factor",
+  "source_mechanism": "Detect downside price overshoot relative to a 20-bar moving average, weight it by absolute return, accumulate pressure, choose fast or slow EWMA decay by a rolling volatility regime, and subtract the expanding 75th-percentile pressure benchmark.",
+  "paper_source": {
+    "version": "v2",
+    "official_pdf_sha256": "3ceda64711043a1a1cf18ea0d0f324f1b8dc74b71ac16c544551318f1a86e069",
+    "source_archive_sha256": "1403833bbcbc8d50f18822a23d8b2f2687be35476f205b0f34be7ce71e414e64"
+  },
+  "paper_audit": {
+    "manifest_path": "paper_runs/paper_replication_audits/xalpha/manifest.json",
+    "manifest_sha256": "d58aaec62818168b90b500ed579ae25d780c48d08178c156cfd431be9b00fa28",
+    "factor_execution_path": "paper_runs/paper_replication_audits/xalpha/factor_execution_audit.csv",
+    "factor_execution_sha256": "a0bf8b60c5e3085670ffba98f8bc66d7dd5489ca624874228933ffca0e3c71ed",
+    "main_factor_program_contract_passed": true,
+    "author_native_numeric_units_regenerated": 0,
+    "active_numeric_result_units": 138
+  },
+  "current_release_check": {
+    "checked_at_utc": "2026-09-04",
+    "paper_prompt_repository": "uwFengyuan/XAlpha_Prompt",
+    "paper_prompt_repository_status": 404,
+    "github_repository_exact_arxiv_id_matches": 0,
+    "github_repository_exact_title_matches": 0,
+    "attributable_full_pipeline_or_factor_library_release_found": false
+  },
+  "monthly_adapter": {
+    "bar_mapping": "One source day becomes one JKP month; the 20/60-bar windows and 5/15-span EWMA retain their integer values as months.",
+    "input": "Absolute JKP formation-month prc supplies close; source rolling, sample-volatility, EWMA, threshold, and expanding-quantile semantics are preserved.",
+    "universe": "Fixed formation-date largest 1,000 U.S. equities from the common JKP contract.",
+    "portfolio": "Researcher-supplied common value-weighted long/short deciles from the literal positive factor score.",
+    "costs": "Common 0/5/10/25/50 bp one-way cases with 10 bp primary.",
+    "missing_returns": "Fixed holdings re-accounted under zero and adverse-100 policies without reranking or reweighting.",
+    "history": "A 120-month pre-formation close buffer supports all nested windows; no future price or return enters a score."
+  },
+  "prior_outcomes_seen": true,
+  "mapping_was_frozen_before_prior_outcomes": false,
+  "inference_status": "exploratory_contaminated_mapping",
+  "preserved": [
+    "source-selected representative elite factor",
+    "complete main-text program",
+    "positive signed IC direction",
+    "rolling thresholds and min-periods",
+    "EWMA decay and expanding quantile"
+  ],
+  "adapted": [
+    "daily CSI300 bars to monthly U.S. JKP bars",
+    "CSI300 to common top-1,000 U.S. universe",
+    "common value-weighted decile portfolio",
+    "common costs, missing-return policies, and rolling JKP133 attribution"
+  ],
+  "not_claimed": [
+    "XALPHA memory routing",
+    "hypothesis generation or factor evolution",
+    "complete selected factor library",
+    "Ridge fusion",
+    "Qlib Top-50/drop-5 execution",
+    "native CSI300 data",
+    "paper result"
+  ],
+  "preclassified_scope": "completed_partial_if_full_common_path_succeeds",
+  "status": "fixed_before_new_common_benchmark_run"
+}

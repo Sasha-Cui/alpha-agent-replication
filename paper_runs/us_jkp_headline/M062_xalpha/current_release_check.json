@@ -1,0 +1,10 @@
+{
+  "checked_at_utc": "2026-09-04",
+  "paper_version": "v2",
+  "paper_pdf_sha256": "3ceda64711043a1a1cf18ea0d0f324f1b8dc74b71ac16c544551318f1a86e069",
+  "paper_prompt_repository": "uwFengyuan/XAlpha_Prompt",
+  "paper_prompt_repository_status": 404,
+  "github_repository_exact_arxiv_id_matches": 0,
+  "github_repository_exact_title_matches": 0,
+  "attributable_full_pipeline_or_factor_library_release_found": false
+}
