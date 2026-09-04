@@ -696,3 +696,180 @@ def alpha_gpt2_rolling_scores(
         }
     )
     return result, pd.DataFrame(diagnostics), catalog
+
+
+FINAGENT_MEMORY_QUERIES = {
+    "short": (0.25, 0.75),
+    "medium": (0.5, 0.5),
+    "long": (0.75, 0.25),
+}
+
+
+def finagent_rolling_scores(
+    frame: pd.DataFrame,
+    *,
+    common_start: str,
+    memory_window_months: int = 60,
+    top_k: int = 5,
+    training_months: int = 60,
+    ridge_penalty: float = 1.0,
+    high_level_weight: float = 0.25,
+    tool_weight: float = 0.25,
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Run a numeric FinAgent multimodal-memory-reflection reconstruction."""
+    primitives = [
+        "be_me",
+        "gp_at",
+        "ocf_at",
+        "ret_1_0",
+        "turnover_126d",
+        "ret_3_1",
+        "ret_6_1",
+        "ret_12_1",
+        "rvol_21d",
+        "prc_highprc_252d",
+    ]
+    missing = {"month", "security_id", "ret_exc_lead1m", *primitives} - set(frame)
+    if missing:
+        raise ValueError(f"missing FinAgent inputs: {sorted(missing)}")
+    if top_k < 1 or high_level_weight + tool_weight >= 1:
+        raise ValueError("invalid FinAgent memory or reflection weights")
+    ranked = cross_sectional_unit_rank(frame, primitives)
+    raw_modalities = pd.DataFrame(index=frame.index)
+    raw_modalities["market_intelligence"] = ranked[
+        ["be_me", "gp_at", "ocf_at", "ret_1_0", "turnover_126d"]
+    ].mean(axis=1)
+    raw_modalities["price_chart"] = pd.concat(
+        [
+            ranked["ret_1_0"],
+            ranked["ret_3_1"],
+            ranked["ret_6_1"],
+            -ranked["rvol_21d"],
+            ranked["prc_highprc_252d"],
+        ],
+        axis=1,
+    ).mean(axis=1)
+    modality_frame = pd.concat([frame[["month"]], raw_modalities], axis=1)
+    modalities = cross_sectional_unit_rank(modality_frame, list(raw_modalities))
+
+    memory_arrays = {name: np.full(len(frame), np.nan) for name in FINAGENT_MEMORY_QUERIES}
+    retrieved_arrays = {name: np.zeros(len(frame), dtype=int) for name in FINAGENT_MEMORY_QUERIES}
+    frame_months = pd.to_datetime(frame["month"])
+    month_number = (frame_months.dt.year * 12 + frame_months.dt.month).to_numpy(dtype=int)
+    outcomes_all = pd.to_numeric(frame["ret_exc_lead1m"], errors="coerce").to_numpy(dtype=float)
+    for indices in frame.groupby("security_id", sort=False).groups.values():
+        positions = frame.index.get_indexer(indices)
+        positions = positions[np.argsort(month_number[positions], kind="mergesort")]
+        months = month_number[positions]
+        lag = months[:, None] - months[None, :]
+        temporal = (lag >= 1) & (lag <= memory_window_months)
+        outcomes = outcomes_all[positions]
+        base_state = modalities.iloc[positions][["market_intelligence", "price_chart"]].to_numpy(dtype=float)
+        for query, query_weights in FINAGENT_MEMORY_QUERIES.items():
+            state = base_state * np.sqrt(np.asarray(query_weights))[None, :]
+            valid_state = np.isfinite(state).all(axis=1)
+            norms = np.linalg.norm(state, axis=1)
+            denominator = norms[:, None] * norms[None, :]
+            similarity = np.divide(
+                state @ state.T,
+                denominator,
+                out=np.zeros_like(denominator),
+                where=denominator > 0,
+            )
+            similarity = (np.clip(similarity, -1.0, 1.0) + 1.0) / 2.0
+            eligible = temporal & valid_state[:, None] & valid_state[None, :] & np.isfinite(outcomes)[None, :]
+            similarity = np.where(eligible, similarity, -np.inf)
+            for current_position in range(len(positions)):
+                candidates = np.flatnonzero(np.isfinite(similarity[current_position]))
+                if not len(candidates):
+                    continue
+                chosen = candidates[
+                    np.argsort(-similarity[current_position, candidates], kind="mergesort")
+                ][:top_k]
+                weights = similarity[current_position, chosen]
+                if weights.sum() <= 0:
+                    continue
+                global_position = positions[current_position]
+                memory_arrays[query][global_position] = float(np.average(outcomes[chosen], weights=weights))
+                retrieved_arrays[query][global_position] = len(chosen)
+    memories = pd.DataFrame(memory_arrays, index=frame.index)
+
+    tool_candidates = pd.DataFrame(
+        {
+            "medium_term_momentum": ranked["ret_12_1"],
+            "short_term_reversal": -ranked["ret_1_0"],
+            "price_breakout": ranked["prc_highprc_252d"],
+        },
+        index=frame.index,
+    )
+    tool_rankics = monthly_rankic(frame, tool_candidates)
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    diagnostics: list[dict[str, object]] = []
+    month_groups = frame.groupby("month", sort=False).groups
+    months = sorted(pd.Timestamp(month) for month in frame.loc[frame["month"] >= common_start, "month"].unique())
+    low_level_columns = ["market_intelligence", "price_chart", *FINAGENT_MEMORY_QUERIES]
+    low_level_inputs = pd.concat([modalities, memories], axis=1)[low_level_columns]
+    for month in months:
+        history = tool_rankics.loc[tool_rankics.index < month].tail(training_months)
+        if len(history) != training_months:
+            raise ValueError(f"FinAgent warm-up is incomplete at {month.date()}")
+        training = frame["month"].isin(history.index)
+        x = low_level_inputs.loc[training].to_numpy(dtype=float)
+        y = pd.to_numeric(frame.loc[training, "ret_exc_lead1m"], errors="coerce").to_numpy(dtype=float)
+        valid = np.isfinite(x).all(axis=1) & np.isfinite(y)
+        x, y = x[valid], y[valid]
+        if len(y) < 1000:
+            raise ValueError("too few finite FinAgent reflection observations")
+        design = np.column_stack([np.ones(len(x)), x])
+        penalty = np.eye(design.shape[1]) * ridge_penalty
+        penalty[0, 0] = 0.0
+        low_model = np.linalg.solve(design.T @ design + penalty, design.T @ y)
+        tool_mean, tool_quality = _rankicir(history, 24)
+        selected_tool = sorted(
+            tool_quality.dropna().index,
+            key=lambda name: (-float(tool_quality[name]), name),
+        )[0]
+        tool_orientation = 1.0 if tool_mean[selected_tool] > 0 else -1.0
+        indices = month_groups[month]
+        current_x = low_level_inputs.loc[indices].to_numpy(dtype=float)
+        low_prediction = np.full(len(indices), np.nan)
+        current_valid = np.isfinite(current_x).all(axis=1)
+        low_prediction[current_valid] = low_model[0] + current_x[current_valid] @ low_model[1:]
+        high_reflection = memories.loc[indices].mean(axis=1).to_numpy(dtype=float)
+        tool_signal = tool_orientation * tool_candidates.loc[indices, selected_tool].to_numpy(dtype=float)
+        component_frame = pd.DataFrame(
+            {
+                "month": month,
+                "low": low_prediction,
+                "high": high_reflection,
+                "tool": tool_signal,
+            },
+            index=indices,
+        )
+        component_rank = cross_sectional_unit_rank(component_frame, ["low", "high", "tool"])
+        current = (
+            (1.0 - high_level_weight - tool_weight) * component_rank["low"]
+            + high_level_weight * component_rank["high"]
+            + tool_weight * component_rank["tool"]
+        )
+        result.loc[indices] = current
+        predicted = design @ low_model
+        centered = y - y.mean()
+        r2 = 1.0 - float(np.sum((y - predicted) ** 2) / np.sum(centered**2))
+        row: dict[str, object] = {
+            "formation_month": str(month.date()),
+            "training_start": str(history.index[0].date()),
+            "training_end": str(history.index[-1].date()),
+            "training_months": len(history),
+            "training_observations": len(y),
+            "low_level_r2": r2,
+            "selected_tool": selected_tool,
+            "selected_tool_rankicir": float(tool_quality[selected_tool]),
+            "selected_tool_orientation": int(tool_orientation),
+            "finite_scores": int(current.notna().sum()),
+        }
+        for query in FINAGENT_MEMORY_QUERIES:
+            row[f"{query}_memory_coverage"] = int(memories.loc[indices, query].notna().sum())
+            row[f"{query}_mean_retrieved"] = float(retrieved_arrays[query][frame.index.get_indexer(indices)].mean())
+        diagnostics.append(row)
+    return result, pd.DataFrame(diagnostics)
