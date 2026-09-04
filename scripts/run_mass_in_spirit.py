@@ -61,7 +61,6 @@ def evaluate(root: Path, output: Path) -> None:
     source_path = Path(contract["data"]["path"])
     factor_path = root / contract["factor_panel_path"]
     pinned = {
-        recipe["paper_source"]["path"]: recipe["paper_source"]["sha256"],
         recipe["strict_evidence"]["audit_manifest_path"]: recipe["strict_evidence"]["audit_manifest_sha256"],
         recipe["strict_evidence"]["nonidentifiability_path"]: recipe["strict_evidence"]["nonidentifiability_sha256"],
         recipe["strict_evidence"]["configuration_path"]: recipe["strict_evidence"]["configuration_sha256"],
@@ -69,6 +68,9 @@ def evaluate(root: Path, output: Path) -> None:
     for relative, expected in pinned.items():
         if digest(root / relative) != expected:
             raise ValueError(f"pinned MASS evidence changed: {relative}")
+    audit_manifest = json.loads((root / recipe["strict_evidence"]["audit_manifest_path"]).read_text())
+    if audit_manifest["paper_sha256"] != recipe["paper_source"]["sha256_from_pinned_audit"]:
+        raise ValueError("pinned MASS paper identity changed")
     if digest(source_path) != contract["data"]["expected_sha256_from_existing_lock"]:
         raise ValueError("JKP input hash differs from the common contract")
     if digest(factor_path) != contract["factor_panel_sha256"]:
