@@ -6,11 +6,11 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 35,
+    "closed": 36,
     "completed_adapted": 1,
     "completed_partial": 6,
-    "closed_not_evaluable": 28,
-    "in_progress": 1,
+    "closed_not_evaluable": 29,
+    "in_progress": 0,
     "queued": 33
   },
   "terminal_statuses": [
@@ -621,16 +621,16 @@
       "title": "Profit Mirage: Revisiting Information Leakage in LLM-based Financial Agents",
       "system_ids": "SYS-FACTFIN; SYS-FINLAKE-BENCH",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M036_factfin/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M036_factfin/verdict.md",
+      "evaluated_scope": "No common-task return: FinLake/FinLeak is an out-of-scope leakage QA benchmark; in-scope FactFin requires an unreleased RAG/SCG/MCTS/counterfactual search to identify final executable code C*, and no generated strategy, execution contract, trades, or path is public.",
+      "next_action": "Closed. Preserve the benchmark and paper-validity audit separately; do not promote the QA benchmark, simplified prompt, completed pseudocode, current Yahoo baseline, or printed results to FactFin.",
+      "closure_reason": "The named components and two MCTS settings do not identify a policy. Strategy language, prompts, retrieval state, search grammar/evaluator, counterfactual generators/weights, code, inputs, positions, timing, costs and result lineage are missing, so a JKP run would be a new research system."
     },
     {
       "milestone_id": "M037",

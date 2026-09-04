@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M036",
+  "canonical_work_id": "CensusArxiv251007920",
+  "paper": "Profit Mirage: Revisiting Information Leakage in LLM-based Financial Agents",
+  "paper_url": "https://arxiv.org/abs/2510.07920v1",
+  "paper_pdf_sha256": "1024f16ced8e9b12c6a4f0c7bf56551a92da0d621507da621ee82ae68355aba5",
+  "paper_source_sha256": "f8888b5d281ada1b16a6ac32a43da031cc54d4afd1775e8909e5cf4ab65bd0c6",
+  "system_scope": {
+    "SYS-FACTFIN": "in-scope named sequential trading system",
+    "SYS-FINLAKE-BENCH": "out-of-scope leakage/memorization question-answer benchmark; FinLeak-Bench is the body/appendix alias"
+  },
+  "headline_strategy": "FactFin converts real-time price, factor, and factorized-news state into executable buy/sell/hold code with a Strategy Code Generator and RAG, evolves candidate code with MCTS, and selects the strategy that balances factual performance against counterfactual prediction consistency, confidence invariance, and input-dependency scores.",
+  "headline_selection_basis": "Section 3 and Algorithm 1 identify the optimized generated program C*—not the FinLake/FinLeak QA benchmark, a baseline agent, or buy-and-hold—as FactFin's proposed trading policy.",
+  "paper_configuration": {
+    "components": ["Strategy Code Generator", "Retrieval-Augmented Generation", "Monte Carlo Tree Search", "Counterfactual Simulator"],
+    "state": ["price data", "market factors", "factorized news"],
+    "action_space": ["buy", "sell", "hold"],
+    "llm_backbone": "GPT-4o mutable alias",
+    "temperature": 0.7,
+    "embedding_model": "text-embedding-3-large",
+    "rag_top_k": 5,
+    "mcts_depth": 10,
+    "mcts_ucb_c": 0.5,
+    "native_assets": ["AAPL", "NVDA", "TSLA", "002594.SZ", "0700.HK", "BTC-USD"],
+    "evaluation_period": "2024-07-01 through 2025-06-30",
+    "counterfactual_evaluation_scenarios_per_asset": 50
+  },
+  "missing_headline_objects": [
+    "the executable SCG language, function signature, package surface, sandbox and parser",
+    "all runtime prompts beyond one explicitly simplified template and all immutable model requests/responses",
+    "the RAG corpus, chunks, index, query construction, distances and retrieved records",
+    "the initial strategy code, MCTS node/action/branch definitions and every evolved strategy",
+    "the strategy evaluator, rollouts, reward, budget, convergence/stopping rule and random seeds",
+    "counterfactual generators, perturbation magnitudes, constraints, scenarios and alpha/beta/gamma objective weights",
+    "the original Yahoo/Alpaca price/news snapshots, exact factors, lookbacks and point-in-time rules",
+    "position quantities/weights, capital, inventory, shorting/leverage and signal-to-fill timing",
+    "numeric transaction costs, slippage, orders, fills, cash ledger and dated NAV",
+    "the train/validation split, repetitions, uncertainty, baseline snapshots and environment lock"
+  ],
+  "release_evidence": {
+    "paper_source_files": 14,
+    "paper_pages": 12,
+    "published_figures": 7,
+    "published_numeric_cells": 525,
+    "direct_factfin_cells": 120,
+    "unique_factfin_measurements": 108,
+    "native_factfin_cells_regenerated": 0,
+    "public_system_source_files": 0,
+    "public_benchmark_records": 0,
+    "generated_strategies": 0
+  },
+  "live_author_surface_recheck": {
+    "checked_date_utc": "2026-09-04",
+    "public_repositories": ["XiangyuLi616/XiangyuLi616.github.io"],
+    "homepage_head": "a42532c72b3837ab88763a5d22538c8d3742a02b",
+    "profit_mirage_links": ["https://arxiv.org/abs/2510.07920"],
+    "new_factfin_or_benchmark_artifact_found": false
+  },
+  "material_validity_findings": [
+    "FinLake-Bench in the abstract conflicts with FinLeak-Bench throughout the body and appendix.",
+    "The exact-equality benchmark equation conflicts with interval, partial, magnitude and qualitative scoring examples.",
+    "Fine-tuning data span January 2020-December 2022 while the stated test interval is January-June 2022, with no held-out-row definition.",
+    "FactFin/TSLA maximum-drawdown signs and rankings conflict across the result table and prose.",
+    "The claimed 1.4x Sharpe improvement is not supported by the displayed per-asset table means.",
+    "The pre/post-cutoff comparison changes calendar regimes and does not causally isolate memorization."
+  ],
+  "rejected_substitutes": [
+    {
+      "route": "Treat FinLake/FinLeak-Bench as the headline strategy",
+      "reason": "It is a leakage/memorization QA benchmark and produces no stock weights or returns."
+    },
+    {
+      "route": "Run the simplified SCG prompt through a current GPT-4o endpoint",
+      "reason": "The prompt explicitly omits changing templates, examples, language/runtime contract, RAG observations, MCTS state and the evaluator; any resulting program would be a new strategy."
+    },
+    {
+      "route": "Implement Algorithm 1 with chosen counterfactual weights",
+      "reason": "The perturbations, alpha/beta/gamma weights, search grammar, reward and convergence rule are missing, so the printed loop does not select one policy."
+    },
+    {
+      "route": "Use current Yahoo buy-and-hold returns",
+      "reason": "Buy-and-hold is a diagnostic comparator rather than FactFin, and the pinned current provider matches 0/6 displayed cells."
+    },
+    {
+      "route": "Infer trades from reported FactFin tables or curves",
+      "reason": "Aggregate metrics and raster paths do not identify dates, actions, quantities, costs or the generated program."
+    }
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/factfin",
+  "result_policy": "No leakage-benchmark score, simplified-prompt output, completed pseudocode, current-provider baseline, or backcast paper result is entered as a FactFin monthly return. The positive FactFin claims remain unresolved, not falsified.",
+  "status": "closed_not_evaluable"
+}

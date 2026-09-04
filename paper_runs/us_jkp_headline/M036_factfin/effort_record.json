@@ -1,0 +1,21 @@
+{
+  "milestone_id": "M036",
+  "status": "bounded_common_task_feasibility_complete",
+  "reused_evidence": [
+    "paper_runs/paper_replication_audits/factfin/README.md",
+    "paper_runs/paper_replication_audits/factfin/manifest.json",
+    "paper_runs/paper_replication_audits/factfin/source_provenance.json",
+    "paper_runs/paper_replication_audits/factfin/method_specification_audit.csv",
+    "paper_runs/paper_replication_audits/factfin/internal_consistency_audit.csv",
+    "paper_runs/paper_replication_audits/factfin/native_execution.json",
+    "/nfs/roberts/scratch/pi_btk22/zc362/profit_mirage_audit/source_v1/finleak_www.tex",
+    "/nfs/roberts/scratch/pi_btk22/zc362/profit_mirage_audit/source_v1/appendix.tex"
+  ],
+  "bounded_checks": [
+    "Re-read the original TeX source and visually inspected paper pages covering FinLeak questions, the FactFin RAG/SCG/MCTS design, Algorithm 1, counterfactual simulator, evaluation setup, and appendix case study.",
+    "Separated the out-of-scope FinLake/FinLeak leakage benchmark from the in-scope FactFin trading system and selected the final evolved code C* as the headline object.",
+    "Confirmed that neither the complete 14-file paper source nor the prior public search contains system code, benchmark data, generated strategies, runtime requests, trades or paths.",
+    "Rechecked the first author's current GitHub/homepage surface; one homepage repository remains and the paper entry still links only to arXiv."
+  ],
+  "outcome": "FactFin discloses four component names and a high-level optimization loop but not the generated/evolved program or enough of the search, counterfactual, execution and data contracts to derive one. A JKP implementation would be a new strategy-generation study."
+}
