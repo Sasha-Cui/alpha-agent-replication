@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M068",
+  "canonical_work_id": "WorkAlphaGPT",
+  "paper": "Alpha-GPT: Human-AI Interactive Alpha Mining for Quantitative Investment",
+  "paper_url": "https://aclanthology.org/2025.emnlp-demos.14/",
+  "headline_agent": "human-AI interactive idea generation, formula construction, genetic-program search, alpha validation, and portfolio evaluation",
+  "headline_component": "first arity-valid published formula example",
+  "component_selection_reason": "The complete generated alpha set and search pipeline are unavailable. Flow of Funds is printed first but is not executable because div and cwise_mul have invalid arity. Volume-price correlation is the first source-ordered arity-valid example, appears in every Alpha-GPT version, and executes under the audit's declared conventional operator semantics without selection on JKP outcomes.",
+  "candidate_id": "alphagpt_volume_price_correlation_20",
+  "source_formula_id": "AGPT-FORM-02",
+  "source_trading_idea": "Volume-price correlation",
+  "source_formula": "zscore_scale(ts_corr(close, volume, 20))",
+  "source_direction": "literal positive formula orientation; no source-specific sign flip is claimed",
+  "paper_source": {
+    "authoritative_version": "EMNLP 2025 final",
+    "authoritative_pdf_sha256": "50fd3393114f1efd38158b6668f534e82d4f9b45b2eb3b59e676b71d52ff57d0",
+    "arxiv_v1_pdf_sha256": "0533cacfe231715fdea09aa045e485380cfb5de0906ebc1520f150257a645968",
+    "arxiv_v2_pdf_sha256": "d966e6497cb71cb3d32b1266c9799d6512f5f9d8ede5f0d29f5ff57476f8f0ce"
+  },
+  "paper_audit": {
+    "manifest_path": "paper_runs/paper_replication_audits/alpha_gpt_lineage/manifest.json",
+    "manifest_sha256": "9799932dd5fba3c5eb83a670a03e43020919e83f599b61acaeca15175fc736a1",
+    "formula_conformance_path": "paper_runs/paper_replication_audits/alpha_gpt_lineage/published_formula_conformance.csv",
+    "formula_conformance_sha256": "44c908bc273c4d1feafa88db13cea420f12eb1a890113038cabebae87d4b22ff",
+    "published_formula_examples": 4,
+    "published_formula_examples_arity_valid": 3,
+    "author_linked_code_found": false,
+    "alpha_gpt_final_numeric_result_cells_reproduced": 0,
+    "alpha_gpt_final_numeric_result_cells": 47
+  },
+  "current_release_check": {
+    "checked_at_utc": "2026-09-04",
+    "github_repository_exact_title_matches": 0,
+    "github_repository_arxiv_id_matches": 0,
+    "author_linked_code_data_or_alpha_release_found": false,
+    "community_repository_native_credit": false
+  },
+  "monthly_adapter": {
+    "bar_mapping": "One source bar becomes one JKP month; the 20-bar rolling correlation becomes 20 months.",
+    "inputs": "Absolute JKP formation-month prc supplies close and JKP tvol supplies volume.",
+    "operators": "Rolling Pearson correlation with 20 complete paired observations, followed by same-month population-standard-deviation z-scoring within the common universe, matching the audit's conventional stub.",
+    "universe": "Fixed formation-date largest 1,000 U.S. equities from the common JKP contract.",
+    "portfolio": "Researcher-supplied common value-weighted long/short deciles from the literal formula score.",
+    "costs": "Common 0/5/10/25/50 bp one-way cases with 10 bp primary.",
+    "missing_returns": "Fixed holdings re-accounted under zero and adverse-100 policies without reranking or reweighting."
+  },
+  "prior_outcomes_seen": true,
+  "mapping_was_frozen_before_prior_outcomes": false,
+  "inference_status": "exploratory_contaminated_mapping",
+  "preserved": [
+    "first source-ordered valid expression",
+    "20-bar price-volume Pearson correlation",
+    "cross-sectional z-score root",
+    "literal formula orientation"
+  ],
+  "adapted": [
+    "source bars to months",
+    "source universe to common U.S. top-1,000",
+    "conventional unreleased operator semantics",
+    "common value-weighted deciles, costs, missingness, and JKP133 attribution"
+  ],
+  "not_claimed": [
+    "Alpha-GPT human interaction",
+    "LLM alpha generation",
+    "genetic-program search",
+    "complete generated alpha set",
+    "native market data/evaluator",
+    "paper result"
+  ],
+  "preclassified_scope": "completed_partial_if_full_common_path_succeeds",
+  "status": "fixed_before_new_common_benchmark_run"
+}
