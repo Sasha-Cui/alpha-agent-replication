@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M069",
+  "canonical_work_id": "WorkAutomateStrategy",
+  "paper": "Automate Strategy Finding with LLM in Quant Investment",
+  "paper_url": "https://aclanthology.org/2025.findings-emnlp.1005/",
+  "headline_agent": "GPT-4o factor comparison/selection, 12-alpha learned combination, DNN prediction, and top-13/drop-5 portfolio",
+  "headline_component": "first paper-selected alpha with exact released formula and signed IC",
+  "component_selection_reason": "The integrated 12-alpha weights, DNN prediction, and portfolio path are withheld, but Table 3 orders the selected alphas and the source workbook corroborates their signed ICs. PriceMomentum is the first selected row, its exact formula is present in the paper-era source, and its positive IC fixes direction before new JKP inspection.",
+  "candidate_id": "automate_strategy_price_momentum_14",
+  "source_seed_index": 1,
+  "source_alpha": "Price Momentum - (CLOSE - DELAY(CLOSE, 14))",
+  "source_formula": "PriceMomentum = CLOSE - DELAY(CLOSE, 14)",
+  "source_signed_ic": 0.020881912,
+  "source_direction": "positive from the author workbook signed IC; the unreleased multivariate Table 3 weight is not used",
+  "paper_source": {
+    "version": "Findings of EMNLP 2025",
+    "official_pdf_sha256": "6585377002a3b049a6bfadef3152a74adfe12d68ff5c48cccb8c76de4fd1b540"
+  },
+  "official_repository": {
+    "url": "https://github.com/kouzhizhuo/Automate-Strategy-Finding-with-LLM-in-Quant-investment",
+    "paper_era_commit": "8b50203faf50d0b561cf5ffee4d63dcdc4551884",
+    "current_main_head": "ebcb5ed44a71664316c99b021026358a44aef38d",
+    "new_project_head": "f28e274c8be373a7e3c1a325846f07d67b079250"
+  },
+  "paper_audit": {
+    "manifest_path": "paper_runs/paper_replication_audits/automate_strategy_finding/manifest.json",
+    "manifest_sha256": "d06420db4c3d6ce96909f288c8c4301ca9ca578e2db06cf8ad81ae9bc58a8889",
+    "table_3_conformance_path": "paper_runs/paper_replication_audits/automate_strategy_finding/table_3_conformance.csv",
+    "table_3_conformance_sha256": "29aa48dbc789e5e9fed1dcbb5e78b67204657f0da5df21d3435ed7e7f56e06a1",
+    "source_seed_workbook_sha256": "b5eb7ff8cd84a4f6e90c0ffc323beff7c732c38957bf2048e92f5ac184d46bff",
+    "paper_table_3_signed_ic_cells_corroborated": 12,
+    "paper_table_4_cells_verified": 0,
+    "paper_table_4_cells_total": 40
+  },
+  "current_release_check": {
+    "checked_at_utc": "2026-09-04",
+    "main_head_matches_audited_release": true,
+    "new_project_head_matches_audited_release": true,
+    "new_integrated_weights_prediction_or_portfolio_release_found": false
+  },
+  "monthly_adapter": {
+    "bar_mapping": "One source daily bar becomes one JKP month; DELAY(CLOSE,14) becomes a 14-month row lag.",
+    "input": "Absolute JKP formation-month prc supplies CLOSE; the literal price difference, not a percentage return, is preserved.",
+    "universe": "Fixed formation-date largest 1,000 U.S. equities from the common JKP contract.",
+    "portfolio": "Researcher-supplied common value-weighted long/short deciles from the source-signed single-factor score.",
+    "costs": "Common 0/5/10/25/50 bp one-way cases with 10 bp primary.",
+    "missing_returns": "Fixed holdings re-accounted under zero and adverse-100 policies without reranking or reweighting."
+  },
+  "prior_outcomes_seen": true,
+  "mapping_was_frozen_before_prior_outcomes": false,
+  "inference_status": "exploratory_contaminated_mapping",
+  "preserved": [
+    "first Table 3 selected alpha",
+    "paper-era source formula",
+    "14-bar close difference",
+    "positive author-workbook IC direction"
+  ],
+  "adapted": [
+    "daily China bars to monthly U.S. JKP bars",
+    "source universe to common U.S. top-1,000",
+    "single selected component instead of unreleased 12-alpha DNN combination",
+    "common value-weighted deciles, costs, missingness, and JKP133 attribution"
+  ],
+  "not_claimed": [
+    "GPT-4o factor comparison",
+    "complete 100-alpha SAF",
+    "12-alpha learned weights or combined IC",
+    "DNN prediction",
+    "top-13/drop-5 portfolio",
+    "paper integrated return"
+  ],
+  "preclassified_scope": "completed_partial_if_full_common_path_succeeds",
+  "status": "fixed_before_new_common_benchmark_run"
+}
