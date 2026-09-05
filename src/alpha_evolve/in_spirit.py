@@ -190,6 +190,110 @@ def fama_rolling_scores(
     return result, pd.DataFrame(diagnostics)
 
 
+def alphacrafter_workflow_scores(
+    frame: pd.DataFrame,
+    miner_clusters: dict[str, list[tuple[str, int]]],
+    *,
+    common_start: str,
+    validation_horizons: list[int],
+    validation_horizon_weights: list[float],
+    reward_purge_months: int = 6,
+    maintenance_history_months: int = 60,
+    minimum_maintenance_months: int = 48,
+    screener_suitability_months: int = 10,
+    minimum_absolute_suitability: float = 0.005,
+    maximum_rankic_similarity: float = 0.80,
+    selected_factor_count: int = 5,
+    minimum_miners_represented: int = 2,
+    regime_tilt: float = 1.25,
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Run an AlphaCrafter-style miner, screener, and trader workflow."""
+    expected_miners = ["technical_miner", "fundamental_miner", "risk_reversal_miner"]
+    if list(miner_clusters) != expected_miners or any(len(items) != 4 for items in miner_clusters.values()):
+        raise ValueError("AlphaCrafter requires three frozen four-seed miners")
+    if validation_horizons != [1, 3, 6] or len(validation_horizon_weights) != 3 or not np.isclose(sum(validation_horizon_weights), 1.0):
+        raise ValueError("AlphaCrafter validation horizons changed")
+    if reward_purge_months < max(validation_horizons):
+        raise ValueError("AlphaCrafter reward purge is too short")
+    if not 2 <= minimum_maintenance_months <= maintenance_history_months:
+        raise ValueError("AlphaCrafter maintenance history is invalid")
+    specifications = [item for items in miner_clusters.values() for item in items]
+    features = list(dict.fromkeys(feature for feature, _ in specifications))
+    missing = {"month", "security_id", "ret", "weight", "ret_exc_lead1m", *features} - set(frame)
+    if missing:
+        raise ValueError(f"missing AlphaCrafter inputs: {sorted(missing)}")
+    ranked = cross_sectional_unit_rank(frame, features)
+    generated = {}
+    candidate_miner = {}
+    for miner, items in miner_clusters.items():
+        signed = {feature: ranked[feature] * sign for feature, sign in items}
+        for feature in sorted(signed):
+            name = f"{miner}__identity__{feature}"
+            generated[name] = signed[feature]
+            candidate_miner[name] = miner
+        for left, right in combinations(sorted(signed), 2):
+            for operation, values in (("pair_mean", (signed[left] + signed[right]) / 2), ("pair_product", signed[left] * signed[right])):
+                name = f"{miner}__{operation}__{left}__{right}"
+                generated[name] = values
+                candidate_miner[name] = miner
+    candidates = cross_sectional_unit_rank(pd.concat([frame[["month"]], pd.DataFrame(generated)], axis=1), list(generated))
+    ordered = frame[["security_id", "month", "ret_exc_lead1m"]].sort_values(["security_id", "month"], kind="mergesort")
+    forward = {}
+    for horizon in validation_horizons:
+        parts = []
+        for offset in range(horizon):
+            value = ordered.groupby("security_id")["ret_exc_lead1m"].shift(-offset)
+            shifted_month = ordered.groupby("security_id")["month"].shift(-offset)
+            parts.append(value.where(shifted_month.eq(ordered["month"] + pd.offsets.MonthEnd(offset))))
+        forward[horizon] = ((1 + pd.concat(parts, axis=1)).prod(axis=1, min_count=horizon) - 1).reindex(frame.index)
+    outcome = sum(weight * forward[horizon] for horizon, weight in zip(validation_horizons, validation_horizon_weights))
+    rankics = monthly_rankic(frame.assign(_alphacrafter_outcome=outcome), candidates, return_column="_alphacrafter_outcome")
+    market_rows = []
+    for month, indices in frame.groupby("month", sort=True).groups.items():
+        weight = pd.to_numeric(frame.loc[indices, "weight"], errors="coerce")
+        ret = pd.to_numeric(frame.loc[indices, "ret"], errors="coerce").fillna(0.0)
+        market_rows.append((pd.Timestamp(month), float(np.sum(weight * ret) / weight.sum())))
+    market = pd.Series(dict(market_rows)).sort_index().rolling(6, min_periods=6).mean()
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    rows = []
+    month_groups = frame.groupby("month", sort=False).groups
+    for month in sorted(pd.Timestamp(value) for value in frame.loc[frame["month"] >= common_start, "month"].unique()):
+        cutoff = month - pd.offsets.MonthEnd(reward_purge_months)
+        history = rankics.loc[rankics.index <= cutoff].tail(maintenance_history_months)
+        if len(history) != maintenance_history_months or (history.count() < minimum_maintenance_months).any():
+            raise ValueError(f"AlphaCrafter maintenance history is incomplete at {month.date()}")
+        suitability = history.tail(screener_suitability_months).mean()
+        eligible = suitability.loc[suitability.abs().ge(minimum_absolute_suitability)].copy()
+        regime = 1 if market.loc[month] > 0 else -1
+        if regime > 0:
+            eligible.loc[[name for name in eligible.index if candidate_miner[name] == "technical_miner"]] *= regime_tilt
+        else:
+            eligible.loc[[name for name in eligible.index if candidate_miner[name] == "risk_reversal_miner"]] *= regime_tilt
+        miner_best = {
+            miner: max((name for name in eligible.index if candidate_miner[name] == miner), key=lambda name: (abs(eligible[name]), name), default="")
+            for miner in expected_miners
+        }
+        miner_order = sorted(expected_miners, key=lambda miner: (-abs(eligible.get(miner_best[miner], 0.0)), miner))
+        selected = [miner_best[miner] for miner in miner_order[:minimum_miners_represented] if miner_best[miner]]
+        for name in sorted(eligible.index, key=lambda item: (-abs(eligible[item]), item)):
+            if name in selected:
+                continue
+            if any(abs(float(history[name].corr(history[other]))) > maximum_rankic_similarity for other in selected):
+                continue
+            selected.append(name)
+            if len(selected) == selected_factor_count:
+                break
+        if len(selected) != selected_factor_count:
+            raise ValueError(f"AlphaCrafter could not fill its ensemble at {month.date()}")
+        signed_suitability = eligible[selected]
+        weights = signed_suitability.abs() / signed_suitability.abs().sum()
+        indices = month_groups[month]
+        score = candidates.loc[indices, selected].fillna(0.0).mul(np.sign(signed_suitability) * weights, axis=1).sum(axis=1)
+        result.loc[indices] = score
+        rows.append({"formation_month": str(month.date()), "reward_cutoff": str(cutoff.date()), "maintenance_start": str(history.index[0].date()), "maintenance_end": str(history.index[-1].date()), "maintenance_months": len(history), "market_regime": "uptrend" if regime > 0 else "downtrend", "selected_candidates": "|".join(selected), "selected_miners": "|".join(sorted({candidate_miner[name] for name in selected})), "selected_factor_count": len(selected), "finite_scores": int(score.notna().sum())})
+    return result, pd.DataFrame(rows)
+
+
 def marketsenseai_strongbuy_scores(
     frame: pd.DataFrame,
     specialists: dict[str, list[str]],
