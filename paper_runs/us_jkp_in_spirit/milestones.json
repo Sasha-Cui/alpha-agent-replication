@@ -14,10 +14,10 @@
   "declared_inference_family_size": 69,
   "progress_summary": {
     "carried_common_evaluation": 17,
-    "completed_in_spirit": 24,
+    "completed_in_spirit": 25,
     "discarded_structural_mismatch": 7,
     "in_progress_in_spirit": 1,
-    "queued_in_spirit": 20
+    "queued_in_spirit": 19
   },
   "milestones": [
     {
@@ -713,15 +713,15 @@
       "strict_recipe_path": "paper_runs/us_jkp_headline/M037_atlas/recipe.json",
       "strict_verdict_path": "paper_runs/us_jkp_headline/M037_atlas/verdict.md",
       "strict_metrics_path": "",
-      "status": "in_progress_in_spirit",
+      "status": "completed_in_spirit",
       "fidelity_label": "in_spirit_reconstruction",
-      "recipe_path": "",
-      "implementation_path": "",
-      "run_manifest_path": "",
-      "monthly_returns_path": "",
-      "metrics_path": "",
-      "verdict_path": "",
-      "next_action": "Freeze one ATLAS-inspired researcher reconstruction before inspecting its JKP result."
+      "recipe_path": "paper_runs/us_jkp_in_spirit/M037_atlas/recipe.json",
+      "implementation_path": "scripts/run_atlas_in_spirit.py",
+      "run_manifest_path": "paper_runs/us_jkp_in_spirit/M037_atlas/run_manifest.json",
+      "monthly_returns_path": "paper_runs/us_jkp_in_spirit/M037_atlas/monthly_returns.csv",
+      "metrics_path": "paper_runs/us_jkp_in_spirit/M037_atlas/metrics.csv",
+      "verdict_path": "paper_runs/us_jkp_in_spirit/M037_atlas/verdict.md",
+      "next_action": "Complete. Retain the frozen positive full-period but negative evaluation-period result and prompt collapse without retuning."
     },
     {
       "milestone_id": "M038",
@@ -732,7 +732,7 @@
       "strict_recipe_path": "paper_runs/us_jkp_headline/M038_p1gpt/recipe.json",
       "strict_verdict_path": "paper_runs/us_jkp_headline/M038_p1gpt/verdict.md",
       "strict_metrics_path": "",
-      "status": "queued_in_spirit",
+      "status": "in_progress_in_spirit",
       "fidelity_label": "in_spirit_reconstruction",
       "recipe_path": "",
       "implementation_path": "",
@@ -740,7 +740,7 @@
       "monthly_returns_path": "",
       "metrics_path": "",
       "verdict_path": "",
-      "next_action": "Wait until prior active reconstruction is committed."
+      "next_action": "Freeze one P1GPT-inspired researcher reconstruction before inspecting its JKP result."
     },
     {
       "milestone_id": "M039",
