@@ -2305,3 +2305,101 @@ def contesttrade_dual_contest_scores(
             row[f"allocation__{agent}"] = float(allocation[agent])
         diagnostics.append(row)
     return result, pd.DataFrame(diagnostics)
+
+
+def alphaagents_debate_scores(
+    frame: pd.DataFrame,
+    specialists: dict[str, list[tuple[str, int]]],
+    *,
+    speaker_order: list[str],
+    round_robin_passes: int = 2,
+    peer_median_update_weight: float = 0.35,
+    own_specialist_retention_weight: float = 0.65,
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Run a deterministic three-specialist AlphaAgents round-robin debate."""
+    expected = ["fundamental", "sentiment", "valuation"]
+    if list(specialists) != expected or speaker_order != expected:
+        raise ValueError("AlphaAgents requires the three frozen specialists in order")
+    if round_robin_passes < 2:
+        raise ValueError("AlphaAgents must give every specialist at least two turns")
+    if peer_median_update_weight + own_specialist_retention_weight != 1.0:
+        raise ValueError("AlphaAgents debate weights must sum to one")
+    features = list(
+        dict.fromkeys(
+            feature
+            for specifications in specialists.values()
+            for feature, _ in specifications
+        )
+    )
+    missing = {"month", *features} - set(frame)
+    if missing:
+        raise ValueError(f"missing AlphaAgents inputs: {sorted(missing)}")
+    if any(
+        sign not in {-1, 1}
+        for specifications in specialists.values()
+        for _, sign in specifications
+    ):
+        raise ValueError("AlphaAgents specialist signs must be -1 or 1")
+
+    ranked = cross_sectional_unit_rank(frame, features)
+    raw: dict[str, pd.Series] = {}
+    for specialist, specifications in specialists.items():
+        signed = pd.concat(
+            [ranked[feature] * sign for feature, sign in specifications],
+            axis=1,
+        )
+        raw[specialist] = signed.mean(axis=1, skipna=False)
+    initial = cross_sectional_unit_rank(
+        pd.concat([frame[["month"]], pd.DataFrame(raw)], axis=1),
+        expected,
+    )
+
+    consensus_raw = pd.Series(np.nan, index=frame.index, dtype="float64")
+    diagnostics: list[dict[str, object]] = []
+    for month, indices in frame.groupby("month", sort=True).groups.items():
+        opinions = initial.loc[indices, expected].to_numpy(dtype=float)
+        starting = opinions.copy()
+        for _ in range(round_robin_passes):
+            for position, _specialist in enumerate(speaker_order):
+                peers = np.delete(opinions, position, axis=1)
+                peer_median = np.nanmedian(peers, axis=1)
+                own = opinions[:, position]
+                valid = np.isfinite(own) & np.isfinite(peer_median)
+                opinions[valid, position] = (
+                    own_specialist_retention_weight * own[valid]
+                    + peer_median_update_weight * peer_median[valid]
+                )
+        finite_count = np.isfinite(opinions).sum(axis=1)
+        consensus = np.nanmedian(opinions, axis=1)
+        consensus[finite_count < 2] = np.nan
+        consensus_raw.loc[indices] = consensus
+
+        starting_signs = np.sign(starting)
+        final_signs = np.sign(opinions)
+        starting_valid = np.isfinite(starting).all(axis=1)
+        final_valid = np.isfinite(opinions).all(axis=1)
+        starting_disagreement = np.ptp(starting_signs, axis=1) > 0
+        final_disagreement = np.ptp(final_signs, axis=1) > 0
+        change = np.abs(opinions - starting)
+        diagnostics.append(
+            {
+                "formation_month": str(pd.Timestamp(month).date()),
+                "specialist_count": len(expected),
+                "round_robin_passes": round_robin_passes,
+                "speaking_turns": round_robin_passes * len(expected),
+                "initial_disagreement_rate": float(
+                    starting_disagreement[starting_valid].mean()
+                ),
+                "final_disagreement_rate": float(final_disagreement[final_valid].mean()),
+                "unanimous_after_debate_rate": float((~final_disagreement[final_valid]).mean()),
+                "mean_absolute_opinion_change": float(np.nanmean(change)),
+                "finite_scores": int(np.isfinite(consensus).sum()),
+                "buy_consensus_count": int(np.nansum(consensus > 0)),
+                "sell_consensus_count": int(np.nansum(consensus < 0)),
+            }
+        )
+    score = cross_sectional_unit_rank(
+        pd.DataFrame({"month": frame["month"], "consensus": consensus_raw}),
+        ["consensus"],
+    )["consensus"]
+    return score, pd.DataFrame(diagnostics)
