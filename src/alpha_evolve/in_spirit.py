@@ -3509,3 +3509,355 @@ def quantagents_meeting_scores(
         )
         deployed_members = list(proposed)
     return result, pd.DataFrame(diagnostics)
+
+
+def factfin_counterfactual_mcts_scores(
+    frame: pd.DataFrame,
+    rag_state: dict[str, list[tuple[str, int]]],
+    *,
+    common_start: str,
+    training_start: str,
+    training_end: str,
+    validation_start: str,
+    validation_end: str,
+    initial_weights: list[float],
+    mutation_step: float = 0.25,
+    weight_bounds: tuple[float, float] = (-1.0, 1.0),
+    hold_band: tuple[float, float] = (-0.2, 0.2),
+    mcts_depth: int = 10,
+    ucb_exploration_constant: float = 0.5,
+    mcts_iterations: int = 100,
+    counterfactual_finalists: int = 10,
+    counterfactual_scenarios: int = 50,
+    counterfactual_seed: int = 79020,
+    final_objective_weights: dict[str, float] | None = None,
+) -> tuple[pd.Series, pd.DataFrame, dict[str, object]]:
+    """Run a deterministic leakage-safe FactFin-style MCTS and counterfactual audit."""
+    expected_groups = ["price", "factors", "factorized_news"]
+    if list(rag_state) != expected_groups:
+        raise ValueError("FactFin requires price, factors, and factorized-news state")
+    if mcts_depth != 10 or ucb_exploration_constant != 0.5:
+        raise ValueError("FactFin MCTS depth or UCB constant changed")
+    if mcts_iterations != 100 or counterfactual_scenarios != 50:
+        raise ValueError("FactFin search or counterfactual budget changed")
+    objective_weights = final_objective_weights or {
+        "validation_rankic": 1.0,
+        "prediction_consistency": -0.01,
+        "confidence_invariance": -0.01,
+        "input_dependency_score": 0.01,
+    }
+    if objective_weights != {
+        "validation_rankic": 1.0,
+        "prediction_consistency": -0.01,
+        "confidence_invariance": -0.01,
+        "input_dependency_score": 0.01,
+    }:
+        raise ValueError("FactFin counterfactual objective changed")
+    specifications = [
+        specification
+        for group_specifications in rag_state.values()
+        for specification in group_specifications
+    ]
+    features = list(dict.fromkeys(feature for feature, _ in specifications))
+    missing = {"month", "ret_exc_lead1m", *features} - set(frame)
+    if missing:
+        raise ValueError(f"missing FactFin inputs: {sorted(missing)}")
+    if any(sign not in {-1, 1} for _, sign in specifications):
+        raise ValueError("FactFin state feature signs must be -1 or 1")
+
+    train_start = pd.Timestamp(training_start)
+    train_end = pd.Timestamp(training_end)
+    valid_start = pd.Timestamp(validation_start)
+    valid_end = pd.Timestamp(validation_end)
+    train_months = sorted(frame.loc[frame["month"].between(train_start, train_end), "month"].unique())
+    validation_months = sorted(frame.loc[frame["month"].between(valid_start, valid_end), "month"].unique())
+    if len(train_months) != 96 or len(validation_months) != 24 or train_end >= valid_start:
+        raise ValueError("FactFin requires the frozen 96/24-month chronological split")
+
+    ranked = cross_sectional_unit_rank(frame, features)
+    group_raw: dict[str, pd.Series] = {}
+    for group, group_specifications in rag_state.items():
+        signed = pd.concat(
+            [ranked[feature] * sign for feature, sign in group_specifications],
+            axis=1,
+        )
+        group_raw[group] = signed.mean(axis=1, skipna=False)
+    group_scores = cross_sectional_unit_rank(
+        pd.concat([frame[["month"]], pd.DataFrame(group_raw)], axis=1),
+        expected_groups,
+    )
+    search_mask = frame["month"].between(train_start, valid_end)
+    search_frame = frame.loc[search_mask]
+    search_groups = group_scores.loc[search_frame.index, expected_groups]
+
+    def normalize_weights(values: np.ndarray) -> tuple[float, float, float]:
+        values = np.clip(values, weight_bounds[0], weight_bounds[1])
+        norm = float(np.abs(values).sum())
+        if norm == 0:
+            values = np.asarray(initial_weights, dtype=float)
+            norm = float(np.abs(values).sum())
+        return tuple(float(np.round(value / norm, 12)) for value in values)
+
+    def ranked_strategy(values: pd.DataFrame, weights: tuple[float, float, float], months: pd.Series) -> pd.Series:
+        raw = values.to_numpy(dtype=float) @ np.asarray(weights, dtype=float)
+        score = pd.Series(raw, index=values.index)
+        return cross_sectional_unit_rank(
+            pd.DataFrame({"month": months, "score": score}),
+            ["score"],
+        )["score"]
+
+    reward_cache: dict[tuple[float, float, float], float] = {}
+
+    def training_reward(weights: tuple[float, float, float]) -> float:
+        if weights in reward_cache:
+            return reward_cache[weights]
+        score = ranked_strategy(search_groups, weights, search_frame["month"])
+        rankic = monthly_rankic(
+            search_frame,
+            pd.DataFrame({"score": score}),
+        )["score"]
+        reward = float(rankic.loc[(rankic.index >= train_start) & (rankic.index <= train_end)].mean())
+        reward_cache[weights] = reward
+        return reward
+
+    actions = [(dimension, direction) for dimension in range(3) for direction in (-1, 1)]
+    rng = np.random.default_rng(counterfactual_seed)
+    root_weights = normalize_weights(np.asarray(initial_weights, dtype=float))
+    nodes: list[dict[str, object]] = [
+        {
+            "weights": root_weights,
+            "parent": None,
+            "depth": 0,
+            "children": [],
+            "untried": list(actions),
+            "visits": 0,
+            "total_reward": 0.0,
+        }
+    ]
+    history_rows: list[dict[str, object]] = []
+
+    def record_evaluation(node_index: int, iteration: int) -> None:
+        node = nodes[node_index]
+        weights = node["weights"]
+        reward = training_reward(weights)
+        current = node_index
+        while current is not None:
+            nodes[current]["visits"] = int(nodes[current]["visits"]) + 1
+            nodes[current]["total_reward"] = float(nodes[current]["total_reward"]) + reward
+            current = nodes[current]["parent"]
+        history_rows.append(
+            {
+                "iteration": iteration,
+                "node_id": node_index,
+                "parent_id": -1 if node["parent"] is None else int(node["parent"]),
+                "depth": int(node["depth"]),
+                "price_weight": float(weights[0]),
+                "factor_weight": float(weights[1]),
+                "news_weight": float(weights[2]),
+                "training_mean_rankic": reward,
+            }
+        )
+
+    record_evaluation(0, 1)
+    for iteration in range(2, mcts_iterations + 1):
+        node_index = 0
+        while int(nodes[node_index]["depth"]) < mcts_depth:
+            untried = nodes[node_index]["untried"]
+            if untried:
+                action_index = int(rng.integers(len(untried)))
+                dimension, direction = untried.pop(action_index)
+                child_values = np.asarray(nodes[node_index]["weights"], dtype=float)
+                child_values[dimension] += direction * mutation_step
+                child_weights = normalize_weights(child_values)
+                child_index = len(nodes)
+                nodes.append(
+                    {
+                        "weights": child_weights,
+                        "parent": node_index,
+                        "depth": int(nodes[node_index]["depth"]) + 1,
+                        "children": [],
+                        "untried": list(actions),
+                        "visits": 0,
+                        "total_reward": 0.0,
+                    }
+                )
+                nodes[node_index]["children"].append(child_index)
+                node_index = child_index
+                break
+            parent_visits = max(1, int(nodes[node_index]["visits"]))
+
+            def ucb(child_index: int) -> float:
+                child = nodes[child_index]
+                visits = max(1, int(child["visits"]))
+                mean_reward = float(child["total_reward"]) / visits
+                return mean_reward + ucb_exploration_constant * np.sqrt(
+                    np.log(parent_visits + 1) / visits
+                )
+
+            node_index = sorted(
+                nodes[node_index]["children"],
+                key=lambda child_index: (
+                    -ucb(child_index),
+                    tuple(nodes[child_index]["weights"]),
+                    child_index,
+                ),
+            )[0]
+        record_evaluation(node_index, iteration)
+
+    unique_nodes: dict[tuple[float, float, float], dict[str, object]] = {}
+    for row in history_rows:
+        weights = (
+            float(row["price_weight"]),
+            float(row["factor_weight"]),
+            float(row["news_weight"]),
+        )
+        current = unique_nodes.get(weights)
+        if current is None or float(row["training_mean_rankic"]) > float(current["training_mean_rankic"]):
+            unique_nodes[weights] = row
+    finalists = sorted(
+        unique_nodes.values(),
+        key=lambda row: (
+            -float(row["training_mean_rankic"]),
+            float(row["price_weight"]),
+            float(row["factor_weight"]),
+            float(row["news_weight"]),
+        ),
+    )[:counterfactual_finalists]
+    if len(finalists) != counterfactual_finalists:
+        raise ValueError("FactFin MCTS produced too few distinct finalists")
+
+    validation_mask = frame["month"].between(valid_start, valid_end)
+    validation_frame = frame.loc[validation_mask]
+    validation_groups = group_scores.loc[validation_frame.index, expected_groups]
+    month_positions = [
+        np.flatnonzero(validation_frame["month"].to_numpy() == month)
+        for month in validation_months
+    ]
+    counterfactual_groups: list[np.ndarray] = []
+    validation_values = validation_groups.to_numpy(dtype=float)
+    for scenario in range(counterfactual_scenarios):
+        changed = validation_values.copy()
+        dimension = scenario % len(expected_groups)
+        for positions in month_positions:
+            changed[positions, dimension] = changed[rng.permutation(positions), dimension]
+        counterfactual_groups.append(changed)
+
+    def action_probabilities(score: np.ndarray) -> np.ndarray:
+        logits = np.column_stack([-2.0 * score, -2.0 * np.abs(score), 2.0 * score])
+        logits -= logits.max(axis=1, keepdims=True)
+        probability = np.exp(logits)
+        return probability / probability.sum(axis=1, keepdims=True)
+
+    finalist_metrics: dict[tuple[float, float, float], dict[str, float]] = {}
+    for finalist in finalists:
+        weights = (
+            float(finalist["price_weight"]),
+            float(finalist["factor_weight"]),
+            float(finalist["news_weight"]),
+        )
+        original = ranked_strategy(validation_groups, weights, validation_frame["month"])
+        validation_rankic = monthly_rankic(
+            validation_frame,
+            pd.DataFrame({"score": original}),
+        )["score"].mean()
+        original_values = original.to_numpy(dtype=float)
+        original_actions = np.where(
+            original_values > hold_band[1],
+            1,
+            np.where(original_values < hold_band[0], -1, 0),
+        )
+        original_probability = action_probabilities(original_values)
+        consistency = []
+        invariance = []
+        dependency = []
+        for changed in counterfactual_groups:
+            changed_frame = pd.DataFrame(changed, index=validation_frame.index, columns=expected_groups)
+            counterfactual = ranked_strategy(
+                changed_frame,
+                weights,
+                validation_frame["month"],
+            ).to_numpy(dtype=float)
+            counterfactual_actions = np.where(
+                counterfactual > hold_band[1],
+                1,
+                np.where(counterfactual < hold_band[0], -1, 0),
+            )
+            consistency.append(float(np.mean(original_actions == counterfactual_actions)))
+            invariance.append(
+                float(1.0 - np.mean(np.abs(np.abs(original_values) - np.abs(counterfactual))))
+            )
+            counterfactual_probability = action_probabilities(counterfactual)
+            dependency.append(
+                float(
+                    np.mean(
+                        np.sum(
+                            original_probability
+                            * np.log(
+                                np.clip(original_probability, 1e-12, None)
+                                / np.clip(counterfactual_probability, 1e-12, None)
+                            ),
+                            axis=1,
+                        )
+                    )
+                )
+            )
+        metrics = {
+            "validation_rankic": float(validation_rankic),
+            "prediction_consistency": float(np.mean(consistency)),
+            "confidence_invariance": float(np.mean(invariance)),
+            "input_dependency_score": float(np.mean(dependency)),
+        }
+        metrics["counterfactual_objective"] = float(
+            sum(objective_weights[name] * metrics[name] for name in objective_weights)
+        )
+        finalist_metrics[weights] = metrics
+    selected_row = sorted(
+        finalists,
+        key=lambda row: (
+            -finalist_metrics[
+                (
+                    float(row["price_weight"]),
+                    float(row["factor_weight"]),
+                    float(row["news_weight"]),
+                )
+            ]["counterfactual_objective"],
+            float(row["price_weight"]),
+            float(row["factor_weight"]),
+            float(row["news_weight"]),
+        ),
+    )[0]
+    selected_weights = (
+        float(selected_row["price_weight"]),
+        float(selected_row["factor_weight"]),
+        float(selected_row["news_weight"]),
+    )
+    for row in history_rows:
+        weights = (
+            float(row["price_weight"]),
+            float(row["factor_weight"]),
+            float(row["news_weight"]),
+        )
+        row["counterfactual_finalist"] = weights in finalist_metrics
+        row["selected_final"] = weights == selected_weights and int(row["node_id"]) == int(selected_row["node_id"])
+        for metric in [
+            "validation_rankic",
+            "prediction_consistency",
+            "confidence_invariance",
+            "input_dependency_score",
+            "counterfactual_objective",
+        ]:
+            row[metric] = finalist_metrics.get(weights, {}).get(metric, np.nan)
+
+    final_score = ranked_strategy(group_scores, selected_weights, frame["month"])
+    final_score = final_score.where(frame["month"] >= pd.Timestamp(common_start))
+    selected_metrics = finalist_metrics[selected_weights]
+    summary = {
+        "selected_weights": list(selected_weights),
+        "selected_training_mean_rankic": float(selected_row["training_mean_rankic"]),
+        **selected_metrics,
+        "mcts_iterations": len(history_rows),
+        "distinct_programs": len(unique_nodes),
+        "counterfactual_finalists": len(finalists),
+        "counterfactual_scenarios": counterfactual_scenarios,
+    }
+    return final_score, pd.DataFrame(history_rows), summary
