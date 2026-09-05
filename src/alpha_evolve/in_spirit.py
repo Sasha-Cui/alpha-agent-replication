@@ -3106,3 +3106,169 @@ def mm_arc_routing_scores(
             row[f"router_weight__{expert}"] = float(router_weights[expert])
         diagnostics.append(row)
     return result, pd.DataFrame(diagnostics)
+
+
+def trading_r1_reward_policy_scores(
+    frame: pd.DataFrame,
+    reasoning_groups: dict[str, list[tuple[str, int]]],
+    *,
+    action_names: list[str],
+    action_values: list[float],
+    truth_quantiles: list[float],
+    reward_matrix: np.ndarray,
+    common_start: str,
+    label_horizons: list[int],
+    horizon_weights: list[float],
+    volatility_lookback_months: int = 20,
+    label_purge_months: int = 6,
+    policy_training_months: int = 60,
+    ridge_lambda: float = 10.0,
+    confidence_scale: float = 0.10,
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Fit a past-only five-action Trading-R1-style contextual reward policy."""
+    expected_groups = ["technical", "fundamental", "sentiment"]
+    expected_actions = ["STRONG SELL", "SELL", "HOLD", "BUY", "STRONG BUY"]
+    if list(reasoning_groups) != expected_groups:
+        raise ValueError("Trading-R1 requires the three frozen reasoning groups in order")
+    if action_names != expected_actions or action_values != [-1.0, -0.5, 0.0, 0.5, 1.0]:
+        raise ValueError("Trading-R1 five-action ordering changed")
+    if truth_quantiles != [0.03, 0.15, 0.53, 0.85]:
+        raise ValueError("Trading-R1 truth quantiles changed")
+    if reward_matrix.shape != (5, 5):
+        raise ValueError("Trading-R1 decision reward matrix must be five by five")
+    if label_horizons != [1, 3, 6] or horizon_weights != [0.3, 0.5, 0.2]:
+        raise ValueError("Trading-R1 multi-horizon label policy changed")
+    if label_purge_months < max(label_horizons):
+        raise ValueError("Trading-R1 label purge is shorter than the longest horizon")
+    specifications = [
+        specification
+        for group_specifications in reasoning_groups.values()
+        for specification in group_specifications
+    ]
+    features = list(dict.fromkeys(feature for feature, _ in specifications))
+    missing = {"month", "security_id", "ret_exc_lead1m", *features} - set(frame)
+    if missing:
+        raise ValueError(f"missing Trading-R1 inputs: {sorted(missing)}")
+    if any(sign not in {-1, 1} for _, sign in specifications):
+        raise ValueError("Trading-R1 reasoning feature signs must be -1 or 1")
+
+    ranked = cross_sectional_unit_rank(frame, features)
+    group_raw: dict[str, pd.Series] = {}
+    for group, group_specifications in reasoning_groups.items():
+        signed = pd.concat(
+            [ranked[feature] * sign for feature, sign in group_specifications],
+            axis=1,
+        )
+        group_raw[group] = signed.mean(axis=1, skipna=False)
+    group_scores = cross_sectional_unit_rank(
+        pd.concat([frame[["month"]], pd.DataFrame(group_raw)], axis=1),
+        expected_groups,
+    )
+    evidence_raw = pd.DataFrame(index=frame.index)
+    evidence_raw[expected_groups] = group_scores[expected_groups]
+    evidence_raw["consensus"] = group_scores.mean(axis=1, skipna=False)
+    evidence_raw["dispersion"] = group_scores.std(axis=1, ddof=0, skipna=False)
+    evidence_raw["technical_x_fundamental"] = group_scores["technical"] * group_scores["fundamental"]
+    evidence_raw["technical_x_sentiment"] = group_scores["technical"] * group_scores["sentiment"]
+    evidence_raw["fundamental_x_sentiment"] = group_scores["fundamental"] * group_scores["sentiment"]
+    evidence_columns = list(evidence_raw)
+    evidence = cross_sectional_unit_rank(
+        pd.concat([frame[["month"]], evidence_raw], axis=1),
+        evidence_columns,
+    )
+
+    ordered = frame[["security_id", "month", "ret_exc_lead1m"]].copy().sort_values(
+        ["security_id", "month"],
+        kind="mergesort",
+    )
+    forward_scores: dict[int, pd.Series] = {}
+    for horizon in label_horizons:
+        components = []
+        for offset in range(horizon):
+            shifted_return = ordered.groupby("security_id")["ret_exc_lead1m"].shift(-offset)
+            shifted_month = ordered.groupby("security_id")["month"].shift(-offset)
+            expected_month = ordered["month"] + pd.offsets.MonthEnd(offset)
+            components.append(shifted_return.where(shifted_month.eq(expected_month)))
+        component_frame = pd.concat(components, axis=1)
+        forward = (1.0 + component_frame).prod(axis=1, min_count=horizon) - 1.0
+        volatility = (
+            forward.groupby(ordered["security_id"])
+            .rolling(volatility_lookback_months, min_periods=volatility_lookback_months)
+            .std(ddof=1)
+            .reset_index(level=0, drop=True)
+        )
+        normalized = forward / volatility.replace(0.0, np.nan)
+        forward_scores[horizon] = normalized.reindex(frame.index)
+    label_signal = sum(
+        weight * forward_scores[horizon]
+        for horizon, weight in zip(label_horizons, horizon_weights)
+    )
+
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    diagnostics: list[dict[str, object]] = []
+    month_groups = frame.groupby("month", sort=False).groups
+    common_months = sorted(
+        pd.Timestamp(month)
+        for month in frame.loc[frame["month"] >= common_start, "month"].unique()
+    )
+    action_value_array = np.asarray(action_values, dtype=float)
+    for month in common_months:
+        label_cutoff = month - pd.offsets.MonthEnd(label_purge_months)
+        eligible_months = sorted(
+            pd.Timestamp(value)
+            for value in frame.loc[frame["month"] <= label_cutoff, "month"].unique()
+        )[-policy_training_months:]
+        if len(eligible_months) != policy_training_months:
+            raise ValueError(f"Trading-R1 policy history is incomplete at {month.date()}")
+        training_indices = frame.index[frame["month"].isin(eligible_months)]
+        training_signal = label_signal.loc[training_indices]
+        valid = training_signal.notna()
+        if valid.sum() <= len(evidence_columns) + 1:
+            raise ValueError(f"Trading-R1 has too few realized labels at {month.date()}")
+        thresholds = training_signal.loc[valid].quantile(truth_quantiles).to_numpy(dtype=float)
+        truth = np.searchsorted(
+            thresholds,
+            training_signal.loc[valid].to_numpy(dtype=float),
+            side="right",
+        )
+        x_train = evidence.loc[training_indices[valid], evidence_columns].fillna(0.0).to_numpy(dtype=float)
+        x_train = np.column_stack([x_train, np.ones(len(x_train))])
+        rewards = reward_matrix[:, truth].T
+        penalty = ridge_lambda * np.eye(x_train.shape[1])
+        penalty[-1, -1] = 0.0
+        coefficients = np.linalg.solve(
+            x_train.T @ x_train + penalty,
+            x_train.T @ rewards,
+        )
+        indices = month_groups[month]
+        current = evidence.loc[indices, evidence_columns].fillna(0.0).to_numpy(dtype=float)
+        current = np.column_stack([current, np.ones(len(current))])
+        predicted_rewards = current @ coefficients
+        centered_rewards = predicted_rewards - predicted_rewards.mean(axis=1, keepdims=True)
+        chosen = np.argmax(centered_rewards, axis=1)
+        sorted_rewards = np.sort(centered_rewards, axis=1)
+        margin = sorted_rewards[:, -1] - sorted_rewards[:, -2]
+        score = action_value_array[chosen] + confidence_scale * np.tanh(margin)
+        result.loc[indices] = score
+        row: dict[str, object] = {
+            "formation_month": str(month.date()),
+            "label_cutoff": str(label_cutoff.date()),
+            "training_start": str(eligible_months[0].date()),
+            "training_end": str(eligible_months[-1].date()),
+            "policy_training_months": len(eligible_months),
+            "training_rows": int(valid.sum()),
+            "ridge_coefficient_norm": float(np.linalg.norm(coefficients)),
+            "mean_group_relative_advantage": float(
+                centered_rewards[np.arange(len(chosen)), chosen].mean()
+            ),
+            "mean_best_second_reward_margin": float(margin.mean()),
+            "finite_scores": int(np.isfinite(score).sum()),
+        }
+        for quantile, threshold in zip(truth_quantiles, thresholds):
+            row[f"label_threshold_q{int(quantile * 100):02d}"] = float(threshold)
+        for action, action_number in zip(action_names, range(len(action_names))):
+            row[f"action_count__{action.lower().replace(' ', '_')}"] = int(
+                np.sum(chosen == action_number)
+            )
+        diagnostics.append(row)
+    return result, pd.DataFrame(diagnostics)
