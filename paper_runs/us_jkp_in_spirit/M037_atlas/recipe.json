@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M037",
+  "canonical_work_id": "CensusArxiv251015949",
+  "paper": "ATLAS: Adaptive Trading with LLM AgentS Through Dynamic Prompt Optimization and Multi-Agent Coordination",
+  "status": "frozen_before_jkp_result",
+  "fidelity_label": "in_spirit_reconstruction",
+  "claim_boundary": "A researcher-authored monthly U.S.-stock implementation of ATLAS's three analysts, Central Trading Agent, fixed execution interface, and delayed-window Adaptive-OPRO instruction updates; not a StockSim precursor replay or native LLM prompt trajectory.",
+  "paper_source": {
+    "url": "https://arxiv.org/abs/2510.15949v5",
+    "version": "arXiv v5, 2026-05-20",
+    "pdf_sha256": "c648c9f58811dcad578b41d56e06760c715d3b8c6314aad01170536f62d84bf7",
+    "source_sha256": "7b6ead28d2daed5f734b3b2d3c078e6051aa0a0e64fdddda53772f8fa9caad4f",
+    "precursor_source_url": "https://github.com/harrypapadakis/StockSim",
+    "precursor_source_commit": "c1a25c195df4c93b2db4a748f80ceae0f1c9fe50"
+  },
+  "primary_source_anchors": [
+    {
+      "anchor": "Section 3 and Figure 1",
+      "mechanism": "Market, news, and fundamental analyst agents prepare structured information for a Central Trading Agent that consumes portfolio state and emits executable order-level decisions."
+    },
+    {
+      "anchor": "Section 4, Optimized object/state/round inputs",
+      "mechanism": "Adaptive-OPRO maintains the current static instruction and scored prompt history, then uses the latest delayed outcome summary to write the next instruction."
+    },
+    {
+      "anchor": "Section 4, Stability via template separation",
+      "mechanism": "Only static policy instructions may change; dynamic analyst inputs, state placeholders, output schema, and execution interface remain fixed."
+    },
+    {
+      "anchor": "Section 4, Windowed evaluation and ATLAS instantiation, equation 1",
+      "mechanism": "Every five decisions, realized cumulative ROI is mapped to clip(50 + 250 times ROI, 0, 100), and a newly accepted prompt governs only subsequent unreplayed decisions."
+    }
+  ],
+  "strict_evidence": {
+    "audit_manifest_path": "paper_runs/paper_replication_audits/atlas/manifest.json",
+    "audit_manifest_sha256": "d3552ff9e2f872a875b187f2eef102d2640a77ba0c2e6efb5d49c76b6f32b5f8",
+    "source_provenance_path": "paper_runs/paper_replication_audits/atlas/source_provenance.json",
+    "source_provenance_sha256": "159a5206c65ce62b9d46bd74b97e51219fa07f64fc5c3a6109be03e411a7f03e",
+    "method_audit_path": "paper_runs/paper_replication_audits/atlas/method_specification_audit.csv",
+    "method_audit_sha256": "66b34d69642ae99cd8367df52bed6c95d29dacc1501186f1bbf825ffa1370dad",
+    "prompt_artifacts_path": "paper_runs/paper_replication_audits/atlas/prompt_artifact_inventory.csv",
+    "prompt_artifacts_sha256": "b105dbc1d044ecc06deb3ffb25d8f5f2bef9a289ad75a3b0eebd2e4a9b8cea80",
+    "release_execution_path": "paper_runs/paper_replication_audits/atlas/release_execution_audit.json",
+    "release_execution_sha256": "77189c046474dbce546baf85961a3e32d0787dd27360d37e9f96300365d76507"
+  },
+  "analyst_agents": {
+    "market": [
+      {"column": "ret_12_1", "sign": 1},
+      {"column": "ret_6_1", "sign": 1},
+      {"column": "ret_1_0", "sign": 1},
+      {"column": "prc_highprc_252d", "sign": 1},
+      {"column": "rvol_21d", "sign": -1},
+      {"column": "beta_60m", "sign": -1}
+    ],
+    "news": [
+      {"column": "niq_su", "sign": 1},
+      {"column": "saleq_su", "sign": 1},
+      {"column": "turnover_126d", "sign": 1},
+      {"column": "ret_1_0", "sign": 1}
+    ],
+    "fundamental": [
+      {"column": "be_me", "sign": 1},
+      {"column": "gp_at", "sign": 1},
+      {"column": "ocf_at", "sign": 1},
+      {"column": "f_score", "sign": 1},
+      {"column": "z_score", "sign": 1},
+      {"column": "qmj_prof", "sign": 1}
+    ]
+  },
+  "adaptive_opro_policy": {
+    "evaluation_window_decisions": 5,
+    "initial_analyst_weights": {"market": 0.3333333333333333, "news": 0.3333333333333333, "fundamental": 0.3333333333333333},
+    "initial_hold_threshold": 0.1,
+    "hold_threshold_bounds": [0.0, 0.4],
+    "poor_window_threshold_increment": 0.05,
+    "successful_window_threshold_decrement": 0.02,
+    "analyst_weight_update_rate": 0.25,
+    "window_roi_proxy": "compound five monthly equal-weight long-short analyst-score decile returns without costs, computed only after every return realizes",
+    "exact_feedback_score": "clip(50 + 250 times window ROI, 0, 100)",
+    "meta_update": "add 0.25 times the cross-analyst z-score of standalone window ROI to log analyst weights and softmax",
+    "selectivity_update": "raise the hold threshold by 0.05 when feedback is below 50, otherwise lower it by 0.02, within frozen bounds",
+    "template_static_fields": ["analyst weights", "buy/hold/sell threshold"],
+    "template_dynamic_fields": ["market analyst score", "news analyst score", "fundamental analyst score", "current stock state"],
+    "fixed_output_schema": "continuous score plus BUY when above threshold, SELL below negative threshold, otherwise HOLD",
+    "no_window_replay": true,
+    "final_common_returns_used_for_policy_choice": false,
+    "common_portfolio_adapter": "the continuous order-aware score enters frozen value-weighted long-short deciles and all six cost/missing-return paths"
+  },
+  "preserved_elements": [
+    "three specialized market, news, and fundamental analysts",
+    "a Central Trading Agent that synthesizes analyst outputs",
+    "an order-aware buy, hold, and sell interface",
+    "the static instruction as the optimized object",
+    "strict separation of editable static policy from fixed dynamic inputs and schema",
+    "five-decision delayed evaluation windows",
+    "the exact clip(50 + 250 times ROI, 0, 100) feedback score",
+    "optimization history of prompt versions and scores",
+    "a newly written prompt applied only to subsequent decisions",
+    "no replay of prior windows under later prompts"
+  ],
+  "approximated_elements": [
+    "JKP technical ranks replace multiscale chart and indicator summaries",
+    "earnings/sales surprises and attention replace structured news reports",
+    "JKP value and quality replace corporate report summaries",
+    "analyst weights and selectivity threshold replace natural-language CTA instructions",
+    "a deterministic performance-attribution update replaces the optimizer LLM meta-prompt",
+    "monthly decisions replace daily order generation",
+    "a simple long-short ROI proxy replaces StockSim order-level window scoring"
+  ],
+  "invented_elements": [
+    "the exact signed JKP analyst features",
+    "equal initial analyst weights and 0.10 hold threshold",
+    "the 0.25 analyst update rate",
+    "the threshold update increments and 0.00/0.40 bounds",
+    "cross-analyst ROI z-scores as the prompt-edit diagnosis",
+    "the equal-weight temporary window portfolio",
+    "the common monthly score-to-portfolio mapping"
+  ],
+  "anti_leakage": {
+    "paper_orders_or_prompt_trajectories_used_as_inputs": false,
+    "future_window_returns_used_before_prompt_update": false,
+    "current_month_forward_return_used_for_current_score": false,
+    "m037_common_result_seen_before_recipe_freeze": false,
+    "prior_other_paper_common_results_seen": true,
+    "retuning_after_common_result_permitted": false
+  }
+}
