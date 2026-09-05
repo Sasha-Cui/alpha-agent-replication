@@ -83,6 +83,7 @@
     "cvar_risk_budget": 0.05,
     "cvar_position_cap_bounds": [0.25, 1.0],
     "quantity_rule": "move carried position by at most 0.25 times direction confidence and never beyond risk-budget divided by absolute 5% CVaR, clipped to 0.25 through 1.00",
+    "missing_signal_rule": "when current analysis confidence is unavailable, issue HOLD with zero trade quantity and carry the prior valid position",
     "stale_position_rule": "reset a security position to zero after any absence from the monthly formation universe",
     "common_portfolio_adapter": "the carried security-level position score enters frozen value-weighted long-short deciles and all six cost/missing-return paths",
     "final_common_returns_used_for_policy_choice": false

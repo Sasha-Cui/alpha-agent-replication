@@ -4290,7 +4290,12 @@ def finpos_position_scores(
             if security in last_seen and last_seen[security] != month - pd.offsets.MonthEnd(1):
                 previous = 0.0
                 stale_resets += 1
-            quantity = base_trade_quantity * float(confidence.loc[index])
+            confidence_value = float(confidence.loc[index])
+            quantity = (
+                base_trade_quantity * confidence_value
+                if np.isfinite(confidence_value)
+                else 0.0
+            )
             proposed = previous + int(direction.loc[index]) * quantity
             bounded = float(np.clip(proposed, -float(cap.loc[index]), float(cap.loc[index])))
             bounded = float(np.clip(bounded, position_bounds[0], position_bounds[1]))

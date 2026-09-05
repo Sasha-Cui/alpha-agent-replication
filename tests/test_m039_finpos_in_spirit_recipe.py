@@ -50,6 +50,7 @@ def test_m039_recipe_freezes_hierarchical_memory_dual_decision_position_and_cvar
     assert policy["cvar_history_months"] == 20
     assert policy["cvar_tail_probability"] == 0.05
     assert policy["cvar_position_cap_bounds"] == [0.25, 1.0]
+    assert "HOLD" in policy["missing_signal_rule"]
     assert policy["final_common_returns_used_for_policy_choice"] is False
     assert len(recipe["preserved_elements"]) >= 10
     assert len(recipe["approximated_elements"]) >= 7

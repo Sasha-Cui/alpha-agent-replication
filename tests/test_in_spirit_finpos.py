@@ -43,6 +43,10 @@ def run(frame: pd.DataFrame):
 
 def test_finpos_carries_positions_with_separate_direction_and_quantity_decisions():
     frame = fixture()
+    missing = frame.security_id.eq(0) & frame.month.eq(pd.Timestamp("2005-07-31"))
+    for specifications in MEMORY.values():
+        for feature, _ in specifications:
+            frame.loc[missing, feature] = np.nan
     scores, history = run(frame)
     common = frame.month.ge("2005-07-31")
     assert scores.loc[common].notna().all()
