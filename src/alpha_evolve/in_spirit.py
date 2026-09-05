@@ -3272,3 +3272,240 @@ def trading_r1_reward_policy_scores(
             )
         diagnostics.append(row)
     return result, pd.DataFrame(diagnostics)
+
+
+def quantagents_meeting_scores(
+    frame: pd.DataFrame,
+    strategy_pool: dict[str, list[tuple[str, int]]],
+    *,
+    common_start: str,
+    memory_history_months: int = 120,
+    retrieved_similar_cases: int = 10,
+    new_strategy_members: int = 3,
+    market_report_weight: float = 0.2,
+    strategy_policy_weight: float = 0.8,
+    adaptive_reward_window: int = 12,
+    risk_component_weights: tuple[float, float, float, float] = (0.25, 0.25, 0.25, 0.25),
+    risk_alert_threshold: float = 0.75,
+    risk_policy_weight_when_triggered: float = 0.5,
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Run deterministic QuantAgents meetings, memories, and dual rewards."""
+    expected_pool = [
+        "momentum_short",
+        "momentum_medium",
+        "momentum_long",
+        "breakout",
+        "reversal",
+        "value_quality",
+        "sentiment_surprise",
+        "low_risk",
+        "financial_safety",
+        "balanced_multi_factor",
+    ]
+    if list(strategy_pool) != expected_pool:
+        raise ValueError("QuantAgents requires the ten frozen strategy-pool members")
+    if retrieved_similar_cases != 10 or new_strategy_members != 3:
+        raise ValueError("QuantAgents retrieval or proposed-strategy count changed")
+    if market_report_weight + strategy_policy_weight != 1.0:
+        raise ValueError("QuantAgents policy and market-report weights must sum to one")
+    if not np.isclose(sum(risk_component_weights), 1.0):
+        raise ValueError("QuantAgents risk weights must sum to one")
+    specifications = [
+        specification
+        for strategy_specifications in strategy_pool.values()
+        for specification in strategy_specifications
+    ]
+    features = list(dict.fromkeys(feature for feature, _ in specifications))
+    missing = {"month", "security_id", "ret", "weight", "ret_exc_lead1m", *features} - set(frame)
+    if missing:
+        raise ValueError(f"missing QuantAgents inputs: {sorted(missing)}")
+    if any(sign not in {-1, 1} for _, sign in specifications):
+        raise ValueError("QuantAgents strategy signs must be -1 or 1")
+
+    ranked = cross_sectional_unit_rank(frame, features)
+    strategy_raw: dict[str, pd.Series] = {}
+    for strategy, strategy_specifications in strategy_pool.items():
+        signed = pd.concat(
+            [ranked[feature] * sign for feature, sign in strategy_specifications],
+            axis=1,
+        )
+        strategy_raw[strategy] = signed.mean(axis=1, skipna=False)
+    strategy_scores = cross_sectional_unit_rank(
+        pd.concat([frame[["month"]], pd.DataFrame(strategy_raw)], axis=1),
+        expected_pool,
+    )
+    strategy_rankics = monthly_rankic(frame, strategy_scores)
+    market_report = cross_sectional_unit_rank(
+        pd.DataFrame(
+            {
+                "month": frame["month"],
+                "report": strategy_scores[["sentiment_surprise", "momentum_short"]].mean(
+                    axis=1,
+                    skipna=False,
+                ),
+            }
+        ),
+        ["report"],
+    )["report"]
+    defensive = cross_sectional_unit_rank(
+        pd.DataFrame(
+            {
+                "month": frame["month"],
+                "defensive": strategy_scores[["low_risk", "financial_safety"]].mean(
+                    axis=1,
+                    skipna=False,
+                ),
+            }
+        ),
+        ["defensive"],
+    )["defensive"]
+
+    state_rows = []
+    risk_rows = []
+    for month, indices in frame.groupby("month", sort=True).groups.items():
+        weights = pd.to_numeric(frame.loc[indices, "weight"], errors="coerce")
+        weights = weights / weights.sum()
+        returns = pd.to_numeric(frame.loc[indices, "ret"], errors="coerce").fillna(0.0)
+
+        def weighted_mean(values: pd.Series) -> float:
+            valid = values.notna() & weights.notna()
+            if not valid.any():
+                return float("nan")
+            normalized = weights.loc[valid] / weights.loc[valid].sum()
+            return float(np.sum(normalized * values.loc[valid]))
+
+        state_rows.append(
+            {
+                "month": pd.Timestamp(month),
+                "market_return": float(np.sum(weights * returns)),
+                "weighted_momentum": weighted_mean(ranked.loc[indices, "ret_12_1"]),
+                "weighted_value": weighted_mean(ranked.loc[indices, "be_me"]),
+                "weighted_sentiment": weighted_mean(strategy_scores.loc[indices, "sentiment_surprise"]),
+            }
+        )
+        risk_rows.append(
+            {
+                "month": pd.Timestamp(month),
+                "market_beta": weighted_mean(ranked.loc[indices, "beta_60m"].abs()),
+                "liquidity": weighted_mean((ranked.loc[indices, "turnover_126d"] + 1.0) / 2.0),
+                "concentration": float(np.sum(weights**2)),
+            }
+        )
+    states = pd.DataFrame(state_rows).set_index("month")
+    states["market_volatility_6m"] = states["market_return"].rolling(6, min_periods=2).std(ddof=1).fillna(0.0)
+    states = states[
+        [
+            "market_return",
+            "market_volatility_6m",
+            "weighted_momentum",
+            "weighted_value",
+            "weighted_sentiment",
+        ]
+    ]
+    risk_states = pd.DataFrame(risk_rows).set_index("month")
+    risk_states["market_volatility_6m"] = states["market_volatility_6m"]
+
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    diagnostics: list[dict[str, object]] = []
+    month_groups = frame.groupby("month", sort=False).groups
+    common_months = sorted(
+        pd.Timestamp(month)
+        for month in frame.loc[frame["month"] >= common_start, "month"].unique()
+    )
+    simulated_rewards: list[float] = []
+    real_rewards: list[float] = []
+    deployed_members: list[str] = []
+    for month in common_months:
+        memory = states.loc[states.index < month].tail(memory_history_months)
+        if len(memory) != memory_history_months or not np.isfinite(memory.to_numpy()).all():
+            raise ValueError(f"QuantAgents memory history is incomplete at {month.date()}")
+        mean = memory.mean()
+        scale = memory.std(ddof=1).replace(0.0, 1.0)
+        current_state = states.loc[month]
+        distance = ((memory - mean) / scale - (current_state - mean) / scale).pow(2).sum(axis=1).pow(0.5)
+        retrieved = sorted(distance.index, key=lambda value: (float(distance[value]), value))[
+            :retrieved_similar_cases
+        ]
+        simulated_history = strategy_rankics.loc[retrieved, expected_pool]
+        utility = simulated_history.mean() - 0.5 * simulated_history.std(ddof=1)
+        proposed = sorted(expected_pool, key=lambda name: (-float(utility[name]), name))[
+            :new_strategy_members
+        ]
+        simulated_reward = float(utility[proposed].mean())
+        latest_real_month = strategy_rankics.index[strategy_rankics.index < month][-1]
+        if deployed_members:
+            real_reward = float(strategy_rankics.loc[latest_real_month, deployed_members].mean())
+        else:
+            deployed_members = list(proposed)
+            real_reward = simulated_reward
+        simulated_rewards.append(simulated_reward)
+        real_rewards.append(real_reward)
+        sim_sum = float(np.sum(simulated_rewards[-adaptive_reward_window:]))
+        real_sum = float(np.sum(real_rewards[-adaptive_reward_window:]))
+        ratio = sim_sum / (abs(sim_sum) + abs(real_sum) + 1e-12)
+        simulated_weight = float(1.0 / (1.0 + np.exp(-ratio)))
+        real_weight = 1.0 - simulated_weight
+
+        indices = month_groups[month]
+        proposed_score = strategy_scores.loc[indices, proposed].mean(axis=1, skipna=False)
+        deployed_score = strategy_scores.loc[indices, deployed_members].mean(axis=1, skipna=False)
+        policy_score = simulated_weight * proposed_score + real_weight * deployed_score
+        integrated = (
+            strategy_policy_weight * policy_score
+            + market_report_weight * market_report.loc[indices]
+        )
+
+        risk_history = risk_states.loc[risk_states.index < month].tail(memory_history_months)
+        current_risk = risk_states.loc[month]
+
+        def percentile(name: str, value: float) -> float:
+            series = risk_history[name].dropna()
+            return float((series <= value).mean())
+
+        risk_components = np.asarray(
+            [
+                percentile("market_beta", float(current_risk["market_beta"])),
+                1.0 - percentile("liquidity", float(current_risk["liquidity"])),
+                percentile("concentration", float(current_risk["concentration"])),
+                percentile(
+                    "market_volatility_6m",
+                    float(current_risk["market_volatility_6m"]),
+                ),
+            ]
+        )
+        risk_score = float(risk_components @ np.asarray(risk_component_weights))
+        risk_trigger = risk_score > risk_alert_threshold
+        final = integrated.copy()
+        if risk_trigger:
+            final = (
+                (1.0 - risk_policy_weight_when_triggered) * integrated
+                + risk_policy_weight_when_triggered * defensive.loc[indices]
+            )
+        result.loc[indices] = final
+        diagnostics.append(
+            {
+                "formation_month": str(month.date()),
+                "memory_start": str(memory.index[0].date()),
+                "memory_end": str(memory.index[-1].date()),
+                "memory_history_months": len(memory),
+                "memory_type_count": 3,
+                "retrieved_similar_cases": len(retrieved),
+                "retrieved_months": "|".join(str(value.date()) for value in retrieved),
+                "strategy_pool_size": len(expected_pool),
+                "proposed_strategy_members": "|".join(proposed),
+                "deployed_strategy_members": "|".join(deployed_members),
+                "simulated_reward": simulated_reward,
+                "real_reward": real_reward,
+                "simulated_reward_weight": simulated_weight,
+                "real_reward_weight": real_weight,
+                "risk_beta_component": float(risk_components[0]),
+                "risk_inverse_liquidity_component": float(risk_components[1]),
+                "risk_concentration_component": float(risk_components[2]),
+                "risk_volatility_component": float(risk_components[3]),
+                "risk_score": risk_score,
+                "risk_alert_triggered": risk_trigger,
+                "finite_scores": int(final.notna().sum()),
+            }
+        )
+        deployed_members = list(proposed)
+    return result, pd.DataFrame(diagnostics)
