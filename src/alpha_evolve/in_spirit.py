@@ -2413,3 +2413,313 @@ def alphaagents_debate_scores(
         ["consensus"],
     )["consensus"]
     return score, pd.DataFrame(diagnostics)
+
+
+def treevo_evolution_scores(
+    frame: pd.DataFrame,
+    seed_features: list[tuple[str, int]],
+    *,
+    common_start: str,
+    training_start: str,
+    training_end: str,
+    validation_start: str,
+    validation_end: str,
+    population_size: int = 10,
+    evaluation_budget: int = 200,
+    offspring_generations: int = 19,
+    offspring_per_generation: int = 10,
+    operator_rotation: tuple[str, ...] = ("crossover", "mutation", "pruning"),
+    mutation_probabilities: tuple[float, float, float] = (0.4, 0.4, 0.2),
+    random_seed: int = 16334,
+    maximum_initial_depth: int = 3,
+    complexity_penalty_per_extra_node: float = 0.0001,
+) -> tuple[pd.Series, pd.DataFrame, dict[str, object]]:
+    """Evolve an interpretable hierarchy with a frozen TreEvo-style search."""
+    if len(seed_features) != 6 or len({feature for feature, _ in seed_features}) != 6:
+        raise ValueError("TreEvo requires six unique seed features")
+    if population_size != 10 or evaluation_budget != 200:
+        raise ValueError("TreEvo population or evaluation budget changed")
+    if population_size + offspring_generations * offspring_per_generation != evaluation_budget:
+        raise ValueError("TreEvo generations do not exhaust the evaluation budget")
+    if operator_rotation != ("crossover", "mutation", "pruning"):
+        raise ValueError("TreEvo operator rotation changed")
+    if not np.isclose(sum(mutation_probabilities), 1.0):
+        raise ValueError("TreEvo mutation probabilities must sum to one")
+    features = [feature for feature, _ in seed_features]
+    missing = {"month", "ret_exc_lead1m", *features} - set(frame)
+    if missing:
+        raise ValueError(f"missing TreEvo inputs: {sorted(missing)}")
+    if any(sign not in {-1, 1} for _, sign in seed_features):
+        raise ValueError("TreEvo seed signs must be -1 or 1")
+
+    train_start = pd.Timestamp(training_start)
+    train_end = pd.Timestamp(training_end)
+    valid_start = pd.Timestamp(validation_start)
+    valid_end = pd.Timestamp(validation_end)
+    search_mask = frame["month"].between(train_start, valid_end)
+    search_frame = frame.loc[search_mask]
+    train_months = sorted(search_frame.loc[search_frame["month"].between(train_start, train_end), "month"].unique())
+    valid_months = sorted(search_frame.loc[search_frame["month"].between(valid_start, valid_end), "month"].unique())
+    if len(train_months) != 96 or len(valid_months) != 24 or train_end >= valid_start:
+        raise ValueError("TreEvo requires the frozen 96/24-month chronological split")
+
+    ranked = cross_sectional_unit_rank(frame, features)
+    ranked_search = ranked.loc[search_frame.index]
+    signed_search = {
+        feature: ranked_search[feature] * sign
+        for feature, sign in seed_features
+    }
+    signed_full = {
+        feature: ranked[feature] * sign
+        for feature, sign in seed_features
+    }
+    search_return_ranks = pd.to_numeric(
+        search_frame["ret_exc_lead1m"],
+        errors="coerce",
+    ).groupby(search_frame["month"], sort=False).rank(method="average")
+    search_month_groups = search_frame.groupby("month", sort=True).groups
+    rng = np.random.default_rng(random_seed)
+    internal_operators = ("mean", "difference", "product")
+
+    def expression(tree: tuple) -> str:
+        if tree[0] == "leaf":
+            return str(tree[1])
+        return f"{tree[0]}({expression(tree[1])},{expression(tree[2])})"
+
+    def node_count(tree: tuple) -> int:
+        if tree[0] == "leaf":
+            return 1
+        return 1 + node_count(tree[1]) + node_count(tree[2])
+
+    def paths(tree: tuple, *, leaves: bool | None = None, prefix: tuple[int, ...] = ()) -> list[tuple[int, ...]]:
+        is_leaf = tree[0] == "leaf"
+        selected = leaves is None or leaves == is_leaf
+        result = [prefix] if selected else []
+        if not is_leaf:
+            result.extend(paths(tree[1], leaves=leaves, prefix=(*prefix, 1)))
+            result.extend(paths(tree[2], leaves=leaves, prefix=(*prefix, 2)))
+        return result
+
+    def subtree(tree: tuple, path: tuple[int, ...]) -> tuple:
+        current = tree
+        for position in path:
+            current = current[position]
+        return current
+
+    def replace(tree: tuple, path: tuple[int, ...], replacement: tuple) -> tuple:
+        if not path:
+            return replacement
+        values = list(tree)
+        position = path[0]
+        values[position] = replace(values[position], path[1:], replacement)
+        return tuple(values)
+
+    def random_tree(depth: int) -> tuple:
+        if depth <= 0 or rng.random() < 0.25:
+            return ("leaf", features[int(rng.integers(len(features)))])
+        operator = internal_operators[int(rng.integers(len(internal_operators)))]
+        return (operator, random_tree(depth - 1), random_tree(depth - 1))
+
+    def crossover(left: tuple, right: tuple) -> tuple:
+        left_path = paths(left)[int(rng.integers(len(paths(left))))]
+        right_path = paths(right)[int(rng.integers(len(paths(right))))]
+        return replace(left, left_path, subtree(right, right_path))
+
+    def mutate(tree: tuple) -> tuple[tuple, str]:
+        draw = rng.random()
+        root_probability, internal_probability, _fine_probability = mutation_probabilities
+        if draw < root_probability:
+            return random_tree(maximum_initial_depth), "root"
+        if draw < root_probability + internal_probability:
+            internal_paths = paths(tree, leaves=False)
+            if not internal_paths:
+                operator = internal_operators[int(rng.integers(len(internal_operators)))]
+                new_leaf = ("leaf", features[int(rng.integers(len(features)))])
+                return (operator, tree, new_leaf), "internal"
+            path = internal_paths[int(rng.integers(len(internal_paths)))]
+            return replace(tree, path, random_tree(maximum_initial_depth - 1)), "internal"
+        leaf_paths = paths(tree, leaves=True)
+        path = leaf_paths[int(rng.integers(len(leaf_paths)))]
+        old_feature = subtree(tree, path)[1]
+        alternatives = [feature for feature in features if feature != old_feature]
+        replacement = ("leaf", alternatives[int(rng.integers(len(alternatives)))])
+        return replace(tree, path, replacement), "fine"
+
+    def prune(tree: tuple) -> tuple:
+        internal_paths = paths(tree, leaves=False)
+        if not internal_paths:
+            return tree
+        path = internal_paths[int(rng.integers(len(internal_paths)))]
+        target = subtree(tree, path)
+        child = target[1 + int(rng.integers(2))]
+        return replace(tree, path, child)
+
+    def evaluate_tree(tree: tuple, values: dict[str, pd.Series]) -> pd.Series:
+        if tree[0] == "leaf":
+            return values[str(tree[1])]
+        left = evaluate_tree(tree[1], values)
+        right = evaluate_tree(tree[2], values)
+        if tree[0] == "mean":
+            return (left + right) / 2.0
+        if tree[0] == "difference":
+            return left - right
+        if tree[0] == "product":
+            return left * right
+        raise AssertionError(f"unknown TreEvo node: {tree[0]}")
+
+    history_rows: list[dict[str, object]] = []
+    evaluation_number = 0
+
+    def evaluate_candidate(tree: tuple, generation: int, operator: str, mutation_scope: str = "") -> dict[str, object]:
+        nonlocal evaluation_number
+        evaluation_number += 1
+        name = expression(tree)
+        raw_score = evaluate_tree(tree, signed_search).replace([np.inf, -np.inf], np.nan)
+        ranked_score = cross_sectional_unit_rank(
+            pd.DataFrame({"month": search_frame["month"], "candidate": raw_score}),
+            ["candidate"],
+        )
+        rankic_values = []
+        rankic_months = []
+        candidate_score = ranked_score["candidate"]
+        for month, indices in search_month_groups.items():
+            x = candidate_score.loc[indices].to_numpy(dtype=float)
+            y = search_return_ranks.loc[indices].to_numpy(dtype=float)
+            valid = np.isfinite(x) & np.isfinite(y)
+            if valid.sum() < 20:
+                correlation = np.nan
+            else:
+                centered_x = x[valid] - x[valid].mean()
+                centered_y = y[valid] - y[valid].mean()
+                denominator = float(
+                    np.sqrt(np.sum(centered_x**2) * np.sum(centered_y**2))
+                )
+                correlation = (
+                    float(np.sum(centered_x * centered_y) / denominator)
+                    if denominator > 0
+                    else np.nan
+                )
+            rankic_values.append(correlation)
+            rankic_months.append(pd.Timestamp(month))
+        rankic = pd.Series(rankic_values, index=pd.DatetimeIndex(rankic_months))
+        train = rankic.loc[(rankic.index >= train_start) & (rankic.index <= train_end)]
+        validation = rankic.loc[(rankic.index >= valid_start) & (rankic.index <= valid_end)]
+        nodes = node_count(tree)
+        penalty = complexity_penalty_per_extra_node * (nodes - 1)
+        train_count = int(train.notna().sum())
+        validation_count = int(validation.notna().sum())
+        valid_candidate = train_count == 96 and validation_count == 24
+        if valid_candidate:
+            train_mean = float(train.mean())
+            direction = 1 if train_mean >= 0 else -1
+            validation_mean = float(direction * validation.mean())
+            fitness = abs(train_mean) - penalty
+        else:
+            train_mean = 0.0
+            direction = 1
+            validation_mean = -1.0
+            fitness = -1.0 - penalty
+        candidate = {
+            "tree": tree,
+            "expression": name,
+            "node_count": nodes,
+            "training_mean_rankic": train_mean,
+            "training_direction": direction,
+            "validation_mean_oriented_rankic": validation_mean,
+            "complexity_penalty": penalty,
+            "training_fitness": fitness,
+            "valid_candidate": valid_candidate,
+            "evaluation": evaluation_number,
+        }
+        history_rows.append(
+            {
+                "evaluation": evaluation_number,
+                "generation": generation,
+                "operator": operator,
+                "mutation_scope": mutation_scope,
+                "expression": name,
+                "node_count": nodes,
+                "training_mean_rankic": train_mean,
+                "training_direction": direction,
+                "training_rankic_months": train_count,
+                "validation_rankic_months": validation_count,
+                "valid_candidate": valid_candidate,
+                "validation_mean_oriented_rankic": validation_mean,
+                "complexity_penalty": penalty,
+                "training_fitness": fitness,
+            }
+        )
+        return candidate
+
+    initial_trees: list[tuple] = []
+    initial_expressions: set[str] = set()
+    while len(initial_trees) < population_size:
+        tree = random_tree(maximum_initial_depth)
+        name = expression(tree)
+        if name not in initial_expressions:
+            initial_trees.append(tree)
+            initial_expressions.add(name)
+    population = [evaluate_candidate(tree, 0, "initialization") for tree in initial_trees]
+    for generation in range(1, offspring_generations + 1):
+        operator = operator_rotation[(generation - 1) % len(operator_rotation)]
+        offspring = []
+        for _ in range(offspring_per_generation):
+            if operator == "crossover":
+                parent_indices = rng.choice(len(population), size=2, replace=False)
+                child = crossover(
+                    population[int(parent_indices[0])]["tree"],
+                    population[int(parent_indices[1])]["tree"],
+                )
+                scope = ""
+            elif operator == "mutation":
+                parent = population[int(rng.integers(len(population)))]["tree"]
+                child, scope = mutate(parent)
+            else:
+                parent = population[int(rng.integers(len(population)))]["tree"]
+                child = prune(parent)
+                scope = ""
+            offspring.append(evaluate_candidate(child, generation, operator, scope))
+        population = sorted(
+            [*population, *offspring],
+            key=lambda candidate: (
+                -float(candidate["training_fitness"]),
+                str(candidate["expression"]),
+                int(candidate["evaluation"]),
+            ),
+        )[:population_size]
+    if evaluation_number != evaluation_budget:
+        raise AssertionError("TreEvo did not exhaust the frozen evaluation budget")
+    selected = sorted(
+        population,
+        key=lambda candidate: (
+            -float(candidate["validation_mean_oriented_rankic"]),
+            -float(candidate["training_fitness"]),
+            str(candidate["expression"]),
+        ),
+    )[0]
+    if not bool(selected["valid_candidate"]):
+        raise ValueError("TreEvo search produced no valid final candidate")
+    final_expressions = {str(candidate["expression"]) for candidate in population}
+    for row in history_rows:
+        row["survives_final_population"] = row["expression"] in final_expressions
+        row["selected_final"] = row["evaluation"] == selected["evaluation"]
+
+    final_raw = evaluate_tree(selected["tree"], signed_full).replace([np.inf, -np.inf], np.nan)
+    final_score = cross_sectional_unit_rank(
+        pd.DataFrame({"month": frame["month"], "selected": final_raw}),
+        ["selected"],
+    )["selected"] * int(selected["training_direction"])
+    final_score = final_score.where(frame["month"] >= pd.Timestamp(common_start))
+    history = pd.DataFrame(history_rows)
+    summary = {
+        "selected_evaluation": int(selected["evaluation"]),
+        "selected_expression": str(selected["expression"]),
+        "selected_node_count": int(selected["node_count"]),
+        "selected_training_direction": int(selected["training_direction"]),
+        "selected_training_mean_rankic": float(selected["training_mean_rankic"]),
+        "selected_training_fitness": float(selected["training_fitness"]),
+        "selected_validation_mean_oriented_rankic": float(selected["validation_mean_oriented_rankic"]),
+        "final_population_size": len(population),
+        "evaluation_budget": evaluation_number,
+    }
+    return final_score, history, summary
