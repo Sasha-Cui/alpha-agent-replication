@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M029",
+  "canonical_work_id": "CensusArxiv250817565",
+  "paper": "TradingGroup: A Multi-Agent Trading System with Self-Reflection and Data-Synthesis",
+  "status": "frozen_before_jkp_result",
+  "fidelity_label": "in_spirit_reconstruction",
+  "claim_boundary": "A researcher-authored monthly U.S.-stock implementation of TradingGroup's five-agent chain, delayed outcome reflection, adaptive style, and volatility hard-intercept; not the missing Qwen3-Trader policy, PEFT checkpoint, or five-ticker daily backtest.",
+  "paper_source": {
+    "url": "https://arxiv.org/abs/2508.17565v1",
+    "version": "arXiv v1, 2025-08-25",
+    "arxiv_id": "2508.17565",
+    "attributable_native_implementation_files": 0,
+    "fine_tuned_checkpoint_recovered": false,
+    "training_trajectories_recovered": false
+  },
+  "primary_source_anchors": [
+    {
+      "anchor": "Abstract and Section 3, Figure 1",
+      "mechanism": "A five-agent chain covers news sentiment, financial reports, stock forecasting, style preference, and final trading decisions, with an attached risk module and data-synthesis pipeline."
+    },
+    {
+      "anchor": "Sections 3.1-3.3",
+      "mechanism": "News and report agents denoise complementary information; the forecasting agent integrates their outputs with technical features and reflects on successful and failed analogous cases."
+    },
+    {
+      "anchor": "Sections 3.4-3.5",
+      "mechanism": "A style agent reflects on recent performance to choose aggressive, balanced, or conservative execution, and a decision agent merges all upstream analyses with past profit/loss experience."
+    },
+    {
+      "anchor": "Section 3.6, equation 3",
+      "mechanism": "Dynamic risk management scales stop-loss and take-profit thresholds with recent volatility and applies a hard intercept when risk limits are exceeded."
+    },
+    {
+      "anchor": "Section 3.7, equations 4-5",
+      "mechanism": "The data-synthesis pipeline labels forecasting and decision records only after outcomes realize, using directional success, confidence, relative performance, and transaction-cost penalties for later reflection and post-training."
+    }
+  ],
+  "strict_evidence": {
+    "audit_manifest_path": "paper_runs/paper_replication_audits/tradinggroup/manifest.json",
+    "audit_manifest_sha256": "c0d49fb9ebfb74e87fe9cf7313915fa36ef837775c4bff558390e1f364181632",
+    "source_provenance_path": "paper_runs/paper_replication_audits/tradinggroup/source_provenance.json",
+    "source_provenance_sha256": "b4ad8fbdf1a1ee098a50e565d4c47ab0b210655b72f39c240aa905d2f51b4661",
+    "method_audit_path": "paper_runs/paper_replication_audits/tradinggroup/method_specification_audit.csv",
+    "method_audit_sha256": "35a708533c6c11d6f7dd6b786825c6f9c3a34fd2878adb8b427aae19bd7445ab",
+    "prompt_inventory_path": "paper_runs/paper_replication_audits/tradinggroup/prompt_inventory.csv",
+    "prompt_inventory_sha256": "982c51be963f4976cd39ae0c8ccce62f4c985b99d7a528888dd52edc1d1c116c",
+    "formula_inventory_path": "paper_runs/paper_replication_audits/tradinggroup/formula_inventory.csv",
+    "formula_inventory_sha256": "c681503741452cef0db4e8ebd459d4c5722c1d9cdb472bec331147e35d328887"
+  },
+  "information_agents": {
+    "news_sentiment": [
+      {"column": "niq_su", "sign": 1},
+      {"column": "saleq_su", "sign": 1},
+      {"column": "turnover_126d", "sign": 1},
+      {"column": "ret_1_0", "sign": 1}
+    ],
+    "financial_report": [
+      {"column": "be_me", "sign": 1},
+      {"column": "gp_at", "sign": 1},
+      {"column": "ocf_at", "sign": 1},
+      {"column": "f_score", "sign": 1},
+      {"column": "z_score", "sign": 1},
+      {"column": "qmj_prof", "sign": 1}
+    ],
+    "technical": [
+      {"column": "ret_12_1", "sign": 1},
+      {"column": "ret_6_1", "sign": 1},
+      {"column": "ret_1_0", "sign": 1},
+      {"column": "prc_highprc_252d", "sign": 1},
+      {"column": "rvol_21d", "sign": -1}
+    ]
+  },
+  "five_agent_roles": {
+    "news_sentiment_agent": "Equal-rank denoising of surprise, attention, and recent-trend proxies.",
+    "financial_report_agent": "Equal-rank synthesis of value, profitability, cash-flow, strength, and distress proxies.",
+    "stock_forecasting_agent": "Past-reliability-weighted fusion of sentiment, report, and technical agent scores.",
+    "style_preference_agent": "Select aggressive, balanced, or conservative forecast transforms from the preceding 20 outcome-labelled months.",
+    "trading_decision_agent": "Apply the selected style and its stock-level volatility hard-intercept to issue the final score."
+  },
+  "reflection_and_risk_policy": {
+    "prehistory_formation_start": "1992-11-30",
+    "forecast_reflection_months": 60,
+    "minimum_forecast_rankic_months": 36,
+    "forecast_reliability_temperature": 20.0,
+    "style_reflection_months": 20,
+    "minimum_style_rankic_months": 12,
+    "styles": {
+      "aggressive": {"risk_penalty": 0.0, "safety_bonus": 0.0, "positive_risk_intercept_quantile": 1.0},
+      "balanced": {"risk_penalty": 0.25, "safety_bonus": 0.0, "positive_risk_intercept_quantile": 0.8},
+      "conservative": {"risk_penalty": 0.5, "safety_bonus": 0.25, "positive_risk_intercept_quantile": 0.6}
+    },
+    "risk_features": ["rvol_21d", "beta_60m"],
+    "safety_features": ["z_score", "qmj_safety", "qmj_prof"],
+    "style_selection": "highest mean RankIC over the preceding 20 fully realized months with lexical tie-breaking",
+    "hard_intercept": "set positive recommendations to zero when current cross-sectional risk percentile exceeds the selected style threshold",
+    "data_synthesis_label": "monthly RankIC of each upstream or style score with the subsequently realized next-month excess return",
+    "score_refresh": "monthly; reflection histories contain only formation months strictly before the current formation",
+    "common_portfolio_adapter": "frozen value-weighted long-short deciles with all six cost and missing-return paths",
+    "final_common_returns_used_for_policy_choice": false
+  },
+  "preserved_elements": [
+    "five sequential functional agent roles",
+    "news-sentiment and financial-report information specialists",
+    "a stock-forecasting agent integrating technical and upstream information",
+    "self-reflection from labelled past successes and failures",
+    "a style-preference agent choosing among aggressive, balanced, and conservative behavior",
+    "a final trading-decision agent that merges upstream analysis and style",
+    "dynamic volatility-aware risk management",
+    "a hard intercept that can suppress otherwise positive actions",
+    "outcome labels created only after returns realize",
+    "a reusable data-synthesis history feeding future decisions"
+  ],
+  "approximated_elements": [
+    "JKP surprises and attention replace retrieved and re-ranked news",
+    "JKP financial quality and value replace filing RAG passages",
+    "cross-sectional trend and risk characteristics replace daily technical indicators",
+    "rolling RankIC reliability replaces LLM experience summaries and retrieved cases",
+    "deterministic style transforms replace natural-language style prompts and account-state reasoning",
+    "risk-percentile interception replaces position-level ATR stop-loss and take-profit execution",
+    "delayed score histories replace the unavailable 1,080 chain-of-thought trajectories and PEFT dataset"
+  ],
+  "invented_elements": [
+    "the exact signed information-agent features",
+    "the 60-month forecasting reflection window and softmax temperature",
+    "the 20-month style reflection window",
+    "the three exact risk penalties, safety bonus, and intercept percentiles",
+    "mean RankIC as the style-selection reward",
+    "the monthly cross-sectional hard-intercept rule",
+    "the common long-short score-to-portfolio mapping"
+  ],
+  "anti_leakage": {
+    "paper_actions_or_tickers_used_as_formation_inputs": false,
+    "future_returns_used_for_current_score": false,
+    "current_month_forward_return_used_for_current_score": false,
+    "m029_common_result_seen_before_recipe_freeze": false,
+    "prior_other_paper_common_results_seen": true,
+    "retuning_after_common_result_permitted": false
+  }
+}
