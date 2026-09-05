@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M052",
+  "canonical_work_id": "CensusArxiv260417327",
+  "paper": "Signal or Noise in Multi-Agent LLM-based Stock Recommendations?",
+  "status": "frozen_before_jkp_result",
+  "fidelity_label": "in_spirit_reconstruction",
+  "claim_boundary": "A researcher-authored monthly U.S.-stock analogue of MarketSenseAI's News, Fundamentals, Dynamics, and Macro specialists, adaptive synthesis, five-class recommendation, and strongest-buy universe filter; not the unreleased live recommendations, texts, embeddings, or fixed-cohort portfolios.",
+  "paper_source": {
+    "url": "https://arxiv.org/abs/2604.17327v1",
+    "version": "arXiv v1",
+    "pdf_sha256": "a9ba1f0627708d9a766ce12d258733753153bc905e84fc856e5a291c0f8805ad",
+    "source_sha256": "5670ddbb7f3db545e5d8aeeb6c9105da1818413fe8e1698ca6814f3ca89fd6f6",
+    "source_tex_sha256": "092ecfe6218f3cce14defcd7fdba1d2047606d471fa82e53a2d9f539c007cc04",
+    "native_signal_or_portfolio_outputs_found": false,
+    "bounded_release_search_checked_2026_09_05": "Exact paper and implementation searches expose the paper, summaries, and a research-only not-implemented record, but no attributable recommendation panel or runtime."
+  },
+  "primary_source_anchors": [
+    {"anchor": "Section 2 and Figure 1", "mechanism": "News, Fundamentals, Dynamics, and Macro specialists independently analyze each stock before a synthesis agent emits a thesis and five-point ordinal recommendation."},
+    {"anchor": "Section 2 fixed-cohort design", "mechanism": "Recommendations are formed monthly and one-month forward returns evaluate a strongest-buy equal-weight portfolio within fixed S&P 500 and S&P 100 cohorts."},
+    {"anchor": "Sections 3.1 and 4", "mechanism": "The headline signal is the rare strongest-buy class, averaging 7.5% of S&P 500 stock-dates, not the downstream NNLS explanation."},
+    {"anchor": "Sections 3.2 and 5.2", "mechanism": "NNLS shows specialist contributions rotate by stock, sector, and market regime, motivating context-dependent rather than fixed synthesis weights."}
+  ],
+  "strict_evidence": {
+    "audit_manifest_path": "paper_runs/paper_replication_audits/marketsenseai/manifest.json",
+    "audit_manifest_sha256": "d8fe3bcf1adf616f06a1de3978493626b3a0bedfbceefa3e19a2697c87ef4170",
+    "paper_version_summary_path": "paper_runs/paper_replication_audits/marketsenseai/paper_version_summary.csv",
+    "paper_version_summary_sha256": "44f7254c63a07292ee927b95da96277ee5b7f8ec77c51db89b8154e74289b47e",
+    "mechanism_conformance_path": "paper_runs/paper_replication_audits/marketsenseai/paper_mechanism_conformance.csv",
+    "mechanism_conformance_sha256": "586c0c58db6656e933fa570dd820f9e9d5f45bc513d9cc7157f23c15bf479eb1",
+    "specification_gaps_path": "paper_runs/paper_replication_audits/marketsenseai/paper_specification_gaps.csv",
+    "specification_gaps_sha256": "ac82b9dc63df46a877456bd3d430217eec4f38764e4dcb04e82ac0441210c3fe",
+    "published_2026_result_ledger_path": "paper_runs/paper_replication_audits/marketsenseai/published_2026_table_result_ledger.csv",
+    "published_2026_result_ledger_sha256": "6f7e18ac23fa8c770e650dd921b5026726294cf2923e4898086016c3e6e63e50"
+  },
+  "specialists": {
+    "news": ["niq_su", "saleq_su", "ret_1_0", "turnover_126d"],
+    "fundamentals": ["be_me", "gp_at", "ocf_at", "f_score", "o_score"],
+    "dynamics": ["ret_12_1", "ret_6_1", "prc_highprc_252d", "rvol_21d", "beta_60m"],
+    "macro": ["ret", "weight", "beta_60m", "rvol_21d"]
+  },
+  "synthesis_and_recommendation_policy": {
+    "prehistory_formation_start": "1994-07-31",
+    "specialist_reliability_history_months": 60,
+    "minimum_specialist_rankic_months": 24,
+    "reliability_softmax_temperature": 10.0,
+    "reliability_reward_purge_months": 1,
+    "specialist_primitive": "reuse the transparent four-specialist numerical MarketSenseAI primitive from M016, but not its final portfolio or result",
+    "five_class_percentile_boundaries": [0.02, 0.05, 0.84, 0.925],
+    "class_labels": ["strong_sell", "sell", "hold", "buy", "strong_buy"],
+    "target_strong_buy_fraction": 0.075,
+    "ordinal_values": [-2, -1, 0, 1, 2],
+    "continuous_tie_break_weight": 0.10,
+    "headline_filter": "strong-buy class only",
+    "common_portfolio_adapter": "the five-class ordinal score plus synthesis tie-break enters frozen value-weighted long-short deciles and all six common paths; the upper tail represents strongest buys",
+    "final_common_returns_used_for_policy_choice": false
+  },
+  "preserved_elements": ["four named specialist roles", "specialist-specific information domains", "a synthesis layer", "context-dependent specialist reliability", "monthly recommendations", "five ordered recommendation classes", "a rare strongest-buy tail", "one-month holding horizon", "strongest-buy universe filtering", "continuous specialist attribution as a secondary diagnostic"],
+  "approximated_elements": ["signed JKP features replace live news, filings, prices, and macro text", "rolling historical RankIC replaces thesis-embedding NNLS for adaptive synthesis", "a six-month market-return regime proxy supplies macro context", "fixed percentile boundaries replace unreleased five-class synthesis prompts", "the reported 7.5% S&P 500 strongest-buy frequency fixes the top-tail size", "ordinal scores plus a continuous tie-break replace text theses", "the common long-short decile portfolio replaces the paper's long-only equal-weight basket"],
+  "invented_elements": ["the exact signed specialist feature mappings", "the 60-month reliability window", "the reliability temperature", "the 2/5/84/92.5 percentile class boundaries", "the 0.10 continuous tie-break", "neutral filling of missing specialist primitives"],
+  "anti_leakage": {"published_aggregate_class_counts_used_to_infer_stock_identities": false, "unreleased_recommendations_or_embeddings_used": false, "current_forward_return_used_for_current_synthesis": false, "m016_final_returns_or_holdings_used": false, "m052_common_result_seen_before_recipe_freeze": false, "prior_other_paper_common_results_seen": true, "retuning_after_common_result_permitted": false}
+}
