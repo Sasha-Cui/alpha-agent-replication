@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M039",
+  "canonical_work_id": "CensusArxiv251027251",
+  "paper": "FinPos: A Position-Aware Trading Agent System for Real Financial Markets",
+  "status": "frozen_before_jkp_result",
+  "fidelity_label": "in_spirit_reconstruction",
+  "claim_boundary": "A researcher-authored monthly U.S.-stock implementation of FinPos's hierarchical signal memory, separate Direction and Quantity/Risk decisions, carried position state, multi-timescale delayed reward, and CVaR exposure cap; not a native GPT-4o FinPos policy or share ledger.",
+  "paper_source": {
+    "url": "https://arxiv.org/abs/2510.27251v2",
+    "version": "arXiv v2, 2026-01-07",
+    "pdf_sha256": "7bdcd7539e6b828bffe3a540b39d16c79a6c16e261240cec82729cdaf56b874b",
+    "source_sha256": "26adbb25c6a28dd484a4ab3a48f58c98ac7a7e8b4ce72aff0a5397f7c3d5b4d9",
+    "attributable_implementation_found": false
+  },
+  "primary_source_anchors": [
+    {
+      "anchor": "Sections 3.1-3.2, equations 1-2",
+      "mechanism": "Unlike independent one-step actions, FinPos carries the current position across decisions so earlier exposure affects subsequent risk and return."
+    },
+    {
+      "anchor": "Section 4.1 and Figure 2",
+      "mechanism": "Two-level signal-processing and analysis agents place volatile information in shallow memory and repeatedly validated long-horizon information in deeper memory."
+    },
+    {
+      "anchor": "Section 4.2, equations 5 and dual-agent subsections",
+      "mechanism": "A Direction Agent selects sell/hold/buy strategic intent, then a distinct Quantity/Risk Agent chooses the position change conditional on the carried position and CVaR."
+    },
+    {
+      "anchor": "Section 4.3, equations 3-5",
+      "mechanism": "Future 1/7/30-day trends create a training-only multi-timescale reward that supports later reflection but is never available to the live decision."
+    }
+  ],
+  "strict_evidence": {
+    "audit_manifest_path": "paper_runs/paper_replication_audits/finpos/manifest.json",
+    "audit_manifest_sha256": "60eea32a3ab6cee93e267aef648879594347617f74c93547f43e95da25e563f3",
+    "source_provenance_path": "paper_runs/paper_replication_audits/finpos/source_provenance.json",
+    "source_provenance_sha256": "94c1c8cad776003e3b0dd6de45cb9ce564eb38fa95dece60de50073e5899c167",
+    "method_audit_path": "paper_runs/paper_replication_audits/finpos/method_specification_audit.csv",
+    "method_audit_sha256": "30822b798dadef32112193d3213220c51a68078e76665ca0433af4d2ddb12078",
+    "component_execution_path": "paper_runs/paper_replication_audits/finpos/component_execution_audit.csv",
+    "component_execution_sha256": "e8faa622cd8973e8be1e7d44db9a5a84d5fc89db460d6144366992c3606b568d",
+    "prompt_contract_path": "paper_runs/paper_replication_audits/finpos/prompt_contract_audit.csv",
+    "prompt_contract_sha256": "9cc21e4a068e08e6f47bd049bcb74e3d03397af479d1586ebdb72399baac8e3a"
+  },
+  "hierarchical_signal_memory": {
+    "shallow_news": [
+      {"column": "niq_su", "sign": 1},
+      {"column": "saleq_su", "sign": 1},
+      {"column": "turnover_126d", "sign": 1},
+      {"column": "ret_1_0", "sign": 1}
+    ],
+    "middle_technical": [
+      {"column": "ret_12_1", "sign": 1},
+      {"column": "ret_6_1", "sign": 1},
+      {"column": "ret_1_0", "sign": 1},
+      {"column": "prc_highprc_252d", "sign": 1},
+      {"column": "rvol_21d", "sign": -1}
+    ],
+    "deep_fundamental": [
+      {"column": "be_me", "sign": 1},
+      {"column": "gp_at", "sign": 1},
+      {"column": "ocf_at", "sign": 1},
+      {"column": "f_score", "sign": 1},
+      {"column": "z_score", "sign": 1},
+      {"column": "qmj_prof", "sign": 1}
+    ]
+  },
+  "position_policy": {
+    "prehistory_formation_start": "1994-01-31",
+    "monthly_reward_horizons": [1, 3, 6],
+    "multi_timescale_weights": [0.3333333333333333, 0.3333333333333333, 0.3333333333333333],
+    "reward_label_purge_months": 6,
+    "reward_history_months": 60,
+    "minimum_reward_months": 36,
+    "memory_reliability_temperature": 20.0,
+    "direction_hold_threshold": 0.1,
+    "position_bounds": [-1.0, 1.0],
+    "base_trade_quantity": 0.25,
+    "cvar_history_months": 20,
+    "cvar_tail_probability": 0.05,
+    "cvar_risk_budget": 0.05,
+    "cvar_position_cap_bounds": [0.25, 1.0],
+    "quantity_rule": "move carried position by at most 0.25 times direction confidence and never beyond risk-budget divided by absolute 5% CVaR, clipped to 0.25 through 1.00",
+    "stale_position_rule": "reset a security position to zero after any absence from the monthly formation universe",
+    "common_portfolio_adapter": "the carried security-level position score enters frozen value-weighted long-short deciles and all six cost/missing-return paths",
+    "final_common_returns_used_for_policy_choice": false
+  },
+  "preserved_elements": [
+    "explicit carried position state",
+    "position update as prior position plus direction times quantity",
+    "separate Direction and Quantity/Risk decision stages",
+    "sell, hold, and buy direction semantics",
+    "hierarchical shallow, middle, and deep signal memory",
+    "multi-timescale training-only reward",
+    "short-, medium-, and long-horizon reward components",
+    "delayed reflection only after future outcomes realize",
+    "95% lower-tail CVaR reference",
+    "CVaR-capped exposure adjustment"
+  ],
+  "approximated_elements": [
+    "JKP surprises and attention replace news filtering agents",
+    "JKP momentum and volatility replace daily price-analysis agents",
+    "JKP value and quality replace filing-analysis agents",
+    "rolling multi-horizon RankIC reliability replaces LLM reflection and memory migration",
+    "continuous normalized position replaces integer shares",
+    "historical monthly return CVaR replaces daily account-PnL CVaR",
+    "the common decile portfolio replaces the native single-asset account ledger"
+  ],
+  "invented_elements": [
+    "the exact signed signal-memory features",
+    "monthly 1/3/6-month reward horizons",
+    "the 60-month reflection history and softmax temperature",
+    "the 0.10 direction hold threshold",
+    "the 0.25 base trade quantity",
+    "the 5% risk budget and 0.25/1.00 position-cap bounds",
+    "the stale-position reset rule",
+    "the common long-short mapping"
+  ],
+  "anti_leakage": {
+    "paper_actions_or_positions_used_as_inputs": false,
+    "multi_timescale_reward_used_before_six_months_realize": false,
+    "current_month_forward_return_used_for_current_score": false,
+    "m039_common_result_seen_before_recipe_freeze": false,
+    "prior_other_paper_common_results_seen": true,
+    "retuning_after_common_result_permitted": false
+  }
+}
