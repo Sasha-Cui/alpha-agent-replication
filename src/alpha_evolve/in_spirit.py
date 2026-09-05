@@ -190,6 +190,178 @@ def fama_rolling_scores(
     return result, pd.DataFrame(diagnostics)
 
 
+def alphalogics_evolution_scores(
+    frame: pd.DataFrame,
+    initial_market_logic_library: dict[str, list[tuple[str, int]]],
+    *,
+    calibration_train_start: str,
+    calibration_train_end: str,
+    calibration_validation_start: str,
+    calibration_validation_end: str,
+    common_start: str,
+    round_operation_order: list[str],
+    outer_rounds: int = 5,
+    inner_candidate_budget_per_logic_round: int = 8,
+    inner_early_stopping_non_improvements: int = 3,
+    minimum_validation_months: int = 48,
+    final_ridge_fraction: float = 0.01,
+) -> tuple[pd.Series, pd.DataFrame, dict[str, object]]:
+    """Run a deterministic AlphaLogics-style compiled factor evolution."""
+    expected_operations = ["identity", "pair_mean", "pair_product", "triple_mean", "positive_gate"]
+    if round_operation_order != expected_operations or outer_rounds != len(expected_operations):
+        raise ValueError("AlphaLogics requires the five frozen DSL rounds")
+    if len(initial_market_logic_library) < 2:
+        raise ValueError("AlphaLogics requires multiple persistent market logics")
+    if inner_candidate_budget_per_logic_round < 1 or inner_early_stopping_non_improvements < 1:
+        raise ValueError("AlphaLogics inner-loop controls are invalid")
+    if minimum_validation_months < 2 or final_ridge_fraction <= 0:
+        raise ValueError("AlphaLogics validation or ridge configuration is invalid")
+    specifications = [
+        specification
+        for logic_specifications in initial_market_logic_library.values()
+        for specification in logic_specifications
+    ]
+    features = list(dict.fromkeys(feature for feature, _ in specifications))
+    missing = {"month", "ret_exc_lead1m", *features} - set(frame)
+    if missing:
+        raise ValueError(f"missing AlphaLogics inputs: {sorted(missing)}")
+    if any(sign not in {-1, 1} for _, sign in specifications):
+        raise ValueError("AlphaLogics primitive signs must be -1 or 1")
+    train_start = pd.Timestamp(calibration_train_start)
+    train_end = pd.Timestamp(calibration_train_end)
+    validation_start = pd.Timestamp(calibration_validation_start)
+    validation_end = pd.Timestamp(calibration_validation_end)
+    common_timestamp = pd.Timestamp(common_start)
+    if not train_start <= train_end < validation_start <= validation_end < common_timestamp:
+        raise ValueError("AlphaLogics calibration chronology is invalid")
+
+    ranked = cross_sectional_unit_rank(frame, features)
+    candidates: dict[str, pd.DataFrame] = {}
+    candidate_rankics: dict[str, pd.DataFrame] = {}
+    operation_members: dict[str, dict[str, list[str]]] = {}
+    for logic, logic_specifications in initial_market_logic_library.items():
+        signed = {
+            feature: ranked[feature] * sign
+            for feature, sign in logic_specifications
+        }
+        generated: dict[str, pd.Series] = {}
+        members = {operation: [] for operation in expected_operations}
+        for feature in sorted(signed):
+            name = f"identity__{feature}"
+            generated[name] = signed[feature]
+            members["identity"].append(name)
+        for left, right in combinations(sorted(signed), 2):
+            mean_name = f"pair_mean__{left}__{right}"
+            product_name = f"pair_product__{left}__{right}"
+            generated[mean_name] = (signed[left] + signed[right]) / 2.0
+            generated[product_name] = signed[left] * signed[right]
+            members["pair_mean"].append(mean_name)
+            members["pair_product"].append(product_name)
+        for triple in combinations(sorted(signed), 3):
+            name = "triple_mean__" + "__".join(triple)
+            generated[name] = sum(signed[feature] for feature in triple) / 3.0
+            members["triple_mean"].append(name)
+        for base in sorted(signed):
+            for gate in sorted(signed):
+                if base == gate:
+                    continue
+                name = f"positive_gate__{base}__{gate}"
+                generated[name] = signed[base] * signed[gate].gt(0).astype(float)
+                members["positive_gate"].append(name)
+        raw = pd.DataFrame(generated, index=frame.index)
+        candidates[logic] = cross_sectional_unit_rank(
+            pd.concat([frame[["month"]], raw], axis=1),
+            list(raw),
+        )
+        candidate_rankics[logic] = monthly_rankic(frame, candidates[logic])
+        operation_members[logic] = members
+
+    selected: dict[str, tuple[str, float, float]] = {}
+    history_rows: list[dict[str, object]] = []
+    for round_number, operation in enumerate(round_operation_order, start=1):
+        for logic in initial_market_logic_library:
+            current = selected.get(logic)
+            best_name = current[0] if current else ""
+            best_orientation = current[1] if current else 1.0
+            best_objective = current[2] if current else -np.inf
+            non_improvements = 0
+            evaluated = 0
+            stopped_early = False
+            for name in sorted(operation_members[logic][operation])[:inner_candidate_budget_per_logic_round]:
+                rankic = candidate_rankics[logic][name].loc[
+                    validation_start:validation_end
+                ].dropna()
+                if len(rankic) < minimum_validation_months:
+                    continue
+                deviation = float(rankic.std(ddof=1))
+                objective = abs(float(rankic.mean())) / deviation if deviation > 0 else -np.inf
+                orientation = 1.0 if float(rankic.mean()) >= 0 else -1.0
+                evaluated += 1
+                if objective > best_objective + 1e-15:
+                    best_name = name
+                    best_orientation = orientation
+                    best_objective = objective
+                    non_improvements = 0
+                else:
+                    non_improvements += 1
+                    if non_improvements >= inner_early_stopping_non_improvements:
+                        stopped_early = True
+                        break
+            if not best_name:
+                raise ValueError(f"AlphaLogics found no valid candidate for {logic}")
+            selected[logic] = (best_name, best_orientation, best_objective)
+            history_rows.append(
+                {
+                    "outer_round": round_number,
+                    "operation": operation,
+                    "market_logic": logic,
+                    "candidates_evaluated": evaluated,
+                    "stopped_early": stopped_early,
+                    "incumbent_expression": best_name,
+                    "incumbent_orientation": int(best_orientation),
+                    "incumbent_validation_icir": best_objective,
+                }
+            )
+
+    selected_scores = pd.DataFrame(
+        {
+            logic: candidates[logic][name] * orientation
+            for logic, (name, orientation, _) in selected.items()
+        },
+        index=frame.index,
+    )
+    calibration = frame["month"].between(train_start, validation_end)
+    outcome = pd.to_numeric(frame.loc[calibration, "ret_exc_lead1m"], errors="coerce")
+    valid = outcome.notna()
+    design = np.column_stack(
+        [
+            np.ones(int(valid.sum())),
+            selected_scores.loc[calibration].loc[valid].fillna(0.0).to_numpy(dtype=float),
+        ]
+    )
+    target = outcome.loc[valid].to_numpy(dtype=float)
+    xtx = design.T @ design
+    feature_scale = float(np.mean(np.diag(xtx)[1:]))
+    ridge_penalty = final_ridge_fraction * feature_scale
+    penalty = ridge_penalty * np.eye(design.shape[1])
+    penalty[0, 0] = 0.0
+    coefficient = np.linalg.solve(xtx + penalty, design.T @ target)
+    common = frame["month"] >= common_timestamp
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    result.loc[common] = coefficient[0] + selected_scores.loc[common].fillna(0.0).to_numpy(dtype=float) @ coefficient[1:]
+    summary: dict[str, object] = {
+        "selected_expressions": {logic: value[0] for logic, value in selected.items()},
+        "selected_orientations": {logic: int(value[1]) for logic, value in selected.items()},
+        "selected_validation_icir": {logic: float(value[2]) for logic, value in selected.items()},
+        "final_intercept": float(coefficient[0]),
+        "final_coefficients": {logic: float(value) for logic, value in zip(selected_scores, coefficient[1:])},
+        "final_ridge_penalty": ridge_penalty,
+        "calibration_observations": int(len(target)),
+        "finite_common_scores": int(result.loc[common].notna().sum()),
+    }
+    return result, pd.DataFrame(history_rows), summary
+
+
 def blindtrade_graph_intent_scores(
     frame: pd.DataFrame,
     anonymized_agents: dict[str, list[tuple[str, int]]],
