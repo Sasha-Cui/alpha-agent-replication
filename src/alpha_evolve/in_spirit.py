@@ -190,6 +190,142 @@ def fama_rolling_scores(
     return result, pd.DataFrame(diagnostics)
 
 
+def hubble_safe_diverse_scores(
+    frame: pd.DataFrame,
+    factor_families: dict[str, list[tuple[str, int]]],
+    *,
+    calibration_start: str,
+    calibration_end: str,
+    common_start: str,
+    mining_rounds: int = 3,
+    metric_weights: dict[str, float],
+    negative_rag_crowded_family: str = "liquidity_volume",
+    negative_rag_penalty: float = 0.25,
+    novelty_bonus: float = 0.10,
+    maximum_similarity: float = 0.80,
+    family_cap: int = 2,
+    top_k: int = 5,
+) -> tuple[pd.Series, pd.DataFrame, pd.DataFrame, dict[str, object]]:
+    """Run a safe Hubble-style multi-metric and family-aware factor search."""
+    expected_metrics = {"rankic_ir", "pearson_ic_ir", "long_short_mean", "turnover", "coverage", "complexity"}
+    if set(metric_weights) != expected_metrics or mining_rounds != 3:
+        raise ValueError("Hubble metric registry or mining rounds changed")
+    if negative_rag_crowded_family not in factor_families:
+        raise ValueError("Hubble negative-RAG family is missing")
+    if not 0 < maximum_similarity < 1 or family_cap < 1 or top_k < 2:
+        raise ValueError("Hubble diversity controls are invalid")
+    specifications = [item for family in factor_families.values() for item in family]
+    features = list(dict.fromkeys(feature for feature, _ in specifications))
+    missing = {"month", "ret_exc_lead1m", *features} - set(frame)
+    if missing:
+        raise ValueError(f"missing Hubble inputs: {sorted(missing)}")
+    start, end, common = map(pd.Timestamp, [calibration_start, calibration_end, common_start])
+    if not start <= end < common:
+        raise ValueError("Hubble calibration chronology is invalid")
+    ranked = cross_sectional_unit_rank(frame, features)
+    generated: dict[str, pd.Series] = {}
+    metadata: dict[str, tuple[str, str, int, int]] = {}
+    for family, family_specs in factor_families.items():
+        signed = {feature: ranked[feature] * sign for feature, sign in family_specs}
+        names = sorted(signed)
+        for feature in names:
+            name = f"{family}__identity__{feature}"
+            generated[name] = signed[feature]
+            metadata[name] = (family, "identity", 1, 1)
+        for left, right in combinations(names, 2):
+            for operation, values, complexity in (
+                ("pair_mean", (signed[left] + signed[right]) / 2.0, 3),
+                ("pair_product", signed[left] * signed[right], 3),
+                ("pair_difference", signed[left] - signed[right], 3),
+            ):
+                name = f"{family}__{operation}__{left}__{right}"
+                generated[name] = values
+                metadata[name] = (family, operation, complexity, 1 if operation == "pair_mean" else 2)
+        for base in names:
+            for gate in names:
+                if base == gate:
+                    continue
+                name = f"{family}__positive_gate__{base}__{gate}"
+                generated[name] = signed[base] * signed[gate].gt(0).astype(float)
+                metadata[name] = (family, "positive_gate", 4, 3)
+    candidates = cross_sectional_unit_rank(
+        pd.concat([frame[["month"]], pd.DataFrame(generated)], axis=1), list(generated)
+    )
+    rankics = monthly_rankic(frame, candidates).loc[start:end]
+    calibration_mask = frame["month"].between(start, end)
+    calibration_frame = frame.loc[calibration_mask]
+    calibration_candidates = candidates.loc[calibration_mask]
+    pearson_rows = []
+    pearson_months = []
+    for month, indices in calibration_frame.groupby("month", sort=True).groups.items():
+        outcome = pd.to_numeric(frame.loc[indices, "ret_exc_lead1m"], errors="coerce")
+        pearson_rows.append(calibration_candidates.loc[indices].corrwith(outcome))
+        pearson_months.append(pd.Timestamp(month))
+    pearson = pd.DataFrame(pearson_rows, index=pearson_months)
+    metric_rows = []
+    oriented_scores: dict[str, pd.Series] = {}
+    for name in candidates:
+        rankic = rankics[name].dropna()
+        orientation = 1.0 if rankic.mean() >= 0 else -1.0
+        oriented_scores[name] = candidates[name] * orientation
+        pearson_ic = pearson[name].dropna() * orientation
+        long_short = []
+        top_sets = []
+        for month, indices in calibration_frame.groupby("month", sort=True).groups.items():
+            score = oriented_scores[name].loc[indices]
+            outcome = pd.to_numeric(frame.loc[indices, "ret_exc_lead1m"], errors="coerce")
+            valid = score.notna() & outcome.notna()
+            ordered = score.loc[valid].sort_values(kind="mergesort")
+            tail = max(1, len(ordered) // 10)
+            long_short.append(float(outcome.loc[ordered.index[-tail:]].mean() - outcome.loc[ordered.index[:tail]].mean()))
+            top_sets.append(set(frame.loc[ordered.index[-tail:], "security_id"]))
+        turnover = np.mean([1.0 - len(a & b) / len(a | b) for a, b in zip(top_sets[:-1], top_sets[1:])])
+        rankic_std = float(rankic.std(ddof=1))
+        pearson_std = float(pearson_ic.std(ddof=1))
+        family, operation, complexity, available_round = metadata[name]
+        metric_rows.append({
+            "candidate": name, "family": family, "operation": operation,
+            "available_round": available_round, "orientation": int(orientation),
+            "rankic_ir": abs(float(rankic.mean()) / rankic_std),
+            "pearson_ic_ir": abs(float(pearson_ic.mean()) / pearson_std),
+            "long_short_mean": float(np.mean(long_short)), "turnover": float(turnover),
+            "coverage": float(calibration_candidates[name].notna().mean()), "complexity": complexity,
+        })
+    metrics = pd.DataFrame(metric_rows).set_index("candidate")
+    standardized = pd.DataFrame(index=metrics.index)
+    for metric in expected_metrics:
+        values = metrics[metric].astype(float)
+        standardized[metric] = np.tanh((values - values.mean()) / values.std(ddof=1))
+    metrics["base_score"] = sum(metric_weights[name] * standardized[name] for name in expected_metrics)
+    metrics["base_score"] -= np.where(metrics.family.eq(negative_rag_crowded_family), negative_rag_penalty, 0.0)
+    selected: list[str] = []
+    selection_rows = []
+    for round_number in range(1, mining_rounds + 1):
+        eligible = metrics.loc[metrics.available_round.le(round_number)].copy()
+        chosen: list[str] = []
+        family_counts: dict[str, int] = {}
+        for name in eligible.sort_values("base_score", ascending=False, kind="mergesort").index:
+            family = str(metrics.loc[name, "family"])
+            if family_counts.get(family, 0) >= family_cap:
+                continue
+            if any(abs(float(rankics[name].corr(rankics[other]))) > maximum_similarity for other in chosen):
+                continue
+            adjusted = float(metrics.loc[name, "base_score"]) + (novelty_bonus if family not in family_counts else 0.0)
+            chosen.append(name)
+            family_counts[family] = family_counts.get(family, 0) + 1
+            selection_rows.append({"round": round_number, "rank": len(chosen), "candidate": name, "family": family, "adjusted_score": adjusted})
+            if len(chosen) == top_k:
+                break
+        if len(chosen) != top_k:
+            raise ValueError(f"Hubble could not fill the diverse top five in round {round_number}")
+        selected = chosen
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    common_mask = frame["month"] >= common
+    result.loc[common_mask] = pd.DataFrame({name: oriented_scores[name] for name in selected}).loc[common_mask].mean(axis=1, skipna=False)
+    summary = {"selected_candidates": selected, "selected_families": [str(metrics.loc[name, "family"]) for name in selected], "candidate_count": len(metrics), "finite_common_scores": int(result.loc[common_mask].notna().sum())}
+    return result, metrics.reset_index(), pd.DataFrame(selection_rows), summary
+
+
 def agentic_screening_precision_scores(
     frame: pd.DataFrame,
     *,
