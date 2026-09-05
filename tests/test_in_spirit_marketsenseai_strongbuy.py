@@ -50,6 +50,16 @@ def test_strongbuy_policy_is_deterministic_and_reward_causal():
     pd.testing.assert_series_equal(history.iloc[0], other[1].iloc[0])
 
 
+def test_strongbuy_policy_maps_missing_synthesis_to_hold():
+    frame = fixture()
+    target = frame.index[frame.month.eq("2005-01-31")][0]
+    features = {feature for values in SPECIALISTS.values() for feature in values} - {"ret", "weight"}
+    frame.loc[target, list(features)] = np.nan
+    scores, history = marketsenseai_strongbuy_scores(frame, SPECIALISTS, common_start="2005-01-31")
+    assert abs(scores.loc[target]) < 1.0
+    assert history.strong_buy_count.iloc[0] == 3
+
+
 def test_strongbuy_rejects_unsorted_boundaries():
     try:
         marketsenseai_strongbuy_scores(

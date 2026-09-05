@@ -237,6 +237,7 @@ def marketsenseai_strongbuy_scores(
             index=indices,
             dtype=float,
         )
+        ordinal = ordinal.where(current.notna(), float(ordinal_values[2]))
         score = ordinal + continuous_tie_break_weight * current.fillna(0.0)
         result.loc[indices] = score
         row = diagnostics_by_month.loc[str(pd.Timestamp(month).date())].to_dict()
