@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M036",
+  "canonical_work_id": "CensusArxiv251007920",
+  "paper": "Profit Mirage: Revisiting Information Leakage in LLM-based Financial Agents",
+  "status": "frozen_before_jkp_result",
+  "fidelity_label": "in_spirit_reconstruction",
+  "claim_boundary": "A researcher-authored leakage-safe FactFin reconstruction using explicit price/factor/news state code, pre-common UCB tree search, and counterfactual validation; not FinLeak-Bench and not the unreleased GPT-4o-generated FactFin program.",
+  "paper_source": {
+    "url": "https://arxiv.org/abs/2510.07920v1",
+    "version": "arXiv v1",
+    "pdf_sha256": "1024f16ced8e9b12c6a4f0c7bf56551a92da0d621507da621ee82ae68355aba5",
+    "source_sha256": "f8888b5d281ada1b16a6ac32a43da031cc54d4afd1775e8909e5cf4ab65bd0c6",
+    "public_system_source_files": 0
+  },
+  "primary_source_anchors": [
+    {
+      "anchor": "Sections 3.1-3.2 and Algorithm 1",
+      "mechanism": "FactFin maps real-time price, factor, and factorized-news state into executable buy/sell/hold strategy code and iteratively evolves it rather than asking an LLM for direct historical predictions."
+    },
+    {
+      "anchor": "Sections 3.3-3.4, equations 11-13",
+      "mechanism": "A Strategy Code Generator receives only structured state extracted by RAG, including quantified news, so the policy must depend on supplied inputs rather than memorized outcomes."
+    },
+    {
+      "anchor": "Section 3.5, equations 14-17",
+      "mechanism": "Monte Carlo Tree Search evolves strategy variants using UCB selection with depth ten and exploration constant 0.5, evaluating executable strategies on historical data."
+    },
+    {
+      "anchor": "Section 3.6, equations 18-20",
+      "mechanism": "A Counterfactual Simulator perturbs price, factor, and news inputs and favors strategies with low prediction consistency, low confidence invariance, and high input dependency."
+    }
+  ],
+  "strict_evidence": {
+    "audit_manifest_path": "paper_runs/paper_replication_audits/factfin/manifest.json",
+    "audit_manifest_sha256": "838103a05842836ec7a27cd98bccdfd028f201440c069afcfe26d67ba601b334",
+    "source_provenance_path": "paper_runs/paper_replication_audits/factfin/source_provenance.json",
+    "source_provenance_sha256": "c039cf6c19a1d8f369ef86753a9ec152b6ffbab5f40017f981f5f472f81a6d1f",
+    "method_audit_path": "paper_runs/paper_replication_audits/factfin/method_specification_audit.csv",
+    "method_audit_sha256": "54a9888ac6345b1737bb6eac60c4ff3e3328b2c4cde6f5bf278b70cb002604bb",
+    "prompt_inventory_path": "paper_runs/paper_replication_audits/factfin/prompt_inventory.csv",
+    "prompt_inventory_sha256": "4893c54cda760693f71c17d2a239995dee6dbb8bc3a274eb301df040d6a3a7d0",
+    "native_execution_path": "paper_runs/paper_replication_audits/factfin/native_execution.json",
+    "native_execution_sha256": "fa791347bedea0b920c94140dd532289c94e5a5f6d328482e156aa49fce2b24d"
+  },
+  "rag_state": {
+    "price": [
+      {"column": "ret_12_1", "sign": 1},
+      {"column": "ret_6_1", "sign": 1},
+      {"column": "ret_1_0", "sign": 1},
+      {"column": "prc_highprc_252d", "sign": 1},
+      {"column": "rvol_21d", "sign": -1}
+    ],
+    "factors": [
+      {"column": "be_me", "sign": 1},
+      {"column": "gp_at", "sign": 1},
+      {"column": "ocf_at", "sign": 1},
+      {"column": "f_score", "sign": 1},
+      {"column": "z_score", "sign": 1},
+      {"column": "qmj_prof", "sign": 1}
+    ],
+    "factorized_news": [
+      {"column": "niq_su", "sign": 1},
+      {"column": "saleq_su", "sign": 1},
+      {"column": "turnover_126d", "sign": 1},
+      {"column": "ret_1_0", "sign": 1}
+    ]
+  },
+  "strategy_code_grammar": {
+    "program": "score = w_price * price_state + w_factors * factor_state + w_news * factorized_news_state",
+    "initial_weights": [0.3333333333333333, 0.3333333333333333, 0.3333333333333333],
+    "weight_mutation_step": 0.25,
+    "weight_bounds": [-1.0, 1.0],
+    "normalization": "divide by L1 norm after each mutation",
+    "actions": ["sell", "hold", "buy"],
+    "hold_band": [-0.2, 0.2]
+  },
+  "search_and_counterfactual_policy": {
+    "prehistory_formation_start": "1989-07-31",
+    "search_training_start": "1989-07-31",
+    "search_training_end": "1997-06-30",
+    "search_training_months": 96,
+    "search_validation_start": "1997-07-31",
+    "search_validation_end": "1999-06-30",
+    "search_validation_months": 24,
+    "mcts_depth": 10,
+    "mcts_ucb_exploration_constant": 0.5,
+    "mcts_iterations": 100,
+    "mcts_training_reward": "mean training-period monthly Spearman RankIC",
+    "counterfactual_finalists": 10,
+    "counterfactual_scenarios": 50,
+    "counterfactual_seed": 79020,
+    "counterfactual_perturbation": "cyclically choose one state group and independently permute that group across stocks within every validation month",
+    "prediction_consistency": "fraction of sell/hold/buy actions unchanged after perturbation",
+    "confidence_invariance": "one minus mean absolute change in clipped absolute strategy confidence",
+    "input_dependency_score": "mean KL divergence between three-action softmax distributions before and after perturbation",
+    "final_objective_weights": {"validation_rankic": 1.0, "prediction_consistency": -0.01, "confidence_invariance": -0.01, "input_dependency_score": 0.01},
+    "final_selection": "highest counterfactual objective among ten best training-reward nodes with lexical weight tie-breaking",
+    "common_portfolio_adapter": "apply the fixed selected continuous program score to frozen value-weighted long-short deciles and all six cost/missing-return paths",
+    "final_common_returns_used_for_search_or_selection": false
+  },
+  "preserved_elements": [
+    "separate Strategy Code Generator, RAG, MCTS, and Counterfactual Simulator stages",
+    "explicit executable strategy code rather than direct LLM predictions",
+    "price, market-factor, and factorized-news state groups",
+    "buy, sell, and hold action semantics",
+    "UCB-guided tree search",
+    "MCTS depth ten and exploration constant 0.5",
+    "factual performance evaluation before final selection",
+    "exactly 50 counterfactual scenarios",
+    "prediction consistency, confidence invariance, and input dependency metrics",
+    "selection pressure toward strategies whose outputs respond to supplied inputs"
+  ],
+  "approximated_elements": [
+    "JKP price, factor, and surprise ranks replace Yahoo/Alpaca rows and RAG documents",
+    "a typed three-weight program replaces GPT-4o-generated source code",
+    "weight mutations replace unavailable SCG modification prompts",
+    "training RankIC replaces the unspecified native strategy evaluator",
+    "within-month state permutation replaces unreleased counterfactual generators",
+    "a pre-common train-validation split replaces the paper's unidentified model-development split",
+    "the common monthly decile portfolio replaces missing action sizing and execution"
+  ],
+  "invented_elements": [
+    "the exact signed JKP state groups",
+    "the three-weight code grammar, mutation step, and bounds",
+    "the 100-iteration MCTS budget and random seed",
+    "the ten-finalist counterfactual stage",
+    "the action hold band",
+    "the three-action probability mapping used for KL divergence",
+    "the 1/-0.01/-0.01/+0.01 final objective weights",
+    "lexical weight tie-breaking"
+  ],
+  "anti_leakage": {
+    "paper_actions_or_outcomes_used_as_formation_inputs": false,
+    "search_or_counterfactual_selection_uses_common_period_returns": false,
+    "future_returns_used_for_common_month_score": false,
+    "m036_common_result_seen_before_recipe_freeze": false,
+    "prior_other_paper_common_results_seen": true,
+    "retuning_after_common_result_permitted": false
+  }
+}
