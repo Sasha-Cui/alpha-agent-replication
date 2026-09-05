@@ -2887,3 +2887,222 @@ def tradinggroup_reflection_scores(
             row[f"style_mean_rankic__{style}"] = float(mean[style])
         diagnostics.append(row)
     return result, pd.DataFrame(diagnostics)
+
+
+def mm_arc_routing_scores(
+    frame: pd.DataFrame,
+    experts: dict[str, list[tuple[str, int]]],
+    *,
+    view_weights: dict[str, float],
+    rabo_rank_weights: dict[str, float],
+    common_start: str,
+    audit_history_months: int = 120,
+    minimum_regime_months: int = 12,
+    audit_blocks: int = 6,
+    admitted_per_pool: int = 5,
+    router_performance_temperature: float = 20.0,
+    router_robustness_tilt: float = 0.5,
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Run deterministic MM-ARC-style RABO pools and capital routing."""
+    expected_experts = ["trend", "reversal", "breakout", "exposure_control"]
+    if list(experts) != expected_experts:
+        raise ValueError("MM-ARC requires the four frozen experts in order")
+    if any(len(specifications) != 6 for specifications in experts.values()):
+        raise ValueError("MM-ARC requires six feature inputs per expert")
+    if view_weights != {
+        "numerical_pool": 0.5,
+        "chart_proxy": 0.25,
+        "technical_summary_proxy": 0.25,
+    }:
+        raise ValueError("MM-ARC aligned-view weights changed")
+    if rabo_rank_weights != {
+        "benchmark_exceedance": 0.3,
+        "lower_tail_5pct": 0.3,
+        "median": 0.15,
+        "stability": 0.15,
+        "turnover_penalty": -0.1,
+    }:
+        raise ValueError("MM-ARC RABO weights changed")
+    specifications = [
+        specification
+        for expert_specifications in experts.values()
+        for specification in expert_specifications
+    ]
+    features = list(dict.fromkeys(feature for feature, _ in specifications))
+    missing = {"month", "security_id", "ret", "weight", "ret_exc_lead1m", *features} - set(frame)
+    if missing:
+        raise ValueError(f"missing MM-ARC inputs: {sorted(missing)}")
+    if any(sign not in {-1, 1} for _, sign in specifications):
+        raise ValueError("MM-ARC expert feature signs must be -1 or 1")
+
+    ranked = cross_sectional_unit_rank(frame, features)
+    candidate_forms = [
+        "primary",
+        "secondary",
+        "pair_mean",
+        "triple_mean",
+        "interaction",
+        "risk_adjusted",
+    ]
+    candidate_raw: dict[str, pd.Series] = {}
+    expert_candidates: dict[str, list[str]] = {}
+    chart_raw: dict[str, pd.Series] = {}
+    summary_raw: dict[str, pd.Series] = {}
+    for expert, expert_specifications in experts.items():
+        signed = pd.concat(
+            [ranked[feature] * sign for feature, sign in expert_specifications],
+            axis=1,
+        )
+        signed.columns = [feature for feature, _ in expert_specifications]
+        names = [f"{expert}__{form}" for form in candidate_forms]
+        candidate_raw[names[0]] = signed.iloc[:, 0]
+        candidate_raw[names[1]] = signed.iloc[:, 1]
+        candidate_raw[names[2]] = signed.iloc[:, :2].mean(axis=1, skipna=False)
+        candidate_raw[names[3]] = signed.iloc[:, :3].mean(axis=1, skipna=False)
+        candidate_raw[names[4]] = signed.iloc[:, 0] * signed.iloc[:, 2]
+        candidate_raw[names[5]] = signed.mean(axis=1, skipna=False)
+        expert_candidates[expert] = names
+        chart_raw[expert] = signed.iloc[:, :3].mean(axis=1, skipna=False)
+        summary_raw[expert] = signed.iloc[:, :3].apply(np.sign).mean(axis=1, skipna=False)
+    candidate_scores = cross_sectional_unit_rank(
+        pd.concat([frame[["month"]], pd.DataFrame(candidate_raw)], axis=1),
+        list(candidate_raw),
+    )
+    candidate_rankics = monthly_rankic(frame, candidate_scores)
+    chart_scores = cross_sectional_unit_rank(
+        pd.concat([frame[["month"]], pd.DataFrame(chart_raw)], axis=1),
+        expected_experts,
+    )
+    summary_scores = cross_sectional_unit_rank(
+        pd.concat([frame[["month"]], pd.DataFrame(summary_raw)], axis=1),
+        expected_experts,
+    )
+
+    turnover = pd.DataFrame(index=candidate_rankics.index, columns=candidate_scores.columns, dtype=float)
+    base_order = frame[["security_id", "month"]].copy()
+    for candidate in candidate_scores:
+        values = base_order.assign(score=candidate_scores[candidate]).sort_values(
+            ["security_id", "month"],
+            kind="mergesort",
+        )
+        prior_score = values.groupby("security_id")["score"].shift(1)
+        prior_month = values.groupby("security_id")["month"].shift(1)
+        consecutive = values["month"].eq(prior_month + pd.offsets.MonthEnd(1))
+        change = (values["score"] - prior_score).abs().where(consecutive)
+        turnover[candidate] = change.groupby(values["month"]).mean().reindex(turnover.index)
+
+    market_rows = []
+    for month, indices in frame.groupby("month", sort=True).groups.items():
+        weights = pd.to_numeric(frame.loc[indices, "weight"], errors="coerce")
+        returns = pd.to_numeric(frame.loc[indices, "ret"], errors="coerce").fillna(0.0)
+        market_rows.append((pd.Timestamp(month), float(np.sum(weights * returns) / weights.sum())))
+    market = pd.Series(dict(market_rows)).sort_index()
+    trailing_six = (1.0 + market).rolling(6, min_periods=6).apply(np.prod, raw=True) - 1.0
+    regimes = pd.Series("sideways", index=market.index)
+    regimes.loc[trailing_six > 0.05] = "bull"
+    regimes.loc[trailing_six < -0.05] = "bear"
+
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    diagnostics: list[dict[str, object]] = []
+    month_groups = frame.groupby("month", sort=False).groups
+    common_months = sorted(
+        pd.Timestamp(month)
+        for month in frame.loc[frame["month"] >= common_start, "month"].unique()
+    )
+    for month in common_months:
+        complete_history = candidate_rankics.loc[candidate_rankics.index < month].tail(
+            audit_history_months
+        )
+        if len(complete_history) != audit_history_months:
+            raise ValueError(f"MM-ARC audit history is incomplete at {month.date()}")
+        regime = str(regimes.loc[month])
+        same_regime = complete_history.index[regimes.reindex(complete_history.index).eq(regime)]
+        sparse_fallback = len(same_regime) < minimum_regime_months
+        audit_index = complete_history.index if sparse_fallback else same_regime
+        audit = candidate_rankics.loc[audit_index]
+        audit_turnover = turnover.loc[audit_index]
+        blocks = [indices for indices in np.array_split(np.arange(len(audit)), audit_blocks) if len(indices)]
+        if len(blocks) != audit_blocks:
+            raise ValueError("MM-ARC has too few observations for six audit blocks")
+
+        current_indices = month_groups[month]
+        routed_expert_scores: dict[str, pd.Series] = {}
+        expert_performance: dict[str, float] = {}
+        expert_robustness: dict[str, float] = {}
+        selected_by_expert: dict[str, list[str]] = {}
+        for expert, names in expert_candidates.items():
+            benchmark = names[0]
+            metrics: dict[str, dict[str, float]] = {}
+            benchmark_blocks = np.asarray(
+                [audit.iloc[block][benchmark].mean() for block in blocks],
+                dtype=float,
+            )
+            for name in names:
+                block_values = np.asarray(
+                    [audit.iloc[block][name].mean() for block in blocks],
+                    dtype=float,
+                )
+                metrics[name] = {
+                    "benchmark_exceedance": float(np.mean(block_values > benchmark_blocks)),
+                    "lower_tail_5pct": float(np.quantile(block_values, 0.05)),
+                    "median": float(np.median(block_values)),
+                    "stability": float(-block_values.std(ddof=0)),
+                    "turnover_penalty": float(audit_turnover[name].mean()),
+                }
+            metric_frame = pd.DataFrame(metrics).T
+            ranks = metric_frame.rank(method="average", pct=True)
+            rabo = sum(
+                float(weight) * ranks[metric]
+                for metric, weight in rabo_rank_weights.items()
+            )
+            selected = sorted(names, key=lambda name: (-float(rabo[name]), name))[
+                :admitted_per_pool
+            ]
+            selected_by_expert[expert] = selected
+            pool = candidate_scores.loc[current_indices, selected].mean(axis=1, skipna=False)
+            expert_score = (
+                view_weights["numerical_pool"] * pool
+                + view_weights["chart_proxy"] * chart_scores.loc[current_indices, expert]
+                + view_weights["technical_summary_proxy"] * summary_scores.loc[current_indices, expert]
+            )
+            routed_expert_scores[expert] = expert_score
+            expert_performance[expert] = float(audit[selected].mean(axis=1).mean())
+            expert_robustness[expert] = float(np.clip(rabo[selected].mean(), 0.0, 1.0))
+
+        performance = pd.Series(expert_performance)
+        robustness = pd.Series(expert_robustness)
+        logits = router_performance_temperature * performance + router_robustness_tilt * robustness
+        router_weights = np.exp(logits - logits.max())
+        router_weights /= router_weights.sum()
+        expert_frame = pd.DataFrame(routed_expert_scores, index=current_indices)
+        current = expert_frame[expected_experts].to_numpy(dtype=float)
+        finite = np.isfinite(current)
+        numerator = np.where(finite, current * router_weights.to_numpy(), 0.0).sum(axis=1)
+        denominator = np.where(finite, router_weights.to_numpy(), 0.0).sum(axis=1)
+        score = np.divide(
+            numerator,
+            denominator,
+            out=np.full(len(current_indices), np.nan),
+            where=denominator > 0,
+        )
+        result.loc[current_indices] = score
+        row: dict[str, object] = {
+            "formation_month": str(month.date()),
+            "regime": regime,
+            "trailing_six_month_market_return": float(trailing_six.loc[month]),
+            "audit_start": str(complete_history.index[0].date()),
+            "audit_end": str(complete_history.index[-1].date()),
+            "audit_history_months": len(complete_history),
+            "regime_audit_months": len(audit),
+            "regime_sparse_fallback": sparse_fallback,
+            "single_market_pool_count": len(expected_experts) * 3,
+            "admitted_pool_members": len(expected_experts) * admitted_per_pool,
+            "finite_scores": int(np.isfinite(score).sum()),
+        }
+        for expert in expected_experts:
+            row[f"selected__{expert}"] = "|".join(selected_by_expert[expert])
+            row[f"pool_performance__{expert}"] = expert_performance[expert]
+            row[f"pool_robustness__{expert}"] = expert_robustness[expert]
+            row[f"router_weight__{expert}"] = float(router_weights[expert])
+        diagnostics.append(row)
+    return result, pd.DataFrame(diagnostics)
