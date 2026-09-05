@@ -72,3 +72,15 @@ def test_alphaagents_rejects_a_single_pass_debate():
         assert "at least two turns" in str(error)
     else:
         raise AssertionError("single-pass AlphaAgents debate was accepted")
+
+
+def test_alphaagents_handles_missing_specialist_opinions_without_runtime_warnings():
+    frame = fixture()
+    first = frame.index[0]
+    for feature, _ in SPECIALISTS["fundamental"]:
+        frame.loc[first, feature] = np.nan
+    for feature, _ in SPECIALISTS["sentiment"]:
+        frame.loc[first, feature] = np.nan
+    scores, history = alphaagents_debate_scores(frame, SPECIALISTS, speaker_order=ORDER)
+    assert np.isnan(scores.loc[first])
+    assert history.finite_scores.iloc[0] == 49

@@ -2362,7 +2362,14 @@ def alphaagents_debate_scores(
         for _ in range(round_robin_passes):
             for position, _specialist in enumerate(speaker_order):
                 peers = np.delete(opinions, position, axis=1)
-                peer_median = np.nanmedian(peers, axis=1)
+                peer_finite = np.isfinite(peers)
+                peer_count = peer_finite.sum(axis=1)
+                peer_median = np.divide(
+                    np.where(peer_finite, peers, 0.0).sum(axis=1),
+                    peer_count,
+                    out=np.full(len(peers), np.nan),
+                    where=peer_count > 0,
+                )
                 own = opinions[:, position]
                 valid = np.isfinite(own) & np.isfinite(peer_median)
                 opinions[valid, position] = (
@@ -2370,7 +2377,10 @@ def alphaagents_debate_scores(
                     + peer_median_update_weight * peer_median[valid]
                 )
         finite_count = np.isfinite(opinions).sum(axis=1)
-        consensus = np.nanmedian(opinions, axis=1)
+        consensus = np.ma.median(
+            np.ma.masked_invalid(opinions),
+            axis=1,
+        ).filled(np.nan)
         consensus[finite_count < 2] = np.nan
         consensus_raw.loc[indices] = consensus
 
