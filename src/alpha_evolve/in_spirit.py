@@ -4339,3 +4339,140 @@ def finpos_position_scores(
             row[f"memory_reliability__{layer}"] = float(reliability[layer])
         diagnostics.append(row)
     return result, pd.DataFrame(diagnostics)
+
+
+def finrs_risk_sensitive_scores(
+    frame: pd.DataFrame,
+    signal_memory: dict[str, list[tuple[str, int]]],
+    *,
+    common_start: str,
+    reward_horizons: list[int],
+    multi_timescale_weights: list[float],
+    reward_label_purge_months: int = 6,
+    reward_history_months: int = 60,
+    direction_hold_threshold: float = 0.1,
+    base_trade_quantity: float = 0.25,
+    kelly_history_months: int = 20,
+    scaled_kelly_fraction: float = 0.5,
+    cvar_history_months: int = 20,
+    cvar_tail_probability: float = 0.05,
+    cvar_risk_budget: float = 0.05,
+    maximum_absolute_exposure: float = 0.75,
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Apply FINRS-style Kelly, CVaR, volatility, and exposure controls."""
+    base_scores, base_history = finpos_position_scores(
+        frame,
+        signal_memory,
+        common_start=common_start,
+        reward_horizons=reward_horizons,
+        multi_timescale_weights=multi_timescale_weights,
+        reward_label_purge_months=reward_label_purge_months,
+        reward_history_months=reward_history_months,
+        direction_hold_threshold=direction_hold_threshold,
+        base_trade_quantity=base_trade_quantity,
+        cvar_history_months=cvar_history_months,
+        cvar_tail_probability=cvar_tail_probability,
+        cvar_risk_budget=cvar_risk_budget,
+    )
+    if kelly_history_months != 20 or scaled_kelly_fraction != 0.5:
+        raise ValueError("FINRS Kelly configuration changed")
+    if maximum_absolute_exposure != 0.75:
+        raise ValueError("FINRS exposure ceiling changed")
+
+    ordered = frame[["security_id", "month", "ret"]].copy().sort_values(
+        ["security_id", "month"],
+        kind="mergesort",
+    )
+    returns = pd.to_numeric(ordered["ret"], errors="coerce")
+    grouped = returns.groupby(ordered["security_id"])
+
+    def mean_positive(values: np.ndarray) -> float:
+        selected = values[values > 0]
+        return float(selected.mean()) if len(selected) else np.nan
+
+    def mean_negative_magnitude(values: np.ndarray) -> float:
+        selected = values[values < 0]
+        return float(abs(selected.mean())) if len(selected) else np.nan
+
+    mean_gain = (
+        grouped.rolling(kelly_history_months, min_periods=kelly_history_months)
+        .apply(mean_positive, raw=True)
+        .reset_index(level=0, drop=True)
+        .reindex(frame.index)
+    )
+    mean_loss = (
+        grouped.rolling(kelly_history_months, min_periods=kelly_history_months)
+        .apply(mean_negative_magnitude, raw=True)
+        .reset_index(level=0, drop=True)
+        .reindex(frame.index)
+    )
+    volatility = (
+        grouped.rolling(kelly_history_months, min_periods=kelly_history_months)
+        .std(ddof=1)
+        .reset_index(level=0, drop=True)
+        .reindex(frame.index)
+    )
+    tail_count = max(1, int(np.ceil(cvar_tail_probability * cvar_history_months)))
+    cvar = (
+        grouped.rolling(cvar_history_months, min_periods=cvar_history_months)
+        .apply(lambda values: np.sort(values)[:tail_count].mean(), raw=True)
+        .reset_index(level=0, drop=True)
+        .reindex(frame.index)
+    )
+
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    diagnostics: list[dict[str, object]] = []
+    base_diagnostics = base_history.set_index("formation_month")
+    for month, indices in frame.loc[frame["month"] >= common_start].groupby(
+        "month",
+        sort=True,
+    ).groups.items():
+        base = base_scores.loc[indices]
+        probability = 0.5 + 0.25 * base.abs().clip(0.0, 1.0)
+        payoff_odds = (mean_gain.loc[indices] / mean_loss.loc[indices]).clip(0.5, 2.0)
+        full_kelly = (
+            (payoff_odds * probability - (1.0 - probability)) / payoff_odds
+        ).clip(lower=0.0)
+        scaled_kelly = scaled_kelly_fraction * full_kelly
+        current_volatility = volatility.loc[indices]
+        median_volatility = float(current_volatility.median())
+        volatility_adjustment = 1.0 / (
+            1.0 + current_volatility / max(median_volatility, 1e-12)
+        )
+        cvar_cap = (cvar_risk_budget / cvar.loc[indices].abs().replace(0.0, np.nan)).clip(
+            0.0,
+            maximum_absolute_exposure,
+        )
+        risk_capacity = pd.concat(
+            [
+                base.abs(),
+                scaled_kelly * volatility_adjustment,
+                cvar_cap,
+                pd.Series(maximum_absolute_exposure, index=indices),
+            ],
+            axis=1,
+        ).min(axis=1, skipna=False)
+        risk_capacity = risk_capacity.fillna(0.0)
+        score = np.sign(base) * risk_capacity
+        result.loc[indices] = score
+        base_row = base_diagnostics.loc[str(pd.Timestamp(month).date())]
+        diagnostics.append(
+            {
+                "formation_month": str(pd.Timestamp(month).date()),
+                "label_cutoff": base_row["label_cutoff"],
+                "reward_history_start": base_row["reward_history_start"],
+                "reward_history_end": base_row["reward_history_end"],
+                "reward_history_months": int(base_row["reward_history_months"]),
+                "mean_base_absolute_position": float(base.abs().mean()),
+                "mean_win_probability": float(probability.mean()),
+                "mean_payoff_odds": float(payoff_odds.mean()),
+                "mean_scaled_kelly": float(scaled_kelly.mean()),
+                "mean_volatility_adjustment": float(volatility_adjustment.mean()),
+                "mean_cvar_cap": float(cvar_cap.mean()),
+                "mean_final_absolute_exposure": float(score.abs().mean()),
+                "risk_shrunk_count": int((score.abs() < base.abs()).sum()),
+                "risk_zeroed_count": int(score.eq(0.0).sum()),
+                "finite_scores": int(score.notna().sum()),
+            }
+        )
+    return result, pd.DataFrame(diagnostics)
