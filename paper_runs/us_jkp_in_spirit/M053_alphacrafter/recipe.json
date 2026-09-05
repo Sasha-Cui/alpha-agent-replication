@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M053",
+  "canonical_work_id": "CensusArxiv260505580",
+  "paper": "AlphaCrafter: Harnessing Multi-Agent Workflows for Cross-Sectional Quantitative Trading",
+  "status": "frozen_before_jkp_result",
+  "fidelity_label": "in_spirit_reconstruction",
+  "claim_boundary": "A researcher-authored monthly U.S.-stock analogue of AlphaCrafter's three-miner factor library, multi-horizon validation and maintenance, regime-aware diverse screener, signed factor ensemble, and top-K long-short trader; not the missing paper-time factor pool, LLM decisions, daily actions, or native return path.",
+  "paper_source": {
+    "url": "https://arxiv.org/abs/2605.05580v2",
+    "version": "arXiv v2",
+    "pdf_sha256": "50fac266012726355d34b64788c529adf09c8574a751395d55858640dc1a5e67",
+    "source_sha256": "36a34ecb7ef524d8d7efe4a67002e726a0345bc6c3f5414325dd18a080829b84",
+    "repository": "https://github.com/NJU-LINK/AlphaCrafter",
+    "repository_commit_checked_2026_09_05": "c6dbc1ba4e0a4ecbc3ea1454c5290dbea4b36b0d",
+    "native_components_executable": true,
+    "paper_factor_or_action_artifacts_found": false
+  },
+  "primary_source_anchors": [
+    {"anchor": "Figure 1 and Section 2.2", "mechanism": "A cluster of miner agents proposes factors from market state, validates them on IC, RankIC, ICIR, hit ratio, coverage, turnover, and multiple horizons, persists accepted factors, and prunes decayed factors."},
+    {"anchor": "Section 2.3 and Algorithm 2", "mechanism": "The screener diagnoses regime, uses recent ten-period mean RankIC for suitability, rejects weak or semantically similar factors at thresholds 0.02 and 0.8, and returns normalized directional weights."},
+    {"anchor": "Section 2.4 and Algorithm 3", "mechanism": "The trader combines the factor ensemble with regime-conditioned strategy parameters, tests up to three configurations, and selects the highest-Sharpe feasible top-K long-short strategy."},
+    {"anchor": "Appendix A and B.3", "mechanism": "The reference strategy ranks a weighted composite, trades top and bottom sets, constrains gross/net exposure, rebalances toward target holdings, and applies U.S. short/margin/cost mechanics."}
+  ],
+  "strict_evidence": {
+    "audit_manifest_path": "paper_runs/paper_replication_audits/alphacrafter/manifest.json",
+    "audit_manifest_sha256": "eac24b6e22142449b795c2ba6033403e8072be6f1a7daf84cf4f29832cd0e897",
+    "source_provenance_path": "paper_runs/paper_replication_audits/alphacrafter/source_provenance.json",
+    "source_provenance_sha256": "410239f03cc819b19d5360c7d957e670f26d6db1b44e15c346d79db1b27ed006",
+    "release_execution_audit_path": "paper_runs/paper_replication_audits/alphacrafter/release_execution_audit.json",
+    "release_execution_audit_sha256": "1bbc435bee29ce580a0802738821e109c6550cae4dd971d2db2c383c2c996a18",
+    "registered_model_override_execution_path": "paper_runs/paper_replication_audits/alphacrafter/registered_model_override_execution.json",
+    "registered_model_override_execution_sha256": "ab2fe4d081a424babc899d41f199750a702b20b9281d0b91f82bc08432b6ceb7",
+    "method_specification_path": "paper_runs/paper_replication_audits/alphacrafter/method_specification_audit.csv",
+    "method_specification_sha256": "830d4946e5195cd82048a892e847674624085bd3c107715497aa7e82d6cc8b37"
+  },
+  "miner_clusters": {
+    "technical_miner": [{"column": "ret_12_1", "sign": 1}, {"column": "ret_6_1", "sign": 1}, {"column": "prc_highprc_252d", "sign": 1}, {"column": "turnover_126d", "sign": 1}],
+    "fundamental_miner": [{"column": "be_me", "sign": 1}, {"column": "gp_at", "sign": 1}, {"column": "ocf_at", "sign": 1}, {"column": "f_score", "sign": 1}],
+    "risk_reversal_miner": [{"column": "ret_1_0", "sign": -1}, {"column": "rvol_21d", "sign": -1}, {"column": "beta_60m", "sign": -1}, {"column": "rmax5_21d", "sign": -1}]
+  },
+  "workflow_policy": {
+    "prehistory_formation_start": "1993-07-31",
+    "candidate_operations": ["identity", "pair_mean", "pair_product"],
+    "candidates_per_miner": 16,
+    "total_candidate_count": 48,
+    "validation_horizons_months": [1, 3, 6],
+    "validation_horizon_weights": [0.3333333333333333, 0.3333333333333333, 0.3333333333333333],
+    "reward_purge_months": 6,
+    "maintenance_history_months": 60,
+    "minimum_maintenance_months": 48,
+    "screener_suitability_months": 10,
+    "minimum_absolute_suitability": 0.005,
+    "maximum_rankic_similarity": 0.80,
+    "selected_factor_count": 5,
+    "minimum_miners_represented": 2,
+    "factor_weight": "absolute recent mean RankIC normalized across selected factors, with direction equal to its sign",
+    "market_regime": "six-month value-weighted market return sign",
+    "regime_tilt": "uptrend multiplies technical-miner suitability by 1.25; downtrend multiplies risk-reversal suitability by 1.25; fundamentals remain unchanged",
+    "trader_reference": "top-K long-short rank portfolio",
+    "trader_trials": 3,
+    "gross_exposure": 1.0,
+    "net_exposure": 0.0,
+    "transaction_cost_bps_one_way": 10,
+    "common_portfolio_adapter": "the dynamic signed ensemble score enters frozen value-weighted long-short deciles and all six common paths",
+    "final_common_returns_used_for_policy_choice": false
+  },
+  "preserved_elements": ["three specialized miner agents", "dynamic candidate factor library", "identity, mean, and interaction factors", "multi-horizon validation", "periodic factor maintenance and decay pruning", "recent RankIC suitability", "regime-aware screening", "semantic/correlation diversity filtering", "normalized directional factor weights", "persistent performance feedback", "top-K long-short trader", "gross and net exposure control", "transaction costs"],
+  "approximated_elements": ["deterministic JKP candidate grammar replaces LLM factor generation", "three miner themes replace model-specific prompts", "rolling multi-horizon RankIC replaces unavailable native validation records", "RankIC-series correlation replaces LLM semantic similarity", "six-month market return replaces the regime-diagnosis LLM", "fixed regime tilts replace generated screener instructions", "the frozen common deciles replace trader hyperparameter/code search", "monthly JKP inputs replace daily OHLCV/fundamental/news tools"],
+  "invented_elements": ["the twelve miner seeds and signs", "the 48-candidate grammar", "monthly 1/3/6 validation horizons", "the 60-month maintenance window", "the monthly 0.005 suitability threshold", "the five-factor ensemble size", "the two-miner representation floor", "the 1.25 regime tilt"],
+  "anti_leakage": {"paper_factor_pool_or_trader_actions_used": false, "historical_motif_proxy_used": false, "future_return_used_before_horizon_and_purge": false, "current_forward_return_used_for_current_screen": false, "m053_common_result_seen_before_recipe_freeze": false, "prior_other_paper_common_results_seen": true, "retuning_after_common_result_permitted": false}
+}
