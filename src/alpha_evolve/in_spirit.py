@@ -4035,3 +4035,111 @@ def atlas_adaptive_opro_scores(
         weights = next_weights
         hold_threshold = next_threshold
     return result, pd.DataFrame(history)
+
+
+def p1gpt_layered_workflow_scores(
+    frame: pd.DataFrame,
+    domain_agents: dict[str, list[tuple[str, int]]],
+    risk_features: list[tuple[str, int]],
+    *,
+    integration_median_weight: float = 0.75,
+    integration_mean_weight: float = 0.25,
+    decision_integration_weight: float = 0.8,
+    decision_risk_weight: float = 0.2,
+    minimum_trade_confidence: float = 0.35,
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Run a deterministic five-layer P1GPT-style workflow."""
+    expected_domains = ["fundamental", "technical", "semiconductor_cycle", "news"]
+    if list(domain_agents) != expected_domains:
+        raise ValueError("P1GPT requires the four frozen domain agents in order")
+    if integration_median_weight + integration_mean_weight != 1.0:
+        raise ValueError("P1GPT integration weights must sum to one")
+    if decision_integration_weight + decision_risk_weight != 1.0:
+        raise ValueError("P1GPT decision weights must sum to one")
+    specifications = [
+        *[
+            specification
+            for agent_specifications in domain_agents.values()
+            for specification in agent_specifications
+        ],
+        *risk_features,
+    ]
+    features = list(dict.fromkeys(feature for feature, _ in specifications))
+    missing = {"month", *features} - set(frame)
+    if missing:
+        raise ValueError(f"missing P1GPT inputs: {sorted(missing)}")
+    if any(sign not in {-1, 1} for _, sign in specifications):
+        raise ValueError("P1GPT feature signs must be -1 or 1")
+
+    ranked = cross_sectional_unit_rank(frame, features)
+    domain_raw: dict[str, pd.Series] = {}
+    for agent, agent_specifications in domain_agents.items():
+        signed = pd.concat(
+            [ranked[feature] * sign for feature, sign in agent_specifications],
+            axis=1,
+        )
+        domain_raw[agent] = signed.mean(axis=1, skipna=False)
+    domain_scores = cross_sectional_unit_rank(
+        pd.concat([frame[["month"]], pd.DataFrame(domain_raw)], axis=1),
+        expected_domains,
+    )
+    supporting_raw = pd.DataFrame(
+        {
+            "external_search": domain_scores[["fundamental", "news"]].mean(
+                axis=1,
+                skipna=False,
+            ),
+            "revenue_forecasting": domain_scores[
+                ["fundamental", "semiconductor_cycle"]
+            ].mean(axis=1, skipna=False),
+            "market_trend": domain_scores[["technical", "semiconductor_cycle"]].mean(
+                axis=1,
+                skipna=False,
+            ),
+        },
+        index=frame.index,
+    )
+    supporting_scores = cross_sectional_unit_rank(
+        pd.concat([frame[["month"]], supporting_raw], axis=1),
+        list(supporting_raw),
+    )
+    reports = pd.concat([domain_scores, supporting_scores], axis=1)
+    recommendation = reports.median(axis=1, skipna=False)
+    integration = (
+        integration_median_weight * recommendation
+        + integration_mean_weight * reports.mean(axis=1, skipna=False)
+    )
+    risk_signed = pd.concat(
+        [ranked[feature] * sign for feature, sign in risk_features],
+        axis=1,
+    )
+    risk_raw = risk_signed.mean(axis=1, skipna=False)
+    risk_score = cross_sectional_unit_rank(
+        pd.DataFrame({"month": frame["month"], "risk": risk_raw}),
+        ["risk"],
+    )["risk"]
+    decision = decision_integration_weight * integration + decision_risk_weight * risk_score
+    confidence = (1.0 - reports.std(axis=1, ddof=0, skipna=False)).clip(0.0, 1.0)
+    decision = decision.where(confidence >= minimum_trade_confidence, 0.0)
+
+    diagnostics = []
+    for month, indices in frame.groupby("month", sort=True).groups.items():
+        score = decision.loc[indices]
+        current_confidence = confidence.loc[indices]
+        diagnostics.append(
+            {
+                "formation_month": str(pd.Timestamp(month).date()),
+                "layer_count": 5,
+                "agent_count": 9,
+                "domain_agent_count": 4,
+                "supporting_agent_count": 4,
+                "integrated_report_count": reports.shape[1],
+                "mean_confidence": float(current_confidence.mean()),
+                "conflict_hold_count": int((current_confidence < minimum_trade_confidence).sum()),
+                "buy_count": int((score > 0).sum()),
+                "hold_count": int((score == 0).sum()),
+                "sell_count": int((score < 0).sum()),
+                "finite_scores": int(score.notna().sum()),
+            }
+        )
+    return decision.rename("score"), pd.DataFrame(diagnostics)
