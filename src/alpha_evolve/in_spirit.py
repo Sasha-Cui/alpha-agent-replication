@@ -190,6 +190,199 @@ def fama_rolling_scores(
     return result, pd.DataFrame(diagnostics)
 
 
+def trusttrade_selective_consensus_scores(
+    frame: pd.DataFrame,
+    independent_domain_reports: dict[str, dict[str, list[tuple[str, int]]]],
+    risk_features: list[tuple[str, int]],
+    *,
+    common_start: str,
+    temporal_horizons_months: list[int],
+    reflection_reward_horizons_months: list[int],
+    reflection_reward_weights: list[float],
+    reflection_reward_purge_months: int = 12,
+    short_reflection_history_months: int = 12,
+    long_reflection_history_months: int = 60,
+    minimum_long_reflection_months: int = 48,
+    short_reflection_weight: float = 0.5,
+    long_reflection_weight: float = 0.5,
+    reliability_temperature: float = 20.0,
+    semantic_weight_lambda: float = 0.5,
+    numeric_scale_sigma: float = 0.5,
+    support_weight_alpha: float = 0.5,
+    high_consensus_threshold: float = 0.6,
+    low_consensus_weight: float = 0.25,
+    consensus_evidence_weight: float = 0.6,
+    temporal_anchor_weight: float = 0.4,
+    trader_hold_threshold: float = 0.1,
+    confidence_thresholds: tuple[float, float, float] = (0.2, 0.4, 0.6),
+    position_sizes: tuple[float, float, float, float] = (0.25, 0.5, 0.75, 1.0),
+    risk_cap_bounds: tuple[float, float] = (0.25, 0.75),
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Run TrustTrade-style selective consensus with purged reflection memory."""
+    expected_domains = ["fundamentals", "market", "news", "sentiment"]
+    if list(independent_domain_reports) != expected_domains:
+        raise ValueError("TrustTrade requires the four frozen domains in order")
+    if any(len(reports) != 3 for reports in independent_domain_reports.values()):
+        raise ValueError("TrustTrade requires three independent reports per domain")
+    if temporal_horizons_months != reflection_reward_horizons_months:
+        raise ValueError("TrustTrade temporal and reflection horizons changed")
+    if len(reflection_reward_weights) != len(reflection_reward_horizons_months) or not np.isclose(
+        sum(reflection_reward_weights), 1.0
+    ):
+        raise ValueError("TrustTrade reflection weights are invalid")
+    if reflection_reward_purge_months < max(reflection_reward_horizons_months):
+        raise ValueError("TrustTrade reflection purge is too short")
+    if not 2 <= minimum_long_reflection_months <= long_reflection_history_months:
+        raise ValueError("TrustTrade long reflection history is invalid")
+    if not np.isclose(short_reflection_weight + long_reflection_weight, 1.0):
+        raise ValueError("TrustTrade reflection weights must sum to one")
+    if not np.isclose(consensus_evidence_weight + temporal_anchor_weight, 1.0):
+        raise ValueError("TrustTrade decision weights must sum to one")
+    if not 0 < numeric_scale_sigma or not 0 <= high_consensus_threshold <= 1:
+        raise ValueError("TrustTrade consensus configuration is invalid")
+    if not (0 <= low_consensus_weight <= 1 and 0 <= semantic_weight_lambda <= 1 and 0 <= support_weight_alpha <= 1):
+        raise ValueError("TrustTrade consensus weights are invalid")
+
+    specifications = [
+        specification
+        for reports in independent_domain_reports.values()
+        for report in reports.values()
+        for specification in report
+    ]
+    features = list(
+        dict.fromkeys(
+            [feature for feature, _ in [*specifications, *risk_features]]
+            + ["ret_1_0", "ret_3_1", "ret_6_1", "ret_12_1", "prc_highprc_252d", "rvol_21d"]
+        )
+    )
+    required = {"month", "security_id", "ret_exc_lead1m", *features}
+    missing = required - set(frame)
+    if missing:
+        raise ValueError(f"missing TrustTrade inputs: {sorted(missing)}")
+    ranked = cross_sectional_unit_rank(frame, features)
+    report_scores: dict[str, pd.DataFrame] = {}
+    domain_scores = pd.DataFrame(index=frame.index)
+    consensus_scores = pd.DataFrame(index=frame.index)
+    for domain, reports in independent_domain_reports.items():
+        current = pd.DataFrame(index=frame.index)
+        for report, report_specifications in reports.items():
+            current[report] = pd.concat(
+                [ranked[feature] * sign for feature, sign in report_specifications], axis=1
+            ).fillna(0.0).mean(axis=1).clip(-1.0, 1.0)
+        values = current.to_numpy(dtype=float)
+        positive = (values > 0).sum(axis=1)
+        negative = (values < 0).sum(axis=1)
+        support = np.maximum(positive, negative) / values.shape[1]
+        pairwise = []
+        for left, right in combinations(range(values.shape[1]), 2):
+            left_sign = np.sign(values[:, left])
+            right_sign = np.sign(values[:, right])
+            semantic = np.where(
+                (left_sign == 0) | (right_sign == 0),
+                0.0,
+                np.where(left_sign == right_sign, 1.0, -1.0),
+            )
+            numeric = np.exp(-np.abs(values[:, left] - values[:, right]) / numeric_scale_sigma)
+            pairwise.append(semantic_weight_lambda * semantic + (1.0 - semantic_weight_lambda) * numeric)
+        cohesion = np.clip((np.mean(pairwise, axis=0) + 1.0) / 2.0, 0.0, 1.0)
+        consensus = support_weight_alpha * support + (1.0 - support_weight_alpha) * cohesion
+        weight = np.where(consensus >= high_consensus_threshold, 1.0, low_consensus_weight)
+        domain_scores[domain] = current.mean(axis=1) * weight
+        consensus_scores[domain] = consensus
+        report_scores[domain] = current
+
+    temporal_columns = ["ret_1_0", "ret_3_1", "ret_6_1", "ret_12_1"]
+    if temporal_horizons_months != [1, 3, 6, 12] or set(temporal_columns) - set(frame):
+        raise ValueError("TrustTrade monthly temporal horizons changed")
+    temporal = pd.concat(
+        [ranked[column] for column in temporal_columns]
+        + [ranked["prc_highprc_252d"], -ranked["rvol_21d"]],
+        axis=1,
+    ).fillna(0.0).mean(axis=1)
+    components = pd.concat([domain_scores, temporal.rename("temporal")], axis=1)
+
+    ordered = frame[["security_id", "month", "ret_exc_lead1m"]].sort_values(
+        ["security_id", "month"], kind="mergesort"
+    )
+    forward: dict[int, pd.Series] = {}
+    for horizon in reflection_reward_horizons_months:
+        parts = []
+        for offset in range(horizon):
+            shifted_return = ordered.groupby("security_id")["ret_exc_lead1m"].shift(-offset)
+            shifted_month = ordered.groupby("security_id")["month"].shift(-offset)
+            parts.append(shifted_return.where(shifted_month.eq(ordered["month"] + pd.offsets.MonthEnd(offset))))
+        forward[horizon] = ((1.0 + pd.concat(parts, axis=1)).prod(axis=1, min_count=horizon) - 1.0).reindex(frame.index)
+    multi_outcome = sum(weight * forward[horizon] for horizon, weight in zip(reflection_reward_horizons_months, reflection_reward_weights))
+    component_rankics = monthly_rankic(frame.assign(_trusttrade_outcome=multi_outcome), components, return_column="_trusttrade_outcome")
+    risk = pd.concat([ranked[feature] * sign for feature, sign in risk_features], axis=1).fillna(0.0).mean(axis=1)
+
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    diagnostics: list[dict[str, object]] = []
+    positions: dict[object, float] = {}
+    last_seen: dict[object, pd.Timestamp] = {}
+    month_groups = frame.groupby("month", sort=False).groups
+    common_months = sorted(pd.Timestamp(month) for month in frame.loc[frame["month"] >= common_start, "month"].unique())
+    for month in common_months:
+        cutoff = month - pd.offsets.MonthEnd(reflection_reward_purge_months)
+        long_history = component_rankics.loc[component_rankics.index <= cutoff].tail(long_reflection_history_months)
+        if len(long_history) != long_reflection_history_months or (long_history.count() < minimum_long_reflection_months).any():
+            raise ValueError(f"TrustTrade reflection history is incomplete at {month.date()}")
+        short_history = long_history.tail(short_reflection_history_months)
+        reflected = short_reflection_weight * short_history.mean() + long_reflection_weight * long_history.mean()
+        domain_logits = reliability_temperature * reflected[expected_domains]
+        reliability = np.exp(domain_logits - domain_logits.max())
+        reliability /= reliability.sum()
+        indices = month_groups[month]
+        evidence = domain_scores.loc[indices, expected_domains].mul(reliability, axis=1).sum(axis=1)
+        trader = consensus_evidence_weight * evidence + temporal_anchor_weight * temporal.loc[indices]
+        direction = np.where(trader > trader_hold_threshold, 1, np.where(trader < -trader_hold_threshold, -1, 0))
+        confidence = trader.abs().clip(0.0, 1.0)
+        size = np.select(
+            [confidence < confidence_thresholds[0], confidence < confidence_thresholds[1], confidence < confidence_thresholds[2]],
+            position_sizes[:3],
+            default=position_sizes[3],
+        )
+        cap = risk_cap_bounds[1] - (risk_cap_bounds[1] - risk_cap_bounds[0]) * ((risk.loc[indices] + 1.0) / 2.0).clip(0.0, 1.0)
+        score_values = []
+        stale_resets = 0
+        for offset, (index, security) in enumerate(frame.loc[indices, "security_id"].items()):
+            if direction[offset] == 0:
+                if security in positions and last_seen[security] == month - pd.offsets.MonthEnd(1):
+                    value = positions[security]
+                else:
+                    value = 0.0
+                    stale_resets += int(security in positions)
+            else:
+                value = float(direction[offset] * min(float(size[offset]), float(cap.loc[index])))
+            positions[security] = value
+            last_seen[security] = month
+            score_values.append(value)
+        score = pd.Series(score_values, index=indices, dtype=float)
+        result.loc[indices] = score
+        row: dict[str, object] = {
+            "formation_month": str(month.date()),
+            "reflection_cutoff": str(cutoff.date()),
+            "long_reflection_start": str(long_history.index[0].date()),
+            "long_reflection_end": str(long_history.index[-1].date()),
+            "long_reflection_months": len(long_history),
+            "short_reflection_months": len(short_history),
+            "buy_count": int((direction > 0).sum()),
+            "hold_count": int((direction == 0).sum()),
+            "sell_count": int((direction < 0).sum()),
+            "mean_absolute_position": float(score.abs().mean()),
+            "mean_risk_cap": float(cap.mean()),
+            "stale_position_resets": stale_resets,
+            "finite_scores": int(score.notna().sum()),
+        }
+        for domain in expected_domains:
+            row[f"mean_consensus__{domain}"] = float(consensus_scores.loc[indices, domain].mean())
+            row[f"high_consensus_count__{domain}"] = int((consensus_scores.loc[indices, domain] >= high_consensus_threshold).sum())
+            row[f"reflection_rankic__{domain}"] = float(reflected[domain])
+            row[f"reliability__{domain}"] = float(reliability[domain])
+        diagnostics.append(row)
+    return result, pd.DataFrame(diagnostics)
+
+
 def alphalogics_evolution_scores(
     frame: pd.DataFrame,
     initial_market_logic_library: dict[str, list[tuple[str, int]]],
