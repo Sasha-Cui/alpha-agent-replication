@@ -46,10 +46,38 @@
     "lfs_recovery_sha256": "2a87bbe946c125edc7d8c7815efdeb42bee4f292f669327c8e42b638f271eb2e"
   },
   "expert_candidate_features": {
-    "trend": ["ret_12_1", "ret_6_1", "ret_1_0", "prc_highprc_252d", "turnover_126d", "rvol_21d"],
-    "reversal": ["ret_1_0", "ret_6_1", "prc_highprc_252d", "turnover_126d", "rvol_21d", "beta_60m"],
-    "breakout": ["prc_highprc_252d", "ret_1_0", "ret_6_1", "turnover_126d", "rvol_21d", "beta_60m"],
-    "exposure_control": ["rvol_21d", "beta_60m", "z_score", "qmj_safety", "qmj_prof", "f_score"]
+    "trend": [
+      {"column": "ret_12_1", "sign": 1},
+      {"column": "ret_6_1", "sign": 1},
+      {"column": "ret_1_0", "sign": 1},
+      {"column": "prc_highprc_252d", "sign": 1},
+      {"column": "turnover_126d", "sign": 1},
+      {"column": "rvol_21d", "sign": -1}
+    ],
+    "reversal": [
+      {"column": "ret_1_0", "sign": -1},
+      {"column": "ret_6_1", "sign": -1},
+      {"column": "prc_highprc_252d", "sign": -1},
+      {"column": "turnover_126d", "sign": -1},
+      {"column": "rvol_21d", "sign": -1},
+      {"column": "beta_60m", "sign": -1}
+    ],
+    "breakout": [
+      {"column": "prc_highprc_252d", "sign": 1},
+      {"column": "ret_1_0", "sign": 1},
+      {"column": "ret_6_1", "sign": 1},
+      {"column": "turnover_126d", "sign": 1},
+      {"column": "rvol_21d", "sign": 1},
+      {"column": "beta_60m", "sign": 1}
+    ],
+    "exposure_control": [
+      {"column": "rvol_21d", "sign": -1},
+      {"column": "beta_60m", "sign": -1},
+      {"column": "z_score", "sign": 1},
+      {"column": "qmj_safety", "sign": 1},
+      {"column": "qmj_prof", "sign": 1},
+      {"column": "f_score", "sign": 1}
+    ]
   },
   "candidate_schema": {
     "candidates_per_expert_regime": 6,

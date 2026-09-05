@@ -40,6 +40,11 @@ def test_m030_recipe_freezes_experts_pools_rabo_and_router():
         "breakout",
         "exposure_control",
     ]
+    assert all(
+        len(specifications) == 6
+        and all(item["sign"] in {-1, 1} for item in specifications)
+        for specifications in recipe["expert_candidate_features"].values()
+    )
     schema = recipe["candidate_schema"]
     assert schema["candidates_per_expert_regime"] == 6
     assert schema["admitted_per_pool"] == 5
