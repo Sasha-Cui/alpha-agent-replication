@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M028",
+  "canonical_work_id": "CensusArxiv250816334",
+  "paper": "From Flat to Hierarchical: Evolving Tree-structured Thoughts for Fine-grained Alpha Mining",
+  "status": "frozen_before_jkp_result",
+  "fidelity_label": "in_spirit_reconstruction",
+  "claim_boundary": "A researcher-authored deterministic TreEvo-style search over explicit hierarchical factor trees using pre-common JKP history; not the paper's Qwen-generated thought/code population and not a reproduction of its SPX, NDX, or CSI results.",
+  "paper_source": {
+    "url": "https://arxiv.org/abs/2508.16334v2",
+    "version": "arXiv v2, 2026-05-31",
+    "source_main_sha256": "dbc3c2da309d15f95a32162ed7c5a00f8c4f9c3446f25a618939f7e081684d3d",
+    "attributable_native_implementation_files": 0
+  },
+  "primary_source_anchors": [
+    {
+      "anchor": "Sections 3.1-3.2",
+      "mechanism": "Represent every candidate alpha as a whole hierarchical thought tree whose root is the overall factor, internal nodes are compositional subcomponents, and leaves are fine-grained operations or inputs."
+    },
+    {
+      "anchor": "Section 3.3",
+      "mechanism": "Evolve bounded subtrees with crossover, root mutation, internal-node mutation, fine leaf mutation, and pruning so global exploration and local refinement occur at distinct structural levels."
+    },
+    {
+      "anchor": "Section 3.4 and Appendix G.1",
+      "mechanism": "Maintain a population of ten candidates, generate ten offspring, evaluate executable factors, and retain the ten best parents or offspring until a 200-evaluation budget is exhausted."
+    },
+    {
+      "anchor": "Section 4.1",
+      "mechanism": "Use chronological train, validation, and test periods; train/search on predictive IC or RankIC, then apply the selected factor out of sample."
+    }
+  ],
+  "strict_evidence": {
+    "audit_manifest_path": "paper_runs/paper_replication_audits/treevo/manifest.json",
+    "audit_manifest_sha256": "67752888dbc11e34faa7579f7ec8aa234e6173149d94739eb9da01ecfa16a112",
+    "source_provenance_path": "paper_runs/paper_replication_audits/treevo/source_provenance.json",
+    "source_provenance_sha256": "33991116d30e89966dbf8a1a8a7849c960a7518801bf9d412bd77b6c2bfe3ebe",
+    "prompt_inventory_path": "paper_runs/paper_replication_audits/treevo/prompt_inventory.csv",
+    "prompt_inventory_sha256": "77b6eb01941ff9693249a0e31413985501b0eef39f87ca4e81249eea90c2d783",
+    "operator_inventory_path": "paper_runs/paper_replication_audits/treevo/operator_inventory.csv",
+    "operator_inventory_sha256": "14e82321fda3884db894576e4a74f058bb800162a8ec9cbab2c7d1095f721822",
+    "method_audit_path": "paper_runs/paper_replication_audits/treevo/method_specification_audit.csv",
+    "method_audit_sha256": "08008eb03162037884a81e9aa67e36c85d093c89c728eec6d45c7f6194a41fba"
+  },
+  "seed_features": [
+    {"column": "ret_12_1", "sign": 1},
+    {"column": "ret_6_1", "sign": 1},
+    {"column": "ret_1_0", "sign": 1},
+    {"column": "prc_highprc_252d", "sign": 1},
+    {"column": "turnover_126d", "sign": 1},
+    {"column": "rvol_21d", "sign": -1}
+  ],
+  "tree_grammar": {
+    "leaf": "one signed cross-sectional JKP feature rank",
+    "binary_internal_nodes": ["mean", "difference", "product"],
+    "maximum_initial_depth": 3,
+    "expression_interpretation": "every internal node composes complete child subtrees and the root emits one stock score"
+  },
+  "evolution_policy": {
+    "prehistory_formation_start": "1989-07-31",
+    "search_training_start": "1989-07-31",
+    "search_training_end": "1997-06-30",
+    "search_training_months": 96,
+    "search_validation_start": "1997-07-31",
+    "search_validation_end": "1999-06-30",
+    "search_validation_months": 24,
+    "population_size": 10,
+    "evaluation_budget": 200,
+    "offspring_generations": 19,
+    "offspring_per_generation": 10,
+    "operator_rotation": ["crossover", "mutation", "pruning"],
+    "mutation_probabilities": {"root": 0.4, "internal": 0.4, "fine": 0.2},
+    "random_seed": 16334,
+    "training_direction": "orient each candidate by the sign of its training-period mean RankIC",
+    "training_fitness": "absolute mean training RankIC minus 0.0001 times node count beyond one",
+    "complexity_penalty_per_extra_node": 0.0001,
+    "population_selection": "best training fitness with expression-lexical tie-breaking from each parent-plus-offspring pool",
+    "final_selection": "highest mean validation RankIC after applying the training-period direction among the final population",
+    "common_portfolio_adapter": "apply the one frozen selected tree to every common month, then use value-weighted long-short deciles and all six cost/missing-return paths",
+    "final_common_returns_used_for_search_or_selection": false
+  },
+  "preserved_elements": [
+    "a whole hierarchical tree as each candidate thought",
+    "root, internal-node, and leaf levels with explicit compositional dependencies",
+    "population size ten",
+    "exact 200-candidate evaluation budget",
+    "parent-plus-offspring survivor selection",
+    "crossover between coherent subtrees",
+    "root, internal, and fine mutation scopes with 0.4/0.4/0.2 probabilities",
+    "structural pruning for parsimony",
+    "RankIC-based predictive evaluation",
+    "chronological validation before out-of-sample application"
+  ],
+  "approximated_elements": [
+    "six point-in-time JKP price, trend, turnover, and volatility ranks replace OHLCV/vwap arrays",
+    "a deterministic typed tree grammar replaces LLM-generated textual thoughts",
+    "direct recursive evaluation replaces the unavailable thought-to-code prompt and parser",
+    "seeded programmatic operators replace Qwen prompt-level evolutionary calls",
+    "a pre-1999 train-validation split replaces the paper's 2016-2021 search periods",
+    "the common monthly decile portfolio replaces daily Top-50/Drop-5 execution"
+  ],
+  "invented_elements": [
+    "the six signed seed features",
+    "the mean, difference, and product internal-node grammar",
+    "the random seed and exact initial-tree generator",
+    "the three-generation crossover/mutation/pruning rotation",
+    "the 0.0001 per-node parsimony penalty",
+    "training-period sign orientation",
+    "lexical tie-breaking",
+    "the 96-month training and 24-month validation windows"
+  ],
+  "anti_leakage": {
+    "search_or_selection_uses_common_period_returns": false,
+    "future_returns_used_for_common_month_scores": false,
+    "current_month_forward_return_used_for_current_score": false,
+    "m028_common_result_seen_before_recipe_freeze": false,
+    "prior_other_paper_common_results_seen": true,
+    "retuning_after_common_result_permitted": false
+  }
+}
