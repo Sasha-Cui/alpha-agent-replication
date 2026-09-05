@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M049",
+  "canonical_work_id": "CensusArxiv260322567",
+  "paper": "TrustTrade: Human-Inspired Selective Consensus Reduces Decision Uncertainty in LLM Trading Agents",
+  "status": "frozen_before_jkp_result",
+  "fidelity_label": "in_spirit_reconstruction",
+  "claim_boundary": "A researcher-authored monthly U.S.-stock analogue of TrustTrade's independent domain reports, hybrid selective consensus, deterministic temporal anchor, sequential trader/risk sizing, and purged short/long reflective memory; not the unreleased LLM report pipeline, human experiment, or 2026 paper decisions.",
+  "paper_source": {
+    "url": "https://arxiv.org/abs/2603.22567v1",
+    "version": "arXiv v1",
+    "pdf_sha256": "6f9facfe101b3bf0e7ea8a0082bf7f72160e87ef9744c74eb53cf0cda5faaffa",
+    "source_sha256": "53bc114b23ce00fc4a043c243c44bea11c0450036c21b93e288ff3a09506b965",
+    "source_tex_sha256": "d12f5e861fa170da387677682df248b9605c5bd38ec11b186a968902c15c8d4c",
+    "attributable_trusttrade_pipeline_found": false,
+    "human_interfaces_found": true,
+    "bounded_release_search_checked_2026_09_05": "The paper, Research Square copy, lab organization, and three human-study interfaces remain public, but no attributable selective-consensus, temporal-memory, decision, holding, or result pipeline is released."
+  },
+  "primary_source_anchors": [
+    {
+      "anchor": "Study III overview and Methods: TrustTrade overview",
+      "mechanism": "Independent domain-report agents are credibility scored, selectively filtered by cross-report agreement, and combined with deterministic temporal signals before sequential trader and risk decisions."
+    },
+    {
+      "anchor": "Methods Equation 1-2 and Figure 7a",
+      "mechanism": "Atomic claims form a cross-report graph using semantic and numeric similarity; support and cohesion create a consensus score that retains high-consensus evidence and down-weights conflicting evidence."
+    },
+    {
+      "anchor": "Deterministic temporal signal pipeline and Figure 7b",
+      "mechanism": "Multi-horizon returns, volatility, trend consistency, forecast direction/magnitude, and confidence produce transparent BUY/SELL/HOLD recommendations and position sizes."
+    },
+    {
+      "anchor": "Memory bank Equations 3-6 and Figure 7c",
+      "mechanism": "Trade outcomes are backfilled only after their horizons realize; short- and long-horizon return/Sharpe reflections condition later confidence, risk, and sizing decisions."
+    }
+  ],
+  "strict_evidence": {
+    "audit_manifest_path": "paper_runs/paper_replication_audits/trusttrade/manifest.json",
+    "audit_manifest_sha256": "aa4d8234eba41f5a6347c54119c28612f26d7506808457c6a62e20e4ed13a010",
+    "source_provenance_path": "paper_runs/paper_replication_audits/trusttrade/source_provenance.json",
+    "source_provenance_sha256": "94d4eac9a8117dba977fae3a10002e21d4d1193f2557a530412c69ea41dea75c",
+    "method_specification_path": "paper_runs/paper_replication_audits/trusttrade/method_specification_audit.csv",
+    "method_specification_sha256": "0a0b49857577e3c13ae6f964f1778770299dcab5c04cc3025c1182a240c0379f",
+    "human_interface_protocol_path": "paper_runs/paper_replication_audits/trusttrade/human_interface_protocol.csv",
+    "human_interface_protocol_sha256": "3b55efde66b07404540dd7a15b19571612761673c037bb0f541f8117ac68733c",
+    "input_temporal_contamination_path": "paper_runs/paper_replication_audits/trusttrade/input_temporal_contamination.csv",
+    "input_temporal_contamination_sha256": "0d9cdc70a85e5faf5968b771c7967d497d268e9a36c9874ead9547d754601b41",
+    "published_result_panel_ledger_path": "paper_runs/paper_replication_audits/trusttrade/published_result_panel_ledger.csv",
+    "published_result_panel_ledger_sha256": "d786a42542140249ee2e18b59e34cbc9c79d2cb71d12394ccb2b30862b8d8739"
+  },
+  "independent_domain_reports": {
+    "fundamentals": {
+      "value_report": [{"column": "be_me", "sign": 1}, {"column": "at_me", "sign": 1}, {"column": "ocf_me", "sign": 1}],
+      "quality_report": [{"column": "gp_at", "sign": 1}, {"column": "op_at", "sign": 1}, {"column": "qmj_prof", "sign": 1}],
+      "safety_report": [{"column": "z_score", "sign": 1}, {"column": "f_score", "sign": 1}, {"column": "o_score", "sign": -1}]
+    },
+    "market": {
+      "momentum_report": [{"column": "ret_12_1", "sign": 1}, {"column": "ret_6_1", "sign": 1}, {"column": "ret_3_1", "sign": 1}],
+      "residual_report": [{"column": "resff3_12_1", "sign": 1}, {"column": "resff3_6_1", "sign": 1}, {"column": "prc_highprc_252d", "sign": 1}],
+      "volume_report": [{"column": "turnover_126d", "sign": 1}, {"column": "dolvol_126d", "sign": 1}, {"column": "zero_trades_126d", "sign": -1}]
+    },
+    "news": {
+      "earnings_report": [{"column": "niq_su", "sign": 1}, {"column": "saleq_su", "sign": 1}, {"column": "ni_inc8q", "sign": 1}],
+      "revision_report": [{"column": "niq_be_chg1", "sign": 1}, {"column": "ocf_at_chg1", "sign": 1}, {"column": "saleq_su", "sign": 1}],
+      "attention_report": [{"column": "turnover_126d", "sign": 1}, {"column": "ret_1_0", "sign": 1}, {"column": "rmax1_21d", "sign": 1}]
+    },
+    "sentiment": {
+      "reversal_report": [{"column": "ret_1_0", "sign": -1}, {"column": "rmax1_21d", "sign": -1}, {"column": "prc_highprc_252d", "sign": -1}],
+      "lottery_report": [{"column": "rmax5_21d", "sign": -1}, {"column": "rskew_21d", "sign": -1}, {"column": "ivol_capm_252d", "sign": -1}],
+      "risk_appetite_report": [{"column": "beta_60m", "sign": -1}, {"column": "rvol_21d", "sign": -1}, {"column": "z_score", "sign": 1}]
+    }
+  },
+  "selective_consensus": {
+    "report_agents_per_domain": 3,
+    "atomic_claim": "one bounded report score with domain, polarity, and numeric value",
+    "semantic_similarity": "one when two reports share nonzero polarity, zero when either is neutral, and minus one when polarities conflict",
+    "numeric_similarity": "exp of negative absolute report-score difference divided by 0.50",
+    "semantic_weight_lambda": 0.5,
+    "numeric_scale_sigma": 0.5,
+    "support_ratio": "fraction of the three reports sharing the majority nonzero polarity",
+    "cohesion": "mean pairwise hybrid similarity mapped to zero through one",
+    "support_weight_alpha": 0.5,
+    "high_consensus_threshold": 0.6,
+    "low_consensus_weight": 0.25,
+    "domain_evidence": "mean report score multiplied by one for high consensus or 0.25 otherwise"
+  },
+  "temporal_and_memory_policy": {
+    "prehistory_formation_start": "1988-01-31",
+    "temporal_horizons_months": [1, 3, 6, 12],
+    "temporal_signal": "mean signed rank of 1/3/6/12-month return, high-price position, and inverse realized volatility",
+    "temporal_trend_consistency": "fraction of horizon return signs matching the 12-month direction",
+    "reflection_reward_horizons_months": [1, 3, 6, 12],
+    "reflection_reward_weights": [0.25, 0.25, 0.25, 0.25],
+    "reflection_reward_purge_months": 12,
+    "short_reflection_history_months": 12,
+    "long_reflection_history_months": 60,
+    "minimum_long_reflection_months": 48,
+    "short_reflection_weight": 0.5,
+    "long_reflection_weight": 0.5,
+    "reliability_temperature": 20.0,
+    "consensus_evidence_weight": 0.6,
+    "temporal_anchor_weight": 0.4,
+    "trader_hold_threshold": 0.1,
+    "confidence_thresholds": [0.2, 0.4, 0.6],
+    "position_sizes": [0.25, 0.5, 0.75, 1.0],
+    "risk_features": [{"column": "rvol_21d", "sign": 1}, {"column": "beta_60m", "sign": 1}, {"column": "o_score", "sign": 1}],
+    "minimum_risk_cap": 0.25,
+    "maximum_risk_cap": 0.75,
+    "hold_rule": "carry the prior valid position; reset stale positions after a missing security month",
+    "buy_sell_rule": "set signed target size from confidence, capped by the risk manager",
+    "common_portfolio_adapter": "the reflected position score enters frozen value-weighted long-short deciles and all six cost/missing-return paths",
+    "final_common_returns_used_for_policy_choice": false
+  },
+  "preserved_elements": [
+    "multiple independent reports in four information domains",
+    "atomic normalized claims with polarity and numeric value",
+    "hybrid semantic and numeric cross-report agreement",
+    "support and cohesion consensus scoring",
+    "selective retention and down-weighting of low-consensus evidence",
+    "deterministic multi-horizon temporal anchoring",
+    "transparent BUY, SELL, and HOLD action logic",
+    "sequential trader then risk-manager decisions",
+    "position sizing conditional on confidence and current state",
+    "memory outcomes backfilled only after each horizon realizes",
+    "separate short- and long-horizon reflection",
+    "test-time reliability adaptation without common-period retuning"
+  ],
+  "approximated_elements": [
+    "three deterministic JKP reports per domain replace unspecified independent LLM agents",
+    "earnings surprises and attention characteristics replace unavailable causal news reports",
+    "report polarity and scalar distance replace claim embeddings and extracted numeric assertions",
+    "within-domain three-report agreement replaces the full cross-report connected-component graph",
+    "monthly 1/3/6/12 horizons replace daily 1/7/14/28/90/180/360 horizons",
+    "signed return ranks replace polynomial price trends and next-day forecasts",
+    "purged component RankIC history replaces LLM-generated decision reflections",
+    "continuous normalized positions replace whole-share 25/50/75/100% transactions",
+    "the common decile portfolio replaces the paper's three-stock human interface"
+  ],
+  "invented_elements": [
+    "the twelve report definitions and feature signs",
+    "the 0.50 semantic/numeric blend and numeric scale",
+    "the 0.60 high-consensus threshold and 0.25 low-consensus weight",
+    "the 0.60 consensus and 0.40 temporal decision blend",
+    "the monthly reflection horizons and equal weights",
+    "the 12/60-month reflection windows and equal blend",
+    "the reliability temperature",
+    "the trader confidence thresholds",
+    "the 0.25 through 0.75 risk caps"
+  ],
+  "anti_leakage": {
+    "paper_interface_reports_or_participant_outputs_used": false,
+    "future_contaminated_nominal_2024_reports_used": false,
+    "current_forward_return_used_for_current_decision": false,
+    "unrealized_memory_outcome_used": false,
+    "m049_common_result_seen_before_recipe_freeze": false,
+    "prior_other_paper_common_results_seen": true,
+    "retuning_after_common_result_permitted": false
+  }
+}
