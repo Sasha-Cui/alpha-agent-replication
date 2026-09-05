@@ -2723,3 +2723,167 @@ def treevo_evolution_scores(
         "evaluation_budget": evaluation_number,
     }
     return final_score, history, summary
+
+
+def tradinggroup_reflection_scores(
+    frame: pd.DataFrame,
+    information_agents: dict[str, list[tuple[str, int]]],
+    styles: dict[str, dict[str, float]],
+    *,
+    risk_features: list[str],
+    safety_features: list[str],
+    common_start: str,
+    forecast_reflection_months: int = 60,
+    minimum_forecast_rankic_months: int = 36,
+    forecast_reliability_temperature: float = 20.0,
+    style_reflection_months: int = 20,
+    minimum_style_rankic_months: int = 12,
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Run a deterministic TradingGroup-style reflected agent chain."""
+    expected_agents = ["news_sentiment", "financial_report", "technical"]
+    expected_styles = ["aggressive", "balanced", "conservative"]
+    if list(information_agents) != expected_agents:
+        raise ValueError("TradingGroup requires the three frozen information agents in order")
+    if list(styles) != expected_styles:
+        raise ValueError("TradingGroup requires aggressive, balanced, and conservative styles")
+    specifications = [
+        specification
+        for agent_specifications in information_agents.values()
+        for specification in agent_specifications
+    ]
+    features = list(
+        dict.fromkeys(
+            [feature for feature, _ in specifications]
+            + list(risk_features)
+            + list(safety_features)
+        )
+    )
+    missing = {"month", "ret_exc_lead1m", *features} - set(frame)
+    if missing:
+        raise ValueError(f"missing TradingGroup inputs: {sorted(missing)}")
+    if any(sign not in {-1, 1} for _, sign in specifications):
+        raise ValueError("TradingGroup feature signs must be -1 or 1")
+
+    ranked = cross_sectional_unit_rank(frame, features)
+    agent_raw: dict[str, pd.Series] = {}
+    for agent, agent_specifications in information_agents.items():
+        signed = pd.concat(
+            [ranked[feature] * sign for feature, sign in agent_specifications],
+            axis=1,
+        )
+        agent_raw[agent] = signed.mean(axis=1, skipna=False)
+    agent_scores = cross_sectional_unit_rank(
+        pd.concat([frame[["month"]], pd.DataFrame(agent_raw)], axis=1),
+        expected_agents,
+    )
+    agent_rankics = monthly_rankic(frame, agent_scores)
+
+    all_months = sorted(pd.Timestamp(month) for month in frame["month"].unique())
+    month_groups = frame.groupby("month", sort=False).groups
+    forecast_raw = pd.Series(np.nan, index=frame.index, dtype="float64")
+    forecast_diagnostics: dict[pd.Timestamp, dict[str, object]] = {}
+    for position in range(forecast_reflection_months, len(all_months)):
+        month = all_months[position]
+        history = agent_rankics.iloc[
+            position - forecast_reflection_months : position
+        ]
+        count = history.count()
+        if len(history) != forecast_reflection_months or (
+            count < minimum_forecast_rankic_months
+        ).any():
+            raise ValueError(f"TradingGroup forecast reflection is incomplete at {month.date()}")
+        mean = history.mean()
+        logits = forecast_reliability_temperature * mean
+        reliability = np.exp(logits - logits.max())
+        reliability /= reliability.sum()
+        indices = month_groups[month]
+        current = agent_scores.loc[indices, expected_agents].to_numpy(dtype=float)
+        finite = np.isfinite(current)
+        numerator = np.where(finite, current * reliability.to_numpy(), 0.0).sum(axis=1)
+        denominator = np.where(finite, reliability.to_numpy(), 0.0).sum(axis=1)
+        forecast = np.divide(
+            numerator,
+            denominator,
+            out=np.full(len(indices), np.nan),
+            where=denominator > 0,
+        )
+        forecast_raw.loc[indices] = forecast
+        row: dict[str, object] = {
+            "forecast_reflection_start": str(history.index[0].date()),
+            "forecast_reflection_end": str(history.index[-1].date()),
+            "forecast_reflection_months": len(history),
+        }
+        for agent in expected_agents:
+            row[f"agent_mean_rankic__{agent}"] = float(mean[agent])
+            row[f"agent_reliability__{agent}"] = float(reliability[agent])
+        forecast_diagnostics[month] = row
+    forecast_score = cross_sectional_unit_rank(
+        pd.DataFrame({"month": frame["month"], "forecast": forecast_raw}),
+        ["forecast"],
+    )["forecast"]
+
+    risk_raw = ranked[risk_features].mean(axis=1, skipna=False)
+    safety_raw = ranked[safety_features].mean(axis=1, skipna=False)
+    risk_score = cross_sectional_unit_rank(
+        pd.DataFrame({"month": frame["month"], "risk": risk_raw}),
+        ["risk"],
+    )["risk"]
+    safety_score = cross_sectional_unit_rank(
+        pd.DataFrame({"month": frame["month"], "safety": safety_raw}),
+        ["safety"],
+    )["safety"]
+    style_raw = pd.DataFrame(index=frame.index)
+    for style, parameters in styles.items():
+        style_raw[style] = (
+            forecast_score
+            - float(parameters["risk_penalty"]) * risk_score
+            + float(parameters["safety_bonus"]) * safety_score
+        )
+    style_scores = cross_sectional_unit_rank(
+        pd.concat([frame[["month"]], style_raw], axis=1),
+        expected_styles,
+    )
+    style_rankics = monthly_rankic(frame, style_scores)
+
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    diagnostics: list[dict[str, object]] = []
+    common_months = sorted(
+        pd.Timestamp(month)
+        for month in frame.loc[frame["month"] >= common_start, "month"].unique()
+    )
+    for month in common_months:
+        history = style_rankics.loc[style_rankics.index < month].tail(
+            style_reflection_months
+        )
+        count = history.count()
+        if len(history) != style_reflection_months or (
+            count < minimum_style_rankic_months
+        ).any():
+            raise ValueError(f"TradingGroup style reflection is incomplete at {month.date()}")
+        mean = history.mean()
+        selected_style = sorted(
+            expected_styles,
+            key=lambda style: (-float(mean[style]), style),
+        )[0]
+        indices = month_groups[month]
+        score = style_scores.loc[indices, selected_style].copy()
+        risk_percentile = (risk_score.loc[indices] + 1.0) / 2.0
+        threshold = float(styles[selected_style]["positive_risk_intercept_quantile"])
+        intercepted = score.gt(0) & risk_percentile.gt(threshold)
+        score.loc[intercepted] = 0.0
+        result.loc[indices] = score
+        row = {
+            "formation_month": str(month.date()),
+            **forecast_diagnostics[month],
+            "style_reflection_start": str(history.index[0].date()),
+            "style_reflection_end": str(history.index[-1].date()),
+            "style_reflection_months": len(history),
+            "selected_style": selected_style,
+            "risk_intercept_quantile": threshold,
+            "risk_intercept_count": int(intercepted.sum()),
+            "finite_scores": int(score.notna().sum()),
+        }
+        for style in expected_styles:
+            row[f"style_mean_rankic__{style}"] = float(mean[style])
+        diagnostics.append(row)
+    return result, pd.DataFrame(diagnostics)
