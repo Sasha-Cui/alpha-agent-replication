@@ -190,6 +190,245 @@ def fama_rolling_scores(
     return result, pd.DataFrame(diagnostics)
 
 
+def blindtrade_graph_intent_scores(
+    frame: pd.DataFrame,
+    anonymized_agents: dict[str, list[tuple[str, int]]],
+    intent_role_weights: dict[str, dict[str, float]],
+    *,
+    common_start: str,
+    agent_ic_history_months: int = 60,
+    minimum_agent_ic_months: int = 48,
+    agent_reward_purge_months: int = 1,
+    semantic_similarity_threshold: float = 0.75,
+    semantic_neighbors: int = 10,
+    semantic_graph_layers: int = 2,
+    graph_self_weight: float = 0.5,
+    graph_neighbor_weight: float = 0.5,
+    intent_reward_history_months: int = 60,
+    minimum_intent_reward_months: int = 48,
+    intent_reward_purge_months: int = 1,
+    intent_tie_break_order: tuple[str, ...] = ("neutral", "defensive", "aggressive"),
+    reward_cost_bps_one_way: float = 10.0,
+    execution_inertia_eta: float = 0.10,
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Run a BlindTrade-style anonymized graph and risk-intent policy."""
+    expected_agents = ["momentum", "news_event", "mean_reversion", "risk_regime"]
+    expected_intents = ["defensive", "neutral", "aggressive"]
+    if list(anonymized_agents) != expected_agents:
+        raise ValueError("BlindTrade requires the four frozen agents in order")
+    if list(intent_role_weights) != expected_intents:
+        raise ValueError("BlindTrade requires the three frozen intents in order")
+    if any(set(weights) != set(expected_agents) for weights in intent_role_weights.values()):
+        raise ValueError("BlindTrade intent role coverage changed")
+    if any(not np.isclose(sum(weights.values()), 1.0) for weights in intent_role_weights.values()):
+        raise ValueError("BlindTrade intent role weights must sum to one")
+    if min(agent_reward_purge_months, intent_reward_purge_months) < 1:
+        raise ValueError("BlindTrade reward cutoffs must precede each decision")
+    if not 2 <= minimum_agent_ic_months <= agent_ic_history_months:
+        raise ValueError("BlindTrade agent IC history is invalid")
+    if not 2 <= minimum_intent_reward_months <= intent_reward_history_months:
+        raise ValueError("BlindTrade intent reward history is invalid")
+    if not 0.0 < semantic_similarity_threshold <= 1.0 or semantic_neighbors < 1:
+        raise ValueError("BlindTrade semantic graph configuration is invalid")
+    if semantic_graph_layers != 2:
+        raise ValueError("BlindTrade requires two semantic graph layers")
+    if not np.isclose(graph_self_weight + graph_neighbor_weight, 1.0):
+        raise ValueError("BlindTrade graph weights must sum to one")
+    if not 0.0 < execution_inertia_eta <= 1.0:
+        raise ValueError("BlindTrade execution inertia is invalid")
+    if set(intent_tie_break_order) != set(expected_intents):
+        raise ValueError("BlindTrade intent tie-break order changed")
+
+    specifications = [
+        specification
+        for agent_specifications in anonymized_agents.values()
+        for specification in agent_specifications
+    ]
+    features = list(dict.fromkeys(feature for feature, _ in specifications))
+    missing = {"month", "security_id", "ret_exc_lead1m", *features} - set(frame)
+    if missing:
+        raise ValueError(f"missing BlindTrade inputs: {sorted(missing)}")
+    if any(sign not in {-1, 1} for _, sign in specifications):
+        raise ValueError("BlindTrade agent signs must be -1 or 1")
+    if frame.duplicated(["security_id", "month"]).any():
+        raise ValueError("duplicate BlindTrade security-month observations")
+
+    ranked = cross_sectional_unit_rank(frame, features)
+    raw_agents = pd.DataFrame(index=frame.index)
+    for agent, agent_specifications in anonymized_agents.items():
+        signed = pd.concat(
+            [ranked[feature] * sign for feature, sign in agent_specifications],
+            axis=1,
+        )
+        raw_agents[agent] = signed.fillna(0.0).mean(axis=1).clip(-1.0, 1.0)
+    agent_scores = cross_sectional_unit_rank(
+        pd.concat([frame[["month"]], raw_agents], axis=1),
+        expected_agents,
+    ).fillna(0.0)
+    agent_rankics = monthly_rankic(frame, agent_scores)
+    month_groups = frame.groupby("month", sort=False).groups
+    all_months = sorted(pd.Timestamp(month) for month in frame["month"].unique())
+    common_timestamp = pd.Timestamp(common_start)
+
+    candidate_returns: dict[str, list[tuple[pd.Timestamp, float]]] = {
+        intent: [] for intent in expected_intents
+    }
+    prior_candidate_holdings: dict[str, dict[object, float]] = {
+        intent: {} for intent in expected_intents
+    }
+    carried_scores: dict[object, float] = {}
+    last_seen: dict[object, pd.Timestamp] = {}
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    diagnostics: list[dict[str, object]] = []
+
+    def graph_encode(values: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+        norm = np.linalg.norm(values, axis=1, keepdims=True)
+        normalized = values / np.where(norm > 0, norm, 1.0)
+        tree = cKDTree(normalized)
+        neighbor_count = min(len(values), semantic_neighbors + 1)
+        _, nearest = tree.query(normalized, k=neighbor_count)
+        if nearest.ndim == 1:
+            nearest = nearest[:, None]
+        neighborhoods: list[np.ndarray] = []
+        counts = np.zeros(len(values), dtype=int)
+        for row, candidates in enumerate(nearest):
+            candidates = np.asarray(candidates, dtype=int)
+            candidates = candidates[candidates != row]
+            similarities = normalized[candidates] @ normalized[row]
+            chosen = candidates[similarities >= semantic_similarity_threshold][
+                :semantic_neighbors
+            ]
+            neighborhoods.append(chosen)
+            counts[row] = len(chosen)
+        encoded = values.copy()
+        for _ in range(semantic_graph_layers):
+            message = np.vstack(
+                [
+                    encoded[neighbors].mean(axis=0) if len(neighbors) else encoded[row]
+                    for row, neighbors in enumerate(neighborhoods)
+                ]
+            )
+            encoded = graph_self_weight * encoded + graph_neighbor_weight * message
+        return encoded, counts
+
+    def sleeve_return(
+        indices: pd.Index,
+        score: pd.Series,
+        prior: dict[object, float],
+    ) -> tuple[float, dict[object, float]]:
+        securities = frame.loc[indices, "security_id"]
+        outcome = pd.to_numeric(frame.loc[indices, "ret_exc_lead1m"], errors="coerce").fillna(0.0)
+        order = pd.DataFrame(
+            {"security": securities, "score": score, "outcome": outcome},
+            index=indices,
+        ).sort_values(["score", "security"], kind="mergesort")
+        tail = max(1, len(order) // 10)
+        holdings = {
+            **{security: -0.5 / tail for security in order.iloc[:tail].security},
+            **{security: 0.5 / tail for security in order.iloc[-tail:].security},
+        }
+        gross = float(
+            sum(holdings[security] * value for security, value in zip(order.security, order.outcome) if security in holdings)
+        )
+        traded = float(sum(abs(holdings.get(key, 0.0) - prior.get(key, 0.0)) for key in set(holdings) | set(prior)))
+        net = gross - reward_cost_bps_one_way / 10000.0 * traded
+        return net, holdings
+
+    for month in all_months:
+        agent_cutoff = month - pd.offsets.MonthEnd(agent_reward_purge_months)
+        ic_history = agent_rankics.loc[agent_rankics.index <= agent_cutoff].tail(
+            agent_ic_history_months
+        )
+        if len(ic_history) < agent_ic_history_months or (
+            ic_history.count() < minimum_agent_ic_months
+        ).any():
+            continue
+        reliability = ic_history.mean().clip(lower=0.0) + 0.001
+        reliability /= reliability.sum()
+        indices = month_groups[month]
+        encoded, neighbor_counts = graph_encode(
+            agent_scores.loc[indices, expected_agents].to_numpy(dtype=float)
+        )
+        encoded_frame = pd.DataFrame(encoded, index=indices, columns=expected_agents)
+        candidates: dict[str, pd.Series] = {}
+        for intent in expected_intents:
+            weights = pd.Series(intent_role_weights[intent], dtype=float) * reliability
+            weights /= weights.sum()
+            candidates[intent] = encoded_frame.mul(weights, axis=1).sum(axis=1)
+
+        if month >= common_timestamp:
+            reward_cutoff = month - pd.offsets.MonthEnd(intent_reward_purge_months)
+            utilities: dict[str, float] = {}
+            reward_windows: dict[str, list[tuple[pd.Timestamp, float]]] = {}
+            for intent in expected_intents:
+                history = [
+                    item for item in candidate_returns[intent] if item[0] <= reward_cutoff
+                ][-intent_reward_history_months:]
+                if len(history) < minimum_intent_reward_months:
+                    raise ValueError(f"BlindTrade intent history is incomplete at {month.date()}")
+                values = np.asarray([value for _, value in history], dtype=float)
+                deviation = float(values.std(ddof=1))
+                utilities[intent] = float(np.sqrt(12.0) * values.mean() / deviation) if deviation > 0 else -np.inf
+                reward_windows[intent] = history
+            tie_rank = {intent: rank for rank, intent in enumerate(intent_tie_break_order)}
+            selected_intent = sorted(
+                expected_intents,
+                key=lambda intent: (-utilities[intent], tie_rank[intent]),
+            )[0]
+            proposed = candidates[selected_intent]
+            score_values = []
+            stale_resets = 0
+            for index, security in frame.loc[indices, "security_id"].items():
+                current = float(proposed.loc[index])
+                if security in carried_scores and last_seen[security] == month - pd.offsets.MonthEnd(1):
+                    current = (
+                        execution_inertia_eta * current
+                        + (1.0 - execution_inertia_eta) * carried_scores[security]
+                    )
+                elif security in carried_scores:
+                    stale_resets += 1
+                carried_scores[security] = current
+                last_seen[security] = month
+                score_values.append(current)
+            score = pd.Series(score_values, index=indices, dtype=float)
+            result.loc[indices] = score
+            selected_history = reward_windows[selected_intent]
+            row: dict[str, object] = {
+                "formation_month": str(month.date()),
+                "agent_ic_cutoff": str(agent_cutoff.date()),
+                "agent_ic_history_start": str(ic_history.index[0].date()),
+                "agent_ic_history_end": str(ic_history.index[-1].date()),
+                "agent_ic_history_months": len(ic_history),
+                "intent_reward_cutoff": str(reward_cutoff.date()),
+                "intent_reward_history_start": str(selected_history[0][0].date()),
+                "intent_reward_history_end": str(selected_history[-1][0].date()),
+                "intent_reward_history_months": len(selected_history),
+                "selected_intent": selected_intent,
+                "mean_semantic_neighbors": float(neighbor_counts.mean()),
+                "zero_neighbor_count": int((neighbor_counts == 0).sum()),
+                "mean_absolute_proposed_score": float(proposed.abs().mean()),
+                "mean_absolute_inertial_score": float(score.abs().mean()),
+                "stale_score_resets": stale_resets,
+                "finite_scores": int(score.notna().sum()),
+            }
+            for agent in expected_agents:
+                row[f"agent_mean_rankic__{agent}"] = float(ic_history[agent].mean())
+                row[f"agent_reliability__{agent}"] = float(reliability[agent])
+            for intent in expected_intents:
+                row[f"intent_utility__{intent}"] = float(utilities[intent])
+            diagnostics.append(row)
+
+        for intent in expected_intents:
+            net, holdings = sleeve_return(
+                indices,
+                candidates[intent],
+                prior_candidate_holdings[intent],
+            )
+            candidate_returns[intent].append((month, net))
+            prior_candidate_holdings[intent] = holdings
+    return result, pd.DataFrame(diagnostics)
+
+
 def alpha_r1_contextual_gate_scores(
     frame: pd.DataFrame,
     factor_zoo: list[dict[str, object]],

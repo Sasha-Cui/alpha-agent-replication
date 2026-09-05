@@ -82,7 +82,7 @@
     "aggressive": {"momentum": 0.50, "news_event": 0.20, "mean_reversion": 0.20, "risk_regime": 0.10}
   },
   "blindtrade_policy": {
-    "prehistory_formation_start": "1994-01-31",
+    "prehistory_formation_start": "1989-01-31",
     "identity_features_used": false,
     "agent_count": 4,
     "agent_score_bounds": [-1.0, 1.0],

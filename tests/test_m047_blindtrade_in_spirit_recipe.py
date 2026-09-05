@@ -44,6 +44,7 @@ def test_m047_recipe_freezes_four_agent_graph_intent_policy():
     assert all(set(weights) == set(agents) for weights in intents.values())
     assert all(abs(sum(weights.values()) - 1.0) < 1e-15 for weights in intents.values())
     policy = recipe["blindtrade_policy"]
+    assert policy["prehistory_formation_start"] == "1989-01-31"
     assert policy["identity_features_used"] is False
     assert policy["agent_count"] == 4
     assert policy["agent_ic_history_months"] == 60
