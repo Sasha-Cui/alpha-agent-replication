@@ -4143,3 +4143,194 @@ def p1gpt_layered_workflow_scores(
             }
         )
     return decision.rename("score"), pd.DataFrame(diagnostics)
+
+
+def finpos_position_scores(
+    frame: pd.DataFrame,
+    signal_memory: dict[str, list[tuple[str, int]]],
+    *,
+    common_start: str,
+    reward_horizons: list[int],
+    multi_timescale_weights: list[float],
+    reward_label_purge_months: int = 6,
+    reward_history_months: int = 60,
+    minimum_reward_months: int = 36,
+    memory_reliability_temperature: float = 20.0,
+    direction_hold_threshold: float = 0.1,
+    position_bounds: tuple[float, float] = (-1.0, 1.0),
+    base_trade_quantity: float = 0.25,
+    cvar_history_months: int = 20,
+    cvar_tail_probability: float = 0.05,
+    cvar_risk_budget: float = 0.05,
+    cvar_position_cap_bounds: tuple[float, float] = (0.25, 1.0),
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Run a deterministic FinPos-style dual decision with carried positions."""
+    expected_memory = ["shallow_news", "middle_technical", "deep_fundamental"]
+    if list(signal_memory) != expected_memory:
+        raise ValueError("FinPos requires the three frozen memory layers in order")
+    if reward_horizons != [1, 3, 6] or not np.allclose(
+        multi_timescale_weights,
+        [1.0 / 3.0] * 3,
+    ):
+        raise ValueError("FinPos multi-timescale reward changed")
+    if reward_label_purge_months < max(reward_horizons):
+        raise ValueError("FinPos reward purge is shorter than the longest horizon")
+    specifications = [
+        specification
+        for layer_specifications in signal_memory.values()
+        for specification in layer_specifications
+    ]
+    features = list(dict.fromkeys(feature for feature, _ in specifications))
+    missing = {"month", "security_id", "ret", "ret_exc_lead1m", *features} - set(frame)
+    if missing:
+        raise ValueError(f"missing FinPos inputs: {sorted(missing)}")
+    if any(sign not in {-1, 1} for _, sign in specifications):
+        raise ValueError("FinPos memory feature signs must be -1 or 1")
+
+    ranked = cross_sectional_unit_rank(frame, features)
+    layer_raw: dict[str, pd.Series] = {}
+    for layer, layer_specifications in signal_memory.items():
+        signed = pd.concat(
+            [ranked[feature] * sign for feature, sign in layer_specifications],
+            axis=1,
+        )
+        layer_raw[layer] = signed.mean(axis=1, skipna=False)
+    layer_scores = cross_sectional_unit_rank(
+        pd.concat([frame[["month"]], pd.DataFrame(layer_raw)], axis=1),
+        expected_memory,
+    )
+
+    ordered = frame[["security_id", "month", "ret", "ret_exc_lead1m"]].copy().sort_values(
+        ["security_id", "month"],
+        kind="mergesort",
+    )
+    forward_outcomes: dict[int, pd.Series] = {}
+    for horizon in reward_horizons:
+        components = []
+        for offset in range(horizon):
+            shifted_return = ordered.groupby("security_id")["ret_exc_lead1m"].shift(-offset)
+            shifted_month = ordered.groupby("security_id")["month"].shift(-offset)
+            expected_month = ordered["month"] + pd.offsets.MonthEnd(offset)
+            components.append(shifted_return.where(shifted_month.eq(expected_month)))
+        component_frame = pd.concat(components, axis=1)
+        forward_outcomes[horizon] = (
+            (1.0 + component_frame).prod(axis=1, min_count=horizon) - 1.0
+        ).reindex(frame.index)
+    multi_outcome = sum(
+        weight * forward_outcomes[horizon]
+        for horizon, weight in zip(reward_horizons, multi_timescale_weights)
+    )
+    reward_frame = frame.assign(_multi_outcome=multi_outcome)
+    reward_rankics = monthly_rankic(
+        reward_frame,
+        layer_scores,
+        return_column="_multi_outcome",
+    )
+
+    ordered_return = pd.to_numeric(ordered["ret"], errors="coerce")
+    tail_count = max(1, int(np.ceil(cvar_tail_probability * cvar_history_months)))
+    cvar = (
+        ordered_return.groupby(ordered["security_id"])
+        .rolling(cvar_history_months, min_periods=cvar_history_months)
+        .apply(lambda values: np.sort(values)[:tail_count].mean(), raw=True)
+        .reset_index(level=0, drop=True)
+        .reindex(frame.index)
+    )
+
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    diagnostics: list[dict[str, object]] = []
+    month_groups = frame.groupby("month", sort=False).groups
+    common_months = sorted(
+        pd.Timestamp(month)
+        for month in frame.loc[frame["month"] >= common_start, "month"].unique()
+    )
+    positions: dict[object, float] = {}
+    last_seen: dict[object, pd.Timestamp] = {}
+    for month in common_months:
+        label_cutoff = month - pd.offsets.MonthEnd(reward_label_purge_months)
+        history = reward_rankics.loc[reward_rankics.index <= label_cutoff].tail(
+            reward_history_months
+        )
+        count = history.count()
+        if len(history) != reward_history_months or (count < minimum_reward_months).any():
+            raise ValueError(f"FinPos reward history is incomplete at {month.date()}")
+        mean = history.mean()
+        logits = memory_reliability_temperature * mean
+        reliability = np.exp(logits - logits.max())
+        reliability /= reliability.sum()
+        indices = month_groups[month]
+        current_layers = layer_scores.loc[indices, expected_memory]
+        direction_score = current_layers.mul(reliability, axis=1).sum(
+            axis=1,
+            min_count=len(expected_memory),
+        )
+        confidence = direction_score.abs().clip(0.0, 1.0)
+        direction = pd.Series(
+            np.where(
+                direction_score > direction_hold_threshold,
+                1,
+                np.where(direction_score < -direction_hold_threshold, -1, 0),
+            ),
+            index=indices,
+        )
+        current_cvar = cvar.loc[indices].abs()
+        cap = (cvar_risk_budget / current_cvar.replace(0.0, np.nan)).clip(
+            cvar_position_cap_bounds[0],
+            cvar_position_cap_bounds[1],
+        ).fillna(cvar_position_cap_bounds[0])
+        score_values = []
+        quantities = []
+        stale_resets = 0
+        increases = 0
+        decreases = 0
+        unchanged = 0
+        security_ids = frame.loc[indices, "security_id"]
+        for index, security in security_ids.items():
+            previous = positions.get(security, 0.0)
+            if security in last_seen and last_seen[security] != month - pd.offsets.MonthEnd(1):
+                previous = 0.0
+                stale_resets += 1
+            quantity = base_trade_quantity * float(confidence.loc[index])
+            proposed = previous + int(direction.loc[index]) * quantity
+            bounded = float(np.clip(proposed, -float(cap.loc[index]), float(cap.loc[index])))
+            bounded = float(np.clip(bounded, position_bounds[0], position_bounds[1]))
+            actual_quantity = abs(bounded - previous)
+            if bounded > previous:
+                increases += 1
+            elif bounded < previous:
+                decreases += 1
+            else:
+                unchanged += 1
+            positions[security] = bounded
+            last_seen[security] = month
+            score_values.append(bounded)
+            quantities.append(actual_quantity)
+        score = pd.Series(score_values, index=indices, dtype=float)
+        result.loc[indices] = score
+        row: dict[str, object] = {
+            "formation_month": str(month.date()),
+            "label_cutoff": str(label_cutoff.date()),
+            "reward_history_start": str(history.index[0].date()),
+            "reward_history_end": str(history.index[-1].date()),
+            "reward_history_months": len(history),
+            "direction_buy_count": int((direction > 0).sum()),
+            "direction_hold_count": int((direction == 0).sum()),
+            "direction_sell_count": int((direction < 0).sum()),
+            "position_increase_count": increases,
+            "position_decrease_count": decreases,
+            "position_unchanged_count": unchanged,
+            "long_position_count": int((score > 0).sum()),
+            "flat_position_count": int((score == 0).sum()),
+            "short_position_count": int((score < 0).sum()),
+            "mean_absolute_position": float(score.abs().mean()),
+            "mean_trade_quantity": float(np.mean(quantities)),
+            "mean_cvar_position_cap": float(cap.mean()),
+            "minimum_cvar_position_cap": float(cap.min()),
+            "stale_position_resets": stale_resets,
+            "finite_scores": int(score.notna().sum()),
+        }
+        for layer in expected_memory:
+            row[f"memory_mean_rankic__{layer}"] = float(mean[layer])
+            row[f"memory_reliability__{layer}"] = float(reliability[layer])
+        diagnostics.append(row)
+    return result, pd.DataFrame(diagnostics)
