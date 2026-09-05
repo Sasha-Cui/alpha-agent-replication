@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M030",
+  "canonical_work_id": "CensusArxiv250905080",
+  "paper": "MM-ARC: Multimodal Adaptive Routing of Capital with Robustness-Audited Strategy Pools",
+  "status": "frozen_before_jkp_result",
+  "fidelity_label": "in_spirit_reconstruction",
+  "claim_boundary": "A researcher-authored single-U.S.-market, monthly reconstruction of MM-ARC's aligned views, regime-conditioned expert pools, RABO admission, and simplex capital routing; not the missing Qwen3-VL adapters, RL router, or native 62-instrument result.",
+  "paper_source": {
+    "url": "https://arxiv.org/abs/2509.05080v3",
+    "version": "arXiv v3, 2026-07-27",
+    "pdf_sha256": "91aae07101aafcbb10e757cea1a2e63b55068d0467923ed6ab40daed9e73072c",
+    "source_sha256": "4ca6dcfcd9dce3419b2c00b967406c423b5a337dcecebf117a73f0655684945c",
+    "official_release_url": "https://anonymous.4open.science/r/MM-ARC-32F7/",
+    "release_archive_sha256": "830e4257125e67f4f9c64c9ae2a446b02593f83b94bd81b19aae225f5014f317"
+  },
+  "primary_source_anchors": [
+    {
+      "anchor": "Problem Formulation, equations 1-4",
+      "mechanism": "Cutoff-aligned multimodal observations feed a softmax capital router over four expert exposures before common feasible portfolio projection and after-cost settlement."
+    },
+    {
+      "anchor": "Sections 4.1-4.3, equations 5-6",
+      "mechanism": "Aligned chart, numerical, and deterministic technical-text views support trend, reversal, breakout, and exposure-control experts in market-shared, regime-conditioned strategy pools with bounded semantics."
+    },
+    {
+      "anchor": "Section 4.4, equations 7-9",
+      "mechanism": "RABO admits five candidates per pool using within-update ranks of benchmark exceedance, 5% lower-tail performance, median behavior, local stability, and turnover, then converts pool robustness into router evidence."
+    },
+    {
+      "anchor": "Sections 4.4-4.5",
+      "mechanism": "All pool audits use past-only blocks; expert signals are routed continuously rather than hard-selected and are evaluated only after shared portfolio and cost constraints."
+    }
+  ],
+  "strict_evidence": {
+    "audit_manifest_path": "paper_runs/paper_replication_audits/mm_arc/manifest.json",
+    "audit_manifest_sha256": "cc0499fa5dfaee06b4672e68a1b4a7c8a0c0984c74e12ec07991846b9ee5d8f0",
+    "source_provenance_path": "paper_runs/paper_replication_audits/mm_arc/source_provenance.json",
+    "source_provenance_sha256": "0a66c3a484ec4b1f77cac7ee05460a9e2f7869dc70d762744b6c8cf9b27445f7",
+    "method_audit_path": "paper_runs/paper_replication_audits/mm_arc/method_specification_audit.csv",
+    "method_audit_sha256": "6dd77d89d6a53cb5b61200d92afc1f861fea2dad62aea9adfb09f2c38bc2933e",
+    "release_execution_path": "paper_runs/paper_replication_audits/mm_arc/release_execution_audit.json",
+    "release_execution_sha256": "a553cea79a2eb75863aa22d0638ba926defd9fb26953b6afaf40d9d712de9701",
+    "lfs_recovery_path": "paper_runs/paper_replication_audits/mm_arc/lfs_payload_recovery_audit.csv",
+    "lfs_recovery_sha256": "2a87bbe946c125edc7d8c7815efdeb42bee4f292f669327c8e42b638f271eb2e"
+  },
+  "expert_candidate_features": {
+    "trend": ["ret_12_1", "ret_6_1", "ret_1_0", "prc_highprc_252d", "turnover_126d", "rvol_21d"],
+    "reversal": ["ret_1_0", "ret_6_1", "prc_highprc_252d", "turnover_126d", "rvol_21d", "beta_60m"],
+    "breakout": ["prc_highprc_252d", "ret_1_0", "ret_6_1", "turnover_126d", "rvol_21d", "beta_60m"],
+    "exposure_control": ["rvol_21d", "beta_60m", "z_score", "qmj_safety", "qmj_prof", "f_score"]
+  },
+  "candidate_schema": {
+    "candidates_per_expert_regime": 6,
+    "admitted_per_pool": 5,
+    "single_market_regimes": ["bull", "sideways", "bear"],
+    "single_market_pool_count": 12,
+    "candidate_forms": ["primary", "secondary", "pair_mean", "triple_mean", "interaction", "risk_adjusted"],
+    "view_weights": {"numerical_pool": 0.5, "chart_proxy": 0.25, "technical_summary_proxy": 0.25}
+  },
+  "routing_and_audit_policy": {
+    "prehistory_formation_start": "1989-07-31",
+    "audit_history_months": 120,
+    "minimum_regime_months": 12,
+    "purged_block_proxy_count": 6,
+    "regime_rule": "bull when trailing six-month cap-weighted market return exceeds 5%, bear below -5%, otherwise sideways",
+    "regime_sparse_fallback": "use the full 120-month audit history when fewer than 12 observations share the current regime",
+    "rabo_rank_weights": {"benchmark_exceedance": 0.3, "lower_tail_5pct": 0.3, "median": 0.15, "stability": 0.15, "turnover_penalty": -0.1},
+    "benchmark_candidate": "the primary candidate of the same expert",
+    "turnover_proxy": "mean absolute month-to-month change in candidate score for securities observed in consecutive months",
+    "stability_proxy": "negative standard deviation of purged-block mean RankIC",
+    "router_performance_temperature": 20.0,
+    "router_robustness_tilt": 0.5,
+    "router_rule": "softmax of trailing admitted-pool mean RankIC plus the RABO robustness tilt across four experts",
+    "common_portfolio_adapter": "frozen value-weighted long-short deciles and all six cost/missing-return paths provide the common feasible portfolio and cost layer",
+    "final_common_returns_used_for_pool_or_router_choice": false
+  },
+  "preserved_elements": [
+    "cutoff-aligned multiple views derived from one observed data source",
+    "trend, reversal, breakout, and exposure-control experts",
+    "continuous simplex capital routing rather than a hard expert switch",
+    "three regime-conditioned pools per expert",
+    "five admitted strategies per expert-regime pool",
+    "past-only robustness audits across multiple blocks",
+    "the exact five RABO rank terms and 0.30/0.30/0.15/0.15/-0.10 weights",
+    "benchmark-relative and lower-tail admission criteria",
+    "pool robustness evidence tilting expert capital",
+    "a shared common portfolio and cost layer after expert routing"
+  ],
+  "approximated_elements": [
+    "JKP price, trend, turnover, volatility, and safety ranks replace OHLCV arrays",
+    "numeric composites and sign summaries replace Qwen3-VL chart and technical-text encodings",
+    "six fixed typed formulas per expert replace Bayesian-optimization proposals",
+    "RankIC block distributions replace native after-cost candidate portfolio scores",
+    "signal-rank changes replace projected-portfolio turnover inside RABO",
+    "a deterministic softmax replaces the missing actor-critic router",
+    "one U.S. market with 12 pools replaces five markets and 60 shared pools"
+  ],
+  "invented_elements": [
+    "the exact six candidate formulas for each expert",
+    "the six-month 5% regime thresholds",
+    "the 120-month audit window and 12-observation regime minimum",
+    "six equal chronological audit blocks",
+    "the chart and technical-summary proxy construction",
+    "the router temperature and robustness tilt",
+    "the sparse-regime fallback",
+    "the common monthly stock score mapping"
+  ],
+  "anti_leakage": {
+    "paper_signals_or_holdings_used_as_inputs": false,
+    "future_returns_used_for_current_pool_or_router": false,
+    "current_month_forward_return_used_for_current_score": false,
+    "m030_common_result_seen_before_recipe_freeze": false,
+    "prior_other_paper_common_results_seen": true,
+    "retuning_after_common_result_permitted": false
+  }
+}
