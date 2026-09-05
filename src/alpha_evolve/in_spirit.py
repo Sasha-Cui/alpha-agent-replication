@@ -190,6 +190,91 @@ def fama_rolling_scores(
     return result, pd.DataFrame(diagnostics)
 
 
+def agentic_screening_precision_scores(
+    frame: pd.DataFrame,
+    *,
+    common_start: str,
+    formation_history_months: int = 180,
+    minimum_security_history_months: int = 60,
+    fundamental_buy_thresholds: tuple[float, float, float] = (0.30, 0.30, 0.50),
+    fundamental_sell_thresholds: tuple[float, float, float] = (-0.75, -0.30, -0.55),
+    sentiment_buy_threshold: float = 0.10,
+    sentiment_sell_threshold: float = -0.10,
+    precision_winsorization: tuple[float, float] = (0.01, 0.99),
+    precision_multiplier_bounds: tuple[float, float] = (0.25, 1.0),
+    tie_break_weight: float = 0.10,
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Run a two-agent intersection screen with diagonal precision weighting."""
+    required = {
+        "month", "security_id", "ret", "market_equity", "be_me", "ret_12_1",
+        "niq_su", "saleq_su", "ret_1_0", "turnover_126d",
+    }
+    missing = required - set(frame)
+    if missing:
+        raise ValueError(f"missing agentic screening inputs: {sorted(missing)}")
+    if formation_history_months != 180 or not 2 <= minimum_security_history_months <= formation_history_months:
+        raise ValueError("agentic screening precision history changed")
+    if not (0 <= precision_winsorization[0] < precision_winsorization[1] <= 1):
+        raise ValueError("agentic screening precision winsorization is invalid")
+    columns = ["market_equity", "be_me", "ret_12_1", "niq_su", "saleq_su", "ret_1_0", "turnover_126d"]
+    ranked = cross_sectional_unit_rank(frame, columns)
+    fundamental = ranked[["market_equity", "be_me", "ret_12_1"]].mean(axis=1, skipna=False)
+    sentiment = ranked[["niq_su", "saleq_su", "ret_1_0", "turnover_126d"]].mean(axis=1, skipna=False)
+    fundamental_buy = (
+        ranked["market_equity"].gt(fundamental_buy_thresholds[0])
+        & ranked["be_me"].gt(fundamental_buy_thresholds[1])
+        & ranked["ret_12_1"].gt(fundamental_buy_thresholds[2])
+    )
+    fundamental_sell = (
+        ranked["market_equity"].lt(fundamental_sell_thresholds[0])
+        | ranked["be_me"].lt(fundamental_sell_thresholds[1])
+        | ranked["ret_12_1"].lt(fundamental_sell_thresholds[2])
+    )
+    sentiment_buy = sentiment.gt(sentiment_buy_threshold)
+    sentiment_sell = sentiment.lt(sentiment_sell_threshold)
+    ordered = frame[["security_id", "month", "ret"]].sort_values(["security_id", "month"], kind="mergesort")
+    variance = (
+        pd.to_numeric(ordered["ret"], errors="coerce")
+        .groupby(ordered["security_id"])
+        .rolling(formation_history_months, min_periods=minimum_security_history_months)
+        .var(ddof=1).reset_index(level=0, drop=True).reindex(frame.index)
+    )
+    inverse_variance = 1.0 / variance.replace(0.0, np.nan)
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    diagnostics: list[dict[str, object]] = []
+    for month, indices in frame.loc[frame["month"] >= common_start].groupby("month", sort=True).groups.items():
+        buy_intersection = fundamental_buy.loc[indices] & sentiment_buy.loc[indices]
+        sell_intersection = fundamental_sell.loc[indices] & sentiment_sell.loc[indices]
+        buy = buy_intersection if buy_intersection.sum() > 1 else fundamental_buy.loc[indices] | sentiment_buy.loc[indices]
+        sell = sell_intersection if sell_intersection.sum() > 1 else fundamental_sell.loc[indices] | sentiment_sell.loc[indices]
+        conflict = buy & sell
+        action = pd.Series(np.where(buy & ~conflict, 1.0, np.where(sell & ~conflict, -1.0, 0.0)), index=indices)
+        continuous = action + tie_break_weight * (fundamental.loc[indices] + sentiment.loc[indices]) / 2.0
+        precision = inverse_variance.loc[indices]
+        lower, upper = precision.quantile(list(precision_winsorization))
+        precision = precision.clip(lower, upper)
+        precision_rank = precision.rank(method="average", pct=True).fillna(0.5)
+        multiplier = precision_multiplier_bounds[0] + (precision_multiplier_bounds[1] - precision_multiplier_bounds[0]) * precision_rank
+        score = continuous.fillna(0.0) * multiplier
+        result.loc[indices] = score
+        diagnostics.append({
+            "formation_month": str(pd.Timestamp(month).date()),
+            "fundamental_buy_count": int(fundamental_buy.loc[indices].sum()),
+            "sentiment_buy_count": int(sentiment_buy.loc[indices].sum()),
+            "buy_intersection_count": int(buy_intersection.sum()),
+            "buy_union_fallback": bool(buy_intersection.sum() <= 1),
+            "sell_intersection_count": int(sell_intersection.sum()),
+            "sell_union_fallback": bool(sell_intersection.sum() <= 1),
+            "final_buy_count": int((action > 0).sum()),
+            "final_hold_count": int((action == 0).sum()),
+            "final_sell_count": int((action < 0).sum()),
+            "conflict_count": int(conflict.sum()),
+            "finite_precision_count": int(precision.notna().sum()),
+            "finite_scores": int(score.notna().sum()),
+        })
+    return result, pd.DataFrame(diagnostics)
+
+
 def trusttrade_selective_consensus_scores(
     frame: pd.DataFrame,
     independent_domain_reports: dict[str, dict[str, list[tuple[str, int]]]],
