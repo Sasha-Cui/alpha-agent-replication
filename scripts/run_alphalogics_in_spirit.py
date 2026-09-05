@@ -76,8 +76,12 @@ def evaluate(root: Path, output: Path) -> None:
     provenance = json.loads((root / recipe["strict_evidence"]["source_provenance_path"]).read_text())
     if audit["attributable_alphalogics_code_recovered"] is not False:
         raise ValueError("pinned AlphaLogics release status changed")
-    if provenance["arxiv_id"] != "2603.20247":
+    if provenance["arxiv"]["identifier"] != "2603.20247":
         raise ValueError("pinned AlphaLogics paper identity changed")
+    if provenance["arxiv"]["official_pdf_sha256"] != recipe["paper_source"]["pdf_sha256"]:
+        raise ValueError("pinned AlphaLogics PDF identity changed")
+    if provenance["arxiv"]["source_archive_sha256"] != recipe["paper_source"]["source_sha256"]:
+        raise ValueError("pinned AlphaLogics source identity changed")
     if digest(source_path) != contract["data"]["expected_sha256_from_existing_lock"]:
         raise ValueError("JKP input hash differs from the common contract")
     if digest(factor_path) != contract["factor_panel_sha256"]:
