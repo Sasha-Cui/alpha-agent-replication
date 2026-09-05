@@ -22,6 +22,8 @@ def fixture(months: int = 128, securities: int = 25) -> pd.DataFrame:
     features = list(dict.fromkeys(feature for specifications in STATE.values() for feature, _ in specifications))
     for feature in features:
         frame[feature] = rng.normal(size=len(frame))
+    missing_news = frame.security_id.eq(0)
+    frame.loc[missing_news, ["niq_su", "saleq_su", "turnover_126d"]] = np.nan
     frame["ret_exc_lead1m"] = (
         0.025 * frame.gp_at
         + 0.015 * frame.ret_12_1
@@ -48,7 +50,8 @@ def run(frame: pd.DataFrame):
 def test_factfin_runs_depth_ten_mcts_and_fifty_counterfactual_scenarios():
     frame = fixture()
     scores, history, summary = run(frame)
-    assert scores.loc[frame.month.ge("2000-01-31")].notna().all()
+    common = frame.month.ge("2000-01-31")
+    assert scores.loc[common].groupby(frame.loc[common, "month"]).count().eq(24).all()
     assert len(history) == 100
     assert history.iteration.tolist() == list(range(1, 101))
     assert history.depth.max() <= 10
@@ -57,6 +60,7 @@ def test_factfin_runs_depth_ten_mcts_and_fifty_counterfactual_scenarios():
     assert summary["mcts_iterations"] == 100
     assert summary["counterfactual_finalists"] == 10
     assert summary["counterfactual_scenarios"] == 50
+    assert np.isfinite(summary["counterfactual_objective"])
     assert len(summary["selected_weights"]) == 3
     assert np.isclose(np.abs(summary["selected_weights"]).sum(), 1.0)
 

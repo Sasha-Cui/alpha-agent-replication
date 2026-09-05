@@ -3766,7 +3766,6 @@ def factfin_counterfactual_mcts_scores(
             1,
             np.where(original_values < hold_band[0], -1, 0),
         )
-        original_probability = action_probabilities(original_values)
         consistency = []
         invariance = []
         dependency = []
@@ -3782,11 +3781,25 @@ def factfin_counterfactual_mcts_scores(
                 1,
                 np.where(counterfactual < hold_band[0], -1, 0),
             )
-            consistency.append(float(np.mean(original_actions == counterfactual_actions)))
-            invariance.append(
-                float(1.0 - np.mean(np.abs(np.abs(original_values) - np.abs(counterfactual))))
+            valid_pair = np.isfinite(original_values) & np.isfinite(counterfactual)
+            if valid_pair.sum() < 20:
+                raise ValueError("FactFin counterfactual scenario has insufficient overlap")
+            consistency.append(
+                float(np.mean(original_actions[valid_pair] == counterfactual_actions[valid_pair]))
             )
-            counterfactual_probability = action_probabilities(counterfactual)
+            invariance.append(
+                float(
+                    1.0
+                    - np.mean(
+                        np.abs(
+                            np.abs(original_values[valid_pair])
+                            - np.abs(counterfactual[valid_pair])
+                        )
+                    )
+                )
+            )
+            original_probability = action_probabilities(original_values[valid_pair])
+            counterfactual_probability = action_probabilities(counterfactual[valid_pair])
             dependency.append(
                 float(
                     np.mean(
