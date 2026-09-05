@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M038",
+  "canonical_work_id": "CensusArxiv251023032",
+  "paper": "P1GPT: a multi-agent LLM workflow module for multi-modal financial information analysis",
+  "status": "frozen_before_jkp_result",
+  "fidelity_label": "in_spirit_reconstruction",
+  "claim_boundary": "A researcher-authored monthly U.S.-stock implementation of P1GPT's five-layer dependency-aware multi-agent workflow and confidence/risk decision layer; not a replay of future-contaminated author positions or the unreleased private model service.",
+  "paper_source": {
+    "url": "https://arxiv.org/abs/2510.23032v1",
+    "version": "arXiv v1",
+    "pdf_path": "literature_review/papers/39_p1gpt_a_multi_agent_llm_workflow_module_for.pdf",
+    "pdf_sha256": "de403cff8dd9a645d1499a7fe91b34bdbdcf2783bd9d7d362b079680e72337ad",
+    "source_sha256": "91feaaf3828e49b2907d08203dda7c4c3560e4f999a4a39960f97ad673a63ce8",
+    "public_client_url": "https://github.com/P1GPT/web_demo",
+    "public_client_commit": "a88a3a7c731063d0d1ca7ac15946eb600753f358"
+  },
+  "primary_source_anchors": [
+    {
+      "anchor": "Sections 3-4 and Figure 1",
+      "mechanism": "A five-layer Input, Planning, Analysis, Integration, and Decision workflow transforms multimodal financial information into one actionable recommendation."
+    },
+    {
+      "anchor": "Section 3.2 and Section 4.2",
+      "mechanism": "A Controller decomposes the task, assigns dependency-aware work to Fundamental, Technical, Semiconductor, News, Search, Revenue, Trend, and Recommendation agents, and standardizes their outputs."
+    },
+    {
+      "anchor": "Sections 4.3-4.4",
+      "mechanism": "Domain agents execute independently where possible, supporting agents depend on their outputs, and an Integration layer resolves conflicting evidence before recommendation."
+    },
+    {
+      "anchor": "Section 4.5 and Section 5",
+      "mechanism": "The Decision layer combines integrated evidence, confidence, risk assessment, and strategy planning into Buy, Sell, or Hold; native simulation enters at the same-day close and holds state until a later decision."
+    }
+  ],
+  "strict_evidence": {
+    "audit_manifest_path": "paper_runs/paper_replication_audits/p1gpt/manifest.json",
+    "audit_manifest_sha256": "c6202c68a54a348d2f7b1a95e6c914baf7b7c20b7ed0aae94cff5ca0ec6379bc",
+    "mechanism_conformance_path": "paper_runs/paper_replication_audits/p1gpt/mechanism_conformance.csv",
+    "mechanism_conformance_sha256": "ea577c7f92778f9073e96deab5791300cbddadffb019515ecd6ddb2ef39b7ecf",
+    "prompt_inventory_path": "paper_runs/paper_replication_audits/p1gpt/prompt_inventory.csv",
+    "prompt_inventory_sha256": "7b6814274a013c9e5d502d54626b34c991edcff4a9676985a8649ffeee1e13fe",
+    "public_component_path": "paper_runs/paper_replication_audits/p1gpt/public_component_execution.json",
+    "public_component_sha256": "ea487cbd13fa87ec274fc6372520d2d7b396e790052f558774faf8918d0beb2b",
+    "result_recovery_path": "paper_runs/paper_replication_audits/p1gpt/result_recovery_checks.csv",
+    "result_recovery_sha256": "d016dfd5fcaddf9452b534191df6bc3854e940a05f665221e95b993a8a05fb3a"
+  },
+  "domain_agents": {
+    "fundamental": [
+      {"column": "be_me", "sign": 1},
+      {"column": "gp_at", "sign": 1},
+      {"column": "ocf_at", "sign": 1},
+      {"column": "f_score", "sign": 1},
+      {"column": "z_score", "sign": 1},
+      {"column": "qmj_prof", "sign": 1}
+    ],
+    "technical": [
+      {"column": "ret_12_1", "sign": 1},
+      {"column": "ret_6_1", "sign": 1},
+      {"column": "ret_1_0", "sign": 1},
+      {"column": "prc_highprc_252d", "sign": 1},
+      {"column": "rvol_21d", "sign": -1}
+    ],
+    "semiconductor_cycle": [
+      {"column": "saleq_su", "sign": 1},
+      {"column": "niq_su", "sign": 1},
+      {"column": "prc_highprc_252d", "sign": 1},
+      {"column": "turnover_126d", "sign": 1}
+    ],
+    "news": [
+      {"column": "niq_su", "sign": 1},
+      {"column": "saleq_su", "sign": 1},
+      {"column": "turnover_126d", "sign": 1},
+      {"column": "ret_1_0", "sign": 1}
+    ]
+  },
+  "workflow_policy": {
+    "layers": ["input", "planning", "analysis", "integration", "decision"],
+    "agent_count": 9,
+    "controller": "validate inputs and route every stock-month through all available domain and supporting agents",
+    "external_search_agent": "equal blend of fundamental and news reports",
+    "revenue_forecasting_agent": "equal blend of fundamental and semiconductor-cycle reports",
+    "market_trend_agent": "equal blend of technical and semiconductor-cycle reports",
+    "investment_recommendation_agent": "median of four domain and three supporting reports",
+    "integration_rule": "0.75 times cross-agent median plus 0.25 times cross-agent mean",
+    "risk_agent_features": [
+      {"column": "rvol_21d", "sign": -1},
+      {"column": "beta_60m", "sign": -1},
+      {"column": "z_score", "sign": 1},
+      {"column": "qmj_safety", "sign": 1}
+    ],
+    "decision_integration_weight": 0.8,
+    "decision_risk_weight": 0.2,
+    "confidence": "one minus cross-agent population standard deviation, clipped to zero through one",
+    "minimum_trade_confidence": 0.35,
+    "action_rule": "BUY for positive integrated score, SELL for negative integrated score, HOLD when confidence is below 0.35",
+    "common_portfolio_adapter": "the continuous decision score enters frozen value-weighted long-short deciles and all six cost/missing-return paths",
+    "author_2025_positions_used_as_inputs": false,
+    "final_common_returns_used_for_policy_choice": false
+  },
+  "preserved_elements": [
+    "five Input, Planning, Analysis, Integration, and Decision layers",
+    "a Controller that decomposes and routes work",
+    "Fundamental, Technical, Semiconductor, and News domain roles",
+    "External Search, Revenue Forecasting, Market Trend, and Investment Recommendation supporting roles",
+    "dependency-aware supporting-agent construction",
+    "standardized numeric reports for cross-agent integration",
+    "median-based conflict resolution across heterogeneous reports",
+    "explicit recommendation confidence",
+    "risk assessment before the final action",
+    "Buy, Sell, and Hold output semantics"
+  ],
+  "approximated_elements": [
+    "JKP value and quality ranks replace filing and analyst-estimate inputs",
+    "JKP momentum and risk ranks replace real-time technical data",
+    "earnings/sales surprises and attention replace semiconductor supply-chain and news retrieval",
+    "deterministic blends replace private Search, Revenue, and Trend model calls",
+    "numeric median/mean integration replaces LLM cross-agent reasoning",
+    "cross-agent dispersion replaces natural-language confidence",
+    "the common decile portfolio replaces single-stock long-only close execution"
+  ],
+  "invented_elements": [
+    "the exact signed JKP features for every domain role",
+    "the supporting-agent dependency blends",
+    "the 0.75 median and 0.25 mean integration",
+    "the four-feature defensive risk report",
+    "the 0.80 evidence and 0.20 risk decision weights",
+    "the 0.35 minimum confidence",
+    "the continuous long-short score mapping"
+  ],
+  "anti_leakage": {
+    "future_contaminated_author_report_or_positions_used": false,
+    "future_returns_used_for_current_score": false,
+    "current_month_forward_return_used_for_current_score": false,
+    "m038_common_result_seen_before_recipe_freeze": false,
+    "prior_other_paper_common_results_seen": true,
+    "retuning_after_common_result_permitted": false
+  }
+}
