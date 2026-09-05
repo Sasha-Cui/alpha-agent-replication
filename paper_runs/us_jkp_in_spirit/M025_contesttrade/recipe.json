@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M025",
+  "canonical_work_id": "CensusArxiv250800554",
+  "paper": "ContestTrade: A Multi-Agent Trading System Based on Internal Contest Mechanism",
+  "status": "frozen_before_jkp_result",
+  "fidelity_label": "in_spirit_reconstruction",
+  "claim_boundary": "A researcher-authored monthly U.S.-stock implementation of ContestTrade's dual Quantify-Predict-Allocate contests; not a native daily China A-share replication and not a test of the paper's reported 52.8% return or 3.12 Sharpe ratio.",
+  "paper_source": {
+    "url": "https://arxiv.org/abs/2508.00554v4",
+    "version": "arXiv v4",
+    "pdf_path": "literature_review/papers/24_contesttrade_a_multi_agent_trading_system_based_on_internal_contest_mechanism.pdf",
+    "pdf_sha256": "a2fd14e7e9074c535ab238a4a9028365c860169743e06223bd20302de549a15c",
+    "source_url": "https://github.com/FinStep-AI/ContestTrade",
+    "source_commit": "22432f9bbba5f1d6862d3b6b5508d4d882b40b94"
+  },
+  "primary_source_anchors": [
+    {
+      "anchor": "Section 3 and Figure 1",
+      "mechanism": "A Data Team filters factor information in a first contest, then independent Research Agents compete in a second contest whose positive predicted-Sharpe weights form the final portfolio."
+    },
+    {
+      "anchor": "Section 3.3, equation 1",
+      "mechanism": "Both contests follow Quantify-Predict-Allocate: score delayed realized efficacy, forecast near-term utility from score history, and allocate scarce context or capital."
+    },
+    {
+      "anchor": "Section 3.3, equations 2-8",
+      "mechanism": "The Data Analyst Contest excludes negative-utility factors and uses a budgeted facility-location objective to retain valuable but non-redundant information."
+    },
+    {
+      "anchor": "Section 3.3, equation 9",
+      "mechanism": "The Researcher Contest combines realized performance with a bounded qualitative rubric, prevents judgment from overriding negative realized utility, and weights only positive predicted Sharpe ratios."
+    },
+    {
+      "anchor": "Section 4.1 decision-time protocol",
+      "mechanism": "Only records and contest labels realized before portfolio formation may update later contest decisions."
+    }
+  ],
+  "strict_evidence": {
+    "audit_manifest_path": "paper_runs/paper_replication_audits/contesttrade/manifest.json",
+    "audit_manifest_sha256": "6394c90665eee2447bcb3dcecaf701d2f3d4af1371ebf6923389d8fc48ccdfb4",
+    "config_conformance_path": "paper_runs/paper_replication_audits/contesttrade/source_config_conformance.csv",
+    "config_conformance_sha256": "4feed797de66d0338d1a631bd6296ee9f7108abbec6dbeda56979a688a722278",
+    "entrypoint_reachability_path": "paper_runs/paper_replication_audits/contesttrade/source_entrypoint_reachability.csv",
+    "entrypoint_reachability_sha256": "49ecf7b57e520f6dec0c14793576127301dbe3801b6c98ee3c22519fda61ce0d",
+    "zi_semantics_path": "paper_runs/paper_replication_audits/contesttrade/zi_reward_semantics_audit.csv",
+    "zi_semantics_sha256": "fe52a28669d38a4da05c0e63f3e041485bf47326a51ef8222e74d67f60e4194c"
+  },
+  "data_agents": [
+    {"column": "ret_12_1", "sign": 1},
+    {"column": "ret_6_1", "sign": 1},
+    {"column": "ret_1_0", "sign": 1},
+    {"column": "be_me", "sign": 1},
+    {"column": "at_me", "sign": 1},
+    {"column": "gp_at", "sign": 1},
+    {"column": "ocf_at", "sign": 1},
+    {"column": "f_score", "sign": 1},
+    {"column": "z_score", "sign": 1},
+    {"column": "qmj_safety", "sign": 1},
+    {"column": "qmj_prof", "sign": 1},
+    {"column": "niq_su", "sign": 1},
+    {"column": "saleq_su", "sign": 1},
+    {"column": "turnover_126d", "sign": 1},
+    {"column": "rvol_21d", "sign": -1},
+    {"column": "beta_60m", "sign": -1}
+  ],
+  "research_agents": {
+    "momentum": {
+      "features": [{"column": "ret_12_1", "sign": 1}, {"column": "ret_6_1", "sign": 1}, {"column": "ret_1_0", "sign": 1}],
+      "judge_score_1_to_5": 4.0
+    },
+    "reversal": {
+      "features": [{"column": "ret_1_0", "sign": -1}, {"column": "ret_6_1", "sign": -1}, {"column": "prc_highprc_252d", "sign": -1}],
+      "judge_score_1_to_5": 3.5
+    },
+    "fundamentals": {
+      "features": [{"column": "be_me", "sign": 1}, {"column": "gp_at", "sign": 1}, {"column": "ocf_at", "sign": 1}, {"column": "f_score", "sign": 1}],
+      "judge_score_1_to_5": 4.5
+    },
+    "event_driven": {
+      "features": [{"column": "niq_su", "sign": 1}, {"column": "saleq_su", "sign": 1}, {"column": "turnover_126d", "sign": 1}],
+      "judge_score_1_to_5": 4.0
+    },
+    "risk_control": {
+      "features": [{"column": "z_score", "sign": 1}, {"column": "qmj_safety", "sign": 1}, {"column": "qmj_prof", "sign": 1}, {"column": "rvol_21d", "sign": -1}, {"column": "beta_60m", "sign": -1}],
+      "judge_score_1_to_5": 5.0
+    }
+  },
+  "contest_policy": {
+    "prehistory_formation_start": "1995-07-31",
+    "data_quantification": "monthly Spearman RankIC of each signed Data Agent score with next-month excess return",
+    "data_history_months": 24,
+    "data_recent_trend_months": 6,
+    "data_predicted_utility": "24-month mean RankIC plus one half of the difference between the most recent and preceding six-month means",
+    "data_context_budget_agents": 8,
+    "data_similarity": "absolute current cross-sectional correlation between Data Agent score ranks",
+    "data_allocation": "lazy-equivalent deterministic greedy maximization of positive-utility facility-location coverage",
+    "data_no_positive_fallback": "retain the single highest predicted-utility Data Agent so the fixed common path remains defined",
+    "research_context_weight": 0.5,
+    "research_belief_weight": 0.5,
+    "research_history_months": 24,
+    "research_predicted_utility": "trailing mean Research Agent RankIC divided by its sample standard deviation",
+    "qualitative_judge_weight": 0.1,
+    "research_allocation": "max(0, predicted Sharpe) times 0.90 plus 0.10 times the frozen judge score divided by five, normalized across agents",
+    "research_no_positive_fallback": "allocate fully to the highest predicted-Sharpe Research Agent so the fixed common path remains defined",
+    "score_refresh": "monthly; all contest outcomes come from formation months strictly before the current formation",
+    "common_portfolio_adapter": "frozen value-weighted long-short deciles with the six cost and missing-return paths",
+    "final_common_returns_used_for_policy_choice": false
+  },
+  "preserved_elements": [
+    "separate Data and Research teams",
+    "a first-stage contest that filters noisy factor information",
+    "a second-stage contest that allocates across independent research beliefs",
+    "the Quantify-Predict-Allocate sequence in both contests",
+    "delayed realized performance feedback rather than future labels at decision time",
+    "exclusion of negative predicted utility from normal allocation",
+    "budgeted facility-location selection for Data Agent value and diversity",
+    "momentum, reversal, fundamental, event-driven, and risk-control Research Agents",
+    "positive predicted-Sharpe weighting in the Researcher Contest",
+    "a bounded qualitative judgment complement that cannot rescue negative quantitative utility"
+  ],
+  "approximated_elements": [
+    "signed JKP characteristics replace LLM-generated textual factors",
+    "RankIC persistence replaces unreleased LightGBM factor-utility predictions",
+    "cross-sectional score correlation replaces text-embedding cosine similarity",
+    "deterministic factor sleeves replace LLM Plan-and-ReAct research traces",
+    "fixed rubric scores replace anonymous LLM judge-panel outputs",
+    "monthly U.S. stock updates replace five-day China A-share contest horizons",
+    "the common decile adapter replaces T+1, price-limit, and cash execution rules"
+  ],
+  "invented_elements": [
+    "the sixteen signed Data Agent definitions",
+    "the eight-agent context budget",
+    "the 24-month Data Contest history and six-month utility trend",
+    "the five exact Research Agent feature sleeves and judge scores",
+    "the equal 0.50 data-context and belief mixture",
+    "the 24-month Research Contest Sharpe proxy",
+    "the 0.10 qualitative-judge complement",
+    "deterministic single-agent fallbacks when no predicted utility is positive"
+  ],
+  "anti_leakage": {
+    "paper_results_used_as_formation_labels": false,
+    "future_returns_used_for_current_score": false,
+    "current_month_forward_return_used_for_current_score": false,
+    "m025_common_result_seen_before_recipe_freeze": false,
+    "prior_other_paper_common_results_seen": true,
+    "retuning_after_common_result_permitted": false
+  }
+}
