@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M047",
+  "canonical_work_id": "CensusArxiv260317692",
+  "paper": "Can Blindfolded LLMs Still Trade? An Anonymization-First Framework for Portfolio Optimization",
+  "status": "frozen_before_jkp_result",
+  "fidelity_label": "in_spirit_reconstruction",
+  "claim_boundary": "A researcher-authored monthly U.S.-stock analogue of BlindTrade's anonymized four-agent signals, IC validation, reasoning-similarity graph, differential-Sharpe intent choice, and execution inertia; not the unreleased Gemini/SemGAT/PPO-DSR system or its daily S&P 500 Top-20 portfolio.",
+  "paper_source": {
+    "url": "https://arxiv.org/abs/2603.17692v1",
+    "version": "arXiv v1",
+    "pdf_sha256": "3a4209a4b7530d2f8641ba3a63f13d44aeef1610c82a14e9e490fb09989a9416",
+    "source_sha256": "dbbc8be0a1370aacca6e7ac8690d646223774a085cf2b30621a4f235ed38997e",
+    "source_tex_sha256": "76bd511e836e7d2a5d46aa80eacc74a1a3d13c933c0305be5a48547b6a85b7bd",
+    "attributable_implementation_found": false,
+    "bounded_release_search_checked_2026_09_05": "Exact-title, arXiv-ID, paper-index, OpenReview, author-profile, GitHub, and Hugging Face evidence still exposes no attributable code, feature dataset, checkpoint, holdings, or result arrays."
+  },
+  "primary_source_anchors": [
+    {
+      "anchor": "Sections 3.1-3.4",
+      "mechanism": "Point-in-time anonymization removes identity shortcuts; Momentum, News-Event, Mean-Reversion, and Risk-Regime agents emit bounded structured scores using only prior information, followed by causal RankIC screening."
+    },
+    {
+      "anchor": "Section 3.5",
+      "mechanism": "SemGAT connects same-sector and reasoning-similar stocks, uses two GATv2 layers, and predicts a distributional return ranking rather than a raw point estimate."
+    },
+    {
+      "anchor": "Section 3.6",
+      "mechanism": "PPO-DSR chooses defensive, neutral, or aggressive intent from cross-sectional consensus, applies intent-dependent concentration, keeps only top-ranked equities, and smooths executions with inertia."
+    },
+    {
+      "anchor": "Appendix B and Tables 4-7",
+      "mechanism": "The four roles use price/volume momentum, anonymized news, overbought/oversold state, and beta/volatility/tail-risk inputs; the published primary inertia is 0.10 and cost is 10 bp per turnover."
+    }
+  ],
+  "strict_evidence": {
+    "audit_manifest_path": "paper_runs/paper_replication_audits/blindtrade/manifest.json",
+    "audit_manifest_sha256": "63155afcca3d08087321d06d949fcf0b38909a464919d08d64ac3afbbe25c758",
+    "source_provenance_path": "paper_runs/paper_replication_audits/blindtrade/source_provenance.json",
+    "source_provenance_sha256": "e720ae61383a68b999449a0047184f2f661c8ba79569ee7bc726beb121f53e01",
+    "method_specification_path": "paper_runs/paper_replication_audits/blindtrade/method_specification_audit.csv",
+    "method_specification_sha256": "f056b5d94166525ff4c9ceaf9a1683f346c4e13c12151d6bb06846bdb499785b",
+    "prompt_schema_path": "paper_runs/paper_replication_audits/blindtrade/prompt_schema_audit.csv",
+    "prompt_schema_sha256": "20f3d121631344c3c26659e8fb81187be5586dffbe30b66d9b6906ed7c0f2429",
+    "published_result_ledger_path": "paper_runs/paper_replication_audits/blindtrade/published_result_ledger.csv",
+    "published_result_ledger_sha256": "9cfaacfee2ae4a89115f7c3b368a8b518a9058733187dcf6b3ed786720cc96ee"
+  },
+  "anonymized_agents": {
+    "momentum": [
+      {"column": "ret_12_1", "sign": 1},
+      {"column": "ret_6_1", "sign": 1},
+      {"column": "ret_3_1", "sign": 1},
+      {"column": "prc_highprc_252d", "sign": 1},
+      {"column": "turnover_126d", "sign": 1}
+    ],
+    "news_event": [
+      {"column": "niq_su", "sign": 1},
+      {"column": "saleq_su", "sign": 1},
+      {"column": "niq_be_chg1", "sign": 1},
+      {"column": "ocf_at_chg1", "sign": 1},
+      {"column": "turnover_126d", "sign": 1}
+    ],
+    "mean_reversion": [
+      {"column": "ret_1_0", "sign": -1},
+      {"column": "rmax1_21d", "sign": -1},
+      {"column": "rmax5_21d", "sign": -1},
+      {"column": "prc_highprc_252d", "sign": -1},
+      {"column": "rskew_21d", "sign": -1}
+    ],
+    "risk_regime": [
+      {"column": "beta_60m", "sign": -1},
+      {"column": "rvol_21d", "sign": -1},
+      {"column": "ivol_capm_252d", "sign": -1},
+      {"column": "rmax5_21d", "sign": -1},
+      {"column": "z_score", "sign": 1}
+    ]
+  },
+  "intent_role_weights": {
+    "defensive": {"momentum": 0.10, "news_event": 0.20, "mean_reversion": 0.20, "risk_regime": 0.50},
+    "neutral": {"momentum": 0.25, "news_event": 0.25, "mean_reversion": 0.25, "risk_regime": 0.25},
+    "aggressive": {"momentum": 0.50, "news_event": 0.20, "mean_reversion": 0.20, "risk_regime": 0.10}
+  },
+  "blindtrade_policy": {
+    "prehistory_formation_start": "1994-01-31",
+    "identity_features_used": false,
+    "agent_count": 4,
+    "agent_score_bounds": [-1.0, 1.0],
+    "agent_ic_history_months": 60,
+    "minimum_agent_ic_months": 48,
+    "agent_reward_purge_months": 1,
+    "agent_reliability_rule": "clip each trailing mean RankIC at zero, add 0.001, and renormalize before multiplying the selected intent weights",
+    "semantic_graph_features": "the four bounded anonymized agent scores stand in for structured reasoning embeddings",
+    "semantic_similarity_threshold": 0.75,
+    "semantic_neighbors": 10,
+    "semantic_graph_layers": 2,
+    "graph_self_weight": 0.5,
+    "graph_neighbor_weight": 0.5,
+    "intent_candidates": ["defensive", "neutral", "aggressive"],
+    "intent_reward_history_months": 60,
+    "minimum_intent_reward_months": 48,
+    "intent_reward_purge_months": 1,
+    "intent_reward": "trailing annualized mean divided by volatility of each candidate long-short decile sleeve, after 10 bp one-way turnover cost",
+    "intent_tie_break_order": ["neutral", "defensive", "aggressive"],
+    "execution_inertia_eta": 0.10,
+    "execution_rule": "new score equals 0.10 proposed graph-policy score plus 0.90 prior score for a security observed in the immediately preceding month",
+    "common_portfolio_adapter": "the inertial stock score enters frozen value-weighted long-short deciles and all six cost/missing-return paths",
+    "final_common_returns_used_for_policy_choice": false
+  },
+  "preserved_elements": [
+    "identity-blind stock analysis",
+    "four specialized Momentum, News-Event, Mean-Reversion, and Risk-Regime roles",
+    "bounded structured agent scores",
+    "cross-sectional IC validation using only realized history",
+    "reasoning-similarity stock graph",
+    "top-ten semantic neighbors",
+    "two graph message-passing layers",
+    "cross-sectional consensus across agents",
+    "defensive, neutral, and aggressive intent modes",
+    "risk-adjusted market-feedback intent choice",
+    "10 bp turnover penalty",
+    "execution inertia"
+  ],
+  "approximated_elements": [
+    "signed JKP price, earnings-surprise, reversal, and risk characteristics replace private RAW inputs",
+    "earnings and sales surprises replace unavailable anonymized headlines",
+    "deterministic role averages replace Gemini 2.5 Flash outputs and free-text reasoning",
+    "the four role-score vector replaces the 384-dimensional MiniLM reasoning embedding",
+    "cosine-neighbor averaging replaces learned sector-plus-semantic GATv2 attention",
+    "rolling RankIC reliability replaces the paper's holdout-selected LLM features",
+    "chronological trailing-Sharpe choice among three fixed intents replaces PPO-DSR",
+    "continuous inertial rank scores replace the equity-only Dirichlet Top-20 weights",
+    "the common monthly decile adapter replaces daily point-in-time S&P 500 execution"
+  ],
+  "invented_elements": [
+    "the exact JKP inputs and signs assigned to each role",
+    "equal averaging within each role",
+    "the positive-IC reliability floor and normalization",
+    "the graph self and neighbor weights",
+    "the three intent role-weight vectors",
+    "60-month agent and intent reward windows",
+    "long-short decile sleeves for intent reward",
+    "the missing-sector graph substitution",
+    "the score-level interpretation of the paper's 0.10 inertia"
+  ],
+  "anti_leakage": {
+    "security_name_ticker_or_company_identity_used": false,
+    "paper_holdout_feature_screen_replayed": false,
+    "paper_daily_holdings_or_result_curves_used_as_inputs": false,
+    "current_common_forward_return_used_for_current_agent_or_intent": false,
+    "agent_and_intent_rewards_purged_before_each_decision": true,
+    "m047_common_result_seen_before_recipe_freeze": false,
+    "prior_other_paper_common_results_seen": true,
+    "retuning_after_common_result_permitted": false
+  }
+}
