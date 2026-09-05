@@ -52,10 +52,10 @@ def evaluate(root: Path, output: Path) -> None:
         raise ValueError("P1GPT recipe is not frozen")
     if recipe["fidelity_label"] != "in_spirit_reconstruction":
         raise ValueError("P1GPT result must remain explicitly in-spirit")
-    policy = recipe["workflow_policy"]
-    if policy["final_common_returns_used_for_policy_choice"] is not False:
+    workflow = recipe["workflow_policy"]
+    if workflow["final_common_returns_used_for_policy_choice"] is not False:
         raise ValueError("P1GPT recipe permits final-result selection")
-    if policy["author_2025_positions_used_as_inputs"] is not False:
+    if workflow["author_2025_positions_used_as_inputs"] is not False:
         raise ValueError("P1GPT recipe permits future-contaminated author positions")
     if contract["status"] != "frozen":
         raise ValueError("common benchmark contract is not frozen")
@@ -102,7 +102,10 @@ def evaluate(root: Path, output: Path) -> None:
         agent: [(item["column"], int(item["sign"])) for item in specifications]
         for agent, specifications in recipe["domain_agents"].items()
     }
-    risk_features = [(item["column"], int(item["sign"])) for item in policy["risk_agent_features"]]
+    risk_features = [
+        (item["column"], int(item["sign"]))
+        for item in workflow["risk_agent_features"]
+    ]
     features = list(
         dict.fromkeys(
             [
@@ -121,9 +124,9 @@ def evaluate(root: Path, output: Path) -> None:
         risk_features,
         integration_median_weight=0.75,
         integration_mean_weight=0.25,
-        decision_integration_weight=policy["decision_integration_weight"],
-        decision_risk_weight=policy["decision_risk_weight"],
-        minimum_trade_confidence=policy["minimum_trade_confidence"],
+        decision_integration_weight=workflow["decision_integration_weight"],
+        decision_risk_weight=workflow["decision_risk_weight"],
+        minimum_trade_confidence=workflow["minimum_trade_confidence"],
     )
     expected_months = pd.date_range(settings["formation_start"], settings["formation_end"], freq="ME")
     if formed["month"].nunique() != len(expected_months) or len(workflow_history) != len(expected_months):
@@ -277,7 +280,7 @@ This result answers how one transparent P1GPT-inspired layered multi-agent workf
         "benchmark_sha256": digest(factor_path),
         "paper_evidence_sha256": pinned,
         "layer_count": 5,
-        "agent_count": policy["agent_count"],
+        "agent_count": workflow["agent_count"],
         "policy_update_months": len(workflow_history),
         "aggregate_actions": aggregate_actions,
         "confidence_forced_holds": conflict_holds,
