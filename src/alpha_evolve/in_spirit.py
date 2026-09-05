@@ -190,6 +190,253 @@ def fama_rolling_scores(
     return result, pd.DataFrame(diagnostics)
 
 
+def alpha_r1_contextual_gate_scores(
+    frame: pd.DataFrame,
+    factor_zoo: list[dict[str, object]],
+    semantic_family_affinities: dict[str, dict[str, float]],
+    *,
+    common_start: str,
+    selected_factor_count: int = 10,
+    price_trend_lookback_months: int = 12,
+    volatility_lookback_months: int = 12,
+    state_normalization_history_months: int = 60,
+    state_zscore_clip: float = 3.0,
+    factor_profile_history_months: int = 60,
+    minimum_factor_profile_months: int = 48,
+    factor_profile_reward_purge_months: int = 1,
+    factor_profile_ridge_penalty: float = 0.001,
+    linear_beta_history_months: int = 48,
+    linear_beta_reward_purge_months: int = 1,
+    linear_beta_ridge_fraction: float = 0.01,
+    performance_gate_weight: float = 0.5,
+    semantic_gate_weight: float = 0.5,
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Run an Alpha-R1-style contextual sparse gate with historical feedback."""
+    state_names = ["price_trend", "volatility", "price_breadth", "earnings_news"]
+    features = [str(item["column"]) for item in factor_zoo]
+    if len(features) < 4 or len(features) != len(set(features)):
+        raise ValueError("Alpha-R1 factor zoo must contain unique factors")
+    if not 0 < selected_factor_count < len(features):
+        raise ValueError("Alpha-R1 selected factor count must be sparse")
+    if not np.isclose(performance_gate_weight + semantic_gate_weight, 1.0):
+        raise ValueError("Alpha-R1 gate weights must sum to one")
+    if performance_gate_weight <= 0 or semantic_gate_weight <= 0:
+        raise ValueError("Alpha-R1 gate weights must both be positive")
+    if factor_profile_reward_purge_months < 1 or linear_beta_reward_purge_months < 1:
+        raise ValueError("Alpha-R1 reward cutoffs must precede the decision month")
+    if min(
+        price_trend_lookback_months,
+        volatility_lookback_months,
+        state_normalization_history_months,
+        factor_profile_history_months,
+        linear_beta_history_months,
+    ) < 2:
+        raise ValueError("Alpha-R1 historical windows are too short")
+    if not 2 <= minimum_factor_profile_months <= factor_profile_history_months:
+        raise ValueError("Alpha-R1 minimum factor profile history is invalid")
+    if state_zscore_clip <= 0 or factor_profile_ridge_penalty <= 0 or linear_beta_ridge_fraction <= 0:
+        raise ValueError("Alpha-R1 scale and ridge parameters must be positive")
+    families = [str(item["family"]) for item in factor_zoo]
+    if any(int(item["sign"]) not in {-1, 1} for item in factor_zoo):
+        raise ValueError("Alpha-R1 factor signs must be -1 or 1")
+    if set(families) - set(semantic_family_affinities):
+        raise ValueError("Alpha-R1 factor family lacks a semantic profile")
+    if any(set(profile) != set(state_names) for profile in semantic_family_affinities.values()):
+        raise ValueError("Alpha-R1 semantic profiles must cover the frozen market state")
+    required = {
+        "month",
+        "security_id",
+        "weight",
+        "ret",
+        "ret_exc_lead1m",
+        "niq_su",
+        "saleq_su",
+        *features,
+    }
+    missing = required - set(frame)
+    if missing:
+        raise ValueError(f"missing Alpha-R1 inputs: {sorted(missing)}")
+    if frame.duplicated(["security_id", "month"]).any():
+        raise ValueError("duplicate Alpha-R1 security-month observations")
+
+    ranked = cross_sectional_unit_rank(frame, features)
+    signed = ranked.mul(
+        pd.Series({str(item["column"]): int(item["sign"]) for item in factor_zoo})
+    )
+    rankics = monthly_rankic(frame, signed)
+
+    market_rows: list[dict[str, object]] = []
+    for month, indices in frame.groupby("month", sort=True).groups.items():
+        current_return = pd.to_numeric(frame.loc[indices, "ret"], errors="coerce")
+        current_weight = pd.to_numeric(frame.loc[indices, "weight"], errors="coerce")
+        valid_market = current_return.notna() & current_weight.notna() & current_weight.gt(0)
+        if valid_market.sum() < 20:
+            raise ValueError(f"Alpha-R1 market state is incomplete at {pd.Timestamp(month).date()}")
+        normalized_weight = current_weight.loc[valid_market] / current_weight.loc[valid_market].sum()
+        market_return = float(np.sum(normalized_weight * current_return.loc[valid_market]))
+        price_breadth = float(current_return.loc[valid_market].gt(0).mean())
+        news_breadths = []
+        for column in ("niq_su", "saleq_su"):
+            values = pd.to_numeric(frame.loc[indices, column], errors="coerce").dropna()
+            if len(values) < 20:
+                raise ValueError(f"Alpha-R1 earnings-news state is incomplete at {pd.Timestamp(month).date()}")
+            news_breadths.append(float(values.gt(0).mean()))
+        market_rows.append(
+            {
+                "month": pd.Timestamp(month),
+                "market_return": market_return,
+                "price_breadth": price_breadth,
+                "earnings_news": float(np.mean(news_breadths)),
+            }
+        )
+    market = pd.DataFrame(market_rows).set_index("month")
+    market["price_trend"] = (
+        (1.0 + market["market_return"])
+        .rolling(price_trend_lookback_months, min_periods=price_trend_lookback_months)
+        .apply(np.prod, raw=True)
+        - 1.0
+    )
+    market["volatility"] = market["market_return"].rolling(
+        volatility_lookback_months,
+        min_periods=volatility_lookback_months,
+    ).std(ddof=1)
+    state = pd.DataFrame(index=market.index, columns=state_names, dtype=float)
+    for name in state_names:
+        raw = market[name]
+        reference = raw.shift(1).rolling(
+            state_normalization_history_months,
+            min_periods=state_normalization_history_months,
+        )
+        scale = reference.std(ddof=1).replace(0.0, np.nan)
+        state[name] = ((raw - reference.mean()) / scale).clip(
+            -state_zscore_clip,
+            state_zscore_clip,
+        ) / state_zscore_clip
+
+    cross_products: dict[pd.Timestamp, tuple[np.ndarray, np.ndarray, int]] = {}
+    for month, indices in frame.groupby("month", sort=True).groups.items():
+        outcome = pd.to_numeric(frame.loc[indices, "ret_exc_lead1m"], errors="coerce")
+        valid = outcome.notna()
+        design = np.column_stack(
+            [
+                np.ones(int(valid.sum())),
+                signed.loc[indices].loc[valid].fillna(0.0).to_numpy(dtype=float),
+            ]
+        )
+        target = outcome.loc[valid].to_numpy(dtype=float)
+        if len(target) < 20:
+            raise ValueError(f"Alpha-R1 beta target is incomplete at {pd.Timestamp(month).date()}")
+        cross_products[pd.Timestamp(month)] = (
+            design.T @ design,
+            design.T @ target,
+            len(target),
+        )
+
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    diagnostics: list[dict[str, object]] = []
+    month_groups = frame.groupby("month", sort=False).groups
+    common_months = sorted(
+        pd.Timestamp(month)
+        for month in frame.loc[frame["month"] >= common_start, "month"].unique()
+    )
+
+    def relative_rank(values: pd.Series) -> pd.Series:
+        if values.notna().sum() != len(features):
+            raise ValueError("Alpha-R1 contextual gate has a nonfinite factor score")
+        ranks = values.rank(method="average")
+        return 2.0 * (ranks - 1.0) / (len(values) - 1.0) - 1.0
+
+    for month in common_months:
+        current_state = state.loc[month, state_names]
+        if not np.isfinite(current_state.to_numpy(dtype=float)).all():
+            raise ValueError(f"Alpha-R1 current state is incomplete at {month.date()}")
+        profile_cutoff = month - pd.offsets.MonthEnd(factor_profile_reward_purge_months)
+        profile_history = rankics.loc[rankics.index <= profile_cutoff].tail(
+            factor_profile_history_months
+        )
+        historical_states = state.loc[profile_history.index, state_names]
+        if len(profile_history) != factor_profile_history_months:
+            raise ValueError(f"Alpha-R1 factor profile history is incomplete at {month.date()}")
+        predictions: dict[str, float] = {}
+        for feature in features:
+            valid = profile_history[feature].notna() & historical_states.notna().all(axis=1)
+            if valid.sum() < minimum_factor_profile_months:
+                raise ValueError(f"Alpha-R1 factor profile fit is incomplete for {feature} at {month.date()}")
+            design = np.column_stack(
+                [
+                    np.ones(int(valid.sum())),
+                    historical_states.loc[valid, state_names].to_numpy(dtype=float),
+                ]
+            )
+            penalty = factor_profile_ridge_penalty * np.eye(design.shape[1])
+            penalty[0, 0] = 0.0
+            coefficient = np.linalg.solve(
+                design.T @ design + penalty,
+                design.T @ profile_history.loc[valid, feature].to_numpy(dtype=float),
+            )
+            predictions[feature] = float(np.r_[1.0, current_state.to_numpy(dtype=float)] @ coefficient)
+        performance_score = relative_rank(pd.Series(predictions).reindex(features))
+        semantic_raw = pd.Series(
+            {
+                feature: float(
+                    sum(
+                        semantic_family_affinities[family][name] * current_state[name]
+                        for name in state_names
+                    )
+                    / max(
+                        1e-12,
+                        sum(abs(semantic_family_affinities[family][name]) for name in state_names),
+                    )
+                )
+                for feature, family in zip(features, families)
+            }
+        ).reindex(features)
+        semantic_score = relative_rank(semantic_raw)
+        gate_score = performance_gate_weight * performance_score + semantic_gate_weight * semantic_score
+        selected = sorted(features, key=lambda name: (-float(gate_score[name]), name))[:selected_factor_count]
+
+        beta_cutoff = month - pd.offsets.MonthEnd(linear_beta_reward_purge_months)
+        beta_months = sorted(value for value in cross_products if value <= beta_cutoff)[-linear_beta_history_months:]
+        if len(beta_months) != linear_beta_history_months:
+            raise ValueError(f"Alpha-R1 linear beta history is incomplete at {month.date()}")
+        xtx = sum((cross_products[value][0] for value in beta_months), np.zeros((len(features) + 1,) * 2))
+        xty = sum((cross_products[value][1] for value in beta_months), np.zeros(len(features) + 1))
+        feature_scale = float(np.mean(np.diag(xtx)[1:]))
+        beta_penalty = linear_beta_ridge_fraction * feature_scale
+        penalty = beta_penalty * np.eye(len(features) + 1)
+        penalty[0, 0] = 0.0
+        coefficient = np.linalg.solve(xtx + penalty, xty)
+        beta = pd.Series(coefficient[1:], index=features)
+        indices = month_groups[month]
+        current = signed.loc[indices, selected]
+        score = coefficient[0] + current.fillna(0.0).mul(beta[selected], axis=1).sum(axis=1)
+        result.loc[indices] = score
+        diagnostics.append(
+            {
+                "formation_month": str(month.date()),
+                "factor_profile_cutoff": str(profile_cutoff.date()),
+                "factor_profile_history_start": str(profile_history.index[0].date()),
+                "factor_profile_history_end": str(profile_history.index[-1].date()),
+                "factor_profile_history_months": len(profile_history),
+                "linear_beta_cutoff": str(beta_cutoff.date()),
+                "linear_beta_history_start": str(beta_months[0].date()),
+                "linear_beta_history_end": str(beta_months[-1].date()),
+                "linear_beta_history_months": len(beta_months),
+                "selected_factor_count": len(selected),
+                "selected_factors": "|".join(selected),
+                "selected_families": "|".join(sorted({families[features.index(name)] for name in selected})),
+                "mean_selected_gate_score": float(gate_score[selected].mean()),
+                "minimum_selected_gate_score": float(gate_score[selected].min()),
+                "mean_absolute_selected_beta": float(beta[selected].abs().mean()),
+                "linear_beta_ridge_penalty": beta_penalty,
+                "unavailable_selected_values": int(current.isna().sum().sum()),
+                "finite_scores": int(score.notna().sum()),
+                **{f"state__{name}": float(current_state[name]) for name in state_names},
+            }
+        )
+    return result, pd.DataFrame(diagnostics)
+
+
 def flag_trader_rolling_scores(
     frame: pd.DataFrame,
     features: list[str],

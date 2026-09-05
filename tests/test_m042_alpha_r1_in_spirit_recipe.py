@@ -51,6 +51,7 @@ def test_m042_recipe_freezes_contextual_sparse_gate_before_result():
         "earnings_news",
     ]
     assert policy["factor_profile_history_months"] == 60
+    assert policy["minimum_factor_profile_months"] == 48
     assert policy["factor_profile_reward_purge_months"] == 1
     assert policy["linear_beta_history_months"] == 48
     assert policy["linear_beta_reward_purge_months"] == 1
