@@ -14,10 +14,10 @@
   "declared_inference_family_size": 69,
   "progress_summary": {
     "carried_common_evaluation": 17,
-    "completed_in_spirit": 25,
+    "completed_in_spirit": 26,
     "discarded_structural_mismatch": 7,
     "in_progress_in_spirit": 1,
-    "queued_in_spirit": 19
+    "queued_in_spirit": 18
   },
   "milestones": [
     {
@@ -732,15 +732,15 @@
       "strict_recipe_path": "paper_runs/us_jkp_headline/M038_p1gpt/recipe.json",
       "strict_verdict_path": "paper_runs/us_jkp_headline/M038_p1gpt/verdict.md",
       "strict_metrics_path": "",
-      "status": "in_progress_in_spirit",
+      "status": "completed_in_spirit",
       "fidelity_label": "in_spirit_reconstruction",
-      "recipe_path": "",
-      "implementation_path": "",
-      "run_manifest_path": "",
-      "monthly_returns_path": "",
-      "metrics_path": "",
-      "verdict_path": "",
-      "next_action": "Freeze one P1GPT-inspired researcher reconstruction before inspecting its JKP result."
+      "recipe_path": "paper_runs/us_jkp_in_spirit/M038_p1gpt/recipe.json",
+      "implementation_path": "scripts/run_p1gpt_in_spirit.py",
+      "run_manifest_path": "paper_runs/us_jkp_in_spirit/M038_p1gpt/run_manifest.json",
+      "monthly_returns_path": "paper_runs/us_jkp_in_spirit/M038_p1gpt/monthly_returns.csv",
+      "metrics_path": "paper_runs/us_jkp_in_spirit/M038_p1gpt/metrics.csv",
+      "verdict_path": "paper_runs/us_jkp_in_spirit/M038_p1gpt/verdict.md",
+      "next_action": "Complete. Retain the frozen near-flat raw result and near-zero insignificant JKP residual without retuning."
     },
     {
       "milestone_id": "M039",
@@ -751,7 +751,7 @@
       "strict_recipe_path": "paper_runs/us_jkp_headline/M039_finpos/recipe.json",
       "strict_verdict_path": "paper_runs/us_jkp_headline/M039_finpos/verdict.md",
       "strict_metrics_path": "",
-      "status": "queued_in_spirit",
+      "status": "in_progress_in_spirit",
       "fidelity_label": "in_spirit_reconstruction",
       "recipe_path": "",
       "implementation_path": "",
@@ -759,7 +759,7 @@
       "monthly_returns_path": "",
       "metrics_path": "",
       "verdict_path": "",
-      "next_action": "Wait until prior active reconstruction is committed."
+      "next_action": "Freeze one FinPos-inspired researcher reconstruction before inspecting its JKP result."
     },
     {
       "milestone_id": "M040",
