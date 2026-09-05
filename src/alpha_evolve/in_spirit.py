@@ -190,6 +190,71 @@ def fama_rolling_scores(
     return result, pd.DataFrame(diagnostics)
 
 
+def marketsenseai_strongbuy_scores(
+    frame: pd.DataFrame,
+    specialists: dict[str, list[str]],
+    *,
+    common_start: str,
+    reliability_months: int = 60,
+    minimum_rankic_months: int = 24,
+    softmax_temperature: float = 10.0,
+    percentile_boundaries: tuple[float, float, float, float] = (0.02, 0.05, 0.84, 0.925),
+    ordinal_values: tuple[int, int, int, int, int] = (-2, -1, 0, 1, 2),
+    continuous_tie_break_weight: float = 0.10,
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Convert four-specialist synthesis into a five-class strongest-buy score."""
+    if tuple(sorted(percentile_boundaries)) != percentile_boundaries or not (
+        0 < percentile_boundaries[0] and percentile_boundaries[-1] < 1
+    ):
+        raise ValueError("MarketSenseAI class boundaries are invalid")
+    if len(ordinal_values) != 5 or list(ordinal_values) != sorted(ordinal_values):
+        raise ValueError("MarketSenseAI ordinal values are invalid")
+    synthesis, diagnostics = marketsenseai_signal_scores(
+        frame,
+        specialists,
+        common_start=common_start,
+        reliability_months=reliability_months,
+        minimum_rankic_months=minimum_rankic_months,
+        softmax_temperature=softmax_temperature,
+    )
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    rows = []
+    diagnostics_by_month = diagnostics.set_index("formation_month")
+    for month, indices in frame.loc[frame["month"] >= common_start].groupby("month", sort=True).groups.items():
+        current = synthesis.loc[indices]
+        percentile = current.rank(method="first", pct=True)
+        ordinal = pd.Series(
+            np.select(
+                [
+                    percentile.le(percentile_boundaries[0]),
+                    percentile.le(percentile_boundaries[1]),
+                    percentile.le(percentile_boundaries[2]),
+                    percentile.le(percentile_boundaries[3]),
+                ],
+                ordinal_values[:4],
+                default=ordinal_values[4],
+            ),
+            index=indices,
+            dtype=float,
+        )
+        score = ordinal + continuous_tie_break_weight * current.fillna(0.0)
+        result.loc[indices] = score
+        row = diagnostics_by_month.loc[str(pd.Timestamp(month).date())].to_dict()
+        row.update(
+            {
+                "formation_month": str(pd.Timestamp(month).date()),
+                "strong_sell_count": int((ordinal == ordinal_values[0]).sum()),
+                "sell_count": int((ordinal == ordinal_values[1]).sum()),
+                "hold_count": int((ordinal == ordinal_values[2]).sum()),
+                "buy_count": int((ordinal == ordinal_values[3]).sum()),
+                "strong_buy_count": int((ordinal == ordinal_values[4]).sum()),
+                "finite_scores": int(score.notna().sum()),
+            }
+        )
+        rows.append(row)
+    return result, pd.DataFrame(rows)
+
+
 def hubble_safe_diverse_scores(
     frame: pd.DataFrame,
     factor_families: dict[str, list[tuple[str, int]]],
