@@ -61,6 +61,7 @@
     "family_cap": 2,
     "top_k": 5,
     "feedback_rule": "each later round excludes exact prior candidates and rewards families absent from the current selected set",
+    "missing_factor_value_rule": "replace a missing selected factor rank with cross-sectional neutral zero after coverage has been penalized during selection",
     "novelty_bonus": 0.10,
     "final_score": "equal mean of the five validation-oriented selected factor ranks",
     "common_portfolio_adapter": "the frozen top-five score enters value-weighted long-short deciles and all six common cost/missing-return paths",

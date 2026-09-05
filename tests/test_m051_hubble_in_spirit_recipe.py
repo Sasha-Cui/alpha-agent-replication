@@ -37,6 +37,7 @@ def test_m051_recipe_freezes_safe_diverse_top_five_search():
     assert policy["negative_rag_crowded_family"] == "liquidity_volume"
     assert policy["maximum_similarity"] == 0.80
     assert policy["family_cap"] == 2 and policy["top_k"] == 5
+    assert "neutral zero" in policy["missing_factor_value_rule"]
     assert policy["calibration_end"] < policy["common_start"]
     assert policy["final_common_returns_used_for_search"] is False
     assert len(recipe["preserved_elements"]) >= 13

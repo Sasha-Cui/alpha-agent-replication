@@ -321,7 +321,12 @@ def hubble_safe_diverse_scores(
         selected = chosen
     result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
     common_mask = frame["month"] >= common
-    result.loc[common_mask] = pd.DataFrame({name: oriented_scores[name] for name in selected}).loc[common_mask].mean(axis=1, skipna=False)
+    result.loc[common_mask] = (
+        pd.DataFrame({name: oriented_scores[name] for name in selected})
+        .loc[common_mask]
+        .fillna(0.0)
+        .mean(axis=1)
+    )
     summary = {"selected_candidates": selected, "selected_families": [str(metrics.loc[name, "family"]) for name in selected], "candidate_count": len(metrics), "finite_common_scores": int(result.loc[common_mask].notna().sum())}
     return result, metrics.reset_index(), pd.DataFrame(selection_rows), summary
 
