@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M027",
+  "canonical_work_id": "CensusArxiv250811152",
+  "paper": "AlphaAgents: Large Language Model based Multi-Agents for Equity Portfolio Constructions",
+  "status": "frozen_before_jkp_result",
+  "fidelity_label": "in_spirit_reconstruction",
+  "claim_boundary": "A researcher-authored repeatable monthly U.S.-stock implementation of AlphaAgents' risk-neutral three-specialist round-robin debate; not a replay or backcast of the paper's February 2024 ticker list and not a native GPT-4o/AutoGen replication.",
+  "paper_source": {
+    "url": "https://arxiv.org/abs/2508.11152v1",
+    "version": "arXiv v1",
+    "pdf_path": "literature_review/papers/36_alphaagents_large_language_model_based_multi_agents_for_equity_portfolio_constructions.pdf",
+    "pdf_sha256": "ce48953985eaac0faf04dbf7c1b8c4e94396cd7924d56dee37d767112a3fed65",
+    "source_sha256": "ce5a31c38b75ad89496dc6176a081f83c0afe084067a01f92e42782f5478b5f5"
+  },
+  "primary_source_anchors": [
+    {
+      "anchor": "Section 2.1 and Figure 1",
+      "mechanism": "Fundamental, sentiment, and valuation specialists analyze role-specific inputs and debate divergent conclusions before issuing a consolidated stock recommendation."
+    },
+    {
+      "anchor": "Sections 2.2.1-2.2.3 and Table 1",
+      "mechanism": "The fundamental role uses filings and financial statements, the sentiment role uses news and analyst changes, and the valuation role uses price, volume, return, and volatility tools."
+    },
+    {
+      "anchor": "Section 2.2.4 and Figures 2-5",
+      "mechanism": "AutoGen coordinates agents in round-robin debate, gives every specialist at least two speaking opportunities, exposes peer analyses, and asks the group assistant to consolidate a BUY/SELL consensus."
+    },
+    {
+      "anchor": "Section 2.3 and Section 3.2",
+      "mechanism": "Risk tolerance is embedded in agent instructions; the direct multi-agent headline uses a risk-neutral profile and turns consensus inclusions into an equal-weight stock portfolio."
+    }
+  ],
+  "strict_evidence": {
+    "audit_manifest_path": "paper_runs/paper_replication_audits/alphaagents/manifest.json",
+    "audit_manifest_sha256": "637dd678f634de8982342552702985a46fe1c07e9b28bed7202cb2787a843a7e",
+    "prompt_inventory_path": "paper_runs/paper_replication_audits/alphaagents/prompt_inventory.csv",
+    "prompt_inventory_sha256": "9c661fbcddeda617295f4aa15c78843663784de6e6c254886a2e7716be4c3a22",
+    "portfolio_inventory_path": "paper_runs/paper_replication_audits/alphaagents/source_only_portfolio_inventory.csv",
+    "portfolio_inventory_sha256": "cfd0d192e946d509588da4163c4869660cf3c7196d3479a542521d0129a02ccd",
+    "method_audit_path": "paper_runs/paper_replication_audits/alphaagents/method_specification_audit.csv",
+    "method_audit_sha256": "10f49c7cd7ce94f150c0f5ca8ae932540f671028d45e4e4d234e00603bd61fb3"
+  },
+  "specialist_agents": {
+    "fundamental": [
+      {"column": "be_me", "sign": 1},
+      {"column": "gp_at", "sign": 1},
+      {"column": "ocf_at", "sign": 1},
+      {"column": "f_score", "sign": 1},
+      {"column": "z_score", "sign": 1},
+      {"column": "qmj_prof", "sign": 1}
+    ],
+    "sentiment": [
+      {"column": "niq_su", "sign": 1},
+      {"column": "saleq_su", "sign": 1},
+      {"column": "turnover_126d", "sign": 1},
+      {"column": "ret_1_0", "sign": 1}
+    ],
+    "valuation": [
+      {"column": "ret_12_1", "sign": 1},
+      {"column": "ret_6_1", "sign": 1},
+      {"column": "ret_1_0", "sign": 1},
+      {"column": "prc_highprc_252d", "sign": 1},
+      {"column": "turnover_126d", "sign": 1},
+      {"column": "rvol_21d", "sign": -1}
+    ]
+  },
+  "debate_policy": {
+    "risk_profile": "risk-neutral",
+    "speaker_order": ["fundamental", "sentiment", "valuation"],
+    "round_robin_passes": 2,
+    "peer_median_update_weight": 0.35,
+    "own_specialist_retention_weight": 0.65,
+    "agent_initial_opinion": "equal mean of signed monthly cross-sectional characteristic ranks",
+    "agent_debate_update": "when speaking, retain 0.65 of the current specialist opinion and add 0.35 of the current median peer opinion",
+    "group_assistant_consensus": "median of the three post-debate opinions; sign is BUY or SELL and absolute value is confidence",
+    "score_refresh": "monthly from contemporaneously available characteristics only; no realized return trains or updates the debate",
+    "common_portfolio_adapter": "frozen value-weighted long-short deciles; this replaces the paper's one-off equal-weight BUY portfolio for apples-to-apples evaluation",
+    "paper_2024_ticker_memberships_used_as_inputs": false,
+    "final_common_returns_used_for_policy_choice": false
+  },
+  "preserved_elements": [
+    "three role-specialized equity-research agents",
+    "fundamental, sentiment, and valuation perspectives",
+    "role-specific data access rather than one undifferentiated score",
+    "cooperative and adversarial peer interaction",
+    "round-robin speaking order",
+    "at least two speaking opportunities for every specialist",
+    "peer analyses updating each specialist's view",
+    "group-assistant median consolidation into BUY/SELL direction and confidence",
+    "the paper's direct risk-neutral multi-agent headline profile"
+  ],
+  "approximated_elements": [
+    "JKP accounting-quality characteristics replace filing retrieval and financial-statement RAG",
+    "earnings and sales surprises plus attention proxies replace Bloomberg news and analyst text",
+    "monthly momentum, price-location, turnover, and volatility characteristics replace Yahoo price/volume tool calls",
+    "numeric opinion updates replace GPT-4o reasoning and AutoGen messages",
+    "two deterministic debate passes replace natural-language convergence and human review",
+    "the common decile portfolio replaces one-time equal-weight consensus inclusions"
+  ],
+  "invented_elements": [
+    "the exact signed characteristic membership of each specialist",
+    "equal weighting within each specialist",
+    "the 0.65 own-opinion and 0.35 peer-median update",
+    "median confidence as the consolidated continuous score",
+    "a monthly repeatable cross-sectional universe",
+    "the long-short interpretation of SELL opinions in the common adapter"
+  ],
+  "anti_leakage": {
+    "paper_2024_selected_tickers_backcast": false,
+    "paper_results_used_as_formation_labels": false,
+    "future_returns_used_for_current_score": false,
+    "current_month_forward_return_used_for_current_score": false,
+    "m027_common_result_seen_before_recipe_freeze": false,
+    "prior_other_paper_common_results_seen": true,
+    "retuning_after_common_result_permitted": false
+  }
+}
