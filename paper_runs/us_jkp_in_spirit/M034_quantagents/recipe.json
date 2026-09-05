@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M034",
+  "canonical_work_id": "CensusArxiv251004643",
+  "paper": "QuantAgents: Towards Multi-agent Financial System via Simulated Trading",
+  "status": "frozen_before_jkp_result",
+  "fidelity_label": "in_spirit_reconstruction",
+  "claim_boundary": "A researcher-authored monthly U.S.-stock implementation of QuantAgents' four roles, three memories, similar-case retrieval, strategy simulation meeting, adaptive simulated/real reward blend, and triggered risk meeting; not a native GPT-4o meeting or learned policy replication.",
+  "paper_source": {
+    "url": "https://arxiv.org/abs/2510.04643v1",
+    "version": "arXiv v1",
+    "pdf_path": "literature_review/papers/43_quantagents_towards_multi_agent_financial_system_via_simulated_trading.pdf",
+    "pdf_sha256": "a1cc7214ce25cab2b9cdfb6a771f1fb8606cb0fd7319bccf25d233e6c005fd73",
+    "source_sha256": "b978a8d7be609ded462b8ed778fe45d2f4f5ef4014994589a2a0d8fbdfdcabab",
+    "author_site_repository": "https://github.com/QuantAgents/quantagents.github.io",
+    "author_site_commit": "a1d0d56d04d2b73a5fbc472ec9af865a29be6ef7"
+  },
+  "primary_source_anchors": [
+    {
+      "anchor": "Sections 3.2-3.4 and Figure 2",
+      "mechanism": "Manager Otto integrates Emily's market reports, Bob's simulated strategy tests, and Dave's risk analysis through weekly market-analysis and strategy-development meetings plus triggered risk alerts."
+    },
+    {
+      "anchor": "Section 3.3.3-3.3.4, equations 1-2",
+      "mechanism": "Market-information, strategy, and report memories retrieve the ten most similar cases to augment a reflection-driven action policy."
+    },
+    {
+      "anchor": "Section 3.4.2 and Appendix E",
+      "mechanism": "Bob simulates a diverse pool of index/parameter strategy permutations on historical information, selects strong candidates, and stores their analysis for later decisions."
+    },
+    {
+      "anchor": "Section 3.4.3, equations 3-4",
+      "mechanism": "A risk score combining beta, inverse liquidity, concentration, and volatility triggers a risk meeting above 0.75 and tilts the policy toward risk reward."
+    },
+    {
+      "anchor": "Section 3.4.4, equations 5-6",
+      "mechanism": "Otto combines new simulated-strategy reward and deployed real-trading reward with adaptive weights based on their recent relative performance."
+    }
+  ],
+  "strict_evidence": {
+    "audit_manifest_path": "paper_runs/paper_replication_audits/quantagents/manifest.json",
+    "audit_manifest_sha256": "4417fe95a6892b79300d154061a6193d910d9ef2c2d68f10f79e7b6804e281bd",
+    "source_provenance_path": "paper_runs/paper_replication_audits/quantagents/source_provenance.json",
+    "source_provenance_sha256": "16694f1fac1a354bc8dd1b9ef920c074e1b85afb71839ba92204741a1f4c12ed",
+    "method_audit_path": "paper_runs/paper_replication_audits/quantagents/method_specification_audit.csv",
+    "method_audit_sha256": "821ab85e4ab8c038290dd8bb86a7875fbabb4caf9d9e4d1b0a599e162d90e6f6",
+    "prompt_inventory_path": "paper_runs/paper_replication_audits/quantagents/prompt_inventory.csv",
+    "prompt_inventory_sha256": "52bb1d90145c0701a498f42fbfbe50b31aa2ee3b85500bb7b3cd56c3e71b98a1",
+    "site_documentation_path": "paper_runs/paper_replication_audits/quantagents/site_documentation_inventory.csv",
+    "site_documentation_sha256": "fd4dd9cadfd515a64fdc58228a4be82ead5600a2c4849fc04c7efaf33abfa55f"
+  },
+  "strategy_pool": {
+    "momentum_short": [{"column": "ret_1_0", "sign": 1}],
+    "momentum_medium": [{"column": "ret_6_1", "sign": 1}],
+    "momentum_long": [{"column": "ret_12_1", "sign": 1}],
+    "breakout": [{"column": "prc_highprc_252d", "sign": 1}, {"column": "turnover_126d", "sign": 1}],
+    "reversal": [{"column": "ret_1_0", "sign": -1}, {"column": "prc_highprc_252d", "sign": -1}],
+    "value_quality": [{"column": "be_me", "sign": 1}, {"column": "gp_at", "sign": 1}, {"column": "ocf_at", "sign": 1}, {"column": "f_score", "sign": 1}],
+    "sentiment_surprise": [{"column": "niq_su", "sign": 1}, {"column": "saleq_su", "sign": 1}, {"column": "turnover_126d", "sign": 1}],
+    "low_risk": [{"column": "rvol_21d", "sign": -1}, {"column": "beta_60m", "sign": -1}],
+    "financial_safety": [{"column": "z_score", "sign": 1}, {"column": "qmj_safety", "sign": 1}, {"column": "qmj_prof", "sign": 1}],
+    "balanced_multi_factor": [{"column": "ret_12_1", "sign": 1}, {"column": "be_me", "sign": 1}, {"column": "gp_at", "sign": 1}, {"column": "rvol_21d", "sign": -1}]
+  },
+  "agents_and_meetings": {
+    "Otto": "Blend the currently deployed and newly simulated strategy sets, integrate Emily's market report, and apply Dave's risk modification.",
+    "Bob": "Score the strategy pool on ten retrieved similar historical states and propose the three highest simulated-utility strategies.",
+    "Dave": "Compute equal-weight beta, inverse-liquidity, concentration, and volatility risk and provide a defensive policy when risk exceeds 0.75.",
+    "Emily": "Summarize sentiment surprises and current price trend into a market-report score.",
+    "meetings": ["market_analysis", "strategy_development", "risk_alert_when_score_above_0.75"]
+  },
+  "memory_and_policy": {
+    "prehistory_formation_start": "1989-07-31",
+    "memory_history_months": 120,
+    "retrieved_similar_cases": 10,
+    "state_dimensions": ["cap_weighted_market_return", "six_month_market_volatility", "cap_weighted_momentum", "cap_weighted_value", "cap_weighted_sentiment"],
+    "retrieval_distance": "Euclidean distance after standardizing every state dimension on the 120-month past-only memory window",
+    "simulated_utility": "mean retrieved-case strategy RankIC minus one half of retrieved-case RankIC standard deviation",
+    "new_strategy_members": 3,
+    "market_report_weight": 0.2,
+    "strategy_policy_weight": 0.8,
+    "adaptive_reward_window": 12,
+    "simulated_reward_weight": "sigmoid of trailing simulated-reward sum divided by the sum of absolute simulated and real reward magnitudes",
+    "real_reward_weight": "one minus simulated reward weight",
+    "risk_components": ["market beta", "inverse turnover liquidity", "market-weight concentration", "six-month market volatility"],
+    "risk_component_weights": [0.25, 0.25, 0.25, 0.25],
+    "risk_alert_threshold": 0.75,
+    "risk_policy_weight_when_triggered": 0.5,
+    "deployed_strategy_update": "after each decision, the newly simulated three-member set becomes the deployed set for the next month",
+    "common_portfolio_adapter": "frozen value-weighted long-short deciles with all six cost and missing-return paths",
+    "final_common_returns_used_for_policy_choice": false
+  },
+  "preserved_elements": [
+    "four named manager, strategy, risk, and market-analysis roles",
+    "market-analysis and strategy-development meetings every decision period",
+    "a risk meeting triggered above the paper's 0.75 score threshold",
+    "market-information, strategy, and report memory concepts",
+    "retrieval of exactly ten similar historical cases",
+    "a diverse strategy pool evaluated in simulated trading",
+    "selection of strong simulated strategies before deployment",
+    "adaptive blending of simulated and real trading rewards",
+    "risk-policy mixing under high-risk conditions",
+    "continuous memory and deployed-strategy updates"
+  ],
+  "approximated_elements": [
+    "five numeric market-state dimensions replace price, news, and report embeddings",
+    "JKP factor sleeves replace unreported index/parameter permutations",
+    "similar-month RankIC replaces Bob's full simulated portfolio backtests",
+    "deterministic market and risk scores replace Emily and Dave LLM/tool reports",
+    "explicit strategy-score blending replaces Otto's missing prompt/parser policy",
+    "monthly meetings replace weekly meetings",
+    "the common decile portfolio replaces unspecified order, fill, and action rules"
+  ],
+  "invented_elements": [
+    "the ten exact strategy-pool members and signed formulas",
+    "the 120-month memory window and standardized Euclidean retrieval",
+    "the three-member simulated strategy set",
+    "the mean-minus-half-volatility simulated utility",
+    "the 0.80 strategy and 0.20 market-report blend",
+    "the 12-month adaptive reward window and stable sigmoid denominator",
+    "equal risk-component weights",
+    "the 0.50 triggered defensive-policy weight"
+  ],
+  "anti_leakage": {
+    "paper_actions_or_holdings_used_as_inputs": false,
+    "future_returns_used_for_simulation_or_memory": false,
+    "current_month_forward_return_used_for_current_score": false,
+    "m034_common_result_seen_before_recipe_freeze": false,
+    "prior_other_paper_common_results_seen": true,
+    "retuning_after_common_result_permitted": false
+  }
+}
