@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M050",
+  "canonical_work_id": "CensusArxiv260323300",
+  "paper": "Designing Agentic AI-Based Screening for Portfolio Investment",
+  "status": "frozen_before_jkp_result",
+  "fidelity_label": "in_spirit_reconstruction",
+  "claim_boundary": "A researcher-authored monthly U.S.-stock analogue of the paper's annual fundamental LLM-S screen, monthly FinBERT sentiment screen, intersection/union consensus, and 180-month precision-weighted maximum-Sharpe stage; not the unreleased agent outputs, native estimators, or published S&P 500 portfolios.",
+  "paper_source": {
+    "url": "https://arxiv.org/abs/2603.23300v2",
+    "version": "arXiv v2",
+    "pdf_sha256": "cb708a65339640c7958bf602f67e3f0d6547071974074770e4b529553c6ab00f",
+    "source_sha256": "11b2d0ccee0a607546cfd0a10c385ce2e4d217caec07ba175e123d5bc92de889",
+    "source_tex_sha256": "003d001f0d2e72331e93bb68e437eea79edf28917411b3d21e8a777e0cdfbe33",
+    "attributable_native_implementation_found": false,
+    "bounded_release_search_checked_2026_09_05": "Exact-title and arXiv searches find paper digests and one unaffiliated rewrite, but no author signal ledger, runtime, fitted precision matrices, weights, or paths."
+  },
+  "primary_source_anchors": [
+    {
+      "anchor": "Section 2.3 and Figure 5",
+      "mechanism": "An LLM-S fundamentals agent and monthly FinBERT news agent independently screen the full S&P 500 before quantitative portfolio weights are estimated."
+    },
+    {
+      "anchor": "Sections 3.2 and Appendix C prompt example",
+      "mechanism": "LLM-S uses log size, book-to-market, and 12-month momentum, with the disclosed 2024 rule buying high book-to-market, reasonably large, positive-momentum firms and selling the opposite extremes."
+    },
+    {
+      "anchor": "Section 2.3 and Section 3.4",
+      "mechanism": "The two screens use their buy/sell intersection when sufficiently populated and fall back to their union/default rule when agreement would leave an empty or singleton set."
+    },
+    {
+      "anchor": "Sections 4 and Appendix B",
+      "mechanism": "The screened universe enters high-dimensional precision estimation and GMV, 1%-monthly-target mean-variance, or maximum-Sharpe optimization using a 180-month formation window and 10 bp costs."
+    }
+  ],
+  "strict_evidence": {
+    "audit_manifest_path": "paper_runs/paper_replication_audits/agentic_ai_screening/manifest.json",
+    "audit_manifest_sha256": "0194e2051ae94674f13d6273738a8016476226b2f1fd4828ed7c7527fafb88b8",
+    "source_provenance_path": "paper_runs/paper_replication_audits/agentic_ai_screening/source_provenance.json",
+    "source_provenance_sha256": "4f9d2c8383296c0c73ab6d428bd8eb685ed179429df08fb86da20abe2edc0e1b",
+    "method_specification_path": "paper_runs/paper_replication_audits/agentic_ai_screening/method_specification_audit.csv",
+    "method_specification_sha256": "bb22ebc91ed55dc6785d1d0292fd853d3fd8d35a49dfcbcb0640bf84463ddf61",
+    "linked_news_dataset_audit_path": "paper_runs/paper_replication_audits/agentic_ai_screening/linked_news_dataset_audit.json",
+    "linked_news_dataset_audit_sha256": "01ae9b78c9b5c980fc6211eb4505e326efe025521a71ef9d1dcfc7f61287e123",
+    "independent_implementation_audit_path": "paper_runs/paper_replication_audits/agentic_ai_screening/independent_implementation_audit.json",
+    "independent_implementation_audit_sha256": "93ae9b413ed528f159637a436e2a67fb1896402dd0b8910963729c6cb154aea2",
+    "prompt_component_inventory_path": "paper_runs/paper_replication_audits/agentic_ai_screening/prompt_component_inventory.csv",
+    "prompt_component_inventory_sha256": "223b790f8367a1d457227322742e5e7ce0a9e736452e55e7818f0d3e66e064b5"
+  },
+  "fundamental_llm_s": {
+    "update_frequency": "annual rule, applied to current monthly point-in-time characteristics",
+    "inputs": [
+      {"column": "market_equity", "role": "log firm size", "sign": 1},
+      {"column": "be_me", "role": "book-to-market", "sign": 1},
+      {"column": "ret_12_1", "role": "12-month momentum", "sign": 1}
+    ],
+    "buy_rule": "all three monthly unit ranks exceed size 0.30, book-to-market 0.30, and momentum 0.50",
+    "sell_rule": "book-to-market rank below -0.30, momentum rank below -0.55, or size rank below -0.75",
+    "hold_rule": "neither buy nor sell condition",
+    "rule_source": "signed adaptation of the sole December-2023/2024 prompt output; fixed before the common result"
+  },
+  "finbert_sentiment_proxy": {
+    "update_frequency": "monthly",
+    "inputs": [
+      {"column": "niq_su", "sign": 1},
+      {"column": "saleq_su", "sign": 1},
+      {"column": "ret_1_0", "sign": 1},
+      {"column": "turnover_126d", "sign": 1}
+    ],
+    "score": "mean monthly unit rank of the four signed earnings-news and attention proxies",
+    "buy_threshold": 0.10,
+    "sell_threshold": -0.10
+  },
+  "consensus_and_quant_policy": {
+    "prehistory_formation_start": "1984-07-31",
+    "buy_set_rule": "use LLM-S/FinBERT buy intersection when it has more than one stock, otherwise their union",
+    "sell_set_rule": "use LLM-S/FinBERT sell intersection when it has more than one stock, otherwise their union",
+    "conflict_rule": "a stock in both final buy and sell sets is HOLD",
+    "continuous_tie_break_score": "consensus action plus 0.10 times the mean fundamental and sentiment score",
+    "formation_history_months": 180,
+    "minimum_security_history_months": 60,
+    "precision_estimator": "diagonal inverse realized variance over the preceding 180 stock months",
+    "precision_winsorization": [0.01, 0.99],
+    "portfolio_objective": "maximum Sharpe ratio",
+    "risk_adjusted_score": "consensus tie-break score multiplied by cross-sectional unit rank of inverse variance mapped to 0.25 through 1.0",
+    "transaction_cost_bps_one_way": 10,
+    "common_portfolio_adapter": "the risk-adjusted screened score enters frozen value-weighted long-short deciles and all six common cost/missing-return paths",
+    "final_common_returns_used_for_policy_choice": false
+  },
+  "preserved_elements": [
+    "two specialized screening agents",
+    "fundamental inputs limited to size, book-to-market, and momentum",
+    "slow annual fundamental logic and fast monthly sentiment updates",
+    "separate buy, sell, and hold decisions",
+    "intersection consensus when both agents agree",
+    "union fallback when agreement is empty or singleton",
+    "screening before quantitative weighting",
+    "180-month formation history",
+    "precision-based risk adjustment",
+    "maximum-Sharpe headline objective",
+    "10 bp transaction costs"
+  ],
+  "approximated_elements": [
+    "the disclosed 2024 LLM-S rule is held fixed because earlier annual rules are absent",
+    "monthly JKP ranks replace the paper's winsorized standardized CRSP/Compustat inputs",
+    "earnings surprises and price attention replace unreleased FinBERT probabilities",
+    "a four-input deterministic sentiment score replaces the unidentified checkpoint and seven-day news aggregation",
+    "set-level intersection/union rules are applied to the monthly top-1,000 universe",
+    "diagonal inverse variance replaces the paper's multiple unreleased high-dimensional precision estimators",
+    "risk-adjusted cross-sectional scores replace direct optimizer weights",
+    "the common decile portfolio replaces the native screened MSR portfolio"
+  ],
+  "invented_elements": [
+    "the -0.30 book-to-market sell threshold",
+    "the four JKP sentiment inputs",
+    "the +/-0.10 monthly sentiment thresholds",
+    "the continuous 0.10 tie-break score",
+    "the 60-observation minimum variance history",
+    "the diagonal precision estimator",
+    "the 1/99 precision winsorization",
+    "the 0.25-to-1.0 precision multiplier"
+  ],
+  "anti_leakage": {
+    "unreleased_annual_agent_outputs_used": false,
+    "linked_news_text_or_future_labels_used": false,
+    "unaffiliated_implementation_used": false,
+    "current_forward_return_used_for_screen": false,
+    "m050_common_result_seen_before_recipe_freeze": false,
+    "prior_other_paper_common_results_seen": true,
+    "retuning_after_common_result_permitted": false
+  }
+}
