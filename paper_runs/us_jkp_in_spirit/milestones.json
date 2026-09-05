@@ -14,10 +14,10 @@
   "declared_inference_family_size": 69,
   "progress_summary": {
     "carried_common_evaluation": 17,
-    "completed_in_spirit": 20,
+    "completed_in_spirit": 21,
     "discarded_structural_mismatch": 7,
     "in_progress_in_spirit": 1,
-    "queued_in_spirit": 24
+    "queued_in_spirit": 23
   },
   "milestones": [
     {
@@ -580,15 +580,15 @@
       "strict_recipe_path": "paper_runs/us_jkp_headline/M030_mm_arc/recipe.json",
       "strict_verdict_path": "paper_runs/us_jkp_headline/M030_mm_arc/verdict.md",
       "strict_metrics_path": "",
-      "status": "in_progress_in_spirit",
+      "status": "completed_in_spirit",
       "fidelity_label": "in_spirit_reconstruction",
-      "recipe_path": "",
-      "implementation_path": "",
-      "run_manifest_path": "",
-      "monthly_returns_path": "",
-      "metrics_path": "",
-      "verdict_path": "",
-      "next_action": "Freeze one MM-ARC-inspired researcher reconstruction before inspecting its JKP result."
+      "recipe_path": "paper_runs/us_jkp_in_spirit/M030_mm_arc/recipe.json",
+      "implementation_path": "scripts/run_mm_arc_in_spirit.py",
+      "run_manifest_path": "paper_runs/us_jkp_in_spirit/M030_mm_arc/run_manifest.json",
+      "monthly_returns_path": "paper_runs/us_jkp_in_spirit/M030_mm_arc/monthly_returns.csv",
+      "metrics_path": "paper_runs/us_jkp_in_spirit/M030_mm_arc/metrics.csv",
+      "verdict_path": "paper_runs/us_jkp_in_spirit/M030_mm_arc/verdict.md",
+      "next_action": "Complete. Retain the frozen positive raw return but near-zero insignificant JKP residual without retuning."
     },
     {
       "milestone_id": "M031",
@@ -618,7 +618,7 @@
       "strict_recipe_path": "paper_runs/us_jkp_headline/M032_trading_r1/recipe.json",
       "strict_verdict_path": "paper_runs/us_jkp_headline/M032_trading_r1/verdict.md",
       "strict_metrics_path": "",
-      "status": "queued_in_spirit",
+      "status": "in_progress_in_spirit",
       "fidelity_label": "in_spirit_reconstruction",
       "recipe_path": "",
       "implementation_path": "",
@@ -626,7 +626,7 @@
       "monthly_returns_path": "",
       "metrics_path": "",
       "verdict_path": "",
-      "next_action": "Wait until prior active reconstruction is committed."
+      "next_action": "Freeze one Trading-R1-inspired researcher reconstruction before inspecting its JKP result."
     },
     {
       "milestone_id": "M033",
