@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M048",
+  "canonical_work_id": "CensusArxiv260320247",
+  "paper": "AlphaLogics: A Market Logic-Driven Multi-Agent System for Scalable and Interpretable Alpha Factor Generation",
+  "status": "frozen_before_jkp_result",
+  "fidelity_label": "in_spirit_reconstruction",
+  "claim_boundary": "A researcher-authored monthly U.S.-stock analogue of AlphaLogics' explicit market-logic library, constrained factor DSL, validation-feedback inner loop, five-round persistent outer refinement, and final factor-pool scorer; not the unreleased LLM traces, generated author factor pool, LightGBM model, or daily Qlib strategy.",
+  "paper_source": {
+    "url": "https://arxiv.org/abs/2603.20247v1",
+    "version": "arXiv v1",
+    "pdf_sha256": "d6ae7ed961bc6d358607497f6815dc2c8f4081afb1c04203b3693f63d2929c01",
+    "source_sha256": "1439c0b14100dd1d5261cff44b348ca705d949a088051f3168b3a41573538f1a",
+    "source_tex_sha256": "033535f009398e4998529b2ec37eeb14070aaae86cb193a7ed595e2abc2231f0",
+    "attributable_implementation_or_factor_pool_found": false,
+    "bounded_release_search_checked_2026_09_05": "Exact-title and arXiv-ID searches still identify the paper and unaffiliated component implementations, but no author-attributable code, logic library, generated factor pool, model, or result arrays."
+  },
+  "primary_source_anchors": [
+    {
+      "anchor": "Sections 3.1 and Figure 2",
+      "mechanism": "Historical technical factor libraries are reverse-mapped from formula structure to financial semantics to an explicit market-logic library."
+    },
+    {
+      "anchor": "Section 3.2 and Algorithm 1",
+      "mechanism": "Each human-readable logic is canonicalized, compiled into executable variable/operator/sign constraints, and used to generate factors that receive validation-only backtest feedback with early stopping."
+    },
+    {
+      "anchor": "Section 3.3 and Algorithm 2",
+      "mechanism": "Logic-level evidence is aggregated across generated factors, new or refined logics persist in the library, and the best logic is retained across five outer rounds."
+    },
+    {
+      "anchor": "Section 4.1 and Appendix A.2-A.4",
+      "mechanism": "The native system uses OHLCV inputs, a 59-operation DSL, strict train/validation/test separation, generated factors plus four base factors in LightGBM, and a Top-50/drop-5 portfolio."
+    }
+  ],
+  "strict_evidence": {
+    "audit_manifest_path": "paper_runs/paper_replication_audits/alphalogics/manifest.json",
+    "audit_manifest_sha256": "f1ee4692249d061a1406d037754d9009b2458a019141ad0e6445c5496c68689a",
+    "source_provenance_path": "paper_runs/paper_replication_audits/alphalogics/source_provenance.json",
+    "source_provenance_sha256": "d57db4f5abf5e84139e3ca6040e0d86e20cab1b54e350b7e49f7d0d91b7e90d8",
+    "method_specification_path": "paper_runs/paper_replication_audits/alphalogics/method_specification_audit.csv",
+    "method_specification_sha256": "929df837d7181641463a2ab6c45175a47cff797aaefb971cc9d656eb00ae18ac",
+    "dsl_operation_ledger_path": "paper_runs/paper_replication_audits/alphalogics/dsl_operation_ledger.csv",
+    "dsl_operation_ledger_sha256": "7de7ac8d6ee1c7bd77aaf182ac085b6a45186481fbc375b2b8ed578b3203f297",
+    "algorithm_conformance_path": "paper_runs/paper_replication_audits/alphalogics/algorithm_conformance.json",
+    "algorithm_conformance_sha256": "f1b92f17aa9cc6f838f19f677c73cf03a4eba64ed7d09a14c569dc1de7965564",
+    "prompt_template_ledger_path": "paper_runs/paper_replication_audits/alphalogics/prompt_template_ledger.csv",
+    "prompt_template_ledger_sha256": "a9eb40feae8ffdea3992f25c90673f480ed32bc18a7927f220562df21a71efe8"
+  },
+  "initial_market_logic_library": {
+    "trend_persistence": [
+      {"column": "ret_12_1", "sign": 1},
+      {"column": "ret_6_1", "sign": 1},
+      {"column": "ret_3_1", "sign": 1},
+      {"column": "turnover_126d", "sign": 1}
+    ],
+    "short_horizon_reversal": [
+      {"column": "ret_1_0", "sign": -1},
+      {"column": "rmax1_21d", "sign": -1},
+      {"column": "rmax5_21d", "sign": -1},
+      {"column": "prc_highprc_252d", "sign": -1}
+    ],
+    "price_volume_confirmation": [
+      {"column": "ret_6_1", "sign": 1},
+      {"column": "turnover_126d", "sign": 1},
+      {"column": "dolvol_126d", "sign": 1},
+      {"column": "zero_trades_126d", "sign": -1}
+    ],
+    "breakout_quality": [
+      {"column": "prc_highprc_252d", "sign": 1},
+      {"column": "ret_12_1", "sign": 1},
+      {"column": "rvol_21d", "sign": -1},
+      {"column": "rmax5_21d", "sign": -1}
+    ],
+    "residual_momentum": [
+      {"column": "resff3_12_1", "sign": 1},
+      {"column": "resff3_6_1", "sign": 1},
+      {"column": "ret_12_7", "sign": 1},
+      {"column": "seas_1_1an", "sign": 1}
+    ],
+    "volatility_compression": [
+      {"column": "rvol_21d", "sign": -1},
+      {"column": "ivol_capm_252d", "sign": -1},
+      {"column": "beta_60m", "sign": -1},
+      {"column": "ret_6_1", "sign": 1}
+    ]
+  },
+  "compiled_factor_dsl": {
+    "allowed_operations": ["identity", "pair_mean", "pair_product", "triple_mean", "positive_gate"],
+    "round_operation_order": ["identity", "pair_mean", "pair_product", "triple_mean", "positive_gate"],
+    "cross_sectional_normalization": "monthly percentile rank mapped to minus one through one",
+    "pair_mean": "arithmetic mean of two signed normalized primitives",
+    "pair_product": "product of two signed normalized primitives followed by cross-sectional reranking",
+    "triple_mean": "arithmetic mean of three signed normalized primitives",
+    "positive_gate": "one signed primitive multiplied by the indicator that a second signed primitive is positive, followed by cross-sectional reranking",
+    "invalid_or_nonfinite_expression_rule": "reject before validation",
+    "direction_rule": "orient each candidate by the sign of validation mean RankIC, using validation data only"
+  },
+  "logic_evolution_policy": {
+    "prehistory_formation_start": "1989-01-31",
+    "calibration_train_start": "1989-01-31",
+    "calibration_train_end": "1994-06-30",
+    "calibration_validation_start": "1994-07-31",
+    "calibration_validation_end": "1999-06-30",
+    "common_evaluation_start": "1999-07-31",
+    "initial_logic_count": 6,
+    "outer_rounds": 5,
+    "inner_candidate_budget_per_logic_round": 8,
+    "inner_early_stopping_non_improvements": 3,
+    "candidate_order": "complexity, then expression name",
+    "validation_objective": "positive mean monthly RankIC divided by monthly RankIC standard deviation",
+    "minimum_validation_months": 48,
+    "persistent_library": true,
+    "selected_factor_per_logic": 1,
+    "final_selected_factor_count": 6,
+    "final_model": "ridge linear cross-sectional return scorer fitted once on calibration train plus validation",
+    "final_ridge_fraction": 0.01,
+    "common_portfolio_adapter": "the frozen six-factor score enters value-weighted long-short deciles and all six common cost/missing-return paths",
+    "final_common_returns_used_for_search_or_model_choice": false
+  },
+  "preserved_elements": [
+    "market logic as an explicit optimizable object",
+    "initial logic mining from technical factor families",
+    "separate logic, constraint, expression, feedback, and refinement roles",
+    "human-readable logic names and signed primitives",
+    "deterministic compilation into variable and operation constraints",
+    "a bounded executable factor DSL",
+    "factor generation under fixed logic constraints",
+    "validation-only performance feedback",
+    "inner-loop early stopping after three non-improvements",
+    "logic-level evidence aggregation",
+    "five persistent outer refinement rounds",
+    "strict pre-common calibration and common evaluation separation",
+    "a final multi-factor prediction model"
+  ],
+  "approximated_elements": [
+    "six researcher-authored OHLCV-style JKP logic families replace the unreleased mined logic library",
+    "precomputed monthly JKP technical characteristics replace raw daily OHLCV variables",
+    "five transparent operation families replace the paper's 59-operation DSL",
+    "enumerated deterministic expressions replace LLM factor generation",
+    "validation RankIC information ratio supplies the unspecified scalar objective J",
+    "fixed candidate batches replace stochastic agent budgets and model calls",
+    "persistent best-expression updates replace natural-language logic refinement",
+    "ridge regression replaces the unspecified LightGBM configuration",
+    "the common decile portfolio replaces Qlib Top-50/drop-5 daily execution"
+  ],
+  "invented_elements": [
+    "the six initial market logics and their signed JKP primitives",
+    "the five-operation monthly grammar",
+    "eight candidates per logic and round",
+    "lexicographic tie breaking",
+    "validation sign orientation",
+    "the exact 1989-1999 calibration split",
+    "one selected factor per logic",
+    "the 0.01 ridge fraction",
+    "the mapping from outer rounds to progressively richer operation families"
+  ],
+  "anti_leakage": {
+    "author_result_markers_or_unreleased_factor_pool_used_as_inputs": false,
+    "common_period_returns_used_for_factor_search": false,
+    "common_period_returns_used_for_final_model_fit": false,
+    "m048_common_result_seen_before_recipe_freeze": false,
+    "prior_other_paper_common_results_seen": true,
+    "retuning_after_common_result_permitted": false
+  }
+}
