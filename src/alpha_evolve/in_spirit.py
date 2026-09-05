@@ -2092,3 +2092,216 @@ def mountainlion_fusion_scores(
         }
         diagnostics.append(row)
     return result, pd.DataFrame(diagnostics)
+
+
+def contesttrade_dual_contest_scores(
+    frame: pd.DataFrame,
+    data_agents: list[tuple[str, int]],
+    research_agents: dict[str, dict[str, object]],
+    *,
+    common_start: str,
+    data_history_months: int = 24,
+    data_recent_trend_months: int = 6,
+    data_context_budget_agents: int = 8,
+    research_context_weight: float = 0.5,
+    research_belief_weight: float = 0.5,
+    research_history_months: int = 24,
+    qualitative_judge_weight: float = 0.1,
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Run deterministic ContestTrade-style Data and Research contests."""
+    if len(data_agents) != 16 or len({feature for feature, _ in data_agents}) != 16:
+        raise ValueError("ContestTrade requires sixteen unique Data Agents")
+    expected_research = [
+        "momentum",
+        "reversal",
+        "fundamentals",
+        "event_driven",
+        "risk_control",
+    ]
+    if list(research_agents) != expected_research:
+        raise ValueError("ContestTrade requires the five frozen Research Agents in order")
+    if research_context_weight + research_belief_weight != 1.0:
+        raise ValueError("ContestTrade context and belief weights must sum to one")
+    if not 0 <= qualitative_judge_weight < 1:
+        raise ValueError("ContestTrade qualitative judge weight is invalid")
+    all_specifications = [
+        *data_agents,
+        *[
+            (str(item["column"]), int(item["sign"]))
+            for specification in research_agents.values()
+            for item in specification["features"]
+        ],
+    ]
+    features = list(dict.fromkeys(feature for feature, _ in all_specifications))
+    missing = {"month", "ret_exc_lead1m", *features} - set(frame)
+    if missing:
+        raise ValueError(f"missing ContestTrade inputs: {sorted(missing)}")
+    if any(sign not in {-1, 1} for _, sign in all_specifications):
+        raise ValueError("ContestTrade feature signs must be -1 or 1")
+
+    ranked = cross_sectional_unit_rank(frame, features)
+    data_names = [feature for feature, _ in data_agents]
+    data_raw = pd.DataFrame(
+        {feature: ranked[feature] * sign for feature, sign in data_agents},
+        index=frame.index,
+    )
+    data_scores = cross_sectional_unit_rank(
+        pd.concat([frame[["month"]], data_raw], axis=1),
+        data_names,
+    )
+    data_rankics = monthly_rankic(frame, data_scores)
+
+    beliefs: dict[str, pd.Series] = {}
+    judge_scores: dict[str, float] = {}
+    for agent, specification in research_agents.items():
+        signed = pd.concat(
+            [
+                ranked[str(item["column"])] * int(item["sign"])
+                for item in specification["features"]
+            ],
+            axis=1,
+        )
+        beliefs[agent] = signed.mean(axis=1, skipna=False)
+        judge = float(specification["judge_score_1_to_5"])
+        if not 1 <= judge <= 5:
+            raise ValueError("ContestTrade judge scores must be between one and five")
+        judge_scores[agent] = judge
+    belief_scores = cross_sectional_unit_rank(
+        pd.concat([frame[["month"]], pd.DataFrame(beliefs)], axis=1),
+        expected_research,
+    )
+
+    all_months = sorted(pd.Timestamp(month) for month in frame["month"].unique())
+    month_groups = frame.groupby("month", sort=False).groups
+    research_raw = pd.DataFrame(np.nan, index=frame.index, columns=expected_research)
+    data_diagnostics: dict[pd.Timestamp, dict[str, object]] = {}
+    for position in range(data_history_months, len(all_months)):
+        month = all_months[position]
+        history = data_rankics.iloc[position - data_history_months : position]
+        if len(history) != data_history_months:
+            raise AssertionError("ContestTrade Data Contest history changed")
+        recent = history.iloc[-data_recent_trend_months:]
+        preceding = history.iloc[-2 * data_recent_trend_months : -data_recent_trend_months]
+        utility = history.mean() + 0.5 * (recent.mean() - preceding.mean())
+        if not np.isfinite(utility).all():
+            raise ValueError(f"ContestTrade Data Agent utility is incomplete at {month.date()}")
+        indices = month_groups[month]
+        current = data_scores.loc[indices]
+        similarity = current.corr(min_periods=20).abs().fillna(0.0)
+        np.fill_diagonal(similarity.values, 1.0)
+        positive = sorted(name for name in data_names if utility[name] > 0)
+        fallback = not positive
+        if fallback:
+            positive = [sorted(data_names, key=lambda name: (-float(utility[name]), name))[0]]
+        selected: list[str] = []
+        coverage = np.zeros(len(data_names), dtype=float)
+        while len(selected) < min(data_context_budget_agents, len(positive)):
+            candidates = [name for name in positive if name not in selected]
+            gains = {}
+            for name in candidates:
+                effective_utility = max(float(utility[name]), 0.0)
+                if fallback:
+                    effective_utility = 1.0
+                candidate_coverage = effective_utility * similarity.loc[name, data_names].to_numpy(dtype=float)
+                gains[name] = float(np.maximum(coverage, candidate_coverage).sum() - coverage.sum())
+            chosen = sorted(candidates, key=lambda name: (-gains[name], name))[0]
+            effective_utility = max(float(utility[chosen]), 0.0)
+            if fallback:
+                effective_utility = 1.0
+            coverage = np.maximum(
+                coverage,
+                effective_utility * similarity.loc[chosen, data_names].to_numpy(dtype=float),
+            )
+            selected.append(chosen)
+        selected_utility = utility[selected].clip(lower=0.0)
+        if fallback:
+            selected_utility[:] = 1.0
+        data_weights = selected_utility / selected_utility.sum()
+        selected_values = current[selected].to_numpy(dtype=float)
+        finite = np.isfinite(selected_values)
+        numerator = np.where(finite, selected_values * data_weights.to_numpy(), 0.0).sum(axis=1)
+        denominator = np.where(finite, data_weights.to_numpy(), 0.0).sum(axis=1)
+        context = np.divide(
+            numerator,
+            denominator,
+            out=np.full(len(indices), np.nan),
+            where=denominator > 0,
+        )
+        for agent in expected_research:
+            belief = belief_scores.loc[indices, agent].to_numpy(dtype=float)
+            research_raw.loc[indices, agent] = (
+                research_context_weight * context + research_belief_weight * belief
+            )
+        data_diagnostics[month] = {
+            "data_history_start": str(history.index[0].date()),
+            "data_history_end": str(history.index[-1].date()),
+            "data_history_months": len(history),
+            "data_candidate_count": len(data_names),
+            "data_positive_utility_count": len(positive) if not fallback else 0,
+            "data_selected_count": len(selected),
+            "selected_data_agents": "|".join(selected),
+            "data_no_positive_fallback": fallback,
+        }
+
+    research_scores = cross_sectional_unit_rank(
+        pd.concat([frame[["month"]], research_raw], axis=1),
+        expected_research,
+    )
+    research_rankics = monthly_rankic(frame, research_scores)
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    diagnostics: list[dict[str, object]] = []
+    common_months = sorted(
+        pd.Timestamp(month)
+        for month in frame.loc[frame["month"] >= common_start, "month"].unique()
+    )
+    for month in common_months:
+        history = research_rankics.loc[research_rankics.index < month].tail(
+            research_history_months
+        )
+        if len(history) != research_history_months or history.notna().sum().min() != research_history_months:
+            raise ValueError(f"ContestTrade Research Contest history is incomplete at {month.date()}")
+        predicted_sharpe = history.mean() / history.std(ddof=1)
+        quantitative = predicted_sharpe.clip(lower=0.0)
+        judge = pd.Series(judge_scores)
+        weighted = quantitative * (
+            1.0 - qualitative_judge_weight + qualitative_judge_weight * judge / 5.0
+        )
+        fallback = not bool((weighted > 0).any())
+        if fallback:
+            chosen = sorted(
+                expected_research,
+                key=lambda name: (-float(predicted_sharpe[name]), name),
+            )[0]
+            allocation = pd.Series(0.0, index=expected_research)
+            allocation[chosen] = 1.0
+        else:
+            allocation = weighted / weighted.sum()
+        indices = month_groups[month]
+        current = research_scores.loc[indices, expected_research].to_numpy(dtype=float)
+        finite = np.isfinite(current)
+        numerator = np.where(finite, current * allocation.to_numpy(), 0.0).sum(axis=1)
+        denominator = np.where(finite, allocation.to_numpy(), 0.0).sum(axis=1)
+        score = np.divide(
+            numerator,
+            denominator,
+            out=np.full(len(indices), np.nan),
+            where=denominator > 0,
+        )
+        result.loc[indices] = score
+        row: dict[str, object] = {
+            "formation_month": str(month.date()),
+            **data_diagnostics[month],
+            "research_history_start": str(history.index[0].date()),
+            "research_history_end": str(history.index[-1].date()),
+            "research_history_months": len(history),
+            "research_agent_count": len(expected_research),
+            "research_positive_utility_count": int((quantitative > 0).sum()),
+            "research_no_positive_fallback": fallback,
+            "finite_scores": int(np.isfinite(score).sum()),
+        }
+        for agent in expected_research:
+            row[f"predicted_sharpe__{agent}"] = float(predicted_sharpe[agent])
+            row[f"judge_score__{agent}"] = judge_scores[agent]
+            row[f"allocation__{agent}"] = float(allocation[agent])
+        diagnostics.append(row)
+    return result, pd.DataFrame(diagnostics)
