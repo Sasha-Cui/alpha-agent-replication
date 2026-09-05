@@ -3874,3 +3874,164 @@ def factfin_counterfactual_mcts_scores(
         "counterfactual_scenarios": counterfactual_scenarios,
     }
     return final_score, pd.DataFrame(history_rows), summary
+
+
+def atlas_adaptive_opro_scores(
+    frame: pd.DataFrame,
+    analysts: dict[str, list[tuple[str, int]]],
+    *,
+    common_start: str,
+    evaluation_window_decisions: int = 5,
+    initial_analyst_weights: dict[str, float] | None = None,
+    initial_hold_threshold: float = 0.1,
+    hold_threshold_bounds: tuple[float, float] = (0.0, 0.4),
+    poor_window_threshold_increment: float = 0.05,
+    successful_window_threshold_decrement: float = 0.02,
+    analyst_weight_update_rate: float = 0.25,
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Run a deterministic ATLAS-style five-decision Adaptive-OPRO loop."""
+    expected_analysts = ["market", "news", "fundamental"]
+    if list(analysts) != expected_analysts:
+        raise ValueError("ATLAS requires the three frozen analysts in order")
+    if evaluation_window_decisions != 5:
+        raise ValueError("ATLAS requires five-decision evaluation windows")
+    weights = pd.Series(
+        initial_analyst_weights
+        or {name: 1.0 / len(expected_analysts) for name in expected_analysts},
+        dtype=float,
+    ).reindex(expected_analysts)
+    if not np.isclose(weights.sum(), 1.0) or (weights <= 0).any():
+        raise ValueError("ATLAS analyst weights must be positive and sum to one")
+    specifications = [
+        specification
+        for analyst_specifications in analysts.values()
+        for specification in analyst_specifications
+    ]
+    features = list(dict.fromkeys(feature for feature, _ in specifications))
+    missing = {"month", "ret_exc_lead1m", *features} - set(frame)
+    if missing:
+        raise ValueError(f"missing ATLAS inputs: {sorted(missing)}")
+    if any(sign not in {-1, 1} for _, sign in specifications):
+        raise ValueError("ATLAS analyst feature signs must be -1 or 1")
+
+    ranked = cross_sectional_unit_rank(frame, features)
+    analyst_raw: dict[str, pd.Series] = {}
+    for analyst, analyst_specifications in analysts.items():
+        signed = pd.concat(
+            [ranked[feature] * sign for feature, sign in analyst_specifications],
+            axis=1,
+        )
+        analyst_raw[analyst] = signed.mean(axis=1, skipna=False)
+    analyst_scores = cross_sectional_unit_rank(
+        pd.concat([frame[["month"]], pd.DataFrame(analyst_raw)], axis=1),
+        expected_analysts,
+    )
+
+    common_months = sorted(
+        pd.Timestamp(month)
+        for month in frame.loc[frame["month"] >= common_start, "month"].unique()
+    )
+    if len(common_months) % evaluation_window_decisions:
+        raise ValueError("ATLAS common calendar does not partition into five-decision windows")
+    month_groups = frame.groupby("month", sort=False).groups
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    history: list[dict[str, object]] = []
+    hold_threshold = initial_hold_threshold
+
+    def monthly_decile_return(score: pd.Series, indices: pd.Index) -> float:
+        values = score.loc[indices]
+        outcome = pd.to_numeric(frame.loc[indices, "ret_exc_lead1m"], errors="coerce")
+        valid = values.notna() & outcome.notna()
+        values = values.loc[valid]
+        outcome = outcome.loc[valid]
+        if len(values) < 20:
+            raise ValueError("ATLAS window return has insufficient score coverage")
+        low = values.quantile(0.1)
+        high = values.quantile(0.9)
+        return float(outcome.loc[values >= high].mean() - outcome.loc[values <= low].mean())
+
+    windows = [
+        common_months[start : start + evaluation_window_decisions]
+        for start in range(0, len(common_months), evaluation_window_decisions)
+    ]
+    for version, window in enumerate(windows):
+        prompt_scores: dict[pd.Timestamp, pd.Series] = {}
+        for month in window:
+            indices = month_groups[month]
+            raw = analyst_scores.loc[indices, expected_analysts].mul(weights, axis=1).sum(
+                axis=1,
+                min_count=len(expected_analysts),
+            )
+            order_score = raw.where(raw.abs() >= hold_threshold, 0.0)
+            result.loc[indices] = order_score
+            prompt_scores[month] = order_score
+
+        central_returns = [
+            monthly_decile_return(prompt_scores[month], month_groups[month])
+            for month in window
+        ]
+        analyst_returns = {
+            analyst: [
+                monthly_decile_return(
+                    analyst_scores.loc[month_groups[month], analyst],
+                    month_groups[month],
+                )
+                for month in window
+            ]
+            for analyst in expected_analysts
+        }
+        window_roi = float(np.prod(1.0 + np.asarray(central_returns)) - 1.0)
+        standalone_roi = pd.Series(
+            {
+                analyst: float(np.prod(1.0 + np.asarray(returns)) - 1.0)
+                for analyst, returns in analyst_returns.items()
+            }
+        )
+        feedback_score = float(np.clip(50.0 + 250.0 * window_roi, 0.0, 100.0))
+        next_weights = weights.copy()
+        next_threshold = hold_threshold
+        update_applied = version < len(windows) - 1
+        if update_applied:
+            deviation = float(standalone_roi.std(ddof=0))
+            diagnosis = (
+                (standalone_roi - standalone_roi.mean()) / deviation
+                if deviation > 0
+                else pd.Series(0.0, index=standalone_roi.index)
+            )
+            logits = np.log(weights) + analyst_weight_update_rate * diagnosis
+            next_weights = np.exp(logits - logits.max())
+            next_weights /= next_weights.sum()
+            if feedback_score < 50.0:
+                next_threshold = min(
+                    hold_threshold_bounds[1],
+                    hold_threshold + poor_window_threshold_increment,
+                )
+            else:
+                next_threshold = max(
+                    hold_threshold_bounds[0],
+                    hold_threshold - successful_window_threshold_decrement,
+                )
+        action_scores = pd.concat(prompt_scores.values())
+        row: dict[str, object] = {
+            "prompt_version": version,
+            "window_start": str(window[0].date()),
+            "window_end": str(window[-1].date()),
+            "window_decisions": len(window),
+            "window_roi": window_roi,
+            "feedback_score": feedback_score,
+            "hold_threshold": hold_threshold,
+            "next_hold_threshold": next_threshold,
+            "update_applied": update_applied,
+            "buy_count": int((action_scores > 0).sum()),
+            "hold_count": int((action_scores == 0).sum()),
+            "sell_count": int((action_scores < 0).sum()),
+            "finite_scores": int(action_scores.notna().sum()),
+        }
+        for analyst in expected_analysts:
+            row[f"analyst_weight__{analyst}"] = float(weights[analyst])
+            row[f"standalone_roi__{analyst}"] = float(standalone_roi[analyst])
+            row[f"next_analyst_weight__{analyst}"] = float(next_weights[analyst])
+        history.append(row)
+        weights = next_weights
+        hold_threshold = next_threshold
+    return result, pd.DataFrame(history)
