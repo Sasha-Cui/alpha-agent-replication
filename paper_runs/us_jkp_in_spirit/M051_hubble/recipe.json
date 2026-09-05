@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M051",
+  "canonical_work_id": "CensusArxiv260409601",
+  "paper": "Hubble: An LLM-Driven Agentic Framework for Safe, Diverse, and Reproducible Alpha Factor Discovery",
+  "status": "frozen_before_jkp_result",
+  "fidelity_label": "in_spirit_reconstruction",
+  "claim_boundary": "A researcher-authored monthly U.S.-stock analogue of Hubble's safe DSL/AST candidate generation, positive/negative retrieval guidance, three-round feedback, standardized multi-metric evaluation, similarity and crowding penalties, and family-capped top-five selection; not the intentionally withheld formulas or native LLM run.",
+  "paper_source": {
+    "url": "https://arxiv.org/abs/2604.09601v2",
+    "version": "arXiv v2",
+    "pdf_sha256": "774c98f53a6fb1e32535ea0ab51a234548c3dbdb29b594a0cf537cf96275a288",
+    "source_sha256": "97acc42edc0ea803a8187f3c8d08f2007a3dec505be57a1f4affeb9b1c455318",
+    "attributable_native_implementation_or_formula_found": false,
+    "bounded_release_search_checked_2026_09_05": "Exact-title, arXiv-ID, author, and lab searches expose the paper and summaries but no attributable runtime, operator registry, candidate records, or top-five formulas."
+  },
+  "primary_source_anchors": [
+    {"anchor": "Sections 3.1-3.2 and Figures 1-2", "mechanism": "A constrained DSL and three-layer AST sandbox restrict candidates to safe interpretable operator trees while positive RAG encourages under-covered mechanisms and negative RAG discourages crowded templates."},
+    {"anchor": "Section 3.3", "mechanism": "Every valid candidate receives RankIC, Pearson IC, long-short return, turnover, coverage, and AST complexity diagnostics under one deterministic evaluation pipeline."},
+    {"anchor": "Sections 3.4-3.5", "mechanism": "Standardized metrics are combined with crowded-template, similarity, family-concentration, and novelty adjustments; top factors and family diagnostics persist into later rounds."},
+    {"anchor": "Section 4", "mechanism": "The main run uses three rounds and top-k five with at most two factors per family; the selected families are two range, two volatility, and one trend, but exact formulas are withheld."}
+  ],
+  "strict_evidence": {
+    "audit_manifest_path": "paper_runs/paper_replication_audits/hubble/manifest.json",
+    "audit_manifest_sha256": "0bae112d04ad47149aacd3f993a38a063a8449a7fd1e4d7b0bed45fc1bc5f750",
+    "source_provenance_path": "paper_runs/paper_replication_audits/hubble/source_provenance.json",
+    "source_provenance_sha256": "18a44a4775ed31da43b629a2ae0e4dfc76f4885176e5f8b984bab2b46fa92e30",
+    "method_specification_path": "paper_runs/paper_replication_audits/hubble/method_specification_audit.csv",
+    "method_specification_sha256": "d767828a71da96831eda00fbc8b9fb7026661eb49a265906d55ef9fc3585b67e",
+    "model_release_chronology_path": "paper_runs/paper_replication_audits/hubble/model_release_chronology.json",
+    "model_release_chronology_sha256": "604bd24e52caace7a6650e175b8f715df85b8b2a43ad46de5f3229442f14598e",
+    "sandbox_component_execution_path": "paper_runs/paper_replication_audits/hubble/sandbox_component_execution.json",
+    "sandbox_component_execution_sha256": "aad8448f6def61354ff963fa56d1cc3e2213c82130be1047d2029910f5986ddf"
+  },
+  "factor_families": {
+    "range": [{"column": "prc_highprc_252d", "sign": 1}, {"column": "rmax5_rvol_21d", "sign": 1}, {"column": "bidaskhl_21d", "sign": 1}, {"column": "rmax5_21d", "sign": 1}],
+    "volatility": [{"column": "rvol_21d", "sign": 1}, {"column": "ivol_capm_252d", "sign": 1}, {"column": "ivol_ff3_21d", "sign": 1}, {"column": "beta_60m", "sign": 1}],
+    "price_trend": [{"column": "ret_12_1", "sign": 1}, {"column": "ret_6_1", "sign": 1}, {"column": "prc_highprc_252d", "sign": 1}, {"column": "resff3_12_1", "sign": 1}],
+    "mean_reversion": [{"column": "ret_1_0", "sign": -1}, {"column": "rmax1_21d", "sign": -1}, {"column": "rmax5_21d", "sign": -1}, {"column": "rskew_21d", "sign": -1}],
+    "liquidity_volume": [{"column": "turnover_126d", "sign": 1}, {"column": "dolvol_126d", "sign": 1}, {"column": "zero_trades_126d", "sign": -1}, {"column": "ami_126d", "sign": -1}],
+    "price_volume_interaction": [{"column": "ret_6_1", "sign": 1}, {"column": "turnover_126d", "sign": 1}, {"column": "dolvol_var_126d", "sign": -1}, {"column": "rvol_21d", "sign": -1}]
+  },
+  "safe_search_policy": {
+    "prehistory_formation_start": "1989-01-31",
+    "calibration_start": "1989-01-31",
+    "calibration_end": "1999-06-30",
+    "common_start": "1999-07-31",
+    "mining_rounds": 3,
+    "dsl_operations": ["identity", "pair_mean", "pair_product", "pair_difference", "positive_gate"],
+    "ast_max_depth": 4,
+    "ast_max_nodes": 7,
+    "positive_rag_families": ["range", "volatility", "price_trend", "mean_reversion", "price_volume_interaction"],
+    "negative_rag_crowded_family": "liquidity_volume",
+    "negative_rag_penalty": 0.25,
+    "metrics": ["rankic_ir", "pearson_ic_ir", "long_short_mean", "turnover", "coverage", "complexity"],
+    "metric_weights": {"rankic_ir": 0.30, "pearson_ic_ir": 0.20, "long_short_mean": 0.25, "turnover": -0.10, "coverage": 0.10, "complexity": -0.05},
+    "metric_standardization": "cross-candidate z-score followed by tanh",
+    "similarity_metric": "absolute calibration RankIC-series correlation",
+    "maximum_similarity": 0.80,
+    "family_cap": 2,
+    "top_k": 5,
+    "feedback_rule": "each later round excludes exact prior candidates and rewards families absent from the current selected set",
+    "novelty_bonus": 0.10,
+    "final_score": "equal mean of the five validation-oriented selected factor ranks",
+    "common_portfolio_adapter": "the frozen top-five score enters value-weighted long-short deciles and all six common cost/missing-return paths",
+    "final_common_returns_used_for_search": false
+  },
+  "preserved_elements": ["safe DSL-constrained factor generation", "AST structural, complexity, and semantic validation", "three iterative mining rounds", "positive and negative retrieval guidance", "deterministic RankIC and Pearson IC evaluation", "long-short return, turnover, coverage, and complexity diagnostics", "standardized multi-metric scoring", "formula-similarity penalty", "crowded-template penalty", "family-aware novelty reward", "two-per-family cap", "top-five selection", "persistent round feedback"],
+  "approximated_elements": ["JKP technical characteristics replace raw daily OHLCV", "five transparent operations replace the private operator registry", "deterministic enumeration replaces LLM generation", "family exemplars replace positive RAG documents", "a liquidity-volume family penalty replaces negative RAG retrieval", "pre-common 1989-1999 evaluation replaces the native discovery slice", "cross-candidate z/tanh standardization replaces undisclosed centers and scales", "equal selected-factor aggregation replaces absent formulas and portfolio rules"],
+  "invented_elements": ["the six four-primitive family registries", "the candidate enumeration order and per-round partition", "AST depth four and seven-node caps", "the metric weights", "the 0.25 crowded penalty", "the 0.10 novelty bonus", "the 0.80 similarity ceiling", "the 1989-1999 calibration period", "validation sign orientation"],
+  "anti_leakage": {"withheld_top_five_formulas_inferred_from_plots": false, "paper_oos_values_used_as_inputs": false, "common_period_returns_used_for_search": false, "m051_common_result_seen_before_recipe_freeze": false, "prior_other_paper_common_results_seen": true, "retuning_after_common_result_permitted": false}
+}
