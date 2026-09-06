@@ -14,10 +14,10 @@
   "declared_inference_family_size": 69,
   "progress_summary": {
     "carried_common_evaluation": 17,
-    "completed_in_spirit": 39,
+    "completed_in_spirit": 40,
     "discarded_structural_mismatch": 7,
     "in_progress_in_spirit": 1,
-    "queued_in_spirit": 5
+    "queued_in_spirit": 4
   },
   "milestones": [
     {
@@ -1150,15 +1150,15 @@
       "strict_recipe_path": "paper_runs/us_jkp_headline/M060_metaps/recipe.json",
       "strict_verdict_path": "paper_runs/us_jkp_headline/M060_metaps/verdict.md",
       "strict_metrics_path": "",
-      "status": "in_progress_in_spirit",
+      "status": "completed_in_spirit",
       "fidelity_label": "in_spirit_reconstruction",
-      "recipe_path": "",
-      "implementation_path": "",
-      "run_manifest_path": "",
-      "monthly_returns_path": "",
-      "metrics_path": "",
-      "verdict_path": "",
-      "next_action": "Freeze one MetaPS-inspired researcher reconstruction before inspecting its JKP result."
+      "recipe_path": "paper_runs/us_jkp_in_spirit/M060_metaps/recipe.json",
+      "implementation_path": "scripts/run_metaps_in_spirit.py",
+      "run_manifest_path": "paper_runs/us_jkp_in_spirit/M060_metaps/run_manifest.json",
+      "monthly_returns_path": "paper_runs/us_jkp_in_spirit/M060_metaps/monthly_returns.csv",
+      "metrics_path": "paper_runs/us_jkp_in_spirit/M060_metaps/metrics.csv",
+      "verdict_path": "paper_runs/us_jkp_in_spirit/M060_metaps/verdict.md",
+      "next_action": "Complete. Retain the frozen loss-making MetaPS-inspired V3 router without retuning."
     },
     {
       "milestone_id": "M061",
@@ -1169,7 +1169,7 @@
       "strict_recipe_path": "paper_runs/us_jkp_headline/M061_agora/recipe.json",
       "strict_verdict_path": "paper_runs/us_jkp_headline/M061_agora/verdict.md",
       "strict_metrics_path": "",
-      "status": "queued_in_spirit",
+      "status": "in_progress_in_spirit",
       "fidelity_label": "in_spirit_reconstruction",
       "recipe_path": "",
       "implementation_path": "",
@@ -1177,7 +1177,7 @@
       "monthly_returns_path": "",
       "metrics_path": "",
       "verdict_path": "",
-      "next_action": "Wait until prior active reconstruction is committed."
+      "next_action": "Freeze one AGORA-inspired researcher reconstruction before inspecting its JKP result."
     },
     {
       "milestone_id": "M062",
