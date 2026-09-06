@@ -28,6 +28,7 @@ def test_m055_recipe_freezes_sharp_mechanism_before_result():
         "news_count_low",
     ]
     policy = recipe["evolution_policy"]
+    assert policy["prehistory_formation_start"] == "1989-07-31"
     assert (policy["training_months"], policy["validation_months"], policy["frozen_test_months"]) == (48, 12, 24)
     assert policy["evolution_rounds"] == 5
     assert policy["worst_training_months"] == 20

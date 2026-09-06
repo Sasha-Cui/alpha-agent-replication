@@ -86,7 +86,7 @@
     "fear_quantile": 0.8
   },
   "evolution_policy": {
-    "prehistory_formation_start": "1994-07-31",
+    "prehistory_formation_start": "1989-07-31",
     "training_months": 48,
     "validation_months": 12,
     "frozen_test_months": 24,
