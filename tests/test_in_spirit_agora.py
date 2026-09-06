@@ -40,6 +40,7 @@ def fixture() -> pd.DataFrame:
     frame["ret_exc_lead1m"] = (
         0.02 * frame.ret_12_1 + 0.01 * frame.gp_at - 0.008 * frame.rvol_21d + rng.normal(0.0, 0.08, len(frame))
     )
+    frame.loc[frame.security_id.eq(0), SEEDS] = np.nan
     return frame
 
 

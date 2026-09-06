@@ -1516,7 +1516,8 @@ def agora_sealed_joint_search_scores(
     values = library[selected_names]
     means = values.groupby(frame["month"], sort=False).transform("mean")
     deviations = values.groupby(frame["month"], sort=False).transform("std").replace(0.0, np.nan)
-    composite = ((values - means) / deviations).mean(axis=1)
+    standardized = ((values - means) / deviations).fillna(0.0)
+    composite = standardized.mean(axis=1)
     result = composite.where(frame["month"] >= pd.Timestamp(common_start))
     registry["selected_top30"] = registry["alpha"].isin(selected_names)
     registry["final_selection_rank"] = registry["mean_rankic"].rank(method="first", ascending=False)
