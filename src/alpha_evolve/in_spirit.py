@@ -1208,6 +1208,321 @@ def metaps_v3_router_scores(
     return result, pd.DataFrame(rows), rollout.reset_index()
 
 
+def agora_alpha_library(
+    frame: pd.DataFrame,
+    seed_features: list[str],
+) -> tuple[pd.DataFrame, dict[str, tuple[str, ...]]]:
+    """Build the frozen 145-expression AlphaGen-style AGORA grammar."""
+    if len(seed_features) != 10 or len(set(seed_features)) != 10:
+        raise ValueError("AGORA requires ten unique seed features")
+    missing = {"month", *seed_features} - set(frame)
+    if missing:
+        raise ValueError(f"missing AGORA seed inputs: {sorted(missing)}")
+    ranked = cross_sectional_unit_rank(frame, seed_features)
+    generated: dict[str, pd.Series] = {}
+    components: dict[str, tuple[str, ...]] = {}
+    for feature in seed_features:
+        name = f"identity__{feature}"
+        generated[name] = ranked[feature]
+        components[name] = (feature,)
+    for left, right in combinations(seed_features, 2):
+        for operation, values in (
+            ("pair_mean", (ranked[left] + ranked[right]) / 2.0),
+            ("pair_difference", ranked[left] - ranked[right]),
+            ("pair_product", ranked[left] * ranked[right]),
+        ):
+            name = f"{operation}__{left}__{right}"
+            generated[name] = values
+            components[name] = (left, right)
+    if len(generated) != 145:
+        raise AssertionError("frozen AGORA grammar must generate 145 expressions")
+    raw = pd.DataFrame(generated, index=frame.index)
+    library = cross_sectional_unit_rank(pd.concat([frame[["month"]], raw], axis=1), list(raw))
+    return library, components
+
+
+def _agora_monotonicity(
+    frame: pd.DataFrame,
+    scores: pd.Series,
+    months: list[pd.Timestamp],
+    quantile_groups: int,
+) -> float:
+    groups = frame.groupby("month", sort=False).groups
+    values: list[float] = []
+    for month in months:
+        indices = groups[month]
+        sample = pd.DataFrame(
+            {
+                "score": scores.loc[indices],
+                "return": pd.to_numeric(frame.loc[indices, "ret_exc_lead1m"], errors="coerce"),
+            }
+        ).dropna()
+        if len(sample) < quantile_groups * 4:
+            continue
+        ordered = sample.sort_values("score", kind="mergesort")
+        partitions = np.array_split(ordered["return"].to_numpy(float), quantile_groups)
+        group_returns = np.array([part.mean() for part in partitions])
+        return_ranks = pd.Series(group_returns).rank(method="average").to_numpy(float)
+        correlation = float(np.corrcoef(np.arange(1, quantile_groups + 1), return_ranks)[0, 1])
+        if np.isfinite(correlation):
+            values.append(correlation)
+    if not values:
+        return 0.0
+    result = float(np.mean(values))
+    if len(values) > 2:
+        result -= max(0.0, float(np.std(values)) - 0.3) * 0.5
+    return float(np.clip(result, -1.0, 1.0))
+
+
+def _agora_drawdown_metric(
+    frame: pd.DataFrame,
+    holdings: dict[pd.Timestamp, pd.Series],
+    months: list[pd.Timestamp],
+) -> float:
+    groups = frame.groupby("month", sort=False).groups
+    net_excess: list[float] = []
+    turnovers: list[float] = []
+    previous_top: set[object] | None = None
+    for month in months:
+        indices = groups[month]
+        part = frame.loc[indices].set_index("security_id")
+        top = holdings[month].loc[holdings[month] > 0]
+        top_return = float(np.dot(top.to_numpy(), part["ret_exc_lead1m"].reindex(top.index).fillna(0.0)))
+        market_return = float(pd.to_numeric(part["ret_exc_lead1m"], errors="coerce").mean())
+        membership = set(top.index)
+        turnover = 1.0 if previous_top is None else 1.0 - len(membership & previous_top) / max(len(membership), 1)
+        net_excess.append(top_return - market_return - 0.001 * turnover)
+        turnovers.append(turnover)
+        previous_top = membership
+    values = np.asarray(net_excess, dtype=float)
+    cumulative = np.cumsum(values)
+    drawdown = cumulative - np.maximum.accumulate(cumulative)
+    maximum_drawdown = float(drawdown.min())
+    annualized_excess = float(values.sum() * 12.0 / len(values))
+    if maximum_drawdown < -0.30:
+        drawdown_penalty = -0.5
+    elif maximum_drawdown < -0.20:
+        drawdown_penalty = -0.25 + (maximum_drawdown + 0.20) * 1.25
+    elif maximum_drawdown < -0.10:
+        drawdown_penalty = -0.05 + (maximum_drawdown + 0.10) * 0.5
+    else:
+        drawdown_penalty = 0.0
+    turnover_penalty = -max(0.0, float(np.mean(turnovers[1:])) - 0.3) * 0.3
+    return float(np.clip(0.5 * np.tanh(annualized_excess * 5.0) + drawdown_penalty + turnover_penalty, -1.0, 1.0))
+
+
+def _agora_candidate_metrics(
+    frame: pd.DataFrame,
+    library: pd.DataFrame,
+    training: list[pd.Timestamp],
+    *,
+    tail_fraction: float,
+    minimum_side: int,
+    cost_bps_one_way: float,
+    quantile_groups: int,
+) -> pd.DataFrame:
+    rankics = monthly_rankic(frame, library).loc[training]
+    rows: list[dict[str, object]] = []
+    for name in library:
+        path, holdings = _sharp_tail_path(
+            frame,
+            library[name],
+            training,
+            tail_fraction=tail_fraction,
+            minimum_side=minimum_side,
+            cost_bps_one_way=cost_bps_one_way,
+        )
+        deviation = float(path.std(ddof=1))
+        ic_deviation = float(rankics[name].std(ddof=1))
+        rows.append(
+            {
+                "alpha": name,
+                "mean_rankic": float(rankics[name].mean()),
+                "rankicir": float(rankics[name].mean() / ic_deviation) if ic_deviation > 0 else 0.0,
+                "long_short_sharpe": float(np.sqrt(12.0) * path.mean() / deviation) if deviation > 0 else 0.0,
+                "stability": float(1.0 / (1.0 + ic_deviation)),
+                "monotonicity_score_v1": _agora_monotonicity(frame, library[name], training, quantile_groups),
+                "excess_drawdown_penalty_v1": _agora_drawdown_metric(frame, holdings, training),
+            }
+        )
+    result = pd.DataFrame(rows).set_index("alpha")
+    for name in list(result.columns):
+        result[f"rank__{name}"] = result[name].rank(method="average", pct=True) * 2.0 - 1.0
+    return result
+
+
+def agora_sealed_joint_search_scores(
+    frame: pd.DataFrame,
+    seed_features: list[str],
+    panel_weights: dict[str, float],
+    metric_proposal_rounds: dict[str, int],
+    *,
+    common_start: str,
+    training_months: int = 120,
+    outer_rounds: int = 100,
+    target_unique_alphas: int = 94,
+    final_top_alpha_count: int = 30,
+    exploration_every_rounds: int = 10,
+    auto_promotion_absolute_correlation: float = 0.3,
+    demotion_absolute_correlation: float = 0.05,
+    minimum_promotion_observations: int = 20,
+    monotonicity_panel_accepts_positive_correlation: bool = True,
+    ppo_relay_decay: float = 0.9,
+    ppo_relay_learning_rate: float = 0.1,
+    inner_tail_fraction: float = 0.1,
+    inner_minimum_side: int = 20,
+    inner_cost_bps_one_way: float = 10.0,
+    metric_quantile_groups: int = 5,
+) -> tuple[pd.Series, pd.DataFrame, pd.DataFrame]:
+    """Run a training-sealed AGORA-style joint alpha and metric search."""
+    if list(panel_weights) != ["mean_rankic", "rankicir", "long_short_sharpe", "evolved_metric"]:
+        raise ValueError("AGORA evaluator panel weights changed")
+    if not np.isclose(sum(panel_weights.values()), 1.0):
+        raise ValueError("AGORA evaluator weights do not sum to one")
+    if list(metric_proposal_rounds) != ["monotonicity_score_v1", "excess_drawdown_penalty_v1"] or not all(
+        1 <= round_value <= outer_rounds for round_value in metric_proposal_rounds.values()
+    ):
+        raise ValueError("AGORA metric proposal schedule changed")
+    if not 0 < target_unique_alphas <= outer_rounds or final_top_alpha_count > target_unique_alphas:
+        raise ValueError("AGORA registry or top-alpha count is invalid")
+    library, components = agora_alpha_library(frame, seed_features)
+    months = sorted(pd.Timestamp(month) for month in frame["month"].unique())
+    common_months = [month for month in months if month >= pd.Timestamp(common_start)]
+    boundary = months.index(common_months[0])
+    training = months[boundary - training_months : boundary]
+    if len(training) != training_months:
+        raise ValueError("AGORA training prehistory is incomplete")
+    metrics = _agora_candidate_metrics(
+        frame,
+        library,
+        training,
+        tail_fraction=inner_tail_fraction,
+        minimum_side=inner_minimum_side,
+        cost_bps_one_way=inner_cost_bps_one_way,
+        quantile_groups=metric_quantile_groups,
+    )
+    remaining = set(library.columns)
+    registry_rows: list[dict[str, object]] = []
+    round_rows: list[dict[str, object]] = []
+    accepted_metrics: list[str] = []
+    metric_status = {name: "builtin" for name in panel_weights if name != "evolved_metric"}
+    metric_status["stability"] = "builtin"
+    metric_status.update({name: "unproposed" for name in metric_proposal_rounds})
+    skill_weights = {name: 0.0 for name in seed_features}
+    usage = {name: 0 for name in seed_features}
+
+    for round_number in range(1, outer_rounds + 1):
+        advisory = min(seed_features, key=lambda name: (usage[name], seed_features.index(name)))
+        selected = ""
+        selected_priority = float("nan")
+        if len(registry_rows) < target_unique_alphas:
+            evolved_columns = accepted_metrics or ["stability"]
+            evolved_rank = metrics[[f"rank__{name}" for name in evolved_columns]].mean(axis=1)
+            panel = (
+                panel_weights["mean_rankic"] * metrics["rank__mean_rankic"]
+                + panel_weights["rankicir"] * metrics["rank__rankicir"]
+                + panel_weights["long_short_sharpe"] * metrics["rank__long_short_sharpe"]
+                + panel_weights["evolved_metric"] * evolved_rank
+            )
+            priority: dict[str, float] = {}
+            novelty: dict[str, int] = {}
+            for name in remaining:
+                seeds = components[name]
+                relay = float(np.mean([skill_weights[seed] for seed in seeds]))
+                priority[name] = float(panel[name] + 0.1 * relay + (0.05 if advisory in seeds else 0.0))
+                novelty[name] = sum(usage[seed] == 0 for seed in seeds)
+            if round_number % exploration_every_rounds == 0:
+                selected = max(remaining, key=lambda name: (novelty[name], priority[name], name))
+            else:
+                selected = max(remaining, key=lambda name: (priority[name], name))
+            selected_priority = priority[selected]
+            row = metrics.loc[selected].to_dict()
+            registry_rows.append(
+                {
+                    "round": round_number,
+                    "alpha": selected,
+                    "components": "|".join(components[selected]),
+                    "advisory_seed": advisory,
+                    "panel_priority": selected_priority,
+                    **{name: float(value) for name, value in row.items() if not name.startswith("rank__")},
+                }
+            )
+            remaining.remove(selected)
+            for seed in skill_weights:
+                skill_weights[seed] *= ppo_relay_decay
+            for seed in components[selected]:
+                skill_weights[seed] += ppo_relay_learning_rate * abs(float(metrics.loc[selected, "mean_rankic"]))
+                usage[seed] += 1
+
+        proposal = next((name for name, round_value in metric_proposal_rounds.items() if round_value == round_number), "")
+        metric_correlation = float("nan")
+        metric_action = "none"
+        if proposal:
+            registry_frame = pd.DataFrame(registry_rows)
+            if len(registry_frame) >= minimum_promotion_observations:
+                metric_correlation = float(
+                    registry_frame[proposal].corr(registry_frame["long_short_sharpe"], method="spearman")
+                )
+            metric_status[proposal] = "trial"
+            if proposal == "monotonicity_score_v1":
+                promote = monotonicity_panel_accepts_positive_correlation and metric_correlation > 0
+            else:
+                promote = (
+                    len(registry_frame) >= minimum_promotion_observations
+                    and metric_correlation >= auto_promotion_absolute_correlation
+                )
+            if promote:
+                metric_status[proposal] = "accepted"
+                accepted_metrics.append(proposal)
+                metric_action = "promote"
+            else:
+                metric_status[proposal] = "rejected"
+                metric_action = "reject"
+        for name in list(accepted_metrics):
+            registry_frame = pd.DataFrame(registry_rows)
+            correlation = float(registry_frame[name].corr(registry_frame["long_short_sharpe"], method="spearman"))
+            if len(registry_frame) >= minimum_promotion_observations and abs(correlation) < demotion_absolute_correlation:
+                accepted_metrics.remove(name)
+                metric_status[name] = "rejected"
+                if not proposal:
+                    proposal = name
+                    metric_correlation = correlation
+                    metric_action = "demote"
+        round_rows.append(
+            {
+                "round": round_number,
+                "channel_a_advisory_seed": advisory,
+                "proposed_alpha": selected,
+                "alpha_panel_priority": selected_priority,
+                "registry_size": len(registry_rows),
+                "metric_proposal": proposal,
+                "metric_pred_corr": metric_correlation,
+                "metric_action": metric_action,
+                "accepted_metrics": "|".join(accepted_metrics),
+                "metric_store_state": "|".join(f"{name}:{metric_status[name]}" for name in metric_status),
+                "ppo_relay_nonzero_skills": sum(value > 0 for value in skill_weights.values()),
+                "channel_b_brief_records": 2,
+                "channel_c_wiki_commit": True,
+            }
+        )
+
+    registry = pd.DataFrame(registry_rows)
+    if len(registry) != target_unique_alphas:
+        raise ValueError("AGORA alpha registry did not reach its frozen capacity")
+    selected_alphas = registry.sort_values(["mean_rankic", "alpha"], ascending=[False, True], kind="mergesort").head(
+        final_top_alpha_count
+    )
+    selected_names = selected_alphas["alpha"].tolist()
+    values = library[selected_names]
+    means = values.groupby(frame["month"], sort=False).transform("mean")
+    deviations = values.groupby(frame["month"], sort=False).transform("std").replace(0.0, np.nan)
+    composite = ((values - means) / deviations).mean(axis=1)
+    result = composite.where(frame["month"] >= pd.Timestamp(common_start))
+    registry["selected_top30"] = registry["alpha"].isin(selected_names)
+    registry["final_selection_rank"] = registry["mean_rankic"].rank(method="first", ascending=False)
+    return result, registry, pd.DataFrame(round_rows)
+
+
 def stratllm_alignment_scores(
     frame: pd.DataFrame,
     multi_source_state: dict[str, list[tuple[str, int]]],
