@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M054",
+  "canonical_work_id": "CensusArxiv260506024",
+  "paper": "Strat-LLM: Stratified Strategy Alignment for LLM-based Stock Trading with Real-time Multi-Source Signals",
+  "status": "frozen_before_jkp_result",
+  "fidelity_label": "in_spirit_reconstruction",
+  "claim_boundary": "A researcher-authored monthly U.S.-stock analogue of Strat-LLM's price/news/report state, four expert strategy motifs, Free/Guided/Strict alignment modes, regime-dependent scaffolding, buy/hold/sell actions, and next-period execution; not the unreleased prompts, live model calls, intraday inputs, or broker paths.",
+  "paper_source": {"url": "https://arxiv.org/abs/2605.06024v1", "version": "arXiv v1", "pdf_sha256": "277597d5da577c628aa589bea40c77c2dfabe70e15b990466307aa1495ace9ab", "source_sha256": "902b798ce49e59d1f88b48a34219fbfcba25b6410f323bf060f502e07fd1585a", "attributable_implementation_or_actions_found": false, "bounded_release_search_checked_2026_09_05": "The advertised project page and exact code searches still expose no attributable implementation, data, prompts, or actions."},
+  "primary_source_anchors": [
+    {"anchor": "Section 3A and Figure 1", "mechanism": "Sequential prices, real-time news, and annual reports form a contamination-free multi-source state before each decision."},
+    {"anchor": "Section 3B", "mechanism": "S1 short-term reversal, S2 breakout momentum, S3 volatility compression, and S4 price-volume confirmation define the external strategy taxonomy."},
+    {"anchor": "Section 3B interaction modes", "mechanism": "Free uses internal intuition, Guided adapts the four strategies to current information, and Strict adheres to them as a risk anchor."},
+    {"anchor": "Main results and regime discussion", "mechanism": "Alignment utility is regime-dependent: flexible modes capture uptrends while Strict mitigates downside in falling markets; no universal model/mode is selected."}
+  ],
+  "strict_evidence": {
+    "audit_manifest_path": "paper_runs/paper_replication_audits/stratllm/manifest.json", "audit_manifest_sha256": "a6f2fe70a78fac9ea2e0de43b71596c7eaf5fbba56141a0d659c2b78346717c6",
+    "source_provenance_path": "paper_runs/paper_replication_audits/stratllm/source_provenance.json", "source_provenance_sha256": "32a190512567f8a277afedab6c13f263fa7f7366b87c7ecf47d932fa14e93e84",
+    "method_specification_path": "paper_runs/paper_replication_audits/stratllm/method_specification_audit.csv", "method_specification_sha256": "bc92a90b18fae4b85c08c26b4bc6abd1c4ccc9d3cdfa4bd037cee39c1f466d17",
+    "strategy_specification_path": "paper_runs/paper_replication_audits/stratllm/strategy_specification_audit.csv", "strategy_specification_sha256": "70a6c42bd9d98463d7199bcbfa5075b64d8adf57a101899637cce96cbcf66146",
+    "procedure_component_path": "paper_runs/paper_replication_audits/stratllm/procedure_component_execution.json", "procedure_component_sha256": "99bb96ff90ee8f26f59e0fc03f32e54061975c2702a9716cc5a34b3a1d2d9c57"
+  },
+  "multi_source_state": {
+    "price": [{"column": "ret_12_1", "sign": 1}, {"column": "ret_6_1", "sign": 1}, {"column": "ret_1_0", "sign": 1}, {"column": "rvol_21d", "sign": -1}],
+    "news": [{"column": "niq_su", "sign": 1}, {"column": "saleq_su", "sign": 1}, {"column": "ret_1_0", "sign": 1}, {"column": "turnover_126d", "sign": 1}],
+    "annual_report": [{"column": "be_me", "sign": 1}, {"column": "gp_at", "sign": 1}, {"column": "ocf_at", "sign": 1}, {"column": "z_score", "sign": 1}]
+  },
+  "expert_strategy_taxonomy": {
+    "S1_short_term_reversal": [{"column": "ret_1_0", "sign": -1}, {"column": "rmax5_21d", "sign": -1}],
+    "S2_breakout_momentum": [{"column": "ret_3_1", "sign": 1}, {"column": "prc_highprc_252d", "sign": 1}],
+    "S3_volatility_compression": [{"column": "rvol_21d", "sign": -1}, {"column": "ret_6_1", "sign": 1}],
+    "S4_price_volume_confirmation": [{"column": "ret_6_1", "sign": 1}, {"column": "turnover_126d", "sign": 1}]
+  },
+  "alignment_policy": {
+    "prehistory_formation_start": "1994-07-31", "source_reliability_history_months": 60, "minimum_source_rankic_months": 24, "reliability_softmax_temperature": 10.0, "reward_purge_months": 1,
+    "free_mode": "rolling-reliability-weighted multi-source state", "strict_mode": "equal mean of the four expert-strategy scores", "guided_mode": "equal blend of Free and Strict",
+    "market_regime_measure": "trailing six-month value-weighted market return", "free_mode_threshold": 0.05, "guided_mode_lower_threshold": 0.0,
+    "mode_rule": "Free above 5%, Guided from 0% through 5%, Strict below 0%", "action_hold_threshold": 0.10,
+    "action_mapping": {"buy": 1, "hold": 0, "sell": -1}, "execution_lag": "formation score earns the following monthly return", "common_portfolio_adapter": "the selected-mode continuous score enters frozen value-weighted long-short deciles and all six common paths", "final_common_returns_used_for_policy_choice": false
+  },
+  "preserved_elements": ["three multi-source input streams", "four expert strategy motifs", "Free, Guided, and Strict modes", "progressive strategy constraint", "regime-dependent alignment utility", "flexible-mode momentum participation", "Strict downside anchoring", "buy/hold/sell action semantics", "sequential next-period execution", "formation-time market-state feedback"],
+  "approximated_elements": ["JKP characteristics replace intraday prices, live news, and annual-report text", "rolling source RankIC replaces model-native intuition", "equal motif aggregation replaces incomplete S1-S4 operational rules", "a six-month market return defines regime", "deterministic regime thresholds select interaction mode", "continuous scores replace LLM action rationales", "the common monthly adapter replaces next-day-open broker execution"],
+  "invented_elements": ["the exact signed JKP source mappings", "the four two-input strategy formulas", "the 60-month reliability window", "the 10.0 reliability temperature", "the 5% Free threshold", "the equal Guided blend", "the 0.10 hold threshold"],
+  "anti_leakage": {"displayed_best_model_or_mode_selected": false, "paper_actions_or_result_table_used_as_inputs": false, "current_forward_return_used_for_current_action": false, "m054_common_result_seen_before_recipe_freeze": false, "prior_other_paper_common_results_seen": true, "retuning_after_common_result_permitted": false}
+}
