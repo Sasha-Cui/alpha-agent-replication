@@ -19,7 +19,7 @@ def test_m065_recipe_freezes_debate_pipeline_before_result():
     assert recipe["status"] == "frozen_before_jkp_result"
     assert recipe["fidelity_label"] == "in_spirit_reconstruction"
     assert recipe["paper_source"]["attributable_code_factor_library_or_result_release_found"] is False
-    assert recipe["factor_grammar"]["candidate_count"] == 222
+    assert recipe["factor_grammar"]["candidate_count"] == 210
     debate = recipe["debate_policy"]
     assert debate["existing_seed_probability"] == 0.5
     assert debate["debate_rounds"] == 10

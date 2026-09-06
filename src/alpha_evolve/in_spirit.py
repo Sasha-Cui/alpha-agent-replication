@@ -1624,6 +1624,217 @@ def fin_analyst_hierarchy_scores(
     return final.rename("score"), pd.DataFrame(rows)
 
 
+def factormad_factor_library(
+    frame: pd.DataFrame,
+    seed_features: list[str],
+) -> tuple[pd.DataFrame, dict[str, tuple[str, ...]]]:
+    """Build the frozen 210-program FactorMAD debate library."""
+    if len(seed_features) != 12 or len(set(seed_features)) != 12:
+        raise ValueError("FactorMAD requires twelve unique seed features")
+    missing = {"month", *seed_features} - set(frame)
+    if missing:
+        raise ValueError(f"missing FactorMAD seed inputs: {sorted(missing)}")
+    ranked = cross_sectional_unit_rank(frame, seed_features)
+    generated: dict[str, pd.Series] = {}
+    components: dict[str, tuple[str, ...]] = {}
+    for feature in seed_features:
+        name = f"identity__{feature}"
+        generated[name] = ranked[feature]
+        components[name] = (feature,)
+    for left, right in combinations(seed_features, 2):
+        for operation, values in (
+            ("pair_mean", (ranked[left] + ranked[right]) / 2.0),
+            ("pair_difference", ranked[left] - ranked[right]),
+            ("pair_product", ranked[left] * ranked[right]),
+        ):
+            name = f"{operation}__{left}__{right}"
+            generated[name] = values
+            components[name] = (left, right)
+    if len(generated) != 210:
+        raise AssertionError("frozen FactorMAD grammar must generate 210 programs")
+    raw = pd.DataFrame(generated, index=frame.index)
+    library = cross_sectional_unit_rank(pd.concat([frame[["month"]], raw], axis=1), list(raw))
+    return library, components
+
+
+def factormad_debate_scores(
+    frame: pd.DataFrame,
+    seed_features: list[str],
+    *,
+    common_start: str,
+    training_months: int = 120,
+    existing_seed_probability: float = 0.5,
+    debate_rounds: int = 10,
+    maximum_correction_iterations: int = 1,
+    predictive_metric_threshold: float = 0.002,
+    maximum_rankic_correlation: float = 0.98,
+    target_accepted_factors: int = 100,
+    maximum_debate_episodes: int = 300,
+    random_seed: int = 3768292,
+    ridge_penalty: float = 1.0,
+) -> tuple[pd.Series, pd.DataFrame, pd.DataFrame]:
+    """Run a training-sealed two-agent FactorMAD debate and linear model."""
+    if not 0 < existing_seed_probability < 1 or debate_rounds < 1:
+        raise ValueError("FactorMAD seed or debate policy is invalid")
+    if maximum_correction_iterations != 1:
+        raise ValueError("FactorMAD correction policy changed")
+    if not 0 < target_accepted_factors <= 210:
+        raise ValueError("FactorMAD accepted-factor target is invalid")
+    library, components = factormad_factor_library(frame, seed_features)
+    months = sorted(pd.Timestamp(month) for month in frame["month"].unique())
+    common_months = [month for month in months if month >= pd.Timestamp(common_start)]
+    boundary = months.index(common_months[0])
+    training = months[boundary - training_months : boundary]
+    if len(training) != training_months:
+        raise ValueError("FactorMAD training prehistory is incomplete")
+    rankics = monthly_rankic(frame, library).loc[training]
+    mean_rankic = rankics.mean()
+    deviation = rankics.std(ddof=1).replace(0.0, np.nan)
+    rankicir = mean_rankic.abs().div(deviation).fillna(0.0)
+    quality = rankicir.rank(method="average", pct=True) + 0.5 * mean_rankic.abs().rank(
+        method="average", pct=True
+    )
+    correlation = rankics.corr(min_periods=max(12, training_months // 2)).abs().fillna(0.0)
+    np.fill_diagonal(correlation.values, 1.0)
+    complexity = pd.Series({name: len(components[name]) for name in library}, dtype=float)
+    rng = np.random.default_rng(random_seed)
+    accepted: list[str] = []
+    registry_rows: list[dict[str, object]] = []
+    debate_rows: list[dict[str, object]] = []
+    remaining = set(library.columns)
+
+    def maximum_correlation(name: str) -> float:
+        if not accepted:
+            return 0.0
+        return float(correlation.loc[name, accepted].max())
+
+    for episode in range(1, maximum_debate_episodes + 1):
+        if len(accepted) >= target_accepted_factors:
+            break
+        existing_seed = bool(accepted and rng.random() < existing_seed_probability)
+        if existing_seed:
+            current = accepted[int(rng.integers(0, len(accepted)))]
+            seed_source = "existing_factor"
+        else:
+            generated_pool = sorted(remaining, key=lambda name: (-quality[name], name))[:50]
+            current = str(rng.choice(generated_pool))
+            seed_source = "generated_factor"
+        for debate_round in range(1, debate_rounds + 1):
+            proposer = "agent_a_quality" if debate_round % 2 == 1 else "agent_b_diversity"
+            shared = [
+                name
+                for name in remaining
+                if set(components[name]).intersection(components[current])
+            ]
+            candidates = shared or list(remaining)
+            if proposer == "agent_a_quality":
+                score = {
+                    name: float(quality[name] - 0.02 * complexity[name]) for name in candidates
+                }
+            else:
+                score = {
+                    name: float(
+                        0.7 * quality[name]
+                        - 0.3 * maximum_correlation(name)
+                        - 0.05 * complexity[name]
+                    )
+                    for name in candidates
+                }
+            proposal = max(candidates, key=lambda name: (score[name], name))
+            debate_rows.append(
+                {
+                    "episode": episode,
+                    "debate_round": debate_round,
+                    "proposer": proposer,
+                    "seed_source": seed_source,
+                    "prior_factor": current,
+                    "proposed_factor": proposal,
+                    "proposal_quality": float(quality[proposal]),
+                    "proposal_max_rankic_correlation": maximum_correlation(proposal),
+                    "critique": "predictive_strength"
+                    if proposer == "agent_a_quality"
+                    else "diversity_and_simplicity",
+                }
+            )
+            current = proposal
+        candidate = current
+        predictive_pass = abs(float(mean_rankic[candidate])) >= predictive_metric_threshold
+        diversity_pass = maximum_correlation(candidate) <= maximum_rankic_correlation
+        corrected = False
+        if not (predictive_pass and diversity_pass):
+            admissible = [
+                name
+                for name in remaining
+                if abs(float(mean_rankic[name])) >= predictive_metric_threshold
+                and maximum_correlation(name) <= maximum_rankic_correlation
+                and set(components[name]).intersection(components[candidate])
+            ]
+            if admissible:
+                candidate = max(
+                    admissible,
+                    key=lambda name: (
+                        0.7 * quality[name] - 0.3 * maximum_correlation(name) - 0.05 * complexity[name],
+                        name,
+                    ),
+                )
+                predictive_pass = True
+                diversity_pass = True
+                corrected = True
+        prior_correlation = maximum_correlation(candidate)
+        accepted_flag = candidate in remaining and predictive_pass and diversity_pass
+        debate_rows.append(
+            {
+                "episode": episode,
+                "debate_round": debate_rounds + 1,
+                "proposer": "validator_corrector",
+                "seed_source": seed_source,
+                "prior_factor": current,
+                "proposed_factor": candidate,
+                "proposal_quality": float(quality[candidate]),
+                "proposal_max_rankic_correlation": maximum_correlation(candidate),
+                "critique": "accepted" if accepted_flag else "rejected",
+            }
+        )
+        if accepted_flag:
+            accepted.append(candidate)
+            remaining.remove(candidate)
+            registry_rows.append(
+                {
+                    "accepted_order": len(accepted),
+                    "episode": episode,
+                    "factor": candidate,
+                    "components": "|".join(components[candidate]),
+                    "seed_source": seed_source,
+                    "corrected": corrected,
+                    "mean_rankic": float(mean_rankic[candidate]),
+                    "rankicir": float(rankicir[candidate]),
+                    "maximum_prior_rankic_correlation": prior_correlation,
+                    "complexity": int(complexity[candidate]),
+                }
+            )
+    if len(accepted) != target_accepted_factors:
+        raise ValueError(
+            f"FactorMAD accepted {len(accepted)} factors instead of {target_accepted_factors}"
+        )
+    orientation = np.sign(mean_rankic[accepted]).replace(0.0, 1.0)
+    oriented = library[accepted].mul(orientation, axis=1).fillna(0.0)
+    training_mask = frame["month"].isin(training)
+    x = oriented.loc[training_mask].to_numpy(float)
+    y = pd.to_numeric(frame.loc[training_mask, "ret_exc_lead1m"], errors="coerce").fillna(0.0).to_numpy()
+    gram = x.T @ x / len(x)
+    cross = x.T @ y / len(x)
+    coefficients = np.linalg.solve(gram + ridge_penalty * np.eye(len(accepted)), cross)
+    if not np.isfinite(coefficients).all() or float(np.abs(coefficients).sum()) <= 0:
+        raise ValueError("FactorMAD linear model did not produce finite weights")
+    coefficients /= np.abs(coefficients).sum()
+    composite = pd.Series(oriented.to_numpy(float) @ coefficients, index=frame.index, name="score")
+    result = composite.where(frame["month"] >= pd.Timestamp(common_start))
+    registry = pd.DataFrame(registry_rows)
+    registry["orientation"] = [int(orientation[name]) for name in accepted]
+    registry["linear_model_weight"] = coefficients
+    return result, registry, pd.DataFrame(debate_rows)
+
+
 def stratllm_alignment_scores(
     frame: pd.DataFrame,
     multi_source_state: dict[str, list[tuple[str, int]]],

@@ -25,7 +25,7 @@
   "factor_grammar": {
     "seed_features": ["ret_1_0", "ret_3_1", "ret_6_1", "ret_12_1", "be_me", "gp_at", "ocf_at", "z_score", "rvol_21d", "beta_60m", "turnover_126d", "niq_su"],
     "operators": ["identity", "pair_mean", "pair_difference", "pair_product"],
-    "candidate_count": 222,
+    "candidate_count": 210,
     "cross_sectional_transform": "monthly rank to [-1,1]",
     "validator_guarantees": ["finite deterministic code", "formation-only inputs", "dimensionless ranked output", "order-independent cross section", "declared component lineage"]
   },
@@ -57,6 +57,6 @@
   },
   "preserved_elements": ["two agents with distinct initial perspectives", "existing-versus-generated seed branch", "alternating proposer and critic", "ten structured debate rounds", "summary/critique/factor progression", "interpretable factor programs", "generation-validation-correction-evaluation pipeline", "predictive-strength admission gate", "factor-diversity correlation gate", "accepted factors persist into the factor library", "100 mined factors", "linear prediction model", "chronological out-of-sample evaluation"],
   "approximated_elements": ["JKP characteristics replace daily A-share OHLCV and VWAP", "a finite symbolic grammar replaces unconstrained GPT-4o Python generation", "deterministic quality and diversity objectives replace missing role prompts", "RankIC-history neighbors replace natural-language debate context", "one correction step replaces the unavailable correction agent and validator", "one-month excess returns replace the ten-day future-VWAP label", "training-only ridge regression replaces the undisclosed LR implementation", "common monthly deciles replace overlapping daily Top-50 ten-day sleeves"],
-  "invented_elements": ["the twelve seed characteristics and 222-program grammar", "p_seed=0.5", "the RankIC quality and diversity scoring formulas", "epsilon_1=0.002", "epsilon_2=0.98", "K=1 correction", "the 300-episode cap", "the ridge penalty and coefficient normalization"],
+  "invented_elements": ["the twelve seed characteristics and 210-program grammar", "p_seed=0.5", "the RankIC quality and diversity scoring formulas", "epsilon_1=0.002", "epsilon_2=0.98", "K=1 correction", "the 300-episode cap", "the ridge penalty and coefficient normalization"],
   "anti_leakage": {"published_factor_performance_or_curve_used_for_factor_selection": false, "unaffiliated_secondary_factor_skills_used": false, "current_or_future_common_return_used_in_debate": false, "m065_common_result_seen_before_recipe_freeze": false, "prior_other_paper_common_results_seen": true, "retuning_after_common_result_permitted": false}
 }
