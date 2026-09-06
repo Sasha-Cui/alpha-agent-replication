@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M065",
+  "canonical_work_id": "CensusDOI10114537682923770377",
+  "paper": "FactorMAD: A Multi-Agent Debate Framework Based on Large Language Models for Interpretable Stock Alpha Factor Mining",
+  "status": "frozen_before_jkp_result",
+  "fidelity_label": "in_spirit_reconstruction",
+  "claim_boundary": "A researcher-authored monthly U.S.-stock analogue of FactorMAD in which two deterministic agents alternate proposal and critique over interpretable factor programs, a validator/corrector enforces predictive and diversity gates, and 100 accepted factors feed a training-only linear prediction model; not the missing prompts, GPT-4o calls, native factors, A-share data, or models.",
+  "paper_source": {"doi": "10.1145/3768292.3770377", "url": "https://doi.org/10.1145/3768292.3770377", "official_pdf_sha256": "5fb011bceea232aa52cd36ee0dc14a3238d3e5f5311bfc25af742127298afeab", "official_pages": 9, "source_archive_available": false, "attributable_code_factor_library_or_result_release_found": false},
+  "primary_source_anchors": [
+    {"anchor": "Section 3.2 and Figure 1", "mechanism": "Two differently initialized agents alternate factor summaries, critiques, and improved proposals, starting from either an existing or generated seed."},
+    {"anchor": "Algorithm 1", "mechanism": "Each proposed factor is generated, validated, corrected for at most K iterations, evaluated for predictive quality and correlation, and admitted only if both gates pass."},
+    {"anchor": "Section 3.3 and Figure 2", "mechanism": "The factor development pipeline enforces error-free execution, no look-ahead, stationarity, dimension consistency, output format, and low correlation with the existing library."},
+    {"anchor": "Sections 4.2-4.3", "mechanism": "One hundred mined factors feed LR, MLP, and LightGBM return models; the investment simulation uses LR predictions to select a Top-50 portfolio."},
+    {"anchor": "Section 4.4", "mechanism": "Ten debate iterations improve factor quality relative to a single-agent loop while keeping factors concise and interpretable."}
+  ],
+  "strict_evidence": {
+    "audit_manifest_path": "paper_runs/paper_replication_audits/factormad/manifest.json", "audit_manifest_sha256": "77db38576b854aca7d49e623a4daee02b60ae48eda6ec42b66957581169fb250",
+    "source_provenance_path": "paper_runs/paper_replication_audits/factormad/source_provenance.json", "source_provenance_sha256": "a455112873121cf8ba3e8e19c156e3799196b2f99de04036ccb747aef1d50e64",
+    "method_specification_path": "paper_runs/paper_replication_audits/factormad/method_specification_audit.csv", "method_specification_sha256": "5c095faca183f47f9593e03f0396cc57f25b1505cbca3f967ab388a24b654ea6",
+    "component_execution_path": "paper_runs/paper_replication_audits/factormad/component_execution_audit.csv", "component_execution_sha256": "d225bdb4a70441ae2d6c13b945143edbb14ba0c097b8fb63680ca18c526efad1",
+    "release_search_path": "paper_runs/paper_replication_audits/factormad/release_search_audit.csv", "release_search_sha256": "0e43e8c300d30b976ac01dc0958f2857bb5af0407a94464ed5e37e31797de368"
+  },
+  "factor_grammar": {
+    "seed_features": ["ret_1_0", "ret_3_1", "ret_6_1", "ret_12_1", "be_me", "gp_at", "ocf_at", "z_score", "rvol_21d", "beta_60m", "turnover_126d", "niq_su"],
+    "operators": ["identity", "pair_mean", "pair_difference", "pair_product"],
+    "candidate_count": 222,
+    "cross_sectional_transform": "monthly rank to [-1,1]",
+    "validator_guarantees": ["finite deterministic code", "formation-only inputs", "dimensionless ranked output", "order-independent cross section", "declared component lineage"]
+  },
+  "debate_policy": {
+    "prehistory_formation_start": "1989-07-31",
+    "training_months": 120,
+    "agent_a_perspective": "maximize absolute mean RankIC and RankICIR",
+    "agent_b_perspective": "retain predictive quality while minimizing accepted-factor correlation and expression complexity",
+    "existing_seed_probability": 0.5,
+    "debate_rounds": 10,
+    "maximum_correction_iterations": 1,
+    "predictive_metric_threshold": 0.002,
+    "maximum_rankic_correlation": 0.98,
+    "target_accepted_factors": 100,
+    "maximum_debate_episodes": 300,
+    "random_seed": 3768292,
+    "neighbor_rule": "candidate shares at least one seed component with the current proposal; a correction may choose the best admissible unused neighbor",
+    "feedback_used": "training-only mean RankIC, RankICIR, expression complexity, and correlation with accepted-factor RankIC histories"
+  },
+  "prediction_model": {
+    "selected_headline_model": "linear_regression",
+    "training_target": "one-month-ahead JKP excess return",
+    "input_factors": 100,
+    "factor_orientation": "sign of training mean RankIC",
+    "ridge_penalty": 1.0,
+    "weight_normalization": "divide coefficients by total absolute coefficient weight",
+    "common_portfolio_adapter": "the frozen linear prediction score enters fixed value-weighted long-short deciles and all six common paths",
+    "common_or_post_training_returns_used_for_factor_or_model_selection": false
+  },
+  "preserved_elements": ["two agents with distinct initial perspectives", "existing-versus-generated seed branch", "alternating proposer and critic", "ten structured debate rounds", "summary/critique/factor progression", "interpretable factor programs", "generation-validation-correction-evaluation pipeline", "predictive-strength admission gate", "factor-diversity correlation gate", "accepted factors persist into the factor library", "100 mined factors", "linear prediction model", "chronological out-of-sample evaluation"],
+  "approximated_elements": ["JKP characteristics replace daily A-share OHLCV and VWAP", "a finite symbolic grammar replaces unconstrained GPT-4o Python generation", "deterministic quality and diversity objectives replace missing role prompts", "RankIC-history neighbors replace natural-language debate context", "one correction step replaces the unavailable correction agent and validator", "one-month excess returns replace the ten-day future-VWAP label", "training-only ridge regression replaces the undisclosed LR implementation", "common monthly deciles replace overlapping daily Top-50 ten-day sleeves"],
+  "invented_elements": ["the twelve seed characteristics and 222-program grammar", "p_seed=0.5", "the RankIC quality and diversity scoring formulas", "epsilon_1=0.002", "epsilon_2=0.98", "K=1 correction", "the 300-episode cap", "the ridge penalty and coefficient normalization"],
+  "anti_leakage": {"published_factor_performance_or_curve_used_for_factor_selection": false, "unaffiliated_secondary_factor_skills_used": false, "current_or_future_common_return_used_in_debate": false, "m065_common_result_seen_before_recipe_freeze": false, "prior_other_paper_common_results_seen": true, "retuning_after_common_result_permitted": false}
+}
