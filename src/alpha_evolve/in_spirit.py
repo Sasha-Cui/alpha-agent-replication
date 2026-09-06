@@ -190,6 +190,107 @@ def fama_rolling_scores(
     return result, pd.DataFrame(diagnostics)
 
 
+def stratllm_alignment_scores(
+    frame: pd.DataFrame,
+    multi_source_state: dict[str, list[tuple[str, int]]],
+    expert_strategy_taxonomy: dict[str, list[tuple[str, int]]],
+    *,
+    common_start: str,
+    reliability_history_months: int = 60,
+    minimum_source_rankic_months: int = 24,
+    reliability_temperature: float = 10.0,
+    free_mode_threshold: float = 0.05,
+    guided_mode_lower_threshold: float = 0.0,
+    action_hold_threshold: float = 0.10,
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Run a regime-conditioned Free, Guided, and Strict Strat-LLM policy."""
+    if list(multi_source_state) != ["price", "news", "annual_report"]:
+        raise ValueError("Strat-LLM requires the three frozen source streams")
+    if list(expert_strategy_taxonomy) != [
+        "S1_short_term_reversal",
+        "S2_breakout_momentum",
+        "S3_volatility_compression",
+        "S4_price_volume_confirmation",
+    ]:
+        raise ValueError("Strat-LLM requires the four frozen strategies")
+    if not guided_mode_lower_threshold < free_mode_threshold or reliability_temperature <= 0:
+        raise ValueError("Strat-LLM mode thresholds are invalid")
+    specifications = [item for values in multi_source_state.values() for item in values] + [
+        item for values in expert_strategy_taxonomy.values() for item in values
+    ]
+    features = list(dict.fromkeys(feature for feature, _ in specifications))
+    missing = {"month", "ret", "weight", "ret_exc_lead1m", *features} - set(frame)
+    if missing:
+        raise ValueError(f"missing Strat-LLM inputs: {sorted(missing)}")
+    ranked = cross_sectional_unit_rank(frame, features)
+    sources = pd.DataFrame(
+        {
+            name: pd.concat([ranked[feature] * sign for feature, sign in values], axis=1).fillna(0.0).mean(axis=1)
+            for name, values in multi_source_state.items()
+        },
+        index=frame.index,
+    )
+    source_scores = cross_sectional_unit_rank(pd.concat([frame[["month"]], sources], axis=1), list(sources)).fillna(0.0)
+    strategies = pd.DataFrame(
+        {
+            name: pd.concat([ranked[feature] * sign for feature, sign in values], axis=1).fillna(0.0).mean(axis=1)
+            for name, values in expert_strategy_taxonomy.items()
+        },
+        index=frame.index,
+    )
+    strategy_scores = cross_sectional_unit_rank(
+        pd.concat([frame[["month"]], strategies], axis=1), list(strategies)
+    ).fillna(0.0)
+    rankics = monthly_rankic(frame, source_scores)
+    market_rows = []
+    for month, indices in frame.groupby("month", sort=True).groups.items():
+        weight = pd.to_numeric(frame.loc[indices, "weight"], errors="coerce")
+        ret = pd.to_numeric(frame.loc[indices, "ret"], errors="coerce").fillna(0.0)
+        market_rows.append((pd.Timestamp(month), float(np.sum(weight * ret) / weight.sum())))
+    market = pd.Series(dict(market_rows)).sort_index()
+    market_six = (1.0 + market).rolling(6, min_periods=6).apply(np.prod, raw=True) - 1.0
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    rows = []
+    groups = frame.groupby("month", sort=False).groups
+    for month in sorted(pd.Timestamp(value) for value in frame.loc[frame["month"] >= common_start, "month"].unique()):
+        history = rankics.loc[rankics.index < month].tail(reliability_history_months)
+        if len(history) != reliability_history_months or (history.count() < minimum_source_rankic_months).any():
+            raise ValueError(f"Strat-LLM reliability history is incomplete at {month.date()}")
+        mean = history.mean()
+        reliability = np.exp(reliability_temperature * mean - (reliability_temperature * mean).max())
+        reliability /= reliability.sum()
+        indices = groups[month]
+        free = source_scores.loc[indices].mul(reliability, axis=1).sum(axis=1)
+        strict = strategy_scores.loc[indices].mean(axis=1)
+        guided = 0.5 * free + 0.5 * strict
+        regime_return = float(market_six.loc[month])
+        if regime_return > free_mode_threshold:
+            mode, score = "free", free
+        elif regime_return >= guided_mode_lower_threshold:
+            mode, score = "guided", guided
+        else:
+            mode, score = "strict", strict
+        result.loc[indices] = score
+        action = np.where(score > action_hold_threshold, 1, np.where(score < -action_hold_threshold, -1, 0))
+        row = {
+            "formation_month": str(month.date()),
+            "reliability_start": str(history.index[0].date()),
+            "reliability_end": str(history.index[-1].date()),
+            "reliability_months": len(history),
+            "six_month_market_return": regime_return,
+            "selected_mode": mode,
+            "buy_count": int((action > 0).sum()),
+            "hold_count": int((action == 0).sum()),
+            "sell_count": int((action < 0).sum()),
+            "finite_scores": int(score.notna().sum()),
+        }
+        for name in multi_source_state:
+            row[f"source_rankic__{name}"] = float(mean[name])
+            row[f"source_reliability__{name}"] = float(reliability[name])
+        rows.append(row)
+    return result, pd.DataFrame(rows)
+
+
 def alphacrafter_workflow_scores(
     frame: pd.DataFrame,
     miner_clusters: dict[str, list[tuple[str, int]]],
