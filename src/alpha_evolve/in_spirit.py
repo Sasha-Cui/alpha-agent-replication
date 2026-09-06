@@ -190,6 +190,367 @@ def fama_rolling_scores(
     return result, pd.DataFrame(diagnostics)
 
 
+def _sharp_target_weights(
+    frame: pd.DataFrame,
+    scores: pd.Series,
+    tail_fraction: float,
+    minimum_side: int,
+) -> pd.Series:
+    values = frame[["security_id", "weight"]].assign(_score=scores).replace([np.inf, -np.inf], np.nan).dropna()
+    values = values.loc[values["weight"] > 0].drop_duplicates("security_id", keep="last")
+    if len(values) < max(2 * minimum_side, 10):
+        raise ValueError("SHARP inner portfolio has insufficient formation coverage")
+    side = max(minimum_side, int(np.floor(tail_fraction * len(values))))
+    if 2 * side > len(values):
+        raise ValueError("SHARP inner portfolio tails overlap")
+    ordered = values.assign(_id_sort=values["security_id"].astype(str)).sort_values(
+        ["_score", "_id_sort"], kind="mergesort"
+    )
+    low = ordered.head(side).set_index("security_id")["weight"].astype(float)
+    high = ordered.tail(side).set_index("security_id")["weight"].astype(float)
+    return pd.concat([high / high.sum(), -low / low.sum()]).sort_index()
+
+
+def _sharp_tail_path(
+    frame: pd.DataFrame,
+    scores: pd.Series,
+    months: list[pd.Timestamp],
+    *,
+    tail_fraction: float,
+    minimum_side: int,
+    cost_bps_one_way: float,
+) -> tuple[pd.Series, dict[pd.Timestamp, pd.Series]]:
+    if not scores.index.equals(frame.index):
+        raise ValueError("SHARP scores must align with the formation frame")
+    groups = frame.groupby("month", sort=False).groups
+    previous = pd.Series(dtype="float64")
+    returns: dict[pd.Timestamp, float] = {}
+    holdings: dict[pd.Timestamp, pd.Series] = {}
+    for month in months:
+        indices = groups[month]
+        part = frame.loc[indices]
+        target = _sharp_target_weights(part, scores.loc[indices], tail_fraction, minimum_side)
+        realized = part.set_index("security_id")["ret_exc_lead1m"].reindex(target.index).fillna(0.0)
+        gross = float(np.dot(target.to_numpy(), realized.to_numpy()))
+        union = target.index.union(previous.index)
+        turnover = float(
+            (
+                target.reindex(union, fill_value=0.0)
+                - previous.reindex(union, fill_value=0.0)
+            )
+            .abs()
+            .sum()
+        )
+        net = gross - cost_bps_one_way / 10000.0 * turnover
+        if not np.isfinite(net) or net <= -1.0:
+            raise ValueError("SHARP inner return path is nonfinite or has nonpositive NAV")
+        returns[month] = net
+        holdings[month] = target
+        previous = target
+    return pd.Series(returns, dtype="float64"), holdings
+
+
+def _sharp_analyst_state(
+    frame: pd.DataFrame,
+    analyst_state: dict[str, object],
+    condition_thresholds: dict[str, float],
+) -> tuple[pd.Series, pd.Series, pd.DataFrame]:
+    expected_streams = ["price", "catalyst", "quality", "attention"]
+    specifications = {
+        stream: [(item["column"], int(item["sign"])) for item in analyst_state[stream]]
+        for stream in expected_streams
+    }
+    features = list(
+        dict.fromkeys(
+            feature
+            for stream in expected_streams
+            for feature, _ in specifications[stream]
+        )
+    )
+    fear_column = str(analyst_state["fear_proxy_column"])
+    missing = {"month", "security_id", "weight", "ret", "ret_exc_lead1m", fear_column, *features} - set(frame)
+    if missing:
+        raise ValueError(f"missing SHARP inputs: {sorted(missing)}")
+    ranked = cross_sectional_unit_rank(frame, list(dict.fromkeys([*features, fear_column]))).fillna(0.0)
+    streams = {
+        stream: pd.concat(
+            [ranked[feature] * sign for feature, sign in specifications[stream]], axis=1
+        ).mean(axis=1)
+        for stream in expected_streams
+    }
+    weights = analyst_state["base_expected_return_weights"]
+    if list(weights) != ["price", "catalyst", "quality"] or not np.isclose(sum(weights.values()), 1.0):
+        raise ValueError("SHARP base analyst weights changed")
+    expected = sum(float(weights[name]) * streams[name] for name in weights)
+    confidence = (0.4 + 0.3 * streams["price"].abs() + 0.3 * streams["catalyst"].abs()).clip(0.0, 1.0)
+
+    market_returns: dict[pd.Timestamp, float] = {}
+    fear_levels: dict[pd.Timestamp, float] = {}
+    for month, indices in frame.groupby("month", sort=True).groups.items():
+        weights_month = pd.to_numeric(frame.loc[indices, "weight"], errors="coerce")
+        weights_month = weights_month.where(weights_month > 0)
+        returns_month = pd.to_numeric(frame.loc[indices, "ret"], errors="coerce").fillna(0.0)
+        fear_month = pd.to_numeric(frame.loc[indices, fear_column], errors="coerce")
+        valid_fear = weights_month.notna() & fear_month.notna()
+        market_returns[pd.Timestamp(month)] = float(
+            np.sum(weights_month.fillna(0.0) * returns_month) / weights_month.fillna(0.0).sum()
+        )
+        fear_levels[pd.Timestamp(month)] = float(
+            np.sum(weights_month.loc[valid_fear] * fear_month.loc[valid_fear])
+            / weights_month.loc[valid_fear].sum()
+        )
+    market = pd.Series(market_returns).sort_index()
+    market_six = (1.0 + market).rolling(6, min_periods=6).apply(np.prod, raw=True) - 1.0
+    fear = pd.Series(fear_levels).sort_index()
+    fear_history = int(condition_thresholds["fear_history_months"])
+    fear_threshold = fear.shift(1).rolling(fear_history, min_periods=fear_history).quantile(
+        float(condition_thresholds["fear_quantile"])
+    )
+    market_row = frame["month"].map(market_six)
+    high_fear = frame["month"].map(fear.gt(fear_threshold)).fillna(False)
+    move = ranked["ret_1_0"]
+    catalyst = streams["catalyst"]
+    quality = streams["quality"]
+    attention = streams["attention"]
+    thresholds = condition_thresholds
+    conditions = pd.DataFrame(
+        {
+            "temporal_priced_in": move.abs().gt(thresholds["extreme_move_absolute_rank"])
+            & catalyst.abs().gt(thresholds["minimum_catalyst_absolute_rank"])
+            & np.sign(move).eq(np.sign(catalyst)),
+            "temporal_earnings_season": attention.gt(thresholds["high_attention_rank"])
+            & catalyst.abs().lt(thresholds["weak_catalyst_absolute_rank"]),
+            "news_analyst_rating": catalyst.abs().gt(thresholds["strong_catalyst_absolute_rank"])
+            & catalyst.mul(quality).gt(0.0),
+            "news_generic_market": expected.mul(market_row).gt(0.0)
+            & catalyst.abs().lt(thresholds["weak_idiosyncratic_catalyst_absolute_rank"]),
+            "macro_high_vix": high_fear & expected.gt(0.0),
+            "news_count_low": attention.lt(thresholds["low_attention_rank"])
+            & catalyst.abs().lt(thresholds["weak_catalyst_absolute_rank"]),
+        },
+        index=frame.index,
+    )
+    return expected, confidence, conditions
+
+
+def _sharp_apply_rubric(
+    expected: pd.Series,
+    confidence: pd.Series,
+    conditions: pd.DataFrame,
+    parameters: dict[str, float],
+) -> pd.Series:
+    adjusted = expected.copy()
+    for rule in conditions.columns[:-1]:
+        adjusted = adjusted.where(~conditions[rule], adjusted * parameters[rule])
+    confidence_adjusted = confidence.where(
+        ~conditions["news_count_low"],
+        np.minimum(confidence, parameters["news_count_low"]),
+    )
+    return adjusted * confidence_adjusted
+
+
+def sharp_evolved_rubric_scores(
+    frame: pd.DataFrame,
+    analyst_state: dict[str, object],
+    initial_rubric: list[dict[str, object]],
+    condition_thresholds: dict[str, float],
+    *,
+    common_start: str,
+    training_months: int = 48,
+    validation_months: int = 12,
+    frozen_test_months: int = 24,
+    evolution_rounds: int = 5,
+    worst_training_months: int = 20,
+    minimum_recurring_pattern_months: int = 3,
+    pattern_activation_share: float = 0.10,
+    maximum_atomic_mutations_per_round: int = 3,
+    maximum_rubric_rules: int = 18,
+    validation_tolerance_total_return: float = 0.005,
+    inner_tail_fraction: float = 0.10,
+    inner_minimum_side: int = 20,
+    inner_cost_bps_one_way: float = 10.0,
+) -> tuple[pd.Series, pd.DataFrame, pd.DataFrame]:
+    """Run SHARP-style bounded rubric evolution with chronological validation."""
+    expected_rules = [
+        "temporal_priced_in",
+        "temporal_earnings_season",
+        "news_analyst_rating",
+        "news_generic_market",
+        "macro_high_vix",
+        "news_count_low",
+    ]
+    if [str(rule["id"]) for rule in initial_rubric] != expected_rules:
+        raise ValueError("SHARP requires the six frozen initial rules")
+    if len(initial_rubric) > maximum_rubric_rules or maximum_atomic_mutations_per_round > 3:
+        raise ValueError("SHARP rubric or mutation bound changed")
+    if not (training_months > worst_training_months >= 3 and validation_months > 0 and frozen_test_months > 0):
+        raise ValueError("SHARP chronological windows are invalid")
+    expected, confidence, conditions = _sharp_analyst_state(frame, analyst_state, condition_thresholds)
+    rule_specs = {str(rule["id"]): rule for rule in initial_rubric}
+    initial = {name: float(rule_specs[name]["initial"]) for name in expected_rules}
+    all_months = sorted(pd.Timestamp(month) for month in frame["month"].unique())
+    common_months = [month for month in all_months if month >= pd.Timestamp(common_start)]
+    if not common_months or common_months[0] != pd.Timestamp(common_start):
+        raise ValueError("SHARP common calendar does not start at the requested month")
+    month_position = {month: number for number, month in enumerate(all_months)}
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    block_rows: list[dict[str, object]] = []
+    evolution_rows: list[dict[str, object]] = []
+    month_groups = frame.groupby("month", sort=False).groups
+
+    for block_number, test_offset in enumerate(range(0, len(common_months), frozen_test_months), start=1):
+        test_slice = common_months[test_offset : test_offset + frozen_test_months]
+        test_start = test_slice[0]
+        boundary = month_position[test_start]
+        validation = all_months[boundary - validation_months : boundary]
+        training = all_months[boundary - validation_months - training_months : boundary - validation_months]
+        if len(training) != training_months or len(validation) != validation_months:
+            raise ValueError(f"SHARP prehistory is incomplete at {test_start.date()}")
+        current = dict(initial)
+        best = dict(initial)
+        initial_scores = _sharp_apply_rubric(expected, confidence, conditions, initial)
+        best_validation_path, _ = _sharp_tail_path(
+            frame,
+            initial_scores,
+            validation,
+            tail_fraction=inner_tail_fraction,
+            minimum_side=inner_minimum_side,
+            cost_bps_one_way=inner_cost_bps_one_way,
+        )
+        best_validation_return = float(np.prod(1.0 + best_validation_path) - 1.0)
+        accepted_rounds = 0
+        best_updates = 0
+
+        for round_number in range(1, evolution_rounds + 1):
+            current_scores = _sharp_apply_rubric(expected, confidence, conditions, current)
+            training_path, training_holdings = _sharp_tail_path(
+                frame,
+                current_scores,
+                training,
+                tail_fraction=inner_tail_fraction,
+                minimum_side=inner_minimum_side,
+                cost_bps_one_way=inner_cost_bps_one_way,
+            )
+            worst = list(training_path.nsmallest(worst_training_months).index)
+            recurring: dict[str, int] = {}
+            for rule in expected_rules:
+                count = 0
+                for month in worst:
+                    selected = training_holdings[month].index
+                    indices = month_groups[month]
+                    selected_indices = frame.loc[indices].index[
+                        frame.loc[indices, "security_id"].isin(selected)
+                    ]
+                    if float(conditions.loc[selected_indices, rule].mean()) >= pattern_activation_share:
+                        count += 1
+                recurring[rule] = count
+
+            proposals: list[tuple[float, str, float]] = []
+            baseline_tail = float(training_path.loc[worst].mean())
+            for rule in expected_rules:
+                if recurring[rule] < minimum_recurring_pattern_months:
+                    continue
+                spec = rule_specs[rule]
+                choices: list[tuple[float, float]] = []
+                for direction in (-1.0, 1.0):
+                    value = current[rule] + direction * float(spec["step"])
+                    if value < float(spec["minimum"]) - 1e-12 or value > float(spec["maximum"]) + 1e-12:
+                        continue
+                    changed = dict(current)
+                    changed[rule] = round(value, 12)
+                    candidate_scores = _sharp_apply_rubric(expected, confidence, conditions, changed)
+                    candidate_path, _ = _sharp_tail_path(
+                        frame,
+                        candidate_scores,
+                        training,
+                        tail_fraction=inner_tail_fraction,
+                        minimum_side=inner_minimum_side,
+                        cost_bps_one_way=inner_cost_bps_one_way,
+                    )
+                    choices.append((float(candidate_path.loc[worst].mean() - baseline_tail), changed[rule]))
+                if choices:
+                    gain, value = max(choices, key=lambda item: (item[0], -item[1]))
+                    if gain > 1e-12:
+                        proposals.append((gain, rule, value))
+            selected = sorted(proposals, key=lambda item: (-item[0], item[1]))[
+                :maximum_atomic_mutations_per_round
+            ]
+            mutation_description = "|".join(
+                f"{rule}:{current[rule]:.2f}->{value:.2f}" for _, rule, value in selected
+            )
+            candidate = dict(current)
+            for _, rule, value in selected:
+                candidate[rule] = value
+            accepted = False
+            best_update = False
+            candidate_validation_return = best_validation_return
+            if selected:
+                candidate_scores = _sharp_apply_rubric(expected, confidence, conditions, candidate)
+                candidate_validation_path, _ = _sharp_tail_path(
+                    frame,
+                    candidate_scores,
+                    validation,
+                    tail_fraction=inner_tail_fraction,
+                    minimum_side=inner_minimum_side,
+                    cost_bps_one_way=inner_cost_bps_one_way,
+                )
+                candidate_validation_return = float(np.prod(1.0 + candidate_validation_path) - 1.0)
+                accepted = candidate_validation_return >= best_validation_return - validation_tolerance_total_return
+                if accepted:
+                    current = candidate
+                    accepted_rounds += 1
+                    if candidate_validation_return > best_validation_return:
+                        best = dict(candidate)
+                        best_validation_return = candidate_validation_return
+                        best_updates += 1
+                        best_update = True
+            evolution_rows.append(
+                {
+                    "block": block_number,
+                    "round": round_number,
+                    "train_start": str(training[0].date()),
+                    "train_end": str(training[-1].date()),
+                    "validation_start": str(validation[0].date()),
+                    "validation_end": str(validation[-1].date()),
+                    "worst_month_count": len(worst),
+                    "recurring_rule_count": sum(
+                        count >= minimum_recurring_pattern_months for count in recurring.values()
+                    ),
+                    "proposed_mutation_count": len(selected),
+                    "mutations": mutation_description,
+                    "candidate_validation_return": candidate_validation_return,
+                    "accepted": accepted,
+                    "best_update": best_update,
+                    "best_validation_return": best_validation_return,
+                }
+            )
+
+        frozen_scores = _sharp_apply_rubric(expected, confidence, conditions, best)
+        test_indices = [index for month in test_slice for index in month_groups[month]]
+        result.loc[test_indices] = frozen_scores.loc[test_indices]
+        block_rows.append(
+            {
+                "block": block_number,
+                "train_start": str(training[0].date()),
+                "train_end": str(training[-1].date()),
+                "validation_start": str(validation[0].date()),
+                "validation_end": str(validation[-1].date()),
+                "test_start": str(test_slice[0].date()),
+                "test_end": str(test_slice[-1].date()),
+                "test_months": len(test_slice),
+                "accepted_rounds": accepted_rounds,
+                "best_update_rounds": best_updates,
+                "rule_count": len(best),
+                "best_validation_return": best_validation_return,
+                "frozen_rubric": "|".join(f"{name}={best[name]:.2f}" for name in expected_rules),
+                "minimum_finite_scores": int(
+                    min(frozen_scores.loc[month_groups[month]].notna().sum() for month in test_slice)
+                ),
+            }
+        )
+    return result, pd.DataFrame(block_rows), pd.DataFrame(evolution_rows)
+
+
 def stratllm_alignment_scores(
     frame: pd.DataFrame,
     multi_source_state: dict[str, list[tuple[str, int]]],

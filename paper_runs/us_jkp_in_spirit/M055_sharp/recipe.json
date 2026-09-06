@@ -127,7 +127,8 @@
     "worst months replace worst trading days",
     "counterfactual tail-return gains replace LLM attribution diagnoses",
     "bounded one-step parameter edits replace natural-language rule mutations",
-    "common value-weighted deciles replace daily equal-weight 5-long/5-short holdings"
+    "common value-weighted deciles replace daily equal-weight 5-long/5-short holdings",
+    "inner evolution charges target-to-target turnover rather than drift-adjusted daily entry events"
   ],
   "invented_elements": [
     "the exact base analyst feature weights and confidence formula",
