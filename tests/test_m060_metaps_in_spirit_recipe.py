@@ -32,6 +32,7 @@ def test_m060_recipe_freezes_v3_router_before_result():
         "volatility_breakout",
     ]
     policy = recipe["supervision_policy"]
+    assert recipe["router_state_input_columns"] == ["gp_at", "ocf_at"]
     assert policy["selected_view"] == "V3_balanced_competence"
     assert policy["router_training_months"] == 120
     assert policy["v2_horizons_months"] == [1, 3, 6]

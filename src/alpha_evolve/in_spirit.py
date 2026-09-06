@@ -929,6 +929,285 @@ def madevolve_joint_search_scores(
     return result, pd.DataFrame(block_rows), pd.DataFrame(generation_rows)
 
 
+def metaps_strategy_scores(
+    frame: pd.DataFrame,
+    strategy_library: dict[str, dict[str, object]],
+) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    """Construct the frozen ten-program MetaPS library and router context."""
+    names = [
+        "news_impulse",
+        "momentum_follow",
+        "mean_revert_fade",
+        "cross_asset_hedge",
+        "risk_reset",
+        "macro_rotation",
+        "earnings_drift",
+        "liquidity_rebate",
+        "small_cap_breakout",
+        "volatility_breakout",
+    ]
+    if list(strategy_library) != names:
+        raise ValueError("MetaPS requires the ten frozen strategy programs")
+    features = list(
+        dict.fromkeys(
+            [
+                str(feature)
+                for specification in strategy_library.values()
+                for feature in specification["inputs"]
+                if feature != "weight"
+            ]
+            + ["gp_at", "ocf_at"]
+        )
+    )
+    missing = {"month", "security_id", "weight", "ret", "ret_exc_lead1m", *features} - set(frame)
+    if missing:
+        raise ValueError(f"missing MetaPS inputs: {sorted(missing)}")
+    ranked = cross_sectional_unit_rank(frame, features).fillna(0.0)
+    size_rank = cross_sectional_unit_rank(frame, ["weight"])["weight"].fillna(0.0)
+    market_values: dict[pd.Timestamp, float] = {}
+    state_rows: list[dict[str, float | pd.Timestamp]] = []
+    for month, indices in frame.groupby("month", sort=True).groups.items():
+        weight = pd.to_numeric(frame.loc[indices, "weight"], errors="coerce").fillna(0.0)
+        ret = pd.to_numeric(frame.loc[indices, "ret"], errors="coerce").fillna(0.0)
+        rvol = pd.to_numeric(frame.loc[indices, "rvol_21d"], errors="coerce")
+        turnover = pd.to_numeric(frame.loc[indices, "turnover_126d"], errors="coerce")
+        valid_rvol = rvol.notna() & weight.gt(0)
+        valid_turnover = turnover.notna() & weight.gt(0)
+        timestamp = pd.Timestamp(month)
+        market_values[timestamp] = float(np.sum(weight * ret) / weight.sum())
+        catalyst = ranked.loc[indices, ["niq_su", "saleq_su"]].mean(axis=1)
+        state_rows.append(
+            {
+                "month": timestamp,
+                "value_weighted_volatility": float(
+                    np.sum(weight.loc[valid_rvol] * rvol.loc[valid_rvol]) / weight.loc[valid_rvol].sum()
+                ),
+                "value_weighted_turnover": float(
+                    np.sum(weight.loc[valid_turnover] * turnover.loc[valid_turnover])
+                    / weight.loc[valid_turnover].sum()
+                ),
+                "one_month_return_dispersion": float(ranked.loc[indices, "ret_1_0"].std(ddof=1)),
+                "momentum_breadth": float(ranked.loc[indices, "ret_6_1"].gt(0.0).mean()),
+                "catalyst_breadth": float(catalyst.abs().gt(0.5).mean()),
+                "value_dispersion": float(ranked.loc[indices, "be_me"].std(ddof=1)),
+                "quality_breadth": float(
+                    (
+                        ranked.loc[indices, "gp_at"].gt(0.0)
+                        & ranked.loc[indices, "ocf_at"].gt(0.0)
+                    ).mean()
+                ),
+            }
+        )
+    market = pd.Series(market_values).sort_index()
+    market_six = (1.0 + market).rolling(6, min_periods=6).apply(np.prod, raw=True) - 1.0
+    regime = frame["month"].map(market_six).fillna(0.0)
+    risk_on = regime.ge(0.0)
+    catalyst = ranked[["niq_su", "saleq_su"]].mean(axis=1)
+    liquidity_scale = 0.5 + 0.25 * (ranked["turnover_126d"] + 1.0)
+    volatility_scale = 1.0 - 0.25 * (ranked["rvol_21d"] + 1.0) / 2.0
+    raw = pd.DataFrame(
+        {
+            "news_impulse": catalyst,
+            "momentum_follow": ranked[["ret_3_1", "ret_6_1"]].mean(axis=1),
+            "mean_revert_fade": -ranked["ret_1_0"],
+            "cross_asset_hedge": -np.sign(regime).replace(0.0, 1.0) * ranked["beta_60m"],
+            "risk_reset": -0.6 * ranked["rvol_21d"] - 0.4 * ranked["beta_60m"],
+            "macro_rotation": (0.6 * ranked["ret_12_1"] + 0.4 * ranked["beta_60m"]).where(
+                risk_on, 0.6 * ranked["be_me"] - 0.4 * ranked["beta_60m"]
+            ),
+            "earnings_drift": 0.4 * ranked["niq_su"]
+            + 0.3 * ranked["saleq_su"]
+            + 0.3 * ranked["ret_3_1"],
+            "liquidity_rebate": -ranked["ret_1_0"] * liquidity_scale * volatility_scale,
+            "small_cap_breakout": 0.4 * ranked["ret_6_1"]
+            + 0.3 * ranked["prc_highprc_252d"]
+            - 0.3 * size_rank,
+            "volatility_breakout": ranked["ret_1_0"]
+            * (1.0 - (ranked["rvol_21d"] + 1.0) / 2.0),
+        },
+        index=frame.index,
+    )
+    strategies = cross_sectional_unit_rank(pd.concat([frame[["month"]], raw], axis=1), names).fillna(0.0)
+    state = pd.DataFrame(state_rows).set_index("month").sort_index()
+    state.insert(0, "trailing_six_month_market_return", market_six.reindex(state.index))
+    beta_dispersion = ranked.groupby(frame["month"])["beta_60m"].std(ddof=1)
+    price_high_dispersion = ranked.groupby(frame["month"])["prc_highprc_252d"].std(ddof=1)
+    relevance = pd.DataFrame(index=state.index)
+    relevance["news_impulse"] = state["catalyst_breadth"]
+    relevance["momentum_follow"] = market_six.abs() + (state["momentum_breadth"] - 0.5).abs()
+    relevance["mean_revert_fade"] = state["one_month_return_dispersion"] / (1.0 + market_six.abs())
+    relevance["cross_asset_hedge"] = market_six.abs() + beta_dispersion
+    relevance["risk_reset"] = state["value_weighted_volatility"] + beta_dispersion
+    relevance["macro_rotation"] = market_six.abs() + state["value_dispersion"]
+    relevance["earnings_drift"] = state["catalyst_breadth"] + (state["momentum_breadth"] - 0.5).abs()
+    relevance["liquidity_rebate"] = state["value_weighted_turnover"] / (
+        1.0 + state["value_weighted_volatility"]
+    )
+    relevance["small_cap_breakout"] = price_high_dispersion + (state["momentum_breadth"] - 0.5).abs()
+    relevance["volatility_breakout"] = state["one_month_return_dispersion"] / (
+        1.0 + state["value_weighted_volatility"]
+    )
+    relevance = relevance.replace([np.inf, -np.inf], np.nan).fillna(0.0)
+    return strategies, state.replace([np.inf, -np.inf], np.nan).fillna(0.0), relevance
+
+
+def _metaps_horizon_returns(
+    paths: pd.DataFrame,
+    horizons: list[int],
+) -> dict[int, pd.DataFrame]:
+    outputs: dict[int, pd.DataFrame] = {}
+    for horizon in horizons:
+        outputs[horizon] = pd.DataFrame(
+            {
+                name: (1.0 + pd.concat([paths[name].shift(-offset) for offset in range(horizon)], axis=1)).prod(
+                    axis=1, min_count=horizon
+                )
+                - 1.0
+                for name in paths
+            },
+            index=paths.index,
+        )
+    return outputs
+
+
+def metaps_v3_router_scores(
+    frame: pd.DataFrame,
+    strategy_library: dict[str, dict[str, object]],
+    *,
+    common_start: str,
+    router_training_months: int = 120,
+    reward_purge_months: int = 6,
+    v2_horizons_months: list[int] | None = None,
+    v2_horizon_weights: list[float] | None = None,
+    v3_short_horizon_quality_weight: float = 0.4,
+    v3_medium_horizon_quality_weight: float = 0.6,
+    v3_active_strategy_bonus: float = 0.002,
+    v3_frequency_balance_penalty: float = 0.01,
+    candidate_budget: int = 10,
+    router_ridge_penalty: float = 1.0,
+    inner_tail_fraction: float = 0.1,
+    inner_minimum_side: int = 20,
+    inner_cost_bps_one_way: float = 10.0,
+    exposure_buckets: dict[str, float] | None = None,
+    margin_thresholds: dict[str, float] | None = None,
+) -> tuple[pd.Series, pd.DataFrame, pd.DataFrame]:
+    """Train a chronological MetaPS V3 strategy router and emit delegated scores."""
+    names = list(strategy_library)
+    if len(names) != 10 or candidate_budget != 10:
+        raise ValueError("MetaPS requires the full ten-strategy candidate context")
+    horizons = [1, 3, 6] if v2_horizons_months is None else v2_horizons_months
+    horizon_weights = [0.2, 0.3, 0.5] if v2_horizon_weights is None else v2_horizon_weights
+    if horizons != [1, 3, 6] or len(horizon_weights) != 3 or not np.isclose(sum(horizon_weights), 1.0):
+        raise ValueError("MetaPS rollout horizons changed")
+    if reward_purge_months < max(horizons):
+        raise ValueError("MetaPS reward purge is too short")
+    if not np.isclose(v3_short_horizon_quality_weight + v3_medium_horizon_quality_weight, 1.0):
+        raise ValueError("MetaPS V3 quality weights changed")
+    buckets = {"small": 0.04, "medium": 0.09, "large": 0.16} if exposure_buckets is None else exposure_buckets
+    thresholds = {"small_upper": 0.05, "medium_upper": 0.15} if margin_thresholds is None else margin_thresholds
+    if list(buckets) != ["small", "medium", "large"] or not 0 < thresholds["small_upper"] < thresholds["medium_upper"]:
+        raise ValueError("MetaPS exposure policy changed")
+    strategies, state, relevance = metaps_strategy_scores(frame, strategy_library)
+    months = sorted(pd.Timestamp(month) for month in frame["month"].unique())
+    rollout = pd.DataFrame(index=pd.DatetimeIndex(months, name="formation_month"), columns=names, dtype=float)
+    for name in names:
+        path, _ = _sharp_tail_path(
+            frame,
+            strategies[name],
+            months,
+            tail_fraction=inner_tail_fraction,
+            minimum_side=inner_minimum_side,
+            cost_bps_one_way=inner_cost_bps_one_way,
+        )
+        rollout[name] = path.reindex(rollout.index)
+    outcomes = _metaps_horizon_returns(rollout, horizons)
+    v2_scores = sum(weight * outcomes[horizon] for horizon, weight in zip(horizons, horizon_weights))
+    context = pd.concat(
+        [state.add_prefix("state__"), relevance.add_prefix("relevance__")], axis=1
+    ).reindex(rollout.index).fillna(0.0)
+    if context.shape[1] != 18:
+        raise AssertionError("MetaPS router context must contain 18 variables")
+    position = {month: number for number, month in enumerate(months)}
+    groups = frame.groupby("month", sort=False).groups
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    rows: list[dict[str, object]] = []
+    for month in [value for value in months if value >= pd.Timestamp(common_start)]:
+        boundary = position[month]
+        available = months[: boundary - reward_purge_months + 1]
+        history = available[-router_training_months:]
+        if len(history) != router_training_months:
+            raise ValueError(f"MetaPS label history is incomplete at {month.date()}")
+        label_counts = {name: 0 for name in names}
+        labels: list[str] = []
+        for number, sample_month in enumerate(history, start=1):
+            v1 = max(names, key=lambda name: (outcomes[1].loc[sample_month, name], -names.index(name)))
+            v2 = max(names, key=lambda name: (v2_scores.loc[sample_month, name], -names.index(name)))
+            candidates = list(dict.fromkeys([v1, v2]))
+            target_frequency = number / len(names)
+            quality: dict[str, float] = {}
+            for name in candidates:
+                active_bonus = 0.0 if name in {"cross_asset_hedge", "risk_reset"} else v3_active_strategy_bonus
+                balance_penalty = v3_frequency_balance_penalty * max(
+                    0.0, label_counts[name] - target_frequency
+                )
+                quality[name] = (
+                    v3_short_horizon_quality_weight * outcomes[1].loc[sample_month, name]
+                    + v3_medium_horizon_quality_weight * v2_scores.loc[sample_month, name]
+                    + active_bonus
+                    - balance_penalty
+                )
+            label = max(candidates, key=lambda name: (quality[name], -names.index(name)))
+            labels.append(label)
+            label_counts[label] += 1
+        x = context.loc[history].to_numpy(float)
+        mean = x.mean(axis=0)
+        scale = x.std(axis=0, ddof=1)
+        scale[~np.isfinite(scale) | (scale <= 1e-12)] = 1.0
+        design = np.column_stack([np.ones(len(history)), (x - mean) / scale])
+        target = np.zeros((len(history), len(names)), dtype=float)
+        target[np.arange(len(history)), [names.index(label) for label in labels]] = 1.0
+        penalty = np.eye(design.shape[1]) * router_ridge_penalty
+        penalty[0, 0] = 0.0
+        coefficients = np.linalg.solve(design.T @ design + penalty, design.T @ target)
+        current = np.r_[1.0, (context.loc[month].to_numpy(float) - mean) / scale]
+        logits = current @ coefficients
+        probabilities = np.exp(logits - logits.max())
+        probabilities /= probabilities.sum()
+        selected_index = int(np.argmax(probabilities))
+        selected = names[selected_index]
+        ordered_probability = np.sort(probabilities)
+        margin = float(ordered_probability[-1] - ordered_probability[-2])
+        if margin < thresholds["small_upper"]:
+            bucket = "small"
+        elif margin < thresholds["medium_upper"]:
+            bucket = "medium"
+        else:
+            bucket = "large"
+        indices = groups[month]
+        delegated = strategies.loc[indices, selected] * float(buckets[bucket])
+        result.loc[indices] = delegated
+        relevance_row = relevance.loc[month]
+        top_relevance = max(names, key=lambda name: (relevance_row[name], -names.index(name)))
+        row: dict[str, object] = {
+            "formation_month": str(month.date()),
+            "training_start": str(history[0].date()),
+            "training_end": str(history[-1].date()),
+            "training_examples": len(history),
+            "selected_strategy": selected,
+            "top_relevance_strategy": top_relevance,
+            "router_confidence": float(probabilities[selected_index]),
+            "router_margin": margin,
+            "exposure_bucket": bucket,
+            "exposure_fraction": float(buckets[bucket]),
+            "finite_scores": int(delegated.notna().sum()),
+        }
+        for name in names:
+            row[f"v3_label_count__{name}"] = label_counts[name]
+            row[f"router_probability__{name}"] = float(probabilities[names.index(name)])
+        rows.append(row)
+    return result, pd.DataFrame(rows), rollout.reset_index()
+
+
 def stratllm_alignment_scores(
     frame: pd.DataFrame,
     multi_source_state: dict[str, list[tuple[str, int]]],

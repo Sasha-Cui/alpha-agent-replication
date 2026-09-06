@@ -67,6 +67,7 @@
     "quality_breadth",
     "ten_current_strategy_relevance_scores"
   ],
+  "router_state_input_columns": ["gp_at", "ocf_at"],
   "supervision_policy": {
     "selected_view": "V3_balanced_competence",
     "prehistory_formation_start": "1988-07-31",
