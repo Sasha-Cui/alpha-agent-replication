@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M061",
+  "canonical_work_id": "CensusArxiv260629194",
+  "paper": "AI Trading's Alpha Singularity: Emergent Market Reasoning through Agent-to-Agent Self-Evolution",
+  "status": "frozen_before_jkp_result",
+  "fidelity_label": "in_spirit_reconstruction",
+  "claim_boundary": "A researcher-authored monthly U.S.-stock analogue of AGORA's sealed five-role joint search over AlphaGen-style signals and evaluation metrics, culminating in a training-selected top-30 composite; not the missing LLM calls, 94 native programs, skill registries, PPO checkpoint, CSI1000 data, or actions.",
+  "paper_source": {
+    "url": "https://arxiv.org/abs/2606.29194v1",
+    "version": "arXiv v1",
+    "pdf_sha256": "8e340c26444145bcb00c0f8761b9adc4404c757ca741ffc9c3281ef88833a40a",
+    "source_sha256": "5e77d5f98b8e60a0d6b425a318e314274480e4a46f03eab10d5be30c05c182e1",
+    "attributable_code_registry_alpha_pool_checkpoint_or_actions_found": false
+  },
+  "primary_source_anchors": [
+    {"anchor": "Sections 3.2-3.7 and Figure 1", "mechanism": "Sealed Joint Search separates artifact producers, metric producers, adjudicators, persistent skill stores, and a fixed external evaluator through five structural conditions and three typed channels."},
+    {"anchor": "Section 4.3", "mechanism": "Agora instantiates five roles across nine isolated clients, eight skill libraries, role-scoped records, bounded cross-round briefs, and substrate-local promotion against training outcomes."},
+    {"anchor": "Section 4.3 run configuration", "mechanism": "One hundred outer rounds produce 94 unique AlphaGen programs; the final strategy is the equal-weight z-score composite of the top 30 selected by training IC."},
+    {"anchor": "Section 5.7 and Appendix C", "mechanism": "The metric library evolves through trial, accepted, and rejected states; monotonicity_score_v1 is proposed at round 21 and excess_drawdown_penalty_v1 at round 50 under empirical or adjudicated promotion."},
+    {"anchor": "Appendix A.3", "mechanism": "An incremental MaskablePPO relay carries training-only proposal state across rounds while test statistics are excluded from its reward path."}
+  ],
+  "strict_evidence": {
+    "audit_manifest_path": "paper_runs/paper_replication_audits/agora/manifest.json",
+    "audit_manifest_sha256": "f6362dcef21e4ac5ac36a0b36ab64b95515103a23c7af86e31bb56331d48e2f5",
+    "source_provenance_path": "paper_runs/paper_replication_audits/agora/source_provenance.json",
+    "source_provenance_sha256": "3a6e5b236e68fa4599172dfb32122a2d5158483494e8f428ad097a2410072f93",
+    "method_specification_path": "paper_runs/paper_replication_audits/agora/method_specification_audit.csv",
+    "method_specification_sha256": "c5112043d4e3bce1b664eece96b16e8578ed6f0d93f8cb9930ca946c0c95ee38",
+    "metric_execution_path": "paper_runs/paper_replication_audits/agora/metric_execution_audit.csv",
+    "metric_execution_sha256": "4f631c7f56f56a539187fb6dd5d8acda7a49c939b4294ae6ea4750ef000b04d9",
+    "release_search_path": "paper_runs/paper_replication_audits/agora/release_search_audit.csv",
+    "release_search_sha256": "7f760997edb760cbde3ed357983745e75982372e5d6d4d8f5f4cb1ac9dd62b98"
+  },
+  "alpha_grammar": {
+    "seed_features": ["ret_1_0", "ret_3_1", "ret_6_1", "ret_12_1", "be_me", "gp_at", "ocf_at", "rvol_21d", "beta_60m", "turnover_126d"],
+    "operators": ["identity", "pair_mean", "pair_difference", "pair_product"],
+    "candidate_count": 145,
+    "score_transform": "monthly cross-sectional rank to [-1,1]",
+    "target_unique_alphas": 94,
+    "final_top_alpha_count": 30,
+    "final_selection": "highest positive training-segment mean RankIC",
+    "final_combination": "equal-weight cross-sectional z-score composite"
+  },
+  "sealed_society": {
+    "roles": ["research_report", "alpha_miner", "alpha_evaluator_panel", "evaluation_miner", "factor_metrics_evaluator_panel"],
+    "client_count": 9,
+    "typed_channels": ["within_round_advisory", "bounded_cross_round_briefs", "role_scoped_wiki"],
+    "skill_stores": ["operator", "rl_network", "rl_algorithm", "reward", "metric", "topic", "rubric", "meta_rubric"],
+    "initial_metric_skills": ["mean_rankic", "rankicir", "long_short_sharpe", "stability"],
+    "trial_metric_skills": ["monotonicity_score_v1", "excess_drawdown_penalty_v1"],
+    "metric_proposal_rounds": {"monotonicity_score_v1": 21, "excess_drawdown_penalty_v1": 50},
+    "auto_promotion_absolute_correlation": 0.3,
+    "demotion_absolute_correlation": 0.05,
+    "minimum_promotion_observations": 20,
+    "monotonicity_agent_initiated_panel_accepts_positive_correlation": true,
+    "persistent_state_updates_only_at_round_close": true,
+    "external_common_evaluator_visible_to_roles": false
+  },
+  "search_policy": {
+    "prehistory_formation_start": "1989-07-31",
+    "training_months": 120,
+    "outer_rounds": 100,
+    "one_new_unique_alpha_per_round_until_capacity": true,
+    "epsilon_exploration_every_rounds": 10,
+    "alpha_panel_weights": {"mean_rankic": 0.4, "rankicir": 0.25, "long_short_sharpe": 0.25, "evolved_metric": 0.1},
+    "ppo_relay_decay": 0.9,
+    "ppo_relay_learning_rate": 0.1,
+    "inner_tail_fraction": 0.1,
+    "inner_minimum_side": 20,
+    "inner_cost_bps_one_way": 10.0,
+    "metric_quantile_groups": 5,
+    "common_portfolio_adapter": "the frozen top-30 equal-weight z-score composite enters fixed value-weighted long-short deciles and all six common paths",
+    "common_or_post_training_returns_used_for_search_or_selection": false
+  },
+  "preserved_elements": ["joint search over alpha artifacts and evaluation metrics", "five role-specialized loci", "nine-client adjudicator-panel abstraction", "three typed information channels", "role-scoped and bounded cross-round records", "eight persistent skill stores", "trial/accepted metric lifecycle", "outcome-grounded substrate promotion", "100 outer rounds", "94 unique alpha registry", "AlphaGen-style operator grammar", "training-only proposal feedback", "PPO-style persistent proposal relay", "top-30 training-IC selection", "equal-weight z-score composite", "sealed external evaluation"],
+  "approximated_elements": ["JKP characteristics replace CSI1000 OHLCV and AlphaGen tensors", "deterministic role functions replace nine unavailable LLM clients", "ranked symbolic formulas replace missing native AlphaGen programs", "three deterministic score views replace evaluator narratives", "feature proposal weights replace MaskablePPO network state", "monthly deciles replace five-day next-open execution", "the printed promoted-metric logic is adapted from daily equal-weight arrays to monthly common paths", "all post-training common months are more strictly sealed than the paper's categorical test feedback"],
+  "invented_elements": ["the ten-feature 145-expression grammar", "one new registry alpha per round until the 94-alpha cap", "the exact panel aggregation weights", "the every-tenth-round exploration schedule", "the PPO-relay decay and learning rate", "the deterministic advisory and candidate-priority rules", "the monthly implementations of metric correlation and promotion"],
+  "anti_leakage": {"published_top30_alpha_descriptions_or_returns_used_as_inputs": false, "paper_holdout_curve_used_for_recipe_choice": false, "common_period_feedback_crosses_the_seal": false, "m061_common_result_seen_before_recipe_freeze": false, "prior_other_paper_common_results_seen": true, "retuning_after_common_result_permitted": false}
+}
