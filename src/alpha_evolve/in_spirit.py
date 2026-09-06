@@ -551,6 +551,384 @@ def sharp_evolved_rubric_scores(
     return result, pd.DataFrame(block_rows), pd.DataFrame(evolution_rows)
 
 
+def madevolve_candidate_library(
+    frame: pd.DataFrame,
+    feature_seeds: dict[str, list[str]],
+    fixed_interactions: list[list[str]],
+) -> tuple[pd.DataFrame, dict[str, frozenset[str]]]:
+    """Build the frozen 40-feature MadEvolve symbolic program library."""
+    expected_families = ["momentum", "reversal_risk", "liquidity", "value_quality", "catalyst"]
+    if list(feature_seeds) != expected_families:
+        raise ValueError("MadEvolve feature families changed")
+    seeds = [feature for family in expected_families for feature in feature_seeds[family]]
+    if len(seeds) != 14 or len(set(seeds)) != 14:
+        raise ValueError("MadEvolve requires 14 unique feature seeds")
+    missing = {"month", *seeds} - set(frame)
+    if missing:
+        raise ValueError(f"missing MadEvolve seed inputs: {sorted(missing)}")
+    ranked = cross_sectional_unit_rank(frame, seeds)
+    feature_family = {
+        feature: family for family, features in feature_seeds.items() for feature in features
+    }
+    generated: dict[str, pd.Series] = {}
+    families: dict[str, frozenset[str]] = {}
+    for feature in seeds:
+        name = f"identity__{feature}"
+        generated[name] = ranked[feature]
+        families[name] = frozenset([feature_family[feature]])
+    for family, features in feature_seeds.items():
+        for left, right in combinations(features, 2):
+            name = f"pair_mean__{left}__{right}"
+            generated[name] = (ranked[left] + ranked[right]) / 2.0
+            families[name] = frozenset([family])
+    for left, right in fixed_interactions:
+        if left not in feature_family or right not in feature_family:
+            raise ValueError("MadEvolve interaction references an unknown seed")
+        name = f"interaction__{left}__{right}"
+        if name in generated:
+            raise ValueError("duplicate MadEvolve interaction")
+        generated[name] = ranked[left] * ranked[right]
+        families[name] = frozenset([feature_family[left], feature_family[right]])
+    if len(generated) != 40:
+        raise AssertionError("frozen MadEvolve grammar must generate 40 features")
+    values = pd.DataFrame(generated, index=frame.index)
+    library = cross_sectional_unit_rank(pd.concat([frame[["month"]], values], axis=1), list(values))
+    return library, families
+
+
+def _madevolve_program_key(program: tuple[tuple[str, ...], str]) -> tuple[tuple[str, ...], str]:
+    terms, wrapper = program
+    return tuple(sorted(set(terms))), wrapper
+
+
+def _madevolve_program_score(
+    frame: pd.DataFrame,
+    library: pd.DataFrame,
+    rankics: pd.DataFrame,
+    seed_ranks: pd.DataFrame,
+    market_six: pd.Series,
+    program: tuple[tuple[str, ...], str],
+    training: list[pd.Timestamp],
+    ridge_penalty: float,
+) -> tuple[pd.Series, pd.Series]:
+    terms, wrapper = _madevolve_program_key(program)
+    history = rankics.loc[training, list(terms)]
+    mean = history.mean()
+    variance = history.var(ddof=1).fillna(0.0)
+    raw = mean / (variance + ridge_penalty)
+    if not np.isfinite(raw).all() or float(raw.abs().sum()) <= 0:
+        raise ValueError("MadEvolve program has no trainable RankIC weight")
+    weights = raw / raw.abs().sum()
+    base = library.loc[:, list(terms)].mul(weights, axis=1).sum(axis=1)
+    if wrapper == "identity":
+        score = base
+    elif wrapper == "risk_dampen":
+        score = base * (1.0 - 0.5 * (seed_ranks["rvol_21d"] + 1.0) / 2.0)
+    elif wrapper == "quality_confirm":
+        score = 0.7 * base + 0.3 * seed_ranks[["gp_at", "ocf_at"]].mean(axis=1)
+    elif wrapper == "momentum_confirm":
+        score = 0.7 * base + 0.3 * seed_ranks["ret_6_1"]
+    elif wrapper == "defensive_regime_switch":
+        regime = frame["month"].map(market_six)
+        score = base.where(regime.ge(0.0), 0.7 * base - 0.3 * seed_ranks["ret_1_0"])
+    else:
+        raise ValueError(f"unknown MadEvolve strategy wrapper: {wrapper}")
+    return score, weights
+
+
+def _madevolve_mutate_program(
+    parent: tuple[tuple[str, ...], str],
+    inspiration: tuple[tuple[str, ...], str],
+    library_names: list[str],
+    wrappers: list[str],
+    rng: np.random.Generator,
+    *,
+    rewrite: bool,
+    minimum_terms: int,
+    maximum_terms: int,
+) -> tuple[tuple[str, ...], str]:
+    parent_terms, parent_wrapper = _madevolve_program_key(parent)
+    inspiration_terms, _ = _madevolve_program_key(inspiration)
+    if rewrite:
+        count = int(rng.integers(minimum_terms, maximum_terms + 1))
+        terms = list(rng.choice(library_names, size=count, replace=False))
+        inspired = [name for name in inspiration_terms if name not in terms[1:]]
+        if inspired:
+            terms[0] = str(rng.choice(inspired))
+        wrapper = str(rng.choice(wrappers))
+        return _madevolve_program_key((tuple(terms), wrapper))
+
+    terms = list(parent_terms)
+    operations = ["replace", "wrapper", "crossover"]
+    if len(terms) < maximum_terms:
+        operations.append("add")
+    if len(terms) > minimum_terms:
+        operations.append("remove")
+    operation = str(rng.choice(operations))
+    wrapper = parent_wrapper
+    available = [name for name in library_names if name not in terms]
+    inspired = [name for name in inspiration_terms if name not in terms]
+    if operation == "add":
+        terms.append(str(rng.choice(inspired or available)))
+    elif operation == "remove":
+        terms.pop(int(rng.integers(0, len(terms))))
+    elif operation == "replace":
+        terms[int(rng.integers(0, len(terms)))] = str(rng.choice(inspired or available))
+    elif operation == "wrapper":
+        wrapper = str(rng.choice([name for name in wrappers if name != wrapper]))
+    else:
+        pool = sorted(set(terms).union(inspiration_terms))
+        count = min(maximum_terms, max(minimum_terms, len(terms)))
+        terms = list(rng.choice(pool, size=min(count, len(pool)), replace=False))
+    child = _madevolve_program_key((tuple(terms), wrapper))
+    if child == _madevolve_program_key(parent):
+        wrapper = wrappers[(wrappers.index(parent_wrapper) + 1) % len(wrappers)]
+        child = _madevolve_program_key((parent_terms, wrapper))
+    return child
+
+
+def madevolve_joint_search_scores(
+    frame: pd.DataFrame,
+    feature_seeds: dict[str, list[str]],
+    fixed_interactions: list[list[str]],
+    strategy_wrappers: list[str],
+    baseline_program: dict[str, object],
+    *,
+    common_start: str,
+    training_months: int = 48,
+    validation_months: int = 24,
+    frozen_test_months: int = 24,
+    islands: int = 5,
+    generations: int = 15,
+    offspring_per_island_per_generation: int = 2,
+    differential_patch_probability: float = 0.7,
+    migration_interval_generations: int = 5,
+    migration_rate: float = 0.1,
+    migrants_per_island: int = 1,
+    elite_vault_capacity: int = 20,
+    minimum_program_terms: int = 2,
+    maximum_program_terms: int = 5,
+    maximum_named_parameters: int = 5,
+    performance_buckets: list[float] | None = None,
+    inner_tail_fraction: float = 0.1,
+    inner_minimum_side: int = 20,
+    inner_cost_bps_one_way: float = 10.0,
+    rankic_ridge_penalty: float = 0.1,
+    random_seed: int = 260523007,
+) -> tuple[pd.Series, pd.DataFrame, pd.DataFrame]:
+    """Run a causal five-island MadEvolve-style joint symbolic search."""
+    expected_wrappers = [
+        "identity",
+        "risk_dampen",
+        "quality_confirm",
+        "momentum_confirm",
+        "defensive_regime_switch",
+    ]
+    if strategy_wrappers != expected_wrappers or islands != 5:
+        raise ValueError("MadEvolve requires the frozen five wrappers and five islands")
+    if not np.isclose(differential_patch_probability, 0.7) or not np.isclose(migration_rate, 0.1):
+        raise ValueError("MadEvolve patch or migration policy changed")
+    if maximum_named_parameters != 5 or maximum_program_terms > maximum_named_parameters:
+        raise ValueError("MadEvolve parameter budget changed")
+    if not 1 <= migrants_per_island <= elite_vault_capacity:
+        raise ValueError("MadEvolve migration count is invalid")
+    buckets = [-0.1, 0.0, 0.1] if performance_buckets is None else performance_buckets
+    library, term_families = madevolve_candidate_library(frame, feature_seeds, fixed_interactions)
+    seed_columns = [feature for features in feature_seeds.values() for feature in features]
+    seed_ranks = cross_sectional_unit_rank(frame, seed_columns).fillna(0.0)
+    rankics = monthly_rankic(frame, library)
+    market_values: dict[pd.Timestamp, float] = {}
+    for month, indices in frame.groupby("month", sort=True).groups.items():
+        weights = pd.to_numeric(frame.loc[indices, "weight"], errors="coerce").fillna(0.0)
+        returns = pd.to_numeric(frame.loc[indices, "ret"], errors="coerce").fillna(0.0)
+        market_values[pd.Timestamp(month)] = float(np.sum(weights * returns) / weights.sum())
+    market = pd.Series(market_values).sort_index()
+    market_six = (1.0 + market).rolling(6, min_periods=6).apply(np.prod, raw=True) - 1.0
+    baseline = _madevolve_program_key(
+        (tuple(str(name) for name in baseline_program["terms"]), str(baseline_program["wrapper"]))
+    )
+    if baseline != (
+        ("identity__ret_12_1", "identity__ret_1_0", "identity__ret_6_1"),
+        "identity",
+    ):
+        raise ValueError("MadEvolve baseline program changed")
+    library_names = sorted(library.columns)
+    all_months = sorted(pd.Timestamp(month) for month in frame["month"].unique())
+    common_months = [month for month in all_months if month >= pd.Timestamp(common_start)]
+    positions = {month: number for number, month in enumerate(all_months)}
+    groups = frame.groupby("month", sort=False).groups
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    block_rows: list[dict[str, object]] = []
+    generation_rows: list[dict[str, object]] = []
+
+    for block, test_offset in enumerate(range(0, len(common_months), frozen_test_months), start=1):
+        test = common_months[test_offset : test_offset + frozen_test_months]
+        boundary = positions[test[0]]
+        validation = all_months[boundary - validation_months : boundary]
+        training = all_months[boundary - validation_months - training_months : boundary - validation_months]
+        if len(training) != training_months or len(validation) != validation_months:
+            raise ValueError(f"MadEvolve prehistory is incomplete at {test[0].date()}")
+        rng = np.random.default_rng(random_seed + block)
+        cache: dict[tuple[tuple[str, ...], str], tuple[float, pd.Series, pd.Series]] = {}
+        proposal_count = 0
+
+        def evaluate(program: tuple[tuple[str, ...], str]) -> tuple[float, pd.Series, pd.Series]:
+            key = _madevolve_program_key(program)
+            if key not in cache:
+                score, fitted_weights = _madevolve_program_score(
+                    frame,
+                    library,
+                    rankics,
+                    seed_ranks,
+                    market_six,
+                    key,
+                    training,
+                    rankic_ridge_penalty,
+                )
+                validation_path, _ = _sharp_tail_path(
+                    frame,
+                    score,
+                    validation,
+                    tail_fraction=inner_tail_fraction,
+                    minimum_side=inner_minimum_side,
+                    cost_bps_one_way=inner_cost_bps_one_way,
+                )
+                fitness = float(np.prod(1.0 + validation_path) - 1.0)
+                cache[key] = fitness, score, fitted_weights
+            return cache[key]
+
+        def cell(program: tuple[tuple[str, ...], str], fitness: float) -> tuple[int, int, str, int]:
+            terms, wrapper = _madevolve_program_key(program)
+            family_count = len(set().union(*(term_families[name] for name in terms)))
+            return len(terms), family_count, wrapper, int(np.digitize(fitness, buckets))
+
+        def insert(
+            archive: dict[tuple[int, int, str, int], tuple[float, tuple[tuple[str, ...], str]]],
+            program: tuple[tuple[str, ...], str],
+            fitness: float,
+        ) -> bool:
+            key = cell(program, fitness)
+            previous = archive.get(key)
+            candidate = (fitness, _madevolve_program_key(program))
+            if previous is None or fitness > previous[0] or (fitness == previous[0] and candidate[1] < previous[1]):
+                archive[key] = candidate
+                return True
+            return False
+
+        initial_programs = [
+            baseline,
+            _madevolve_program_key(((*baseline[0], "identity__rvol_21d"), "risk_dampen")),
+            _madevolve_program_key(((*baseline[0], "identity__gp_at"), "quality_confirm")),
+            _madevolve_program_key(((*baseline[0], "identity__niq_su"), "momentum_confirm")),
+            _madevolve_program_key(((*baseline[0], "identity__turnover_126d"), "defensive_regime_switch")),
+        ]
+        archives: list[dict[tuple[int, int, str, int], tuple[float, tuple[tuple[str, ...], str]]]] = [
+            {} for _ in range(islands)
+        ]
+        vault: dict[tuple[tuple[str, ...], str], float] = {}
+        for island, program in enumerate(initial_programs):
+            fitness, _, _ = evaluate(program)
+            insert(archives[island], program, fitness)
+            vault[program] = fitness
+
+        for generation in range(1, generations + 1):
+            patch_count = 0
+            rewrite_count = 0
+            improvements = 0
+            insertions = 0
+            for island in range(islands):
+                for _ in range(offspring_per_island_per_generation):
+                    proposal_count += 1
+                    members = sorted(archives[island].values(), key=lambda item: (-item[0], item[1]))
+                    parent_fitness, parent = members[int(rng.integers(0, min(5, len(members))))]
+                    inspirations = sorted(vault.items(), key=lambda item: (-item[1], item[0]))[:elite_vault_capacity]
+                    inspiration = inspirations[int(rng.integers(0, len(inspirations)))][0]
+                    rewrite = bool(rng.random() >= differential_patch_probability)
+                    patch_count += int(not rewrite)
+                    rewrite_count += int(rewrite)
+                    child = _madevolve_mutate_program(
+                        parent,
+                        inspiration,
+                        library_names,
+                        strategy_wrappers,
+                        rng,
+                        rewrite=rewrite,
+                        minimum_terms=minimum_program_terms,
+                        maximum_terms=maximum_program_terms,
+                    )
+                    fitness, _, _ = evaluate(child)
+                    improvements += int(fitness > parent_fitness)
+                    insertions += int(insert(archives[island], child, fitness))
+                    vault[child] = max(fitness, vault.get(child, -np.inf))
+                    vault = dict(
+                        sorted(vault.items(), key=lambda item: (-item[1], item[0]))[:elite_vault_capacity]
+                    )
+            migrants = 0
+            if generation % migration_interval_generations == 0:
+                outgoing = [
+                    sorted(archive.values(), key=lambda item: (-item[0], item[1]))[:migrants_per_island]
+                    for archive in archives
+                ]
+                for island, records in enumerate(outgoing):
+                    destination = archives[(island + 1) % islands]
+                    for fitness, program in records:
+                        insert(destination, program, fitness)
+                        migrants += 1
+            best_fitness, best_program = max(
+                ((fitness, program) for program, fitness in vault.items()),
+                key=lambda item: (item[0], str(item[1])),
+            )
+            generation_rows.append(
+                {
+                    "block": block,
+                    "generation": generation,
+                    "patch_proposals": patch_count,
+                    "rewrite_proposals": rewrite_count,
+                    "parent_improvements": improvements,
+                    "grid_insertions": insertions,
+                    "migrants": migrants,
+                    "island_cells": sum(len(archive) for archive in archives),
+                    "unique_programs": len(cache),
+                    "elite_vault_size": len(vault),
+                    "best_validation_fitness": best_fitness,
+                    "best_terms": "|".join(best_program[0]),
+                    "best_wrapper": best_program[1],
+                }
+            )
+        best_program, best_fitness = max(vault.items(), key=lambda item: (item[1], str(item[0])))
+        _, frozen_score, fitted_weights = evaluate(best_program)
+        test_indices = [index for month in test for index in groups[month]]
+        result.loc[test_indices] = frozen_score.loc[test_indices]
+        block_rows.append(
+            {
+                "block": block,
+                "train_start": str(training[0].date()),
+                "train_end": str(training[-1].date()),
+                "validation_start": str(validation[0].date()),
+                "validation_end": str(validation[-1].date()),
+                "test_start": str(test[0].date()),
+                "test_end": str(test[-1].date()),
+                "test_months": len(test),
+                "proposal_count": proposal_count,
+                "unique_programs": len(cache),
+                "best_validation_fitness": best_fitness,
+                "best_terms": "|".join(best_program[0]),
+                "best_wrapper": best_program[1],
+                "fitted_weights": "|".join(
+                    f"{name}={fitted_weights[name]:.12g}" for name in best_program[0]
+                ),
+                "term_count": len(best_program[0]),
+                "factor_family_count": len(
+                    set().union(*(term_families[name] for name in best_program[0]))
+                ),
+                "minimum_finite_scores": int(
+                    min(frozen_score.loc[groups[month]].notna().sum() for month in test)
+                ),
+            }
+        )
+    return result, pd.DataFrame(block_rows), pd.DataFrame(generation_rows)
+
+
 def stratllm_alignment_scores(
     frame: pd.DataFrame,
     multi_source_state: dict[str, list[tuple[str, int]]],
