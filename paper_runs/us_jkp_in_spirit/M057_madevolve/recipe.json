@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M057",
+  "canonical_work_id": "CensusArxiv260523007",
+  "paper": "MadEvolve: Evolutionary Optimization of Trading Systems with Large Language Models",
+  "status": "frozen_before_jkp_result",
+  "fidelity_label": "in_spirit_reconstruction",
+  "claim_boundary": "A researcher-authored monthly U.S.-stock analogue of MadEvolve Run 5 that jointly evolves a feature program and a score-shaping strategy wrapper through five quality-diversity islands; not the missing BTCUSD code, LLM mutations, evolved program, minute-bar simulator, or native results.",
+  "paper_source": {
+    "url": "https://arxiv.org/abs/2605.23007v1",
+    "version": "arXiv v1",
+    "pdf_sha256": "9a8c776fddbeab3ca753dcaed8f04e74884b18d40e818e5d23ab9c0051751c16",
+    "source_sha256": "e05e19e79fcf119e462c72bf7cd484b2c1cd9694fdca31d6f10ffbdafd4671ab",
+    "framework_repository": "https://github.com/tianyi-stack/MadEvolve",
+    "framework_commit": "8b881d3a45d8f68050c28c8d64c2bb653001103a",
+    "attributable_trading_program_or_actions_found": false
+  },
+  "primary_source_anchors": [
+    {
+      "anchor": "Sections 2.4.3 and 5.6",
+      "mechanism": "Headline Run 5 jointly exposes the feature pipeline and execution strategy to evolution, refits the forecaster on training data, optimizes validation impact-adjusted PnL, and freezes the validation champion for test."
+    },
+    {
+      "anchor": "Sections 3.1-3.3 and Figure 1",
+      "mechanism": "Parent and inspiration programs generate approximately 70% differential patches and 30% rewrites; candidates enter a quality-diversity population after automated evaluation."
+    },
+    {
+      "anchor": "Section 3.2",
+      "mechanism": "Five semi-isolated MAP-Elites populations migrate 10% of elites every five generations while a global archive preserves top programs."
+    },
+    {
+      "anchor": "Section 3.4 and Table 1",
+      "mechanism": "Validation PnL with embedded costs is the fitness objective; parameter changes live inside evolved programs, and held-out test performance is not used for selection."
+    },
+    {
+      "anchor": "Appendix C.5",
+      "mechanism": "The best joint program combines multi-scale price features, volatility, range, order-flow interactions, regime-conditioned risk reduction, and nonlinear conviction shaping."
+    }
+  ],
+  "strict_evidence": {
+    "audit_manifest_path": "paper_runs/paper_replication_audits/madevolve_trading/manifest.json",
+    "audit_manifest_sha256": "0cc0a5badc6e7705cf58da2d41e6f860c1d0f957d2c127135a6406a43a1403b0",
+    "source_provenance_path": "paper_runs/paper_replication_audits/madevolve_trading/source_provenance.json",
+    "source_provenance_sha256": "5fa649c56ccc243b090e066bddf61d5df3e3d265e375d27f653bccbf1d286a11",
+    "method_specification_path": "paper_runs/paper_replication_audits/madevolve_trading/method_specification_audit.csv",
+    "method_specification_sha256": "38c487dc420a13da4caa37eff8e51464a2ad0eefcd021dae87ac56d8df60f553",
+    "release_execution_path": "paper_runs/paper_replication_audits/madevolve_trading/release_execution_audit.json",
+    "release_execution_sha256": "4426ebdacb29977aee288fba42aa404fea1a36dc4c0526457e173174e60af6c4"
+  },
+  "feature_seeds": {
+    "momentum": ["ret_1_0", "ret_3_1", "ret_6_1", "ret_12_1", "prc_highprc_252d"],
+    "reversal_risk": ["rvol_21d", "rmax5_21d"],
+    "liquidity": ["turnover_126d"],
+    "value_quality": ["be_me", "gp_at", "ocf_at", "z_score"],
+    "catalyst": ["niq_su", "saleq_su"]
+  },
+  "candidate_library": {
+    "identity_features": 14,
+    "within_family_pair_means": 18,
+    "fixed_interactions": [
+      ["ret_12_1", "rvol_21d"],
+      ["ret_6_1", "turnover_126d"],
+      ["ret_1_0", "niq_su"],
+      ["gp_at", "ocf_at"],
+      ["be_me", "z_score"],
+      ["ret_12_1", "gp_at"],
+      ["rvol_21d", "turnover_126d"],
+      ["niq_su", "saleq_su"]
+    ],
+    "total_features": 40,
+    "feature_transform": "monthly cross-sectional rank to [-1,1] before identities, pair means, and products",
+    "training_fit": "orient and weight selected terms by diagonal-ridge-shrunk mean monthly RankIC over the training window"
+  },
+  "strategy_wrappers": [
+    "identity",
+    "risk_dampen",
+    "quality_confirm",
+    "momentum_confirm",
+    "defensive_regime_switch"
+  ],
+  "baseline_program": {
+    "terms": ["identity__ret_1_0", "identity__ret_6_1", "identity__ret_12_1"],
+    "wrapper": "identity"
+  },
+  "evolution_policy": {
+    "prehistory_formation_start": "1993-01-31",
+    "training_months": 48,
+    "validation_months": 24,
+    "frozen_test_months": 24,
+    "islands": 5,
+    "generations": 15,
+    "offspring_per_island_per_generation": 2,
+    "differential_patch_probability": 0.7,
+    "holistic_rewrite_probability": 0.3,
+    "migration_interval_generations": 5,
+    "migration_rate": 0.1,
+    "migrants_per_island": 1,
+    "elite_vault_capacity": 20,
+    "minimum_program_terms": 2,
+    "maximum_program_terms": 5,
+    "maximum_named_parameters": 5,
+    "map_elites_dimensions": ["term_count", "factor_family_count", "strategy_wrapper", "validation_performance_bucket"],
+    "validation_performance_buckets": [-0.1, 0.0, 0.1],
+    "fitness": "compounded validation long-short return after target-to-target turnover at 10 bp one-way",
+    "inner_tail_fraction": 0.1,
+    "inner_minimum_side": 20,
+    "inner_cost_bps_one_way": 10.0,
+    "rankic_ridge_penalty": 0.1,
+    "random_seed": 260523007,
+    "independent_window_initialization": true,
+    "best_validation_program_frozen_for_test": true,
+    "common_portfolio_adapter": "the frozen program's continuous score enters fixed value-weighted long-short deciles and all six common paths",
+    "final_common_or_test_returns_used_for_program_selection": false
+  },
+  "preserved_elements": [
+    "joint evolution of feature and strategy code concepts",
+    "three-feature momentum baseline",
+    "training-only forecaster fitting",
+    "validation economic-return fitness with embedded costs",
+    "five semi-isolated quality-diversity populations",
+    "parent and inspiration program mutations",
+    "70% localized patches and 30% holistic rewrites",
+    "MAP-Elites cell replacement",
+    "migration every five generations at a 10% rate",
+    "global elite archive",
+    "parameter budget",
+    "validation champion frozen out of sample",
+    "chronological train-validation-test separation"
+  ],
+  "approximated_elements": [
+    "monthly JKP characteristics replace BTCUSD minute bars and order-book state",
+    "deterministic symbolic mutations replace the unavailable frontier-LLM ensemble",
+    "RankIC-derived term weights replace candidate-specific ridge forecasting code",
+    "score wrappers replace limit-order placement, fill, inventory, and impact logic",
+    "48/24/24-month rolling windows replace the single 2022-2023/2024/2025 split",
+    "common decile turnover costs replace exchange fees and nonlinear market impact",
+    "fixed program descriptors replace source-code embeddings and character length"
+  ],
+  "invented_elements": [
+    "the 40-element JKP feature grammar",
+    "the five score wrappers and their formulas",
+    "15 generations with two offspring per island",
+    "the exact initial island seeds and deterministic mutation operators",
+    "the fixed MAP-Elites performance buckets",
+    "the diagonal RankIC ridge penalty",
+    "the 24-month frozen update cadence"
+  ],
+  "anti_leakage": {
+    "published_best_program_description_used_as_an_executable_program": false,
+    "paper_validation_or_test_curve_used_for_recipe_choice": false,
+    "current_or_future_test_return_used_for_evolution": false,
+    "m057_common_result_seen_before_recipe_freeze": false,
+    "prior_other_paper_common_results_seen": true,
+    "retuning_after_common_result_permitted": false
+  }
+}
