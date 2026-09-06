@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M063",
+  "canonical_work_id": "CensusArxiv260712233",
+  "paper": "Fin-Analyst at FinMMEval 2026 Task 3: A Live Hybrid Trading Agent with LLM Specialists and Rule-Based Signals",
+  "status": "frozen_before_jkp_result",
+  "fidelity_label": "in_spirit_reconstruction",
+  "claim_boundary": "A researcher-authored monthly cross-sectional U.S.-stock analogue of the paper's TSLA branch: eight data-specific specialists plus the recency-weighted Meta-Agent, explicit BUY/HOLD/SELL verdicts, news override, majority rule, and HOLD fallback; not the native gpt-4o-mini calls, corpora, TSLA actions, or organizer path.",
+  "paper_source": {"url": "https://arxiv.org/abs/2607.12233v1", "version": "arXiv v1", "pdf_sha256": "8b03c2ae99aff919be41757bb465fb958d69a3b0ccc4ceb35aef1706e2e46a79", "source_archive_sha256": "6f8d42ec5c5aec1855c5e6db096949e96e40a3b469f68c9a5d25b68bf62470c9", "source_tex_sha256": "fcd407f9bb6ac4392575c46415094f20e2019badce97363e464d2239530e91c5", "author_space_commit": "85ab4781e74ed3deb9a7ef49bca3fa23b1ed9738", "attributable_pre_live_implementation_found": true, "causal_cross_sectional_policy_or_historical_model_state_found": false},
+  "primary_source_anchors": [
+    {"anchor": "Sections 3.2-3.3 and Figure 1", "mechanism": "The TSLA branch loads persistent signal corpora, invokes eight role-conditioned specialists, and passes their action/confidence/reasoning records to a Meta-Agent."},
+    {"anchor": "Table 1 and Appendix Table 8", "mechanism": "News, Event, Quarterly, Annual, Fundamentals, Analyst, Technical, and Social specialists encode source-specific directional rules and confidence conventions."},
+    {"anchor": "Meta-Agent prompt in Appendix Table 8", "mechanism": "News has highest recency weight and can override above 0.70 confidence; agreement by at least five specialists is followed strongly, and HOLD is reserved for a genuinely split panel."},
+    {"anchor": "Sections 3.5-3.6", "mechanism": "Every specialist emits JSON action/confidence/reasoning, unchanged low-frequency cards may reuse cached verdicts, and an exception becomes HOLD under the no-retry protocol."}
+  ],
+  "strict_evidence": {
+    "audit_manifest_path": "paper_runs/paper_replication_audits/fin_analyst/manifest.json", "audit_manifest_sha256": "0ffc643e326b3d7ae69426f3b151eb530dfc70d5c123d0b3c385ce85d4683334",
+    "source_provenance_path": "paper_runs/paper_replication_audits/fin_analyst/source_provenance.json", "source_provenance_sha256": "22a455592dbde3eaf2e9b5a59dcf660f82690d098e324d6577ebf71a96d41261",
+    "method_specification_path": "paper_runs/paper_replication_audits/fin_analyst/method_specification_audit.csv", "method_specification_sha256": "27c8785a585c6db9274d20eef3809a31a225c357d9af2d89d4c6e7ad343e643e",
+    "prompt_correspondence_path": "paper_runs/paper_replication_audits/fin_analyst/prompt_correspondence.csv", "prompt_correspondence_sha256": "eb4fefea13b99a570225d583253bee075787e05bb248b1b747d28f5b0fe09595",
+    "native_execution_path": "paper_runs/paper_replication_audits/fin_analyst/native_execution.json", "native_execution_sha256": "7aca9af1f774fda2151e2e696eac433a6cbd17d01dfe5b6dd99e92c48a8df4b7",
+    "organizer_scorer_path": "paper_runs/paper_replication_audits/fin_analyst/organizer_native_scorer_execution.json", "organizer_scorer_sha256": "a108d4332624985f3522947f8dd4b5f60e4e31983a1756376e8e60e307626f73"
+  },
+  "specialists": {
+    "news": [{"column": "niq_su", "sign": 1}, {"column": "saleq_su", "sign": 1}, {"column": "ret_1_0", "sign": 1}],
+    "event": [{"column": "niq_su", "sign": 1}, {"column": "saleq_su", "sign": 1}, {"column": "rmax5_21d", "sign": 1}],
+    "quarterly": [{"column": "niq_su", "sign": 1}, {"column": "saleq_su", "sign": 1}, {"column": "ocf_at", "sign": 1}],
+    "annual": [{"column": "be_me", "sign": 1}, {"column": "gp_at", "sign": 1}, {"column": "z_score", "sign": 1}],
+    "fundamentals": [{"column": "gp_at", "sign": 1}, {"column": "ocf_at", "sign": 1}, {"column": "z_score", "sign": 1}, {"column": "be_me", "sign": 1}],
+    "analyst": [{"column": "niq_su", "sign": 1}, {"column": "saleq_su", "sign": 1}, {"column": "gp_at", "sign": 1}],
+    "technical": [{"column": "ret_6_1", "sign": 1}, {"column": "prc_highprc_252d", "sign": 1}, {"column": "ret_1_0", "sign": -1}, {"column": "rvol_21d", "sign": -1}],
+    "social": [{"column": "turnover_126d", "sign": 1}, {"column": "rmax5_21d", "sign": 1}, {"column": "ret_1_0", "sign": 1}]
+  },
+  "meta_agent_policy": {
+    "specialist_weights": {"news": 0.25, "event": 0.16, "quarterly": 0.14, "technical": 0.11, "fundamentals": 0.11, "analyst": 0.11, "social": 0.07, "annual": 0.05},
+    "specialist_action_threshold": 0.15,
+    "confidence_formula": "clip(0.3 + 0.7*abs(specialist_score), 0, 1)",
+    "news_override_confidence": 0.70,
+    "news_override_minimum_absolute_catalyst": 0.60,
+    "majority_specialists": 5,
+    "split_panel_hold_threshold": 0.10,
+    "missing_specialist_input": "neutral HOLD score and 0.30 confidence",
+    "continuous_portfolio_score": "override score, majority-signed agreeing strength, or weighted specialist sum before the final discrete action",
+    "common_portfolio_adapter": "the continuous Meta-Agent score enters fixed value-weighted long-short deciles and all six common paths",
+    "paper_or_common_future_returns_used_for_aggregation": false
+  },
+  "preserved_elements": ["persistent source-specific signal cards", "eight named TSLA specialist roles", "source-conditioned directional rules", "per-specialist action and confidence", "hierarchical Meta-Agent aggregation", "recency-weighted specialist priority", "high-confidence news override", "five-specialist consensus", "BUY/HOLD/SELL action space", "split-panel HOLD fallback", "missing/error-to-HOLD semantics", "deterministic final aggregation outside specialists"],
+  "approximated_elements": ["point-in-time JKP characteristics replace the seven native corpora and daily news bundle", "signed rank composites replace gpt-4o-mini specialist reasoning", "accounting surprises replace news, 8-K, 10-Q, and analyst text", "quality/value characteristics replace the 10-K and Compustat cards", "turnover and extreme-return characteristics replace WSB sentiment", "monthly momentum and volatility replace MACD/RSI/BB/ADX", "continuous cross-sectional scores replace single-TSLA daily actions", "common 10 bp decile execution replaces the organizer single-asset scorer"],
+  "invented_elements": ["the exact signed JKP mapping for each specialist", "the specialist action threshold", "the specialist weight vector", "the confidence transformation", "the catalyst gate paired with the 0.70 news override", "the 0.10 split-panel HOLD threshold", "the continuous majority-strength score"],
+  "anti_leakage": {"historical_TSLA_or_BTC_decisions_used_as_formation_actions": false, "published_ablation_or_return_table_used_for_weights": false, "current_forward_return_used_by_any_specialist": false, "m063_common_result_seen_before_recipe_freeze": false, "prior_other_paper_common_results_seen": true, "retuning_after_common_result_permitted": false}
+}
