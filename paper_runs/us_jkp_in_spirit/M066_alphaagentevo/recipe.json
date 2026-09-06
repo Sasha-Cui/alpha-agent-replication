@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M066",
+  "canonical_work_id": "CensusORlNmZrawUMu",
+  "paper": "AlphaAgentEvo: Evolution-Oriented Alpha Mining via Self-Evolving Agentic Reinforcement Learning",
+  "status": "frozen_before_jkp_result",
+  "fidelity_label": "in_spirit_reconstruction",
+  "claim_boundary": "A researcher-authored monthly U.S.-stock analogue of AlphaAgentEvo in which a persistent multi-turn policy samples four factor offspring per step, receives an explicit five-component hierarchical reward, updates feature/operator preferences from group-relative advantages, retains a diverse elite pool, and deploys the best training-only alpha; not the missing Qwen3 policy, GRPO trajectories, native tools, factors, or checkpoints.",
+  "paper_source": {"url": "https://openreview.net/forum?id=lNmZrawUMu", "version": "accepted ICLR 2026", "openreview_id": "lNmZrawUMu", "official_pdf_sha256": "5d26b8d22ef091fb89e1ae2b968821092f6f6b6ccc048f95b365713c4b182fd5", "official_pages": 18, "supplement_listed": true, "supplement_recovered": false, "paper_author_code_checkpoint_or_factor_pool_found": false},
+  "primary_source_anchors": [
+    {"anchor": "Sections 2.2-2.3 and Figure 2", "mechanism": "A multi-turn agent starts from a seed alpha, generates and evaluates offspring through tools, receives feedback, and refines its strategy over turns rather than performing one-shot search."},
+    {"anchor": "Section 2.3 reward hierarchy", "mechanism": "The agent reward combines validity, performance quality, diversity, novelty, and tool efficiency with capped components and an explicit direction-aware objective."},
+    {"anchor": "Experiment and training configuration", "mechanism": "Qwen3 policies are trained for 150 steps with group-relative policy optimization and a maximum of four factor-evaluation tool calls per trajectory."},
+    {"anchor": "Sections 3.3-3.5", "mechanism": "The trained policy increases exploration, stabilizes consistency, improves pass rates, and retains a structurally diverse top-alpha set rather than repeatedly exploiting one motif."},
+    {"anchor": "Portfolio specification", "mechanism": "An evolved alpha forms a cross-sectional top-10-percent portfolio with five-day rebalancing; common monthly deciles preserve the top-tail ranking role."}
+  ],
+  "strict_evidence": {
+    "audit_manifest_path": "paper_runs/paper_replication_audits/alphaagentevo/manifest.json", "audit_manifest_sha256": "e20a7dd715a0952379ee79691796dc8bf6264b28a0767684ee87408697405c51",
+    "source_provenance_path": "paper_runs/paper_replication_audits/alphaagentevo/source_provenance.json", "source_provenance_sha256": "467b255c8722c47911b46ed45f2500af3f165ef44a4f1cc6af69735bcb27a4e3",
+    "method_specification_path": "paper_runs/paper_replication_audits/alphaagentevo/method_specification_audit.csv", "method_specification_sha256": "c1f01ea4103be22eacafa6ee29e4da6fef679e29d1c22bef63edfb9e1243f2d5",
+    "candidate_release_path": "paper_runs/paper_replication_audits/alphaagentevo/candidate_release_audit.json", "candidate_release_sha256": "f3e4bd52f7439733d9fd2c1bca528613eb1ffec91e74a5386da36e56f8860167"
+  },
+  "factor_grammar": {
+    "seed_features": ["ret_1_0", "ret_3_1", "ret_6_1", "ret_12_1", "be_me", "gp_at", "ocf_at", "z_score", "rvol_21d", "beta_60m", "turnover_126d", "niq_su"],
+    "operators": ["identity", "pair_mean", "pair_difference", "pair_product"],
+    "candidate_count": 210,
+    "factor_transform": "monthly cross-sectional rank to [-1,1]"
+  },
+  "agentic_rl_policy": {
+    "prehistory_formation_start": "1989-07-31",
+    "training_months": 120,
+    "training_steps": 150,
+    "offspring_tool_calls_per_step": 4,
+    "maximum_tool_calls": 4,
+    "elite_pool_capacity": 20,
+    "sampling_temperature": 0.5,
+    "group_relative_learning_rate": 0.05,
+    "policy_logit_clip": 3.0,
+    "random_seed": 6602026,
+    "seed_schedule": "sample from the elite pool after the first step; fall back to a policy-weighted grammar candidate",
+    "offspring_neighbor_rule": "share at least one feature component with the seed alpha",
+    "selection_rule": "retain the highest hierarchical-reward offspring in the elite pool; deploy the final highest-reward alpha with quality and name tie-breaks"
+  },
+  "hierarchical_reward": {
+    "validity_weight": 0.20,
+    "quality_weight": 0.35,
+    "diversity_weight": 0.20,
+    "novelty_weight": 0.15,
+    "tool_efficiency_weight": 0.10,
+    "validity": "one for finite formation-only factor output, else zero",
+    "quality": "average of capped absolute mean RankIC and RankICIR ranks on training data",
+    "diversity": "one minus maximum absolute RankIC-history correlation to current elites",
+    "novelty": "fraction of feature components and operator family absent from the seed alpha",
+    "tool_efficiency": "one divided by call number with denominator floored at one",
+    "direction": "orient final alpha by the sign of training mean RankIC",
+    "tool_denominator_floor": 1.0
+  },
+  "portfolio_policy": {"selected_alpha_count": 1, "common_portfolio_adapter": "the final training-selected oriented alpha enters fixed value-weighted long-short deciles and all six common paths", "common_or_post_training_returns_used_for_policy_or_alpha_selection": false},
+  "preserved_elements": ["multi-turn factor generation and evaluation", "four tool calls per trajectory", "offspring selection", "persistent policy improvement across steps", "group-relative reward advantages", "five reward dimensions", "validity gating", "predictive-quality reward", "structural diversity reward", "novelty reward", "tool-efficiency reward", "direction-aware alpha orientation", "diverse elite pool", "150 training steps", "top-tail cross-sectional portfolio"],
+  "approximated_elements": ["JKP characteristics replace AlphaEvo500/Alpha158 and China equity fields", "a finite symbolic grammar replaces free-form Qwen3 alpha expressions", "deterministic factor evaluation replaces the unavailable parser/backtest tool", "feature and operator logits replace Qwen3 policy parameters", "a group-relative logit update replaces Verl GRPO", "RankIC-history correlation replaces AST structural similarity", "one best alpha replaces missing native offspring and checkpoints", "common monthly deciles replace five-day top-10-percent execution"],
+  "invented_elements": ["the twelve seed features and 210-candidate grammar", "the exact capped reward formulas and component weights", "the tool-denominator floor resolving the paper ambiguity", "the elite capacity", "the sampling temperature", "the policy learning rate and logit clip", "the deterministic seed and tie-breaking rules"],
+  "anti_leakage": {"unaffiliated_third_party_checkpoints_or_Vietnam_code_used": false, "paper_result_annotations_used_as_reward_targets": false, "current_or_future_common_return_used_in_training": false, "m066_common_result_seen_before_recipe_freeze": false, "prior_other_paper_common_results_seen": true, "retuning_after_common_result_permitted": false}
+}
