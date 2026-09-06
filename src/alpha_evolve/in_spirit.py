@@ -1524,6 +1524,106 @@ def agora_sealed_joint_search_scores(
     return result, registry, pd.DataFrame(round_rows)
 
 
+def fin_analyst_hierarchy_scores(
+    frame: pd.DataFrame,
+    specialists: dict[str, list[tuple[str, int]]],
+    specialist_weights: dict[str, float],
+    *,
+    specialist_action_threshold: float = 0.15,
+    news_override_confidence: float = 0.70,
+    news_override_minimum_absolute_catalyst: float = 0.60,
+    majority_specialists: int = 5,
+    split_panel_hold_threshold: float = 0.10,
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Run the frozen eight-specialist Fin-Analyst Meta-Agent hierarchy."""
+    expected = [
+        "news",
+        "event",
+        "quarterly",
+        "annual",
+        "fundamentals",
+        "analyst",
+        "technical",
+        "social",
+    ]
+    if list(specialists) != expected or set(specialist_weights) != set(expected):
+        raise ValueError("Fin-Analyst requires the eight frozen specialists")
+    if not np.isclose(sum(specialist_weights.values()), 1.0):
+        raise ValueError("Fin-Analyst specialist weights do not sum to one")
+    if majority_specialists != 5 or not 0 < split_panel_hold_threshold < specialist_action_threshold:
+        raise ValueError("Fin-Analyst aggregation thresholds changed")
+    features = list(
+        dict.fromkeys(
+            feature for specifications in specialists.values() for feature, _ in specifications
+        )
+    )
+    missing = {"month", *features} - set(frame)
+    if missing:
+        raise ValueError(f"missing Fin-Analyst inputs: {sorted(missing)}")
+    ranked = cross_sectional_unit_rank(frame, features).fillna(0.0)
+    scores = pd.DataFrame(
+        {
+            name: pd.concat(
+                [ranked[feature] * sign for feature, sign in specifications], axis=1
+            ).mean(axis=1)
+            for name, specifications in specialists.items()
+        },
+        index=frame.index,
+    )
+    confidence = (0.3 + 0.7 * scores.abs()).clip(0.0, 1.0)
+    actions = pd.DataFrame(
+        np.where(
+            scores > specialist_action_threshold,
+            1,
+            np.where(scores < -specialist_action_threshold, -1, 0),
+        ),
+        index=frame.index,
+        columns=expected,
+    )
+    news_override = confidence["news"].ge(news_override_confidence) & scores["news"].abs().ge(
+        news_override_minimum_absolute_catalyst
+    )
+    buy_votes = actions.eq(1).sum(axis=1)
+    sell_votes = actions.eq(-1).sum(axis=1)
+    majority_buy = buy_votes.ge(majority_specialists)
+    majority_sell = sell_votes.ge(majority_specialists)
+    majority = majority_buy | majority_sell
+    agreeing_buy = scores.where(actions.eq(1)).abs().mean(axis=1).fillna(0.0)
+    agreeing_sell = scores.where(actions.eq(-1)).abs().mean(axis=1).fillna(0.0)
+    majority_score = agreeing_buy.where(majority_buy, -agreeing_sell)
+    weighted = scores.mul(pd.Series(specialist_weights), axis=1).sum(axis=1)
+    final = weighted.where(~majority, majority_score)
+    final = final.where(~news_override, scores["news"])
+    meta_action = pd.Series(
+        np.where(
+            final > split_panel_hold_threshold,
+            1,
+            np.where(final < -split_panel_hold_threshold, -1, 0),
+        ),
+        index=frame.index,
+    )
+    rows: list[dict[str, object]] = []
+    for month, indices in frame.groupby("month", sort=True).groups.items():
+        row: dict[str, object] = {
+            "formation_month": str(pd.Timestamp(month).date()),
+            "formation_universe": len(indices),
+            "news_override_count": int(news_override.loc[indices].sum()),
+            "majority_buy_count": int((majority_buy & ~news_override).loc[indices].sum()),
+            "majority_sell_count": int((majority_sell & ~news_override).loc[indices].sum()),
+            "weighted_resolution_count": int((~majority & ~news_override).loc[indices].sum()),
+            "meta_buy_count": int(meta_action.loc[indices].gt(0).sum()),
+            "meta_hold_count": int(meta_action.loc[indices].eq(0).sum()),
+            "meta_sell_count": int(meta_action.loc[indices].lt(0).sum()),
+            "finite_scores": int(final.loc[indices].notna().sum()),
+        }
+        for name in expected:
+            row[f"{name}_buy_count"] = int(actions.loc[indices, name].eq(1).sum())
+            row[f"{name}_hold_count"] = int(actions.loc[indices, name].eq(0).sum())
+            row[f"{name}_sell_count"] = int(actions.loc[indices, name].eq(-1).sum())
+        rows.append(row)
+    return final.rename("score"), pd.DataFrame(rows)
+
+
 def stratllm_alignment_scores(
     frame: pd.DataFrame,
     multi_source_state: dict[str, list[tuple[str, int]]],
