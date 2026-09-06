@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M055",
+  "canonical_work_id": "CensusArxiv260506822",
+  "paper": "SHARP: A Self-Evolving Human-Auditable Rubric Policy for Financial Trading Agents",
+  "status": "frozen_before_jkp_result",
+  "fidelity_label": "in_spirit_reconstruction",
+  "claim_boundary": "A researcher-authored monthly U.S.-stock analogue of SHARP's predicted-return-times-confidence score and bounded attribution-mutation-validation rubric loop; not the missing LLM analysts, prompts, news cache, final evolved rubrics, daily action ledger, or native empirical path.",
+  "paper_source": {
+    "url": "https://arxiv.org/abs/2605.06822v1",
+    "version": "arXiv v1",
+    "pdf_sha256": "8a53b6ed04d0de7852e4f5311db89df2c2f4457bd3cda23ae7fcf3baf4485394",
+    "source_sha256": "4045a5dc53bbc2612b610e2a25e7a947ca3a5e8681af915b6528e3a0875ed56a",
+    "attributable_implementation_or_actions_found": false,
+    "bounded_release_search_checked_2026_09_04": "The paper supplies no implementation URL; the cited dataset repository and owner return 404, and exact repository, code, commit, and Hugging Face searches found no attributable SHARP release."
+  },
+  "primary_source_anchors": [
+    {
+      "anchor": "Section 3.1, Equation 1",
+      "mechanism": "The analyst emits predicted return, confidence, and activated rule IDs; predicted return times confidence is ranked cross-sectionally."
+    },
+    {
+      "anchor": "Sections 3.2-3.3 and Figure 2",
+      "mechanism": "A bounded condition-action rubric exposes an audit trail and evolves through attribution, atomic mutation, and held-out validation."
+    },
+    {
+      "anchor": "Appendix B, Algorithm 1",
+      "mechanism": "Five rounds diagnose the 20 worst training observations, propose no more than three edits, accept within a 50 bp validation tolerance, and retain the strictly best rubric for testing."
+    },
+    {
+      "anchor": "Appendix C and E",
+      "mechanism": "Six shared initial rules encode temporal discounting, catalyst weighting, broad-market filtering, high-fear damping, and low-information confidence caps; representative evolved diffs change individual thresholds or weights."
+    }
+  ],
+  "strict_evidence": {
+    "audit_manifest_path": "paper_runs/paper_replication_audits/sharp/manifest.json",
+    "audit_manifest_sha256": "3a5de51116e4310588eeca7aa3aad2cc43c3c7b6c22f615333f83b72e6b10da2",
+    "source_provenance_path": "paper_runs/paper_replication_audits/sharp/source_provenance.json",
+    "source_provenance_sha256": "1a427974b03a014c9c6ef870edea6ad01895332c81b906b37a827e9138c49c56",
+    "method_specification_path": "paper_runs/paper_replication_audits/sharp/method_specification_audit.csv",
+    "method_specification_sha256": "daff478a504cc62e924fe17434c43d04d870e590270070c192f560603b283c54",
+    "component_execution_path": "paper_runs/paper_replication_audits/sharp/component_execution_audit.csv",
+    "component_execution_sha256": "139ab0a7fbacc93d1cb792ecc9293ff9a05b71cbe63d5d4b2f716fd8f4eaf4e1",
+    "release_search_path": "paper_runs/paper_replication_audits/sharp/release_search_audit.csv",
+    "release_search_sha256": "da9dd2df2ce1d0ce3e3d1a1e2782521ea382d75bedb7399cac574c2cc5cf08c9"
+  },
+  "analyst_state": {
+    "price": [
+      {"column": "ret_12_1", "sign": 1},
+      {"column": "ret_6_1", "sign": 1},
+      {"column": "ret_1_0", "sign": -1}
+    ],
+    "catalyst": [
+      {"column": "niq_su", "sign": 1},
+      {"column": "saleq_su", "sign": 1}
+    ],
+    "quality": [
+      {"column": "gp_at", "sign": 1},
+      {"column": "ocf_at", "sign": 1}
+    ],
+    "attention": [
+      {"column": "turnover_126d", "sign": 1}
+    ],
+    "fear_proxy_column": "rvol_21d",
+    "base_expected_return_weights": {"price": 0.5, "catalyst": 0.3, "quality": 0.2},
+    "base_confidence_rule": "clip(0.4 + 0.3*abs(price) + 0.3*abs(catalyst), 0, 1)"
+  },
+  "initial_rubric": [
+    {"id": "temporal_priced_in", "category": "temporal_discount", "condition": "same-sign extreme one-month move and catalyst", "action": "multiply predicted return", "initial": 0.3, "minimum": 0.1, "maximum": 1.5, "step": 0.1},
+    {"id": "temporal_earnings_season", "category": "temporal_discount", "condition": "high attention without fundamental catalyst confirmation", "action": "multiply predicted return", "initial": 0.5, "minimum": 0.1, "maximum": 1.5, "step": 0.1},
+    {"id": "news_analyst_rating", "category": "news_weighting", "condition": "strong catalyst aligned with quality", "action": "multiply predicted return", "initial": 1.3, "minimum": 0.5, "maximum": 2.0, "step": 0.1},
+    {"id": "news_generic_market", "category": "news_weighting", "condition": "signal follows the market while idiosyncratic catalyst is weak", "action": "multiply predicted return", "initial": 0.4, "minimum": 0.1, "maximum": 1.5, "step": 0.1},
+    {"id": "macro_high_vix", "category": "macro_interaction", "condition": "high trailing cross-sectional volatility and bullish prediction", "action": "multiply predicted return", "initial": 0.7, "minimum": 0.1, "maximum": 1.5, "step": 0.1},
+    {"id": "news_count_low", "category": "news_weighting", "condition": "low attention and weak catalyst", "action": "cap confidence", "initial": 0.4, "minimum": 0.2, "maximum": 0.8, "step": 0.1}
+  ],
+  "condition_thresholds": {
+    "extreme_move_absolute_rank": 0.6,
+    "minimum_catalyst_absolute_rank": 0.2,
+    "high_attention_rank": 0.5,
+    "weak_catalyst_absolute_rank": 0.2,
+    "strong_catalyst_absolute_rank": 0.5,
+    "weak_idiosyncratic_catalyst_absolute_rank": 0.25,
+    "low_attention_rank": -0.5,
+    "fear_history_months": 60,
+    "fear_quantile": 0.8
+  },
+  "evolution_policy": {
+    "prehistory_formation_start": "1994-07-31",
+    "training_months": 48,
+    "validation_months": 12,
+    "frozen_test_months": 24,
+    "evolution_rounds": 5,
+    "worst_training_months": 20,
+    "minimum_recurring_pattern_months": 3,
+    "pattern_activation_share": 0.1,
+    "maximum_atomic_mutations_per_round": 3,
+    "maximum_rubric_rules": 18,
+    "compactness_threshold_rules": 12,
+    "validation_tolerance_total_return": 0.005,
+    "inner_tail_fraction": 0.1,
+    "inner_minimum_side": 20,
+    "inner_cost_bps_one_way": 10.0,
+    "mutation_operator": "For each recurrent rule on the 20 worst training months, evaluate one bounded step up and down; retain its better strictly tail-improving atomic edit, combine at most three by tail gain, and apply the paper's validation gate.",
+    "independent_window_initialization": true,
+    "best_rubric_frozen_for_test": true,
+    "common_portfolio_adapter": "predicted return times confidence under the frozen best rubric enters the fixed value-weighted long-short deciles and all six common paths",
+    "final_common_returns_used_for_rubric_choice": false
+  },
+  "preserved_elements": [
+    "predicted-return-times-confidence composite score",
+    "explicit condition-action rubric with rule IDs and categories",
+    "bounded atomic rule edits",
+    "worst-tail attribution rather than average-error prompting",
+    "recurrence filter for systematic failure patterns",
+    "five evolution rounds",
+    "at most three mutations per round",
+    "held-out validation gate with 50 bp tolerance",
+    "strictly best rubric frozen for out-of-sample testing",
+    "independent walk-forward window initialization",
+    "cross-sectional long-short ranking and next-period execution"
+  ],
+  "approximated_elements": [
+    "JKP price, accounting-surprise, quality, attention, and volatility characteristics replace daily price, Finnhub news, and macro text",
+    "six deterministic JKP conditions replace the LLM-interpreted shared initial rubric",
+    "monthly 48/12/24 windows preserve the paper's 4/1/2 train-validation-test proportions",
+    "worst months replace worst trading days",
+    "counterfactual tail-return gains replace LLM attribution diagnoses",
+    "bounded one-step parameter edits replace natural-language rule mutations",
+    "common value-weighted deciles replace daily equal-weight 5-long/5-short holdings"
+  ],
+  "invented_elements": [
+    "the exact base analyst feature weights and confidence formula",
+    "all condition thresholds mapping unavailable news and macro state to JKP",
+    "the 24-month frozen update cadence",
+    "the 10% selected-holding recurrence threshold",
+    "one-step up/down counterfactual mutation search",
+    "10 bp inner-loop cost aligned to the common benchmark"
+  ],
+  "anti_leakage": {
+    "paper_result_table_or_representative_return_curve_used_for_recipe_choice": false,
+    "published_evolved_diffs_used_as_final_rubric": false,
+    "current_or_future_test_return_used_for_rubric_evolution": false,
+    "m055_common_result_seen_before_recipe_freeze": false,
+    "prior_other_paper_common_results_seen": true,
+    "retuning_after_common_result_permitted": false
+  }
+}
