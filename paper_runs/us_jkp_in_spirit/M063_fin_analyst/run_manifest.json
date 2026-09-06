@@ -1,0 +1,136 @@
+{
+  "status": "evaluated_in_spirit",
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M063",
+  "fidelity_label": "in_spirit_reconstruction",
+  "completed_at_utc": "2026-09-06T15:57:58.943350+00:00",
+  "benchmark_id": "us_jkp_headline_v1",
+  "code_commit": "83fd39d85eb68d8e3235b91dd696d2c887cc715c",
+  "contract_sha256": "9ce6783c8d4d303510173548088af66fc3add92602f404008c73212f8322ea77",
+  "recipe_sha256": "17618a29910c9aaeb58dc502277fb5953a7cfcca3a4e54e399d9b3ff7f2cf6cf",
+  "input_sha256": "89de9e4cb90e2eda3bfacd8f139119876bf1cf1c0653886226994d5b6e71eeec",
+  "benchmark_sha256": "39d746ad0b62597bbb6dad9e659a85a049a1fbdfd46b1dd81e61596b6414e71a",
+  "paper_evidence_sha256": {
+    "paper_runs/paper_replication_audits/fin_analyst/manifest.json": "0ffc643e326b3d7ae69426f3b151eb530dfc70d5c123d0b3c385ce85d4683334",
+    "paper_runs/paper_replication_audits/fin_analyst/source_provenance.json": "22a455592dbde3eaf2e9b5a59dcf660f82690d098e324d6577ebf71a96d41261",
+    "paper_runs/paper_replication_audits/fin_analyst/method_specification_audit.csv": "27c8785a585c6db9274d20eef3809a31a225c357d9af2d89d4c6e7ad343e643e",
+    "paper_runs/paper_replication_audits/fin_analyst/prompt_correspondence.csv": "eb4fefea13b99a570225d583253bee075787e05bb248b1b747d28f5b0fe09595",
+    "paper_runs/paper_replication_audits/fin_analyst/native_execution.json": "7aca9af1f774fda2151e2e696eac433a6cbd17d01dfe5b6dd99e92c48a8df4b7",
+    "paper_runs/paper_replication_audits/fin_analyst/organizer_native_scorer_execution.json": "a108d4332624985f3522947f8dd4b5f60e4e31983a1756376e8e60e307626f73"
+  },
+  "specialist_count": 8,
+  "policy_months": 305,
+  "resolution_counts": {
+    "news_override": 31393,
+    "majority_buy": 57662,
+    "majority_sell": 58403,
+    "weighted": 157542
+  },
+  "meta_action_counts": {
+    "buy": 106549,
+    "hold": 88535,
+    "sell": 109916
+  },
+  "specialist_action_counts": {
+    "news": {
+      "buy": 107679,
+      "hold": 90184,
+      "sell": 107137
+    },
+    "event": {
+      "buy": 108018,
+      "hold": 88582,
+      "sell": 108400
+    },
+    "quarterly": {
+      "buy": 104668,
+      "hold": 91287,
+      "sell": 109045
+    },
+    "annual": {
+      "buy": 96188,
+      "hold": 119916,
+      "sell": 88896
+    },
+    "fundamentals": {
+      "buy": 104966,
+      "hold": 93981,
+      "sell": 106053
+    },
+    "analyst": {
+      "buy": 106824,
+      "hold": 90227,
+      "sell": 107949
+    },
+    "technical": {
+      "buy": 106778,
+      "hold": 106145,
+      "sell": 92077
+    },
+    "social": {
+      "buy": 108579,
+      "hold": 76612,
+      "sell": 119809
+    }
+  },
+  "private_holdings_path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/us_jkp_in_spirit/v1/M063_formation_holdings.parquet",
+  "private_holdings_sha256": "e4b7b245303e7d555cdfe0dc81896a3ca91286f5da5b11ddf60ddc986645a665",
+  "prior_jkp_outcomes_seen": true,
+  "confirmatory_claim": false,
+  "native_paper_result_claim": false,
+  "runtime": {
+    "python": "3.12.4",
+    "numpy": "2.0.2",
+    "pandas": "2.3.3",
+    "platform": "Linux"
+  },
+  "primary_result": {
+    "case": "zero_cost_10",
+    "primary": true,
+    "missing_return_policy": "zero",
+    "cost_bps_one_way": 10.0,
+    "full_months": 305,
+    "full_arithmetic_annualized_return": 0.012917969818532282,
+    "full_cagr": 0.0004706611821692075,
+    "full_cumulative_return": 0.012031628756039359,
+    "full_annualized_volatility": 0.15832427166994067,
+    "full_annualized_sharpe": 0.081591847429827,
+    "full_maximum_drawdown": -0.6308029577092948,
+    "evaluation_months": 185,
+    "evaluation_arithmetic_annualized_return": 0.0362957091715844,
+    "evaluation_cagr": 0.027342509867633646,
+    "evaluation_cumulative_return": 0.5156894993216314,
+    "evaluation_annualized_volatility": 0.13691204862801618,
+    "evaluation_annualized_sharpe": 0.2651023743731875,
+    "evaluation_maximum_drawdown": -0.4178398628000596,
+    "evaluation_start": "2009-08-31",
+    "evaluation_end": "2024-12-31",
+    "jkp_residual_mean_annualized": -0.01412932513400109,
+    "jkp_residual_se_annualized": 0.02151964615833355,
+    "jkp_residual_t_hac": -0.656577948821406,
+    "jkp_residual_p_two_sided": 0.511452331553097,
+    "jkp_residual_ci_low_annualized": -0.05630705656438058,
+    "jkp_residual_ci_high_annualized": 0.0280484062963784,
+    "exploratory_bonferroni69_p": 1.0,
+    "hac_lags": 4,
+    "average_traded_notional": 2.027160792698462,
+    "annualized_linear_cost_drag": 0.024325929512381543,
+    "minimum_finite_signal_count": 1000,
+    "maximum_missing_forward_gross_weight": 0.03066265969485606
+  },
+  "implementation_sha256": {
+    "scripts/run_fin_analyst_in_spirit.py": "90667f276337847233bd7282a77a471354afe5ee3fe528a7108dab36c8623e4c",
+    "src/alpha_evolve/in_spirit.py": "e9ec30cda6c45b828bfdc9debfd5fd0b5647127a57edd8a2c592b12e93c60191",
+    "src/alpha_evolve/headline_backtest.py": "2e3be61a09b03bbf1d5059a823a8058aded4153980dd0ca30c301398958d6f9f",
+    "src/alpha_evolve/submission_analysis.py": "24989a95c01cb7c4b9f933361a0fd1f50b5ece7e31a98f73359c47e32553d5d2",
+    "scripts/run_broad_jkp_crossfit.py": "6c84c990f39bd586b49c76812efb2f70a36823ada52c372e8483502e10379d73"
+  },
+  "output_sha256": {
+    "monthly_returns.csv": "d4a55827975d1f5bf9a4a3fdee4d0de610848ad56e4bc7f8d731de9efa63088a",
+    "primary_monthly_returns.csv": "1e15d14bb5da52be933dde2ab22e5416b0d034d5a9a60c62ea440bb80eb278a1",
+    "metrics.csv": "5496ba8978b7d606a97fa4afb00603514851d67abb82dc2c82b20786ab309907",
+    "attribution_residuals.csv": "bc64ad147f90dc4ffb639fa4039c47c9326ea799d450c97436f0873c1fb60f6b",
+    "specialist_history.csv": "a3d95629aabef60929a7bc29471e072661ec24176a898d7cc22eeb59ea010e76",
+    "verdict.md": "551e2af6d39ee044ad26f4107f886c6acbf2016736b3e9e6ff2471a8360ee815"
+  }
+}
