@@ -1835,6 +1835,203 @@ def factormad_debate_scores(
     return result, registry, pd.DataFrame(debate_rows)
 
 
+def alphaagentevo_policy_scores(
+    frame: pd.DataFrame,
+    seed_features: list[str],
+    reward_weights: dict[str, float],
+    *,
+    common_start: str,
+    training_months: int = 120,
+    training_steps: int = 150,
+    offspring_tool_calls_per_step: int = 4,
+    maximum_tool_calls: int = 4,
+    elite_pool_capacity: int = 20,
+    sampling_temperature: float = 0.5,
+    group_relative_learning_rate: float = 0.05,
+    policy_logit_clip: float = 3.0,
+    random_seed: int = 6602026,
+) -> tuple[pd.Series, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    """Train a transparent AlphaAgentEvo-style multi-turn factor policy."""
+    expected_rewards = ["validity", "quality", "diversity", "novelty", "tool_efficiency"]
+    if list(reward_weights) != expected_rewards or not np.isclose(sum(reward_weights.values()), 1.0):
+        raise ValueError("AlphaAgentEvo reward hierarchy changed")
+    if offspring_tool_calls_per_step != 4 or maximum_tool_calls != 4:
+        raise ValueError("AlphaAgentEvo requires the frozen four-call tool cap")
+    if not (training_steps > 0 and elite_pool_capacity > 1 and sampling_temperature > 0):
+        raise ValueError("AlphaAgentEvo training policy is invalid")
+    library, components = factormad_factor_library(frame, seed_features)
+    months = sorted(pd.Timestamp(month) for month in frame["month"].unique())
+    common_months = [month for month in months if month >= pd.Timestamp(common_start)]
+    boundary = months.index(common_months[0])
+    training = months[boundary - training_months : boundary]
+    if len(training) != training_months:
+        raise ValueError("AlphaAgentEvo training prehistory is incomplete")
+    rankics = monthly_rankic(frame, library).loc[training]
+    mean_rankic = rankics.mean()
+    deviation = rankics.std(ddof=1).replace(0.0, np.nan)
+    rankicir = mean_rankic.abs().div(deviation).fillna(0.0)
+    quality = 0.5 * mean_rankic.abs().rank(method="average", pct=True) + 0.5 * rankicir.rank(
+        method="average", pct=True
+    )
+    correlation = rankics.corr(min_periods=max(12, training_months // 2)).abs().fillna(0.0)
+    np.fill_diagonal(correlation.values, 1.0)
+    operator = {name: name.split("__", 1)[0] for name in library}
+    feature_logits = {name: 0.0 for name in seed_features}
+    operator_logits = {name: 0.0 for name in ["identity", "pair_mean", "pair_difference", "pair_product"]}
+    rng = np.random.default_rng(random_seed)
+    elites: dict[str, dict[str, float | int]] = {}
+    tool_rows: list[dict[str, object]] = []
+    step_rows: list[dict[str, object]] = []
+
+    def policy_logit(name: str) -> float:
+        return float(operator_logits[operator[name]] + np.mean([feature_logits[item] for item in components[name]]))
+
+    def softmax(values: np.ndarray) -> np.ndarray:
+        centered = values / sampling_temperature
+        centered -= centered.max()
+        probabilities = np.exp(centered)
+        return probabilities / probabilities.sum()
+
+    def elite_similarity(name: str) -> float:
+        if not elites:
+            return 0.0
+        return float(correlation.loc[name, list(elites)].max())
+
+    names = sorted(library.columns)
+    for step in range(1, training_steps + 1):
+        if elites:
+            elite_names = sorted(elites)
+            elite_rewards = np.array([float(elites[name]["reward"]) for name in elite_names])
+            seed = elite_names[int(rng.choice(len(elite_names), p=softmax(elite_rewards)))]
+        else:
+            initial_logits = np.array([policy_logit(name) for name in names])
+            seed = names[int(rng.choice(len(names), p=softmax(initial_logits)))]
+        neighbors = [
+            name
+            for name in names
+            if name != seed and set(components[name]).intersection(components[seed])
+        ]
+        if len(neighbors) < offspring_tool_calls_per_step:
+            neighbors = [name for name in names if name != seed]
+        logits = np.array([policy_logit(name) for name in neighbors])
+        probabilities = softmax(logits)
+        selected_indices = rng.choice(
+            len(neighbors), size=offspring_tool_calls_per_step, replace=False, p=probabilities
+        )
+        offspring = [neighbors[int(index)] for index in selected_indices]
+        rewards: list[float] = []
+        components_by_call: list[dict[str, float]] = []
+        for call_number, candidate in enumerate(offspring, start=1):
+            candidate_components = set(components[candidate])
+            seed_components = set(components[seed])
+            component_novelty = len(candidate_components - seed_components) / max(
+                1, len(candidate_components)
+            )
+            operator_novelty = float(operator[candidate] != operator[seed])
+            values = {
+                "validity": 1.0,
+                "quality": float(np.clip(quality[candidate], 0.0, 1.0)),
+                "diversity": float(np.clip(1.0 - elite_similarity(candidate), 0.0, 1.0)),
+                "novelty": float(np.clip(0.5 * component_novelty + 0.5 * operator_novelty, 0.0, 1.0)),
+                "tool_efficiency": 1.0 / max(1, call_number),
+            }
+            reward = float(sum(reward_weights[name] * values[name] for name in expected_rewards))
+            rewards.append(reward)
+            components_by_call.append(values)
+        reward_array = np.asarray(rewards)
+        reward_scale = float(reward_array.std(ddof=0))
+        advantages = (
+            (reward_array - reward_array.mean()) / reward_scale
+            if reward_scale > 1e-12
+            else np.zeros_like(reward_array)
+        )
+        for call_number, (candidate, reward, advantage, values) in enumerate(
+            zip(offspring, rewards, advantages, components_by_call), start=1
+        ):
+            increment = group_relative_learning_rate * float(advantage)
+            operator_logits[operator[candidate]] = float(
+                np.clip(operator_logits[operator[candidate]] + increment, -policy_logit_clip, policy_logit_clip)
+            )
+            for feature in components[candidate]:
+                feature_logits[feature] = float(
+                    np.clip(feature_logits[feature] + increment / len(components[candidate]), -policy_logit_clip, policy_logit_clip)
+                )
+            tool_rows.append(
+                {
+                    "step": step,
+                    "call_number": call_number,
+                    "seed_alpha": seed,
+                    "offspring_alpha": candidate,
+                    **{f"reward__{name}": values[name] for name in expected_rewards},
+                    "hierarchical_reward": reward,
+                    "group_relative_advantage": float(advantage),
+                    "operator": operator[candidate],
+                    "components": "|".join(components[candidate]),
+                }
+            )
+        best_index = max(
+            range(len(offspring)),
+            key=lambda index: (rewards[index], quality[offspring[index]], offspring[index]),
+        )
+        best = offspring[best_index]
+        best_reward = rewards[best_index]
+        previous = elites.get(best)
+        if previous is None or best_reward > float(previous["reward"]):
+            elites[best] = {"reward": best_reward, "first_selected_step": step}
+        elites = dict(
+            sorted(
+                elites.items(),
+                key=lambda item: (-float(item[1]["reward"]), -quality[item[0]], item[0]),
+            )[:elite_pool_capacity]
+        )
+        entropy = float(-np.sum(probabilities * np.log(np.clip(probabilities, 1e-300, None))))
+        step_rows.append(
+            {
+                "step": step,
+                "seed_alpha": seed,
+                "best_offspring": best,
+                "best_reward": best_reward,
+                "mean_group_reward": float(reward_array.mean()),
+                "group_reward_std": reward_scale,
+                "elite_pool_size": len(elites),
+                "sampling_entropy": entropy,
+                "nonzero_feature_logits": sum(abs(value) > 1e-12 for value in feature_logits.values()),
+                "nonzero_operator_logits": sum(abs(value) > 1e-12 for value in operator_logits.values()),
+            }
+        )
+    if len(elites) != elite_pool_capacity:
+        raise ValueError("AlphaAgentEvo elite pool did not reach capacity")
+    final = max(
+        elites,
+        key=lambda name: (float(elites[name]["reward"]), quality[name], name),
+    )
+    orientation = 1.0 if mean_rankic[final] >= 0 else -1.0
+    result = (library[final].fillna(0.0) * orientation).where(
+        frame["month"] >= pd.Timestamp(common_start)
+    )
+    elite_rows = []
+    for name, record in sorted(
+        elites.items(), key=lambda item: (-float(item[1]["reward"]), item[0])
+    ):
+        elite_rows.append(
+            {
+                "alpha": name,
+                "components": "|".join(components[name]),
+                "operator": operator[name],
+                "reward": float(record["reward"]),
+                "first_selected_step": int(record["first_selected_step"]),
+                "mean_rankic": float(mean_rankic[name]),
+                "rankicir": float(rankicir[name]),
+                "maximum_final_elite_similarity": float(
+                    correlation.loc[name, [other for other in elites if other != name]].max()
+                ),
+                "selected_final": name == final,
+                "orientation": int(orientation) if name == final else 0,
+            }
+        )
+    return result.rename("score"), pd.DataFrame(elite_rows), pd.DataFrame(tool_rows), pd.DataFrame(step_rows)
+
+
 def stratllm_alignment_scores(
     frame: pd.DataFrame,
     multi_source_state: dict[str, list[tuple[str, int]]],
