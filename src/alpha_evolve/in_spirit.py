@@ -2032,6 +2032,189 @@ def alphaagentevo_policy_scores(
     return result.rename("score"), pd.DataFrame(elite_rows), pd.DataFrame(tool_rows), pd.DataFrame(step_rows)
 
 
+def raptor_orchestrated_bl_scores(
+    frame: pd.DataFrame,
+    analyst_signal_cards: dict[str, list[tuple[str, int]]],
+    analyst_weights: dict[str, float],
+    *,
+    common_start: str,
+    covariance_history_months: int = 60,
+    minimum_covariance_months: int = 24,
+    analyst_action_threshold: float = 0.15,
+    final_action_threshold: float = 0.10,
+    risk_aversion: float = 3.0,
+    tau: float = 0.025,
+    omega_scale: float = 0.5,
+    view_magnitude_annualized: float = 0.02,
+    maximum_long_only_weight: float = 0.10,
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Build deterministic RAPTOR-style agent messages and Black-Litterman views.
+
+    The returned score is the posterior expected return used by the common
+    long/short adapter.  Native-style long-only weights are retained only as
+    synchronized monthly diagnostics.
+    """
+    expected_cards = ["fundamental", "macro", "market", "news", "social", "valuation"]
+    if list(analyst_signal_cards) != expected_cards:
+        raise ValueError("RAPTOR requires the frozen six analyst cards in order")
+    expected_weights = {
+        "fundamental": 0.22,
+        "macro": 0.16,
+        "market": 0.22,
+        "news": 0.18,
+        "social": 0.10,
+        "valuation": 0.12,
+    }
+    if analyst_weights != expected_weights or not np.isclose(sum(analyst_weights.values()), 1.0):
+        raise ValueError("RAPTOR analyst weights changed from the frozen recipe")
+    if not (covariance_history_months >= minimum_covariance_months >= 2):
+        raise ValueError("RAPTOR covariance history is invalid")
+    if not (0 < analyst_action_threshold < 1 and 0 < final_action_threshold < 1):
+        raise ValueError("RAPTOR action thresholds are invalid")
+    if not (risk_aversion > 0 and tau > 0 and omega_scale > 0 and view_magnitude_annualized > 0):
+        raise ValueError("RAPTOR Black-Litterman constants must be positive")
+    if not (0 < maximum_long_only_weight <= 1):
+        raise ValueError("RAPTOR long-only cap is invalid")
+
+    features = sorted(
+        {
+            column
+            for card in analyst_signal_cards.values()
+            for column, sign in card
+            if sign in {-1, 1}
+        }
+    )
+    malformed = [
+        (column, sign)
+        for card in analyst_signal_cards.values()
+        for column, sign in card
+        if sign not in {-1, 1}
+    ]
+    if malformed:
+        raise ValueError(f"RAPTOR analyst signs must be +/-1: {malformed}")
+    missing = {"month", "security_id", "weight", "ret", *features} - set(frame)
+    if missing:
+        raise ValueError(f"missing RAPTOR inputs: {sorted(missing)}")
+
+    ranked = cross_sectional_unit_rank(frame, features)
+    analysts = pd.DataFrame(index=frame.index)
+    for name, card in analyst_signal_cards.items():
+        analysts[name] = pd.concat(
+            [ranked[column] * float(sign) for column, sign in card], axis=1
+        ).mean(axis=1, skipna=True)
+    consensus = sum(analysts[name] * weight for name, weight in analyst_weights.items())
+    defensive = pd.concat(
+        [-ranked["beta_60m"], -ranked["rvol_21d"], -ranked["turnover_126d"]],
+        axis=1,
+    ).mean(axis=1, skipna=True)
+    bull = (
+        0.35 * analysts["fundamental"]
+        + 0.30 * analysts["market"]
+        + 0.20 * analysts["news"]
+        + 0.15 * analysts["social"]
+    )
+    bear = 0.45 * analysts["valuation"] + 0.35 * defensive + 0.20 * analysts["fundamental"]
+    research_manager = 0.60 * consensus + 0.20 * bull + 0.20 * bear
+    conservative = 0.60 * bear + 0.40 * defensive
+    neutral = research_manager
+    aggressive = 0.60 * bull + 0.40 * analysts["market"]
+    risk_judge = 0.50 * neutral + 0.30 * conservative + 0.20 * aggressive
+
+    ordered = frame[["security_id", "month", "ret"]].copy()
+    ordered["_original_position"] = np.arange(len(frame))
+    ordered = ordered.sort_values(["security_id", "month", "_original_position"])
+    ordered["_variance"] = ordered.groupby("security_id", sort=False)["ret"].transform(
+        lambda values: values.shift(1).rolling(
+            covariance_history_months, min_periods=minimum_covariance_months
+        ).var(ddof=1)
+    )
+    variance = ordered.sort_values("_original_position")["_variance"]
+    variance.index = frame.index
+    month_median = variance.groupby(frame["month"], sort=False).transform("median")
+    annual_variance = variance.fillna(month_median).clip(lower=1e-8) * 12.0
+
+    def action(values: pd.Series, threshold: float) -> pd.Series:
+        return pd.Series(
+            np.select([values > threshold, values < -threshold], [1, -1], default=0),
+            index=values.index,
+            dtype=int,
+        )
+
+    analyst_actions = {
+        name: action(analysts[name], analyst_action_threshold) for name in expected_cards
+    }
+    final_action = action(risk_judge, final_action_threshold)
+    common_boundary = pd.Timestamp(common_start)
+    score = pd.Series(np.nan, index=frame.index, name="score", dtype=float)
+    rows: list[dict[str, object]] = []
+    for month, indices in frame.groupby("month", sort=True).groups.items():
+        month = pd.Timestamp(month)
+        if month < common_boundary:
+            continue
+        month_variance = annual_variance.loc[indices]
+        if not np.isfinite(month_variance).all():
+            raise ValueError(f"RAPTOR covariance prehistory is incomplete at {month.date()}")
+        market_cap = pd.to_numeric(frame.loc[indices, "weight"], errors="coerce").clip(lower=0.0)
+        if not np.isfinite(market_cap).all() or float(market_cap.sum()) <= 0:
+            raise ValueError(f"RAPTOR market prior weights are invalid at {month.date()}")
+        market_weight = market_cap / market_cap.sum()
+        prior = risk_aversion * month_variance * market_weight
+        views = final_action.loc[indices].astype(float) * view_magnitude_annualized
+        prior_uncertainty = tau * month_variance
+        view_uncertainty = omega_scale * tau * month_variance
+        posterior = (
+            prior / prior_uncertainty + views / view_uncertainty
+        ) / (1.0 / prior_uncertainty + 1.0 / view_uncertainty)
+        score.loc[indices] = posterior
+
+        raw_long_only = (posterior / (risk_aversion * month_variance)).clip(lower=0.0)
+        if maximum_long_only_weight * len(raw_long_only) < 1.0 - 1e-12:
+            raise ValueError("RAPTOR cap cannot support a fully invested long-only portfolio")
+        long_only = pd.Series(0.0, index=raw_long_only.index)
+        remaining = pd.Series(True, index=raw_long_only.index)
+        budget = 1.0
+        for _ in range(len(long_only) + 1):
+            base = raw_long_only.loc[remaining]
+            if float(base.sum()) <= 0:
+                base = market_weight.loc[remaining]
+            if float(base.sum()) <= 0:
+                base = pd.Series(1.0, index=base.index)
+            proposal = budget * base / base.sum()
+            above = proposal > maximum_long_only_weight + 1e-15
+            if not above.any():
+                long_only.loc[proposal.index] = proposal
+                break
+            capped = proposal.index[above]
+            long_only.loc[capped] = maximum_long_only_weight
+            remaining.loc[capped] = False
+            budget -= maximum_long_only_weight * len(capped)
+        if not np.isclose(float(long_only.sum()), 1.0) or long_only.max() > maximum_long_only_weight + 1e-12:
+            raise ValueError(f"RAPTOR diagnostic allocation failed at {month.date()}")
+
+        record: dict[str, object] = {
+            "month": month,
+            "security_count": len(indices),
+            "append_only_message_count": 14 * len(indices),
+            "final_BUY": int((final_action.loc[indices] == 1).sum()),
+            "final_HOLD": int((final_action.loc[indices] == 0).sum()),
+            "final_SELL": int((final_action.loc[indices] == -1).sum()),
+            "prior_mean_annualized": float(prior.mean()),
+            "view_mean_annualized": float(views.mean()),
+            "posterior_mean_annualized": float(posterior.mean()),
+            "long_only_weight_sum": float(long_only.sum()),
+            "long_only_maximum_weight": float(long_only.max()),
+            "long_only_position_count": int((long_only > 0).sum()),
+            "finite_score_count": int(np.isfinite(posterior).sum()),
+        }
+        for name in expected_cards:
+            values = analyst_actions[name].loc[indices]
+            record[f"{name}_BUY"] = int((values == 1).sum())
+            record[f"{name}_HOLD"] = int((values == 0).sum())
+            record[f"{name}_SELL"] = int((values == -1).sum())
+        rows.append(record)
+    return score, pd.DataFrame(rows)
+
+
 def stratllm_alignment_scores(
     frame: pd.DataFrame,
     multi_source_state: dict[str, list[tuple[str, int]]],
