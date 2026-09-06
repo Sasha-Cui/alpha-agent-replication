@@ -1,0 +1,111 @@
+{
+  "status": "evaluated_in_spirit",
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M065",
+  "fidelity_label": "in_spirit_reconstruction",
+  "completed_at_utc": "2026-09-06T18:06:12.354625+00:00",
+  "benchmark_id": "us_jkp_headline_v1",
+  "code_commit": "793f3e8c86600c2fa70a96fc44dcf47a9ec4b053",
+  "contract_sha256": "9ce6783c8d4d303510173548088af66fc3add92602f404008c73212f8322ea77",
+  "recipe_sha256": "c8e6728cb9cbb3f54b3f3dba73282cf98de4244eade25595c7a6c898f850c798",
+  "input_sha256": "89de9e4cb90e2eda3bfacd8f139119876bf1cf1c0653886226994d5b6e71eeec",
+  "benchmark_sha256": "39d746ad0b62597bbb6dad9e659a85a049a1fbdfd46b1dd81e61596b6414e71a",
+  "paper_evidence_sha256": {
+    "paper_runs/paper_replication_audits/factormad/manifest.json": "77db38576b854aca7d49e623a4daee02b60ae48eda6ec42b66957581169fb250",
+    "paper_runs/paper_replication_audits/factormad/source_provenance.json": "a455112873121cf8ba3e8e19c156e3799196b2f99de04036ccb747aef1d50e64",
+    "paper_runs/paper_replication_audits/factormad/method_specification_audit.csv": "5c095faca183f47f9593e03f0396cc57f25b1505cbca3f967ab388a24b654ea6",
+    "paper_runs/paper_replication_audits/factormad/component_execution_audit.csv": "d225bdb4a70441ae2d6c13b945143edbb14ba0c097b8fb63680ca18c526efad1",
+    "paper_runs/paper_replication_audits/factormad/release_search_audit.csv": "0e43e8c300d30b976ac01dc0958f2857bb5af0407a94464ed5e37e31797de368"
+  },
+  "candidate_library_size": 210,
+  "debate_episodes": 100,
+  "accepted_factor_count": 100,
+  "debate_record_count": 1100,
+  "corrected_factor_count": 0,
+  "seed_source_counts": {
+    "generated_factor": 51,
+    "existing_factor": 49
+  },
+  "complexity_counts": {
+    "1": 5,
+    "2": 95
+  },
+  "proposer_counts": {
+    "agent_a_quality": 500,
+    "agent_b_diversity": 500,
+    "validator_corrector": 100
+  },
+  "strongest_model_weights": {
+    "pair_difference__ret_6_1__ret_12_1": 0.046625080739889954,
+    "pair_product__ret_6_1__be_me": 0.02890695284235178,
+    "pair_product__gp_at__ocf_at": 0.02849148199538636,
+    "pair_product__ret_1_0__turnover_126d": 0.02702503816587521,
+    "pair_mean__ret_12_1__be_me": 0.023626059741181652,
+    "pair_product__ret_6_1__z_score": 0.022596419196336662,
+    "pair_product__ret_1_0__z_score": 0.021694162176876034,
+    "pair_product__ret_12_1__be_me": 0.021668440079310715,
+    "pair_difference__ret_1_0__beta_60m": 0.02158162795565889,
+    "pair_difference__ret_6_1__ocf_at": 0.020144023566918
+  },
+  "private_holdings_path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/us_jkp_in_spirit/v1/M065_formation_holdings.parquet",
+  "private_holdings_sha256": "5df21af02d7734b694d862cff5b479032c60c6f69a6d55afab75301325235f26",
+  "prior_jkp_outcomes_seen": true,
+  "confirmatory_claim": false,
+  "native_paper_result_claim": false,
+  "runtime": {
+    "python": "3.12.4",
+    "numpy": "2.0.2",
+    "pandas": "2.3.3",
+    "platform": "Linux"
+  },
+  "primary_result": {
+    "case": "zero_cost_10",
+    "primary": true,
+    "missing_return_policy": "zero",
+    "cost_bps_one_way": 10.0,
+    "full_months": 305,
+    "full_arithmetic_annualized_return": 0.08827886048050239,
+    "full_cagr": 0.07149558844522264,
+    "full_cumulative_return": 4.784364837000283,
+    "full_annualized_volatility": 0.1978996375918724,
+    "full_annualized_sharpe": 0.4460789395812816,
+    "full_maximum_drawdown": -0.473911004470854,
+    "evaluation_months": 185,
+    "evaluation_arithmetic_annualized_return": 0.08389263811987095,
+    "evaluation_cagr": 0.0736641234865345,
+    "evaluation_cumulative_return": 1.9914963097904548,
+    "evaluation_annualized_volatility": 0.15981764549933986,
+    "evaluation_annualized_sharpe": 0.5249272560470644,
+    "evaluation_maximum_drawdown": -0.29215864898458377,
+    "evaluation_start": "2009-08-31",
+    "evaluation_end": "2024-12-31",
+    "jkp_residual_mean_annualized": 0.03856676465556083,
+    "jkp_residual_se_annualized": 0.025239128860126487,
+    "jkp_residual_t_hac": 1.5280545089054056,
+    "jkp_residual_p_two_sided": 0.12649900484916374,
+    "jkp_residual_ci_low_annualized": -0.01090101891145255,
+    "jkp_residual_ci_high_annualized": 0.0880345482225742,
+    "exploratory_bonferroni69_p": 1.0,
+    "hac_lags": 4,
+    "average_traded_notional": 2.361139027158291,
+    "annualized_linear_cost_drag": 0.02833366832589949,
+    "minimum_finite_signal_count": 1000,
+    "maximum_missing_forward_gross_weight": 0.030032431447211867
+  },
+  "implementation_sha256": {
+    "scripts/run_factormad_in_spirit.py": "9ce99d5176140622f75dbae627e4c763a18081d29e529a962547168c0b51af21",
+    "src/alpha_evolve/in_spirit.py": "9b79621b19588801ccfc00f2d7c41a30af11446daf78de7d4d769df47913778e",
+    "src/alpha_evolve/headline_backtest.py": "2e3be61a09b03bbf1d5059a823a8058aded4153980dd0ca30c301398958d6f9f",
+    "src/alpha_evolve/submission_analysis.py": "24989a95c01cb7c4b9f933361a0fd1f50b5ece7e31a98f73359c47e32553d5d2",
+    "scripts/run_broad_jkp_crossfit.py": "6c84c990f39bd586b49c76812efb2f70a36823ada52c372e8483502e10379d73"
+  },
+  "output_sha256": {
+    "monthly_returns.csv": "64a4e6d742305c7905355daef5f6549a2ee1704f40bb52feee788634d1ef986f",
+    "primary_monthly_returns.csv": "d47b47daccbe8eeeed1e14b1733c399ad2ab958034331b98dc76b6e28e6b6030",
+    "metrics.csv": "6ab14586b542bdd9cca59998816956d7f59d45b3fac36fc1567ed9ba7737e5e5",
+    "attribution_residuals.csv": "bf8f6b24639c60452616c2b02673935b07016ff2ac2965a9c1768d55a97987e1",
+    "accepted_factors.csv": "d66e256072e81577d990473b12f4c6185da40a74d4527fffde40fc023e48d8f4",
+    "debate_history.csv": "5b571fff5a3948c18e092226fba470916776a2ba4fe4e9957a34a76ec84af252",
+    "verdict.md": "280a45b1693ff19bb0fd7da635d32b6b6f048dc66ff19b6afe2cd93bddf71c4b"
+  }
+}
