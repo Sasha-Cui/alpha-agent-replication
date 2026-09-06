@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M060",
+  "canonical_work_id": "CensusArxiv260622385",
+  "paper": "MetaPS: Adaptive Programmatic Strategy Selection for Market Agents",
+  "status": "frozen_before_jkp_result",
+  "fidelity_label": "in_spirit_reconstruction",
+  "claim_boundary": "A researcher-authored monthly U.S.-stock analogue of MetaPS-9B V3 that learns a chronological router over ten explicit strategy programs from counterfactual rollout labels; not the missing Qwen checkpoint, SFT records, teacher traces, market simulator, or native action path.",
+  "paper_source": {
+    "url": "https://arxiv.org/abs/2606.22385v1",
+    "version": "arXiv v1",
+    "pdf_sha256": "fd2ce88b351e9abfc0c96103f7927ee9f365231bfce8df492beb4054777148f6",
+    "source_sha256": "c6e3378c0cccf455c2dc7fa11bccda70b4c279bb7e16c3901f99df0237b46780",
+    "attributable_code_data_checkpoint_or_actions_found": false
+  },
+  "primary_source_anchors": [
+    {
+      "anchor": "Sections 2.1-2.4, Figure 1, and Algorithm 1",
+      "mechanism": "MetaPS ranks executable strategy programs, rolls each forward in a simulator, converts state-strategy outcomes into V1/V2/V3 supervision, trains a router, and delegates inference actions to the selected program."
+    },
+    {
+      "anchor": "Section 3.4 and Table 1",
+      "mechanism": "V3 balances short-horizon winners and medium-horizon competence; MetaPS-9B V3 is the reported headline stock router and keeps multiple strategy behaviors available."
+    },
+    {
+      "anchor": "Appendix C.4",
+      "mechanism": "V1 selects the local rollout winner, V2 blends multi-horizon utility and candidate edge, and V3 chooses a good label while penalizing overrepresented strategies."
+    },
+    {
+      "anchor": "Appendices C.7-C.9",
+      "mechanism": "Ten named programmatic stock strategies emit an action, confidence, and coarse exposure bucket before runtime feasibility checks."
+    }
+  ],
+  "strict_evidence": {
+    "audit_manifest_path": "paper_runs/paper_replication_audits/metaps/manifest.json",
+    "audit_manifest_sha256": "4075e9c1da2069cbe85b3b37105421037ea64dd70b65a5281243b23b925f6eb6",
+    "source_provenance_path": "paper_runs/paper_replication_audits/metaps/source_provenance.json",
+    "source_provenance_sha256": "91d7b0248c16996c196744d01378fcece753aa350508ca459d602657c2ada4ae",
+    "method_specification_path": "paper_runs/paper_replication_audits/metaps/method_specification_audit.csv",
+    "method_specification_sha256": "13b079ba12e884cdf5917b1b8338a5a57635f4553aa2f8badc983bda602db689",
+    "component_execution_path": "paper_runs/paper_replication_audits/metaps/component_execution_audit.csv",
+    "component_execution_sha256": "0c893ec8200be8aefaf5eecf92a94c60d5cdf58ee112cc1cce74298f2e479787",
+    "release_search_path": "paper_runs/paper_replication_audits/metaps/release_search_audit.csv",
+    "release_search_sha256": "4443c7e32c3ce34ecec5c1facf7c87bdf32bce054b94c325d7abab39a049f372"
+  },
+  "strategy_library": {
+    "news_impulse": {"inputs": ["niq_su", "saleq_su"], "monthly_rule": "equal catalyst-surprise score"},
+    "momentum_follow": {"inputs": ["ret_3_1", "ret_6_1"], "monthly_rule": "equal short/medium momentum score"},
+    "mean_revert_fade": {"inputs": ["ret_1_0"], "monthly_rule": "negative one-month return"},
+    "cross_asset_hedge": {"inputs": ["beta_60m", "ret_12_1"], "monthly_rule": "market-regime-conditioned beta offset"},
+    "risk_reset": {"inputs": ["rvol_21d", "beta_60m"], "monthly_rule": "low-volatility low-beta score"},
+    "macro_rotation": {"inputs": ["ret_12_1", "beta_60m", "be_me"], "monthly_rule": "risk-on momentum/beta or risk-off value/low-beta rotation"},
+    "earnings_drift": {"inputs": ["niq_su", "saleq_su", "ret_3_1"], "monthly_rule": "fundamental surprise with short drift confirmation"},
+    "liquidity_rebate": {"inputs": ["ret_1_0", "turnover_126d", "rvol_21d"], "monthly_rule": "liquid low-volatility one-month fade"},
+    "small_cap_breakout": {"inputs": ["ret_6_1", "prc_highprc_252d", "weight"], "monthly_rule": "small-cap momentum near the trailing high"},
+    "volatility_breakout": {"inputs": ["ret_1_0", "rvol_21d"], "monthly_rule": "one-month direction weighted by low volatility compression"}
+  },
+  "router_state": [
+    "trailing_six_month_market_return",
+    "value_weighted_volatility",
+    "value_weighted_turnover",
+    "one_month_return_dispersion",
+    "momentum_breadth",
+    "catalyst_breadth",
+    "value_dispersion",
+    "quality_breadth",
+    "ten_current_strategy_relevance_scores"
+  ],
+  "supervision_policy": {
+    "selected_view": "V3_balanced_competence",
+    "prehistory_formation_start": "1988-07-31",
+    "router_training_months": 120,
+    "maximum_rollout_horizon_months": 6,
+    "reward_purge_months": 6,
+    "v1_horizon_months": 1,
+    "v2_horizons_months": [1, 3, 6],
+    "v2_horizon_weights": [0.2, 0.3, 0.5],
+    "v3_short_horizon_quality_weight": 0.4,
+    "v3_medium_horizon_quality_weight": 0.6,
+    "v3_active_strategy_bonus": 0.002,
+    "v3_frequency_balance_penalty": 0.01,
+    "candidate_budget": 10,
+    "router_model": "rolling standardized one-vs-rest ridge least-squares classifier",
+    "router_ridge_penalty": 1.0,
+    "inner_tail_fraction": 0.1,
+    "inner_minimum_side": 20,
+    "inner_cost_bps_one_way": 10.0,
+    "coarse_exposure_buckets": {"small": 0.04, "medium": 0.09, "large": 0.16},
+    "router_margin_thresholds": {"small_upper": 0.05, "medium_upper": 0.15},
+    "update_schedule": "monthly expanding observation with a fixed trailing 120-label training window",
+    "common_portfolio_adapter": "the selected program score multiplied by its coarse exposure fraction enters fixed value-weighted long-short deciles and all six common paths",
+    "final_common_or_current_forward_return_used_for_router_selection": false
+  },
+  "preserved_elements": [
+    "ten named executable strategy abstractions",
+    "ranked candidate-strategy context",
+    "counterfactual rollout-derived supervision",
+    "V1 short-horizon winner labels",
+    "V2 multi-horizon competence labels",
+    "V3 return-aware label balancing",
+    "strategy-level rather than direct-action routing",
+    "router trained on state and strategy context",
+    "selected program delegates the final score",
+    "coarse exposure buckets",
+    "future outcomes excluded at inference",
+    "chronological training and held-out execution"
+  ],
+  "approximated_elements": [
+    "JKP price, accounting-surprise, risk, value, quality, and liquidity fields replace daily price, news, and order flow",
+    "ten deterministic cross-sectional scores replace the unreleased Python strategy modules and helpers",
+    "common monthly backtests replace simulator rollouts",
+    "deterministic V3 quality/frequency formulas replace underspecified label constants",
+    "rolling ridge classification replaces Qwen3.5 supervised fine-tuning and teacher-rewritten rationales",
+    "router margin replaces model confidence",
+    "common deciles replace single-ticker actions and inventory-aware execution",
+    "low-volatility directional weighting repairs the literal unreachable volatility-breakout listing"
+  ],
+  "invented_elements": [
+    "the exact JKP formulas for all ten strategies",
+    "the 18-variable router state representation",
+    "the 120-month training window",
+    "the V2 horizon weights",
+    "the V3 quality, active-bonus, and frequency-penalty constants",
+    "the ridge classifier and penalty",
+    "the router-margin exposure thresholds"
+  ],
+  "anti_leakage": {
+    "published_strategy_distribution_or_return_curve_used_as_router_labels": false,
+    "paper_best_return_used_to_tune_strategy_formulas": false,
+    "current_or_future_formation_return_used_at_inference": false,
+    "m060_common_result_seen_before_recipe_freeze": false,
+    "prior_other_paper_common_results_seen": true,
+    "retuning_after_common_result_permitted": false
+  }
+}
