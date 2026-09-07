@@ -1,0 +1,63 @@
+rank,milestone_id,title,evaluation_class,jkp_excess_annualized,raw_p_two_sided,holm_multiplier,holm_critical_value_5pct,holm_adjusted_p,holm_reject_5pct
+1,M008,Alpha-GPT 2.0: Human-in-the-Loop AI for Quantitative Investment,researcher_authored_in_spirit,-0.1206335880776891,0.0002653790337575,69,0.0007246376811594203,0.0183111533292675,True
+2,M032,Trading-R1: Financial Trading with LLM Reasoning via Reinforcement Learning,researcher_authored_in_spirit,-0.083154955786108,0.0129795253104168,68,0.0007352941176470588,0.8826077211083424,False
+3,M042,Alpha-R1: Alpha Screening with LLM Reasoning via Reinforcement Learning,researcher_authored_in_spirit,-0.0931594266692006,0.0158471953479494,67,0.0007462686567164179,1.0,False
+4,M037,ATLAS: Adaptive Trading with LLM AgentS Through Dynamic Prompt Optimization and Multi-Agent Coordination,researcher_authored_in_spirit,-0.0411055852645643,0.0221297380633898,66,0.0007575757575757576,1.0,False
+5,M029,TradingGroup: A Multi-Agent Trading System with Self-Reflection and Data-Synthesis,researcher_authored_in_spirit,-0.0465233808427621,0.0516959490634419,65,0.0007692307692307692,1.0,False
+6,M053,AlphaCrafter: Harnessing Multi-Agent Workflows for Cross-Sectional Quantitative Trading,researcher_authored_in_spirit,-0.0780843460466415,0.0562404799884162,64,0.00078125,1.0,False
+7,M010,LLMFactor: Extracting Profitable Factors through Prompts for Explainable Stock Movement Prediction,researcher_authored_in_spirit,-0.0554960891998635,0.0871159936983836,63,0.0007936507936507937,1.0,False
+8,M012,Empirical Asset Pricing with Large Language Model Agents,researcher_authored_in_spirit,-0.0637264363324679,0.0951907160496884,62,0.0008064516129032258,1.0,False
+9,M025,ContestTrade: A Multi-Agent Trading System Based on Internal Contest Mechanism,researcher_authored_in_spirit,-0.0695712181270743,0.0972697939901479,61,0.000819672131147541,1.0,False
+10,M048,AlphaLogics: A Market Logic-Driven Multi-Agent System for Scalable and Interpretable Alpha Factor Generation,researcher_authored_in_spirit,-0.0381094241292755,0.0990361343243561,60,0.0008333333333333334,1.0,False
+11,M050,Designing Agentic AI-Based Screening for Portfolio Investment,researcher_authored_in_spirit,-0.0256483557334683,0.1026870632486518,59,0.0008474576271186442,1.0,False
+12,M020,MASS: Muli-agent simulation scaling for portfolio construction,researcher_authored_in_spirit,-0.0541282333860034,0.1071983752890675,58,0.0008620689655172415,1.0,False
+13,M034,QuantAgents: Towards Multi-agent Financial System via Simulated Trading,researcher_authored_in_spirit,-0.0596629116830668,0.1188965870915976,57,0.0008771929824561404,1.0,False
+14,M067,RAPTOR: Reasoned Agentic Portfolio Trading with Orchestrated Rebalancing,researcher_authored_in_spirit,-0.0215116689862938,0.1236547319180617,56,0.0008928571428571429,1.0,False
+15,M065,FactorMAD: A Multi-Agent Debate Framework Based on Large Language Models for Interpretable Stock Alpha Factor Mining,researcher_authored_in_spirit,0.0385667646555608,0.1264990048491637,55,0.0009090909090909091,1.0,False
+16,M057,MadEvolve: Evolutionary Optimization of Trading Systems with Large Language Models,researcher_authored_in_spirit,0.0548535590022087,0.1646737028696426,54,0.000925925925925926,1.0,False
+17,M033,GuruAgents: Emulating Wise Investors with Prompt-Guided LLM Agents,carried_strict_adaptation,0.0064754578361754,0.1724501417591505,53,0.0009433962264150943,1.0,False
+18,M001,GPT-Signal: Generative AI for Semi-automated Feature Engineering in the Alpha Research Process,carried_strict_adaptation,0.0297299532718342,0.173758587732177,52,0.0009615384615384616,1.0,False
+19,M052,Signal or Noise in Multi-Agent LLM-based Stock Recommendations?,researcher_authored_in_spirit,-0.0353625925209292,0.174524576178643,51,0.000980392156862745,1.0,False
+20,M068,Alpha-GPT: Human-AI Interactive Alpha Mining for Quantitative Investment,carried_strict_adaptation,0.0381851262915159,0.1759477242282815,50,0.001,1.0,False
+21,M022,R&D-Agent: An LLM-Agent Framework Towards Autonomous Data Science,researcher_authored_in_spirit,-0.0509518043271556,0.1813583185153506,49,0.0010204081632653062,1.0,False
+22,M009,"A Multimodal Foundation Agent for Financial Trading: Tool-Augmented, Diversified, and Generalist",researcher_authored_in_spirit,-0.0446380448044578,0.2114510846982629,48,0.0010416666666666667,1.0,False
+23,M016,MarketSenseAI 2.0: Enhancing Stock Analysis through LLM Agents,researcher_authored_in_spirit,-0.0335302974539725,0.214521801911838,47,0.0010638297872340426,1.0,False
+24,M060,MetaPS: Adaptive Programmatic Strategy Selection for Market Agents,researcher_authored_in_spirit,-0.0640348557745688,0.2226814401339062,46,0.0010869565217391304,1.0,False
+25,M028,From Flat to Hierarchical: Evolving Tree-structured Thoughts for Fine-grained Alpha Mining,researcher_authored_in_spirit,-0.040440328288072,0.2231228992479041,45,0.0011111111111111111,1.0,False
+26,M027,AlphaAgents: Large Language Model based Multi-Agents for Equity Portfolio Constructions,researcher_authored_in_spirit,-0.02403461187444,0.2270466841773782,44,0.0011363636363636365,1.0,False
+27,M004,FLAG-TRADER: Fusion LLM-Agent with Gradient-based Reinforcement Learning for Financial Trading,researcher_authored_in_spirit,-0.0291297944372276,0.272744539088553,43,0.0011627906976744186,1.0,False
+28,M062,XALPHA: A Memory-Driven AI Quant Researcher for Hypothesis-to-Code Alpha Discovery,carried_strict_adaptation,0.0384046607424113,0.3035864566417675,42,0.0011904761904761906,1.0,False
+29,M024,MountainLion: A Multi-Modal LLM-Based Agent System for Interpretable and Adaptive Financial Trading,researcher_authored_in_spirit,-0.0301836646525818,0.3110563238094115,41,0.0012195121951219512,1.0,False
+30,M005,AlphaQuanter: An End-to-End Tool-Augmented Agentic Reinforcement Learning Framework for Stock Trading,researcher_authored_in_spirit,-0.0403922645177199,0.3128708579699329,40,0.00125,1.0,False
+31,M069,Automate Strategy Finding with LLM in Quant Investment,carried_strict_adaptation,0.0211252957565342,0.3556777364281139,39,0.001282051282051282,1.0,False
+32,M044,FactorMiner: A Self-Evolving Agent with Skills and Experience Memory for Financial Alpha Discovery,carried_strict_adaptation,-0.0235579738002433,0.3605655221302867,38,0.0013157894736842105,1.0,False
+33,M026,Chain-of-Alpha: Unleashing the Power of Large Language Models for Alpha Mining in Quantitative Trading,carried_strict_adaptation,-0.0227803014306523,0.3626282238094692,37,0.0013513513513513514,1.0,False
+34,M041,Cognitive Alpha Mining via LLM-Driven Code-Based Evolution,carried_strict_adaptation,-0.0156393475572962,0.370936190549776,36,0.001388888888888889,1.0,False
+35,M059,AlphaMemo: Structured Search-Process Memory for Self-Evolving Alpha Mining Agents,carried_strict_adaptation,0.021994417390842,0.3922916515944743,35,0.0014285714285714286,1.0,False
+36,M043,QuantaAlpha: An Evolutionary Framework for LLM-Driven Alpha Mining,carried_strict_adaptation,0.0179686487000437,0.3971789753750115,34,0.0014705882352941176,1.0,False
+37,M040,FINRS: A Risk-Sensitive Trading Framework for Real Financial Markets,researcher_authored_in_spirit,-0.0131182216032066,0.4362884430859195,33,0.0015151515151515152,1.0,False
+38,M014,TradingAgents: Multi-Agents LLM Financial Trading Framework,researcher_authored_in_spirit,-0.0210015129236583,0.4772716839983714,32,0.0015625,1.0,False
+39,M021,Navigating the Alpha Jungle: An LLM-Powered MCTS Framework for Formulaic Factor Mining,carried_strict_adaptation,0.0352190371856645,0.4775634980562181,31,0.0016129032258064516,1.0,False
+40,M046,FactorEngine: A Program-level Knowledge-Infused Factor Mining Framework for Quantitative Investment,carried_strict_adaptation,-0.0166835780045249,0.4820281672330727,30,0.0016666666666666668,1.0,False
+41,M063,Fin-Analyst at FinMMEval 2026 Task 3: A Live Hybrid Trading Agent with LLM Specialists and Rule-Based Signals,researcher_authored_in_spirit,-0.014129325134001,0.511452331553097,29,0.001724137931034483,1.0,False
+42,M039,FinPos: A Position-Aware Trading Agent System for Real Financial Markets,researcher_authored_in_spirit,-0.011559437727184,0.5135249880189648,28,0.0017857142857142859,1.0,False
+43,M064,AlphaSchema: Exploring the Space of Trading Semantics for LLM-Based Alpha Mining,carried_strict_adaptation,0.0187924959767,0.5304538314694358,27,0.001851851851851852,1.0,False
+44,M049,TrustTrade: Human-Inspired Selective Consensus Reduces Decision Uncertainty in LLM Trading Agents,researcher_authored_in_spirit,-0.0136466651121482,0.5731873770904777,26,0.0019230769230769232,1.0,False
+45,M019,AlphaAgent: LLM-Driven Alpha Mining with Regularized Exploration to Counteract Alpha Decay,carried_strict_adaptation,-0.0126634371335355,0.5739413478361304,25,0.002,1.0,False
+46,M013,FinVision: A Multi-Agent Framework for Stock Market Prediction,researcher_authored_in_spirit,0.0147973064736838,0.5870040990950542,24,0.0020833333333333333,1.0,False
+47,M054,Strat-LLM: Stratified Strategy Alignment for LLM-based Stock Trading with Real-time Multi-Source Signals,researcher_authored_in_spirit,0.0139793980844067,0.6368176029984085,23,0.002173913043478261,1.0,False
+48,M055,SHARP: A Self-Evolving Human-Auditable Rubric Policy for Financial Trading Agents,researcher_authored_in_spirit,-0.0102430944628842,0.6814929688190757,22,0.002272727272727273,1.0,False
+49,M006,FinMem: A Performance-Enhanced LLM Trading Agent with Layered Memory and Character Design,researcher_authored_in_spirit,0.0138711339268664,0.6911103201279492,21,0.002380952380952381,1.0,False
+50,M051,"Hubble: An LLM-Driven Agentic Framework for Safe, Diverse, and Reproducible Alpha Factor Discovery",researcher_authored_in_spirit,0.0079518267805819,0.6994984446542014,20,0.0025,1.0,False
+51,M023,EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models,carried_strict_adaptation,0.00597008918308,0.7036446406222473,19,0.002631578947368421,1.0,False
+52,M047,Can Blindfolded LLMs Still Trade? An Anonymization-First Framework for Portfolio Optimization,researcher_authored_in_spirit,-0.007710066699191,0.7968671700668672,18,0.002777777777777778,1.0,False
+53,M038,P1GPT: a multi-agent LLM workflow module for multi-modal financial information analysis,researcher_authored_in_spirit,-0.0059687967388284,0.8011785563678478,17,0.0029411764705882353,1.0,False
+54,M056,From Feedback Loops to Policy Updates: Reinforcement Fine-Tuning for LLM-Based Alpha Factor Discovery,carried_strict_adaptation,-0.0069948000955528,0.8204567871047782,16,0.003125,1.0,False
+55,M061,AI Trading's Alpha Singularity: Emergent Market Reasoning through Agent-to-Agent Self-Evolution,researcher_authored_in_spirit,0.0043762324074655,0.8506543793091623,15,0.0033333333333333335,1.0,False
+56,M036,Profit Mirage: Revisiting Information Leakage in LLM-based Financial Agents,researcher_authored_in_spirit,-0.0031687392731272,0.8572256929456843,14,0.0035714285714285718,1.0,False
+57,M007,QuantAgent: Seeking Holy Grail in Trading by Self-Improving Large Language Model,carried_strict_adaptation,0.0153521620214291,0.8575646930155906,13,0.0038461538461538464,1.0,False
+58,M011,FinCon: A Synthesized LLM Multi-Agent System with Conceptual Verbal Reinforcement for Enhanced Financial Decision Making,researcher_authored_in_spirit,0.0031855320869627,0.8888872825079729,12,0.004166666666666667,1.0,False
+59,M030,MM-ARC: Multimodal Adaptive Routing of Capital with Robustness-Audited Strategy Pools,researcher_authored_in_spirit,-0.0042477624193898,0.9013591195391863,11,0.004545454545454546,1.0,False
+60,M003,Can Large Language Models Mine Interpretable Financial Factors More Effectively? A Neural-Symbolic Factor Mining Agent Model,researcher_authored_in_spirit,-0.0035677963018997,0.9207677124062404,10,0.005,1.0,False
+61,M018,HedgeAgents: A Balanced-aware Multi-agent Financial Trading System,researcher_authored_in_spirit,-0.0014476422356601,0.9389359029043314,9,0.005555555555555556,1.0,False
+62,M066,AlphaAgentEvo: Evolution-Oriented Alpha Mining via Self-Evolving Agentic Reinforcement Learning,researcher_authored_in_spirit,0.0008239470307585,0.971076629465303,8,0.00625,1.0,False
