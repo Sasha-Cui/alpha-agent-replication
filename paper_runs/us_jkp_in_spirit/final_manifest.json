@@ -83,7 +83,7 @@
     "paper_runs/us_jkp_headline/M069_strategy_finding/metrics.csv": "40a0cfdcb813dea12f6096b12c32d82a86754865aff3b62c37da97515ae09c33"
   },
   "builder_path": "scripts/build_us_jkp_in_spirit_final.py",
-  "builder_sha256": "0a49cff331937d2c31a645edff78d5cebfd11606310ecabf569f9525a29365bc",
+  "builder_sha256": "9a4248c0f3493ad81eef185bac274b5487c8e288edf647d7aeb66b656c8ec459",
   "output_sha256": {
     "VISUAL_REPORT.md": "52f63f91c4a936942f20e04c002371aa8afca11c44f959434b737d11b7d9e592",
     "REPORT.md": "3e376355454ecc161651337dd928a0953815d2044f6d234b4caf71906b801e95",

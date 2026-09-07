@@ -9,7 +9,6 @@ import hashlib
 import io
 import json
 from pathlib import Path
-import shutil
 import tempfile
 from typing import Any
 
