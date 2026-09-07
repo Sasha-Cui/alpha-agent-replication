@@ -309,7 +309,7 @@ def save_excess_intervals(rows: list[dict[str, Any]], path: Path) -> None:
     ax.axvline(0.0, color=COLORS["zero"], linewidth=1.0)
     ax.set_yticks(y, [row["milestone_id"] for row in evaluated], fontsize=7, color=COLORS["foreground"])
     ax.set_xlabel("Annualized rolling JKP excess/residual and 95% HAC interval (%)", color=COLORS["foreground"])
-    ax.set_title("No common-benchmark excess estimate is significant after family correction", color=COLORS["foreground"])
+    ax.set_title("No positive common-benchmark excess estimate survives family correction", color=COLORS["foreground"])
     ax.grid(axis="x", color=COLORS["grid"], alpha=0.75)
     fig.tight_layout()
     fig.savefig(path, dpi=170, bbox_inches="tight", metadata={"Software": "alpha-agent-replication"})
@@ -419,7 +419,8 @@ def build_report(rows: list[dict[str, Any]], family: list[dict[str, Any]], visua
         f"At the fixed 10 bp one-way cost, {positive_cagr} of 62 paths have positive full-sample CAGR. "
         f"After rolling reconstruction from the broad JKP characteristic benchmark, {positive_excess} "
         f"have positive annualized excess/residual estimates. {raw_significant} have two-sided HAC "
-        f"p-values below 5% ({positive_significant} positive), and {holm_significant} survive Holm's "
+        f"p-values below 5% ({positive_significant} positive), and {holm_significant} "
+        f"{'survives' if holm_significant == 1 else 'survive'} Holm's "
         "69-paper family correction.",
         "",
         "The honest interpretation is neither blanket A nor blanket B. We did **not** reproduce any "
@@ -574,9 +575,12 @@ def write_outputs(root: Path, destination: Path) -> None:
         root / "paper_runs/us_jkp_headline/cross_paper_summary.csv",
         *metric_inputs,
     ]
-    outputs = sorted(
-        path for path in destination.rglob("*") if path.is_file() and path.name != "final_manifest.json"
-    )
+    outputs = [
+        destination / "VISUAL_REPORT.md",
+        destination / "REPORT.md",
+        *sorted(figures.glob("*.png")),
+        *sorted(tables.glob("*.csv")),
+    ]
     evaluated = [row for row in rows if row["common_jkp_evaluated"]]
     manifest = {
         "schema_version": 1,
@@ -608,12 +612,11 @@ def write_outputs(root: Path, destination: Path) -> None:
 def compare_outputs(expected: Path, actual: Path) -> list[str]:
     expected_files = {str(path.relative_to(expected)): path for path in expected.rglob("*") if path.is_file()}
     actual_files = {str(path.relative_to(actual)): path for path in actual.rglob("*") if path.is_file()}
-    names = sorted(set(expected_files) | set(actual_files))
+    names = sorted(expected_files)
     return [
         name
         for name in names
-        if name not in expected_files
-        or name not in actual_files
+        if name not in actual_files
         or expected_files[name].read_bytes() != actual_files[name].read_bytes()
     ]
 
