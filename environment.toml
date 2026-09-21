@@ -48,3 +48,12 @@ interpreter = "/nfs/roberts/project/pi_btk22/zc362/environments/current/kt-defau
 python = "3.12"
 usage = "Read-only analytical report and ReportLab manuscript rendering from completed result tables."
 lock = "environment_specs/publication_report_runtime.json"
+
+[[native_tool]]
+name = "efs-octave"
+version = "9.2.0"
+central_alias = "octave-efs"
+executable = "/nfs/roberts/project/pi_btk22/zc362/environments/bin/efs-octave"
+versioned_prefix = "/nfs/roberts/project/pi_btk22/zc362/environments/venvs/octave-9.2.0-efs-20260921-v2"
+lock = "/nfs/roberts/project/pi_btk22/zc362/environments/specs/octave-9.2.0-efs-20260921-v2.explicit.txt"
+usage = "EFS cited-baseline reruns. Pass the wrapper via --octave; it sets OCTAVE_HOME and OCTAVE_EXEC_HOME for the central project runtime."

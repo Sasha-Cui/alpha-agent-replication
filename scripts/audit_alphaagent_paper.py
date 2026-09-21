@@ -195,7 +195,7 @@ DEFAULT_PAPER_HOST_PYTHON = str(Path(__file__).resolve().parent / "run_alphaagen
 DEFAULT_PAPER_QLIB_PYTHON = str(Path(__file__).resolve().parent / "run_alphaagent_paper_qlib_python.sh")
 DEFAULT_PAPER_QLIB_SOURCE_ROOT = "/nfs/roberts/scratch/pi_btk22/zc362/qlib_alphaagent_paper_era"
 DEFAULT_PAPER_QLIB_DATA_ARCHIVE = (
-    "/nfs/roberts/scratch/pi_btk22/zc362/alphaagent_qlib_us_095/20260825115404_qlib_data_us_1d_latest.zip"
+    "/nfs/roberts/project/pi_jss233/zc362/alpha_evolve/archives/alphaagent_qlib_us_095_20260825.zip"
 )
 REWRITE_ENV_FREEZE_SHA256 = "98a93cf29257f73ff3e26d2f4a1fe2ab264c1ea9d1d9eed4fd2d978ff6d99f02"
 PAPER_HOST_ENV_FREEZE_SHA256 = "040a0414d4bb482cb18ec5bb60f3b3e0b495ac17a41a2ebdd4693f3275ec640c"
