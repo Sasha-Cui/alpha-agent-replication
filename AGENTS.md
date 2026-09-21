@@ -1,3 +1,56 @@
+# Active remaining-fidelity completion (2026-09-16)
+
+The user explicitly reopened remaining feasible fidelity work after the September13
+scope correction. This supersedes the prior completion paragraph's prohibition on
+new paid experiments within this newly requested work. Work under
+`paper_runs/fidelity_completion_v2` and private `artifacts/fidelity_completion_v2`;
+read its protocol and handoff. Preserve every earlier study and sealed forecast.
+All calls retain the same450USD project soft stop/500USD hard ceiling, including
+prior spending and uncertain reservations. No commits, pushes, source-author
+contact or fabricated human review is authorized. Track all69 papers separately;
+execute recoverable mechanisms and explicitly document unavailable inputs/code/
+checkpoints/budget-limited work. Never relabel a source component, adapted run or
+surrogate as a faithful full-paper reproduction. The old forecast has now been
+settled without changing its commitment and without any new model call.
+
+# Publication upgrade: historical evidence complete (2026-09-09)
+
+All six approved cases, matched controls, calibration and final analysis are
+complete under `paper_runs/publication_upgrade_v1`; the18-page manuscript passed
+numeric and visual review. FinMem538, FinAgent544 and TradingAgents61 records
+match their full cached replays exactly. No paid native job remains necessary.
+Read `docs/PUBLICATION_UPGRADE_RUNBOOK.md`, the current milestones/package manifest,
+and private `artifacts/publication_upgrade_v1/HANDOFF.md` for provenance.
+
+All original studies and EFS pinned code/results remain frozen. Do not replace
+or alter the sealed prospective forecast, or invent human review/future returns.
+Independent human source review and the prospective pilot outcome remain pending.
+The six primary comparisons are inconclusive at the stated economic margin, not
+proof of no alpha or full original-paper reproduction. All paid usage and missing-
+response reservations remain in the canonical ledger. No further experiments,
+paid runs, commits, pushes, PRs, author contact or submission are authorized by
+this completed research-upgrade request. Archive verification is separately
+recorded in package_manifest.json after both bundles and copies are checked.
+
+# Active economic fidelity repair (2026-09-06)
+
+The first EFS v1 daily LLM pilot is complete and independently accounted, with
+290 generation steps, 1,510 daily observations, and a byte-identical full cached
+replay. Read `paper_runs/economic_fidelity/efs_v1/REPORT.md` and its outcome-free
+`SOURCE_REVIEW_PACKET.md`. The broader fidelity cohort and later publication
+stages remain open; human source review is pending. Use
+`scripts/replay_efs_economic_fidelity.py` for reproduction without paid calls.
+The canonical API ledger/cache is under `runs/economic_fidelity/openrouter`.
+
+The user has activated the six publication improvements sequentially, beginning
+with economic fidelity, and authorized metered OpenRouter LLM calls. Read
+`docs/ECONOMIC_FIDELITY_PROTOCOL.md`. Preserve all earlier studies. The new work
+must restore source cadence, inputs, portfolio rules, and actual agent mechanisms
+where feasible. The September 4 preference for deterministic substitutes governs
+the completed in-spirit study, not this new repair. Do not claim independent
+human review or full-paper reproduction without evidence. Do not commit or push
+unless explicitly requested.
+
 # Current research objective (2026-09-04)
 
 The strict 69-paper headline audit and common-transfer study is complete and

@@ -1,6 +1,46 @@
 # Alpha Agent Replication
 
-## Current work: 69 U.S./JKP headline-strategy milestones
+## Publication upgrade: current-data evidence complete
+
+The six source-specific cases—EFS, FinMem, FinAgent, TradingAgents, GuruAgents,
+and QuantaAlpha—are executed with declared economic adapters and matched controls.
+Read the [visual report](paper_runs/publication_upgrade_v1/VISUAL_REPORT.md),
+[manuscript](paper_runs/publication_upgrade_v1/manuscript.pdf), and
+[reproduction runbook](docs/PUBLICATION_UPGRADE_RUNBOOK.md).
+
+None of the six primary comparisons establishes a positive advantage under the
+declared inference procedure. All remain inconclusive against the 2-percentage-
+point annual economic margin; this is not proof that the source agents have no
+alpha. Full cached source traces match exactly for FinMem (538 records), FinAgent
+(544), and TradingAgents (61); the original EFS replay and account checks remain
+frozen. Project API commitments total100.8075647USD, including0.60387354USD in
+retained uncertain reservations and all prior/setup usage.
+
+All current-data analyses, calibrated bounds, controlled adaptations, source-
+review workflows, and the18-page manuscript are complete and verified. Delivery
+archive checksums and second-copy verification are recorded separately in
+`paper_runs/publication_upgrade_v1/package_manifest.json` after packaging.
+Independent human source review remains pending. The sealed prospective pilot
+has a September9 evaluation close and no outcome yet; it is a development pilot,
+not public preregistration or confirmatory investment evidence.
+
+## Economic-fidelity repair: first pilot complete
+
+The first [EFS v1 economic-fidelity pilot](paper_runs/economic_fidelity/efs_v1/REPORT.md)
+now runs real GPT-4.1 evolution on daily source-universe prices, with 290 weekly
+generation steps and 1,510 traded days. Its independent account reconstruction
+and full cached replay pass. Start with the
+[outcome-free source-review packet](paper_runs/economic_fidelity/efs_v1/SOURCE_REVIEW_PACKET.md)
+and [protocol](docs/ECONOMIC_FIDELITY_PROTOCOL.md).
+
+This is a fresh paper-guided implementation with disclosed assumptions, not the
+author's original code/model/run or a confirmatory alpha finding. The six-case
+fidelity cohort and publication-improvement analyses are now complete. The
+completed [62-path in-spirit comparison](paper_runs/us_jkp_in_spirit/REPORT.md)
+and [strict 69-paper audit](paper_runs/us_jkp_headline/FINAL_SUMMARY.md) remain frozen.
+The manuscript below still describes the earlier evidence packages.
+
+## Archived 69-paper study and earlier manuscript
 
 The September 3, 2026 research direction is to implement each paper's central
 proposed trading strategy, or its strongest defensible partial version, on a
