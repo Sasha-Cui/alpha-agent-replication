@@ -30,3 +30,21 @@ items = [
   "Build and validate a versioned environment under environments/venvs before repointing the central alias.",
   "Do not vendor external repository packages into this project tree.",
 ]
+
+
+[[environment]]
+name = "economic-fidelity-native"
+central_alias = "alpha-economic-fidelity"
+interpreter = "/nfs/roberts/project/pi_btk22/zc362/environments/current/alpha-economic-fidelity/bin/python"
+python = "3.10"
+usage = "Native FinMem and FinAgent source execution, with metered model transports. Use scripts/run_finmem_fidelity_python.sh for native library paths."
+lock = "environment_specs/publication_fidelity_native.json"
+parent_lock = "paper_runs/paper_replication_audits/finagent/paper_era_environment_freeze.txt"
+
+[[environment]]
+name = "publication-report"
+central_alias = "kt-default"
+interpreter = "/nfs/roberts/project/pi_btk22/zc362/environments/current/kt-default/bin/python"
+python = "3.12"
+usage = "Read-only analytical report and ReportLab manuscript rendering from completed result tables."
+lock = "environment_specs/publication_report_runtime.json"

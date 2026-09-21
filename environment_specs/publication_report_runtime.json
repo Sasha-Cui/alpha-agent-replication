@@ -1,0 +1,13 @@
+{
+  "python": "3.12.8 | packaged by conda-forge | (main, Dec  5 2024, 14:24:40) [GCC 13.3.0]",
+  "prefix": "/nfs/roberts/project/pi_btk22/zc362/environments/current/kt-default",
+  "packages": {
+    "reportlab": "4.4.10",
+    "matplotlib": "3.10.9",
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "Pillow": "12.1.1",
+    "pypdf": "6.7.5"
+  },
+  "purpose": "Rendering completed analytical tables; no changes to model environments"
+}

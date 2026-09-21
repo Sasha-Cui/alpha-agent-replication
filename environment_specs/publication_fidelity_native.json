@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "python": "3.10.8 (main, Mar 11 2026, 20:08:57) [GCC 12.2.0]",
+  "environment": "/nfs/roberts/project/pi_btk22/zc362/environments/venvs/alpha-fidelity-finmem-py310-20260907-v1",
+  "parent_environment": "/nfs/roberts/project/pi_btk22/zc362/environments/venvs/finagent-paper-era-py310-20260824-v1",
+  "overlay_packages": [
+    {
+      "name": "boltons",
+      "version": "23.1.1"
+    },
+    {
+      "name": "colorama",
+      "version": "0.4.6"
+    },
+    {
+      "name": "eliot",
+      "version": "1.15.0"
+    },
+    {
+      "name": "eliot-tree",
+      "version": "21.0.0"
+    },
+    {
+      "name": "faiss-cpu",
+      "version": "1.7.4"
+    },
+    {
+      "name": "griffe",
+      "version": "0.36.9"
+    },
+    {
+      "name": "guardrails-ai",
+      "version": "0.3.3"
+    },
+    {
+      "name": "lxml",
+      "version": "4.9.3"
+    },
+    {
+      "name": "polars",
+      "version": "0.20.5"
+    },
+    {
+      "name": "pydantic",
+      "version": "2.4.2"
+    },
+    {
+      "name": "pydantic_core",
+      "version": "2.10.1"
+    },
+    {
+      "name": "pydash",
+      "version": "7.0.7"
+    },
+    {
+      "name": "pyrsistent",
+      "version": "0.20.0"
+    },
+    {
+      "name": "regex",
+      "version": "2023.12.25"
+    },
+    {
+      "name": "rstr",
+      "version": "3.2.2"
+    },
+    {
+      "name": "tiktoken",
+      "version": "0.5.2"
+    },
+    {
+      "name": "toml",
+      "version": "0.10.2"
+    },
+    {
+      "name": "typer",
+      "version": "0.9.0"
+    },
+    {
+      "name": "zope.interface",
+      "version": "6.1"
+    }
+  ],
+  "native_source_validation": [
+    "FinMem actor/brain/portfolio and released embedding wrapper",
+    "FinAgent source run_step,3072-dimensional native embedding provider,vision and account path"
+  ],
+  "boundary": "Compatible environment, not an exact historical package snapshot. The unused FinMem TGI tokenizer branch is fail-closed and is not credited as executed."
+}
