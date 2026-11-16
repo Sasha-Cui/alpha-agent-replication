@@ -1,0 +1,17 @@
+{
+  "status": "source_construction_probe_passed_native_baseline_pending",
+  "python_environment": "/nfs/roberts/project/pi_btk22/zc362/environments/venvs/quantaalpha-fidelity-py310-20260916-v1",
+  "parent_environment": "alphaagent-paper-era-host-py310-20260824-v1",
+  "direct_versions": {
+    "rdagent": "0.8.0",
+    "pyqlib": "0.9.7",
+    "tables": "3.9.2",
+    "litellm": "1.63.3",
+    "mlflow": "2.20.3",
+    "lightgbm": "4.6.0",
+    "numpy": "1.26.4",
+    "pandas": "2.2.3"
+  },
+  "declarations": "Compatible central runtime with recorded operational adapters; not an exact historical environment. Optional Azure/llama branches remain unexecuted.",
+  "source_commit": "b7ceb27b1001261d7a95b209a963664ae1f8ab23"
+}
