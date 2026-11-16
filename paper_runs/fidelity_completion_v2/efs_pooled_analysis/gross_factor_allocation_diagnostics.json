@@ -1,0 +1,134 @@
+[
+  {
+    "arm": "jkp_only",
+    "backend": "gpt41",
+    "certainty_equivalent_gamma10_annualized": 0.0037414824911929205,
+    "claim_boundary": "Conditional gross-factor allocation diagnostic; not unrestricted JKP132 alpha, not a net deployable fund, and not a test of the best possible allocator.",
+    "common_jkp_only_baseline_verified": true,
+    "evaluation_end": "2024-12",
+    "evaluation_start": "2022-01",
+    "mean_agent_weight_in_input_units": 0.0,
+    "mean_annualized": 0.0043553964890467745,
+    "months": 36,
+    "no_alpha_p_value": true,
+    "parameters": {
+      "covariance_diagonal_shrinkage": 0.5,
+      "min_train": 36,
+      "per_sleeve_past_vol_target": 0.1,
+      "risk_aversion": 10,
+      "risk_budget_l1_cap": 1.0
+    },
+    "repeated_baseline_is_not_an_independent_fit": true,
+    "vol_annualized": 0.01108074002811955
+  },
+  {
+    "arm": "jkp_plus_efs",
+    "backend": "gpt41",
+    "certainty_equivalent_gamma10_annualized": 0.003405078967921257,
+    "claim_boundary": "Conditional gross-factor allocation diagnostic; not unrestricted JKP132 alpha, not a net deployable fund, and not a test of the best possible allocator.",
+    "common_jkp_only_baseline_verified": true,
+    "evaluation_end": "2024-12",
+    "evaluation_start": "2022-01",
+    "mean_agent_weight_in_input_units": 0.0012004385359760967,
+    "mean_annualized": 0.0040261872933624815,
+    "months": 36,
+    "no_alpha_p_value": true,
+    "parameters": {
+      "covariance_diagonal_shrinkage": 0.5,
+      "min_train": 36,
+      "per_sleeve_past_vol_target": 0.1,
+      "risk_aversion": 10,
+      "risk_budget_l1_cap": 1.0
+    },
+    "repeated_baseline_is_not_an_independent_fit": true,
+    "vol_annualized": 0.01114547733783731
+  },
+  {
+    "arm": "jkp_only",
+    "backend": "deepseek_v3",
+    "certainty_equivalent_gamma10_annualized": 0.0037414824911929205,
+    "claim_boundary": "Conditional gross-factor allocation diagnostic; not unrestricted JKP132 alpha, not a net deployable fund, and not a test of the best possible allocator.",
+    "common_jkp_only_baseline_verified": true,
+    "evaluation_end": "2024-12",
+    "evaluation_start": "2022-01",
+    "mean_agent_weight_in_input_units": 0.0,
+    "mean_annualized": 0.0043553964890467745,
+    "months": 36,
+    "no_alpha_p_value": true,
+    "parameters": {
+      "covariance_diagonal_shrinkage": 0.5,
+      "min_train": 36,
+      "per_sleeve_past_vol_target": 0.1,
+      "risk_aversion": 10,
+      "risk_budget_l1_cap": 1.0
+    },
+    "repeated_baseline_is_not_an_independent_fit": true,
+    "vol_annualized": 0.01108074002811955
+  },
+  {
+    "arm": "jkp_plus_efs",
+    "backend": "deepseek_v3",
+    "certainty_equivalent_gamma10_annualized": 0.003055063581286868,
+    "claim_boundary": "Conditional gross-factor allocation diagnostic; not unrestricted JKP132 alpha, not a net deployable fund, and not a test of the best possible allocator.",
+    "common_jkp_only_baseline_verified": true,
+    "evaluation_end": "2024-12",
+    "evaluation_start": "2022-01",
+    "mean_agent_weight_in_input_units": 0.0013270168877896477,
+    "mean_annualized": 0.003675526652888013,
+    "months": 36,
+    "no_alpha_p_value": true,
+    "parameters": {
+      "covariance_diagonal_shrinkage": 0.5,
+      "min_train": 36,
+      "per_sleeve_past_vol_target": 0.1,
+      "risk_aversion": 10,
+      "risk_budget_l1_cap": 1.0
+    },
+    "repeated_baseline_is_not_an_independent_fit": true,
+    "vol_annualized": 0.011139686455202814
+  },
+  {
+    "arm": "jkp_only",
+    "backend": "grammar_101_103",
+    "certainty_equivalent_gamma10_annualized": 0.0037414824911929205,
+    "claim_boundary": "Conditional gross-factor allocation diagnostic; not unrestricted JKP132 alpha, not a net deployable fund, and not a test of the best possible allocator.",
+    "common_jkp_only_baseline_verified": true,
+    "evaluation_end": "2024-12",
+    "evaluation_start": "2022-01",
+    "mean_agent_weight_in_input_units": 0.0,
+    "mean_annualized": 0.0043553964890467745,
+    "months": 36,
+    "no_alpha_p_value": true,
+    "parameters": {
+      "covariance_diagonal_shrinkage": 0.5,
+      "min_train": 36,
+      "per_sleeve_past_vol_target": 0.1,
+      "risk_aversion": 10,
+      "risk_budget_l1_cap": 1.0
+    },
+    "repeated_baseline_is_not_an_independent_fit": true,
+    "vol_annualized": 0.01108074002811955
+  },
+  {
+    "arm": "jkp_plus_grammar",
+    "backend": "grammar_101_103",
+    "certainty_equivalent_gamma10_annualized": 0.0037414824911929205,
+    "claim_boundary": "Conditional gross-factor allocation diagnostic; not unrestricted JKP132 alpha, not a net deployable fund, and not a test of the best possible allocator.",
+    "common_jkp_only_baseline_verified": true,
+    "evaluation_end": "2024-12",
+    "evaluation_start": "2022-01",
+    "mean_agent_weight_in_input_units": 0.0,
+    "mean_annualized": 0.0043553964890467745,
+    "months": 36,
+    "no_alpha_p_value": true,
+    "parameters": {
+      "covariance_diagonal_shrinkage": 0.5,
+      "min_train": 36,
+      "per_sleeve_past_vol_target": 0.1,
+      "risk_aversion": 10,
+      "risk_budget_l1_cap": 1.0
+    },
+    "repeated_baseline_is_not_an_independent_fit": true,
+    "vol_annualized": 0.01108074002811955
+  }
+]

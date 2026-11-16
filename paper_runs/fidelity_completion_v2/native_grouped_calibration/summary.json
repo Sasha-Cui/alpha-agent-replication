@@ -1,0 +1,289 @@
+{
+  "inference_code_sha256": "60daa77c578640a4ef0be2ed5dd64b863b75f0c780efb21bf2c21c5670216b81",
+  "protocol_sha256": "624757fd26aff7fd097193ce5da436036b45d758870427644bf5b51324414315",
+  "results": [
+    {
+      "case": "alphaagent",
+      "covers_primary99": {
+        "mc_ci95": [
+          0.987292434466316,
+          0.993233285949307
+        ],
+        "rate": 0.99072265625
+      },
+      "dgp": "iid_normal",
+      "equivalence_at_positive_margin_boundary": {
+        "mc_ci95": [
+          0.0,
+          0.0009369774073651883
+        ],
+        "rate": 0.0
+      },
+      "index": 0,
+      "observations": 238,
+      "reject_zero_p0005": {
+        "mc_ci95": [
+          0.0033558642108143656,
+          0.007825411768057332
+        ],
+        "rate": 0.005126953125
+      },
+      "reject_zero_p001": {
+        "mc_ci95": [
+          0.006766714050692903,
+          0.012707565533684064
+        ],
+        "rate": 0.00927734375
+      },
+      "replications": 4096
+    },
+    {
+      "case": "alphaagent",
+      "covers_primary99": {
+        "mc_ci95": [
+          0.9864495949105299,
+          0.9926126542805922
+        ],
+        "rate": 0.989990234375
+      },
+      "dgp": "ar03_normal",
+      "equivalence_at_positive_margin_boundary": {
+        "mc_ci95": [
+          0.0,
+          0.0009369774073651883
+        ],
+        "rate": 0.0
+      },
+      "index": 1,
+      "observations": 238,
+      "reject_zero_p0005": {
+        "mc_ci95": [
+          0.0033558642108143656,
+          0.007825411768057332
+        ],
+        "rate": 0.005126953125
+      },
+      "reject_zero_p001": {
+        "mc_ci95": [
+          0.0073873457194077235,
+          0.013550405089470172
+        ],
+        "rate": 0.010009765625
+      },
+      "replications": 4096
+    },
+    {
+      "case": "alphaagent",
+      "covers_primary99": {
+        "mc_ci95": [
+          0.9842206673133682,
+          0.9909389919457514
+        ],
+        "rate": 0.988037109375
+      },
+      "dgp": "ar06_t5",
+      "equivalence_at_positive_margin_boundary": {
+        "mc_ci95": [
+          0.0,
+          0.0009369774073651883
+        ],
+        "rate": 0.0
+      },
+      "index": 2,
+      "observations": 238,
+      "reject_zero_p0005": {
+        "mc_ci95": [
+          0.0035497403427024827,
+          0.008119359377669524
+        ],
+        "rate": 0.00537109375
+      },
+      "reject_zero_p001": {
+        "mc_ci95": [
+          0.009061008054248611,
+          0.015779332686631765
+        ],
+        "rate": 0.011962890625
+      },
+      "replications": 4096
+    },
+    {
+      "case": "alphaagent",
+      "covers_primary99": {
+        "mc_ci95": [
+          0.9878567926156614,
+          0.9936445752829621
+        ],
+        "rate": 0.9912109375
+      },
+      "dgp": "garch_t5",
+      "equivalence_at_positive_margin_boundary": {
+        "mc_ci95": [
+          0.0,
+          0.0009369774073651883
+        ],
+        "rate": 0.0
+      },
+      "index": 3,
+      "observations": 238,
+      "reject_zero_p0005": {
+        "mc_ci95": [
+          0.0015002563109177591,
+          0.004802782252950839
+        ],
+        "rate": 0.002685546875
+      },
+      "reject_zero_p001": {
+        "mc_ci95": [
+          0.006355424717037815,
+          0.012143207384338531
+        ],
+        "rate": 0.0087890625
+      },
+      "replications": 4096
+    },
+    {
+      "case": "quantaalpha",
+      "covers_primary99": {
+        "mc_ci95": [
+          0.9847756016627256,
+          0.9913597050793945
+        ],
+        "rate": 0.988525390625
+      },
+      "dgp": "iid_normal",
+      "equivalence_at_positive_margin_boundary": {
+        "mc_ci95": [
+          0.0,
+          0.0009369774073651883
+        ],
+        "rate": 0.0
+      },
+      "index": 4,
+      "observations": 963,
+      "reject_zero_p0005": {
+        "mc_ci95": [
+          0.004534310788919747,
+          0.009573907638953811
+        ],
+        "rate": 0.006591796875
+      },
+      "reject_zero_p001": {
+        "mc_ci95": [
+          0.008640294920605456,
+          0.015224398337274302
+        ],
+        "rate": 0.011474609375
+      },
+      "replications": 4096
+    },
+    {
+      "case": "quantaalpha",
+      "covers_primary99": {
+        "mc_ci95": [
+          0.9878567926156614,
+          0.9936445752829621
+        ],
+        "rate": 0.9912109375
+      },
+      "dgp": "ar03_normal",
+      "equivalence_at_positive_margin_boundary": {
+        "mc_ci95": [
+          0.0,
+          0.0009369774073651883
+        ],
+        "rate": 0.0
+      },
+      "index": 5,
+      "observations": 963,
+      "reject_zero_p0005": {
+        "mc_ci95": [
+          0.00297171178976659,
+          0.007233916706104488
+        ],
+        "rate": 0.004638671875
+      },
+      "reject_zero_p001": {
+        "mc_ci95": [
+          0.006355424717037815,
+          0.012143207384338531
+        ],
+        "rate": 0.0087890625
+      },
+      "replications": 4096
+    },
+    {
+      "case": "quantaalpha",
+      "covers_primary99": {
+        "mc_ci95": [
+          0.9850536128857085,
+          0.9915695175979121
+        ],
+        "rate": 0.98876953125
+      },
+      "dgp": "ar06_t5",
+      "equivalence_at_positive_margin_boundary": {
+        "mc_ci95": [
+          0.0,
+          0.0009369774073651883
+        ],
+        "rate": 0.0
+      },
+      "index": 6,
+      "observations": 963,
+      "reject_zero_p0005": {
+        "mc_ci95": [
+          0.004534310788919747,
+          0.009573907638953811
+        ],
+        "rate": 0.006591796875
+      },
+      "reject_zero_p001": {
+        "mc_ci95": [
+          0.008430482402087882,
+          0.014946387114291566
+        ],
+        "rate": 0.01123046875
+      },
+      "replications": 4096
+    },
+    {
+      "case": "quantaalpha",
+      "covers_primary99": {
+        "mc_ci95": [
+          0.9850536128857085,
+          0.9915695175979121
+        ],
+        "rate": 0.98876953125
+      },
+      "dgp": "garch_t5",
+      "equivalence_at_positive_margin_boundary": {
+        "mc_ci95": [
+          0.0,
+          0.0009369774073651883
+        ],
+        "rate": 0.0
+      },
+      "index": 7,
+      "observations": 963,
+      "reject_zero_p0005": {
+        "mc_ci95": [
+          0.0033558642108143656,
+          0.007825411768057332
+        ],
+        "rate": 0.005126953125
+      },
+      "reject_zero_p001": {
+        "mc_ci95": [
+          0.008430482402087882,
+          0.014946387114291566
+        ],
+        "rate": 0.01123046875
+      },
+      "replications": 4096
+    }
+  ],
+  "scope": "Synthetic calibration only. Approximate independence/normality of block means remains an assumption; empirical coverage in these DGPs is not a universal guarantee.",
+  "script_sha256": "f34191b0ea4bcea2cde76a03777d4b578ed90247f3aed2fcb56737bdebdb2edf",
+  "status": "complete"
+}

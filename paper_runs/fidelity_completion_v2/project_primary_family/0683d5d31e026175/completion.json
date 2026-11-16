@@ -1,0 +1,24 @@
+{
+  "available_cases": [
+    "efs_deepseek_v3_pooled_minus_matched_grammar_pool",
+    "efs_gpt41_pooled_minus_matched_grammar_pool",
+    "quantaalpha_opening_alpha158_increment"
+  ],
+  "expected_cases": [
+    "alphaagent_opening_alpha158_increment",
+    "efs_deepseek_v3_pooled_minus_matched_grammar_pool",
+    "efs_gpt41_pooled_minus_matched_grammar_pool",
+    "quantaalpha_opening_alpha158_increment"
+  ],
+  "local_study_results_preserved": true,
+  "new_model_calls": 0,
+  "no_simultaneous_economic_margin_claim": true,
+  "not_pristine_confirmation": true,
+  "outputs": {
+    "comparisons.json": "b886001ffc79a5f71e381e92b809ffffd944d67babbe50b50840e7a876408377",
+    "evidence.json": "0ceacf234893107b664be005f342d0b5859062144287e587eb4c7ebe08ec9f9d"
+  },
+  "protocol_sha256": "bd4c85e87e84411bcbd120ad2de9b1cfb5793c83fcf1f33da253d2b6cf5694f3",
+  "script_sha256": "397c1412a97e5be6ca634863566a646ccc2bf3ffa3428632fa44648c16b66d3f",
+  "status": "partial_four_contrast_family"
+}

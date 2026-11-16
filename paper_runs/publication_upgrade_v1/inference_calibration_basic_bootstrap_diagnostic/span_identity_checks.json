@@ -1,0 +1,31 @@
+{
+  "empirical_factor_observations": 305,
+  "empirical_factor_panel_sha256": "84cd92c656ce309cdd2b996b8218942554fbe011e4f77ea08447a1b7cb81143d",
+  "empirical_jkp_factor_count": 132,
+  "empirical_known_span_alpha_annualized": -5.882003756897387e-16,
+  "empirical_known_span_max_residual": 1.665768217806729e-15,
+  "short_jkp132_refusal": "Unrestricted factor alpha is not identified with this sample/rank",
+  "simulated_full_span_alpha_annualized": 3.3470322189673486e-15,
+  "simulated_full_span_max_residual": 4.3368086899420177e-16,
+  "spanned_candidate_regularization_diagnostics": {
+    "pca5_ridge": {
+      "components": 5,
+      "evaluation_observations": 36,
+      "evaluation_start_index": 36,
+      "label": "regularized chronological reconstruction diagnostic; no unrestricted spanning-alpha inference",
+      "mean_residual": -0.0007996855491977823,
+      "penalty": 10,
+      "rmse": 0.005588444562283827
+    },
+    "ridge132": {
+      "components": null,
+      "evaluation_observations": 36,
+      "evaluation_start_index": 36,
+      "label": "regularized chronological reconstruction diagnostic; no unrestricted spanning-alpha inference",
+      "mean_residual": -0.0004186577337505227,
+      "penalty": 10,
+      "rmse": 0.0035260030320991517
+    }
+  },
+  "warning": "Regularized/PCA reconstruction errors can remain nonzero for a candidate known to be entirely factor-spanned; they are not evidence of an independent alpha source."
+}

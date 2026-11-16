@@ -1,0 +1,31 @@
+{
+  "annual_alphas": [
+    0,
+    0.02,
+    0.08
+  ],
+  "factor_counts": [
+    0,
+    6
+  ],
+  "groups": "4 for paired means; for factor intercepts 4 when block residual degrees permit, otherwise 3",
+  "months": [
+    36,
+    72,
+    144
+  ],
+  "noise": [
+    "normal",
+    "student_t5",
+    "deterministic_heteroskedastic"
+  ],
+  "noise_ar": [
+    0,
+    0.3,
+    0.6
+  ],
+  "nominal_primary_confidence": 0.99,
+  "replications_per_cell": 2000,
+  "role": "New-seed validation of conservative 99% grouped-t bounds after 95% methods undercovered; no strategy outcomes used for choosing the inferential method; target false rejection at most 5% on this stated simulation grid",
+  "seed": 912543
+}

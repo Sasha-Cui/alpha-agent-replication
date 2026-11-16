@@ -1,0 +1,11 @@
+{
+  "inference_code_sha256": "f7356f1a52ad07097de6a1ee37dcfacb216f816e4b4e47b798dc96a42fb47e0b",
+  "outputs": {
+    "calibration_summary.csv": "82797227ac2e0d4e77f7d425088a60120b0d747c630232d2b77d6ed7345e5582",
+    "monte_carlo_draws.csv": "a858b47390bf3d6a36b073500c07f0c3bf21474e34d1040421537766f4f5cb9e",
+    "recipe.json": "4b8f57a57dd9b8283996969d0c925d6591b5ff2b32779afe48701f7b760184bf",
+    "span_identity_checks.json": "2db8b6d66a2ec7fa0eb76c1b4a8f4e4d7ef329bf336249fc2f123fd5bd70712c"
+  },
+  "script_sha256": "fe23420e42436e00ec0669444e9060335a6a2c449d401d701cd77262d3c3c7b3",
+  "status": "complete"
+}

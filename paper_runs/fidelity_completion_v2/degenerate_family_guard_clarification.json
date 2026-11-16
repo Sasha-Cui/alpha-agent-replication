@@ -1,0 +1,8 @@
+{
+  "existing_comparisons_sha256": "fae531f2c6b6c9875f775de7b343b047980b9b23dd22020e8f1aa563f7771a2f",
+  "existing_quanta_primary_result_unchanged": true,
+  "helper_sha256": "d4de175ff82e3e1028edb50f49b45a3a6efd0b2aae3fb4803c049654054430c9",
+  "rule": "Degenerate grouped comparisons use p=1 in Holm/Bonferroni; their raw diagnostic statistic is preserved but cannot lower another contrast penalty. Original frozen v1 inference is unchanged.",
+  "status": "verified",
+  "tests": "Three new family-adjustment guards plus six secondary/evidence and four existing primary-loader guards:13pass on each centralPython3.12/3.9."
+}

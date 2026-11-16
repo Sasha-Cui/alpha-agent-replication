@@ -1,0 +1,1063 @@
+{
+  "protocol_sha256": "11e5eb6f62f455d0171193c00421810b4a6e009d936a919ae654cdc3fe1193d2",
+  "results": [
+    {
+      "case": "alphaagent",
+      "covers_zero95": {
+        "monte_carlo_ci95": [
+          0.9198669811156821,
+          0.9729851489983719
+        ],
+        "rate": 0.953125
+      },
+      "detect_2pp_with_pointwise95_interval": {
+        "monte_carlo_ci95": [
+          0.03582660763317509,
+          0.09441226561778955
+        ],
+        "rate": 0.05859375
+      },
+      "dgp": "iid_normal",
+      "false_equivalence_at_positive_2pp_boundary": {
+        "monte_carlo_ci95": [
+          0.0,
+          0.01478385642587143
+        ],
+        "rate": 0.0
+      },
+      "index": 0,
+      "mean_block": 5,
+      "mean_ci95_width": 0.32102731633271453,
+      "observations": 238,
+      "reject_zero_p0025": {
+        "monte_carlo_ci95": [
+          0.018604096092635542,
+          0.0654527704282918
+        ],
+        "rate": 0.03515625
+      },
+      "reject_zero_p005": {
+        "monte_carlo_ci95": [
+          0.029913811386553534,
+          0.08493105962106533
+        ],
+        "rate": 0.05078125
+      },
+      "replications": 256
+    },
+    {
+      "case": "alphaagent",
+      "covers_zero95": {
+        "monte_carlo_ci95": [
+          0.8824167617091012,
+          0.9488593594315697
+        ],
+        "rate": 0.921875
+      },
+      "detect_2pp_with_pointwise95_interval": {
+        "monte_carlo_ci95": [
+          0.06061336726621258,
+          0.1312015149581351
+        ],
+        "rate": 0.08984375
+      },
+      "dgp": "iid_normal",
+      "false_equivalence_at_positive_2pp_boundary": {
+        "monte_carlo_ci95": [
+          0.0,
+          0.01478385642587143
+        ],
+        "rate": 0.0
+      },
+      "index": 0,
+      "mean_block": 20,
+      "mean_ci95_width": 0.29736864366368654,
+      "observations": 238,
+      "reject_zero_p0025": {
+        "monte_carlo_ci95": [
+          0.03285229140400938,
+          0.08968958072528235
+        ],
+        "rate": 0.0546875
+      },
+      "reject_zero_p005": {
+        "monte_carlo_ci95": [
+          0.04493554746197091,
+          0.10839432915401236
+        ],
+        "rate": 0.0703125
+      },
+      "replications": 256
+    },
+    {
+      "case": "alphaagent",
+      "covers_zero95": {
+        "monte_carlo_ci95": [
+          0.8028248479091987,
+          0.8899052530413604
+        ],
+        "rate": 0.8515625
+      },
+      "detect_2pp_with_pointwise95_interval": {
+        "monte_carlo_ci95": [
+          0.1100947469586396,
+          0.19717515209080125
+        ],
+        "rate": 0.1484375
+      },
+      "dgp": "iid_normal",
+      "false_equivalence_at_positive_2pp_boundary": {
+        "monte_carlo_ci95": [
+          0.0,
+          0.01478385642587143
+        ],
+        "rate": 0.0
+      },
+      "index": 0,
+      "mean_block": 60,
+      "mean_ci95_width": 0.25253105633908396,
+      "observations": 238,
+      "reject_zero_p0025": {
+        "monte_carlo_ci95": [
+          0.07025498422463894,
+          0.14465090136472736
+        ],
+        "rate": 0.1015625
+      },
+      "reject_zero_p005": {
+        "monte_carlo_ci95": [
+          0.10671067600593546,
+          0.1928622219218325
+        ],
+        "rate": 0.14453125
+      },
+      "replications": 256
+    },
+    {
+      "case": "alphaagent",
+      "covers_zero95": {
+        "monte_carlo_ci95": [
+          0.9345472295717082,
+          0.9813959039073644
+        ],
+        "rate": 0.96484375
+      },
+      "detect_2pp_with_pointwise95_interval": {
+        "monte_carlo_ci95": [
+          0.024159813300607562,
+          0.07529105546366555
+        ],
+        "rate": 0.04296875
+      },
+      "dgp": "ar03_normal",
+      "false_equivalence_at_positive_2pp_boundary": {
+        "monte_carlo_ci95": [
+          0.0,
+          0.01478385642587143
+        ],
+        "rate": 0.0
+      },
+      "index": 1,
+      "mean_block": 5,
+      "mean_ci95_width": 0.43624321281557377,
+      "observations": 238,
+      "reject_zero_p0025": {
+        "monte_carlo_ci95": [
+          0.006092598203366294,
+          0.039479262709196654
+        ],
+        "rate": 0.015625
+      },
+      "reject_zero_p005": {
+        "monte_carlo_ci95": [
+          0.018604096092635542,
+          0.0654527704282918
+        ],
+        "rate": 0.03515625
+      },
+      "replications": 256
+    },
+    {
+      "case": "alphaagent",
+      "covers_zero95": {
+        "monte_carlo_ci95": [
+          0.8778567119259035,
+          0.9457224080930946
+        ],
+        "rate": 0.91796875
+      },
+      "detect_2pp_with_pointwise95_interval": {
+        "monte_carlo_ci95": [
+          0.04493554746197091,
+          0.10839432915401236
+        ],
+        "rate": 0.0703125
+      },
+      "dgp": "ar03_normal",
+      "false_equivalence_at_positive_2pp_boundary": {
+        "monte_carlo_ci95": [
+          0.0,
+          0.01478385642587143
+        ],
+        "rate": 0.0
+      },
+      "index": 1,
+      "mean_block": 20,
+      "mean_ci95_width": 0.4124265245237341,
+      "observations": 238,
+      "reject_zero_p0025": {
+        "monte_carlo_ci95": [
+          0.010784867555857603,
+          0.0501809956000511
+        ],
+        "rate": 0.0234375
+      },
+      "reject_zero_p005": {
+        "monte_carlo_ci95": [
+          0.05114064056843023,
+          0.11758323829089878
+        ],
+        "rate": 0.078125
+      },
+      "replications": 256
+    },
+    {
+      "case": "alphaagent",
+      "covers_zero95": {
+        "monte_carlo_ci95": [
+          0.8114609871166358,
+          0.8966631160772691
+        ],
+        "rate": 0.859375
+      },
+      "detect_2pp_with_pointwise95_interval": {
+        "monte_carlo_ci95": [
+          0.13059812036467136,
+          0.2228537854148068
+        ],
+        "rate": 0.171875
+      },
+      "dgp": "ar03_normal",
+      "false_equivalence_at_positive_2pp_boundary": {
+        "monte_carlo_ci95": [
+          0.0,
+          0.01478385642587143
+        ],
+        "rate": 0.0
+      },
+      "index": 1,
+      "mean_block": 60,
+      "mean_ci95_width": 0.3514648682619326,
+      "observations": 238,
+      "reject_zero_p0025": {
+        "monte_carlo_ci95": [
+          0.06061336726621258,
+          0.1312015149581351
+        ],
+        "rate": 0.08984375
+      },
+      "reject_zero_p005": {
+        "monte_carlo_ci95": [
+          0.10333688392273097,
+          0.18853901288336414
+        ],
+        "rate": 0.140625
+      },
+      "replications": 256
+    },
+    {
+      "case": "alphaagent",
+      "covers_zero95": {
+        "monte_carlo_ci95": [
+          0.9103104192747177,
+          0.9671477085959906
+        ],
+        "rate": 0.9453125
+      },
+      "detect_2pp_with_pointwise95_interval": {
+        "monte_carlo_ci95": [
+          0.03883364112851165,
+          0.09910223324412587
+        ],
+        "rate": 0.0625
+      },
+      "dgp": "ar06_t5",
+      "false_equivalence_at_positive_2pp_boundary": {
+        "monte_carlo_ci95": [
+          0.0,
+          0.01478385642587143
+        ],
+        "rate": 0.0
+      },
+      "index": 2,
+      "mean_block": 5,
+      "mean_ci95_width": 0.6000329068885085,
+      "observations": 238,
+      "reject_zero_p0025": {
+        "monte_carlo_ci95": [
+          0.008370729784579391,
+          0.04489813224965644
+        ],
+        "rate": 0.01953125
+      },
+      "reject_zero_p005": {
+        "monte_carlo_ci95": [
+          0.03285229140400938,
+          0.08968958072528235
+        ],
+        "rate": 0.0546875
+      },
+      "replications": 256
+    },
+    {
+      "case": "alphaagent",
+      "covers_zero95": {
+        "monte_carlo_ci95": [
+          0.8687984850418649,
+          0.9393866327337874
+        ],
+        "rate": 0.91015625
+      },
+      "detect_2pp_with_pointwise95_interval": {
+        "monte_carlo_ci95": [
+          0.05427759190690546,
+          0.12214328807409647
+        ],
+        "rate": 0.08203125
+      },
+      "dgp": "ar06_t5",
+      "false_equivalence_at_positive_2pp_boundary": {
+        "monte_carlo_ci95": [
+          0.0,
+          0.01478385642587143
+        ],
+        "rate": 0.0
+      },
+      "index": 2,
+      "mean_block": 20,
+      "mean_ci95_width": 0.590746319978204,
+      "observations": 238,
+      "reject_zero_p0025": {
+        "monte_carlo_ci95": [
+          0.0213540358427329,
+          0.07039983179986732
+        ],
+        "rate": 0.0390625
+      },
+      "reject_zero_p005": {
+        "monte_carlo_ci95": [
+          0.048026107191811204,
+          0.11300077054584494
+        ],
+        "rate": 0.07421875
+      },
+      "replications": 256
+    },
+    {
+      "case": "alphaagent",
+      "covers_zero95": {
+        "monte_carlo_ci95": [
+          0.8028248479091987,
+          0.8899052530413604
+        ],
+        "rate": 0.8515625
+      },
+      "detect_2pp_with_pointwise95_interval": {
+        "monte_carlo_ci95": [
+          0.1100947469586396,
+          0.19717515209080125
+        ],
+        "rate": 0.1484375
+      },
+      "dgp": "ar06_t5",
+      "false_equivalence_at_positive_2pp_boundary": {
+        "monte_carlo_ci95": [
+          0.0,
+          0.01478385642587143
+        ],
+        "rate": 0.0
+      },
+      "index": 2,
+      "mean_block": 60,
+      "mean_ci95_width": 0.5116573345235749,
+      "observations": 238,
+      "reject_zero_p0025": {
+        "monte_carlo_ci95": [
+          0.0638098481830768,
+          0.13570203516294374
+        ],
+        "rate": 0.09375
+      },
+      "reject_zero_p005": {
+        "monte_carlo_ci95": [
+          0.09997371828318014,
+          0.1842051774012421
+        ],
+        "rate": 0.13671875
+      },
+      "replications": 256
+    },
+    {
+      "case": "alphaagent",
+      "covers_zero95": {
+        "monte_carlo_ci95": [
+          0.8916056708459876,
+          0.9550644525380292
+        ],
+        "rate": 0.9296875
+      },
+      "detect_2pp_with_pointwise95_interval": {
+        "monte_carlo_ci95": [
+          0.05114064056843023,
+          0.11758323829089878
+        ],
+        "rate": 0.078125
+      },
+      "dgp": "garch_t5",
+      "false_equivalence_at_positive_2pp_boundary": {
+        "monte_carlo_ci95": [
+          0.0,
+          0.01478385642587143
+        ],
+        "rate": 0.0
+      },
+      "index": 3,
+      "mean_block": 5,
+      "mean_ci95_width": 0.3165870656561879,
+      "observations": 238,
+      "reject_zero_p0025": {
+        "monte_carlo_ci95": [
+          0.013307156355121155,
+          0.05535570792246043
+        ],
+        "rate": 0.02734375
+      },
+      "reject_zero_p005": {
+        "monte_carlo_ci95": [
+          0.04493554746197091,
+          0.10839432915401236
+        ],
+        "rate": 0.0703125
+      },
+      "replications": 256
+    },
+    {
+      "case": "alphaagent",
+      "covers_zero95": {
+        "monte_carlo_ci95": [
+          0.850899024665532,
+          0.9264980886234288
+        ],
+        "rate": 0.89453125
+      },
+      "detect_2pp_with_pointwise95_interval": {
+        "monte_carlo_ci95": [
+          0.0800407222974869,
+          0.15795616665689804
+        ],
+        "rate": 0.11328125
+      },
+      "dgp": "garch_t5",
+      "false_equivalence_at_positive_2pp_boundary": {
+        "monte_carlo_ci95": [
+          0.0,
+          0.01478385642587143
+        ],
+        "rate": 0.0
+      },
+      "index": 3,
+      "mean_block": 20,
+      "mean_ci95_width": 0.2945921851358416,
+      "observations": 238,
+      "reject_zero_p0025": {
+        "monte_carlo_ci95": [
+          0.03285229140400938,
+          0.08968958072528235
+        ],
+        "rate": 0.0546875
+      },
+      "reject_zero_p005": {
+        "monte_carlo_ci95": [
+          0.06702402222215342,
+          0.14018486224554
+        ],
+        "rate": 0.09765625
+      },
+      "replications": 256
+    },
+    {
+      "case": "alphaagent",
+      "covers_zero95": {
+        "monte_carlo_ci95": [
+          0.8071377780781674,
+          0.8932893239940645
+        ],
+        "rate": 0.85546875
+      },
+      "detect_2pp_with_pointwise95_interval": {
+        "monte_carlo_ci95": [
+          0.15140411996625466,
+          0.24822979254326075
+        ],
+        "rate": 0.1953125
+      },
+      "dgp": "garch_t5",
+      "false_equivalence_at_positive_2pp_boundary": {
+        "monte_carlo_ci95": [
+          0.0,
+          0.01478385642587143
+        ],
+        "rate": 0.0
+      },
+      "index": 3,
+      "mean_block": 60,
+      "mean_ci95_width": 0.25248286420286603,
+      "observations": 238,
+      "reject_zero_p0025": {
+        "monte_carlo_ci95": [
+          0.07025498422463894,
+          0.14465090136472736
+        ],
+        "rate": 0.1015625
+      },
+      "reject_zero_p005": {
+        "monte_carlo_ci95": [
+          0.09662155083903351,
+          0.17986034372371584
+        ],
+        "rate": 0.1328125
+      },
+      "replications": 256
+    },
+    {
+      "case": "quantaalpha",
+      "covers_zero95": {
+        "monte_carlo_ci95": [
+          0.9150689403789347,
+          0.9700861886134464
+        ],
+        "rate": 0.94921875
+      },
+      "detect_2pp_with_pointwise95_interval": {
+        "monte_carlo_ci95": [
+          0.04187072285916844,
+          0.10376215263514196
+        ],
+        "rate": 0.06640625
+      },
+      "dgp": "iid_normal",
+      "false_equivalence_at_positive_2pp_boundary": {
+        "monte_carlo_ci95": [
+          0.0,
+          0.01478385642587143
+        ],
+        "rate": 0.0
+      },
+      "index": 4,
+      "mean_block": 5,
+      "mean_ci95_width": 0.1588916570203716,
+      "observations": 963,
+      "reject_zero_p0025": {
+        "monte_carlo_ci95": [
+          0.008370729784579391,
+          0.04489813224965644
+        ],
+        "rate": 0.01953125
+      },
+      "reject_zero_p005": {
+        "monte_carlo_ci95": [
+          0.027014851001628076,
+          0.0801330188843179
+        ],
+        "rate": 0.046875
+      },
+      "replications": 256
+    },
+    {
+      "case": "quantaalpha",
+      "covers_zero95": {
+        "monte_carlo_ci95": [
+          0.9008977667558741,
+          0.9611663588714884
+        ],
+        "rate": 0.9375
+      },
+      "detect_2pp_with_pointwise95_interval": {
+        "monte_carlo_ci95": [
+          0.04493554746197091,
+          0.10839432915401236
+        ],
+        "rate": 0.0703125
+      },
+      "dgp": "iid_normal",
+      "false_equivalence_at_positive_2pp_boundary": {
+        "monte_carlo_ci95": [
+          0.0,
+          0.01478385642587143
+        ],
+        "rate": 0.0
+      },
+      "index": 4,
+      "mean_block": 20,
+      "mean_ci95_width": 0.15626274565421272,
+      "observations": 963,
+      "reject_zero_p0025": {
+        "monte_carlo_ci95": [
+          0.010784867555857603,
+          0.0501809956000511
+        ],
+        "rate": 0.0234375
+      },
+      "reject_zero_p005": {
+        "monte_carlo_ci95": [
+          0.04187072285916844,
+          0.10376215263514196
+        ],
+        "rate": 0.06640625
+      },
+      "replications": 256
+    },
+    {
+      "case": "quantaalpha",
+      "covers_zero95": {
+        "monte_carlo_ci95": [
+          0.886999229454155,
+          0.9519738928081888
+        ],
+        "rate": 0.92578125
+      },
+      "detect_2pp_with_pointwise95_interval": {
+        "monte_carlo_ci95": [
+          0.07676405306596229,
+          0.15353583476674978
+        ],
+        "rate": 0.109375
+      },
+      "dgp": "iid_normal",
+      "false_equivalence_at_positive_2pp_boundary": {
+        "monte_carlo_ci95": [
+          0.0,
+          0.01478385642587143
+        ],
+        "rate": 0.0
+      },
+      "index": 4,
+      "mean_block": 60,
+      "mean_ci95_width": 0.1488578627650809,
+      "observations": 963,
+      "reject_zero_p0025": {
+        "monte_carlo_ci95": [
+          0.029913811386553534,
+          0.08493105962106533
+        ],
+        "rate": 0.05078125
+      },
+      "reject_zero_p005": {
+        "monte_carlo_ci95": [
+          0.048026107191811204,
+          0.11300077054584494
+        ],
+        "rate": 0.07421875
+      },
+      "replications": 256
+    },
+    {
+      "case": "quantaalpha",
+      "covers_zero95": {
+        "monte_carlo_ci95": [
+          0.896237847364858,
+          0.9581292771408316
+        ],
+        "rate": 0.93359375
+      },
+      "detect_2pp_with_pointwise95_interval": {
+        "monte_carlo_ci95": [
+          0.05743557903626671,
+          0.12668230206640807
+        ],
+        "rate": 0.0859375
+      },
+      "dgp": "ar03_normal",
+      "false_equivalence_at_positive_2pp_boundary": {
+        "monte_carlo_ci95": [
+          0.0,
+          0.01478385642587143
+        ],
+        "rate": 0.0
+      },
+      "index": 5,
+      "mean_block": 5,
+      "mean_ci95_width": 0.21331338342760012,
+      "observations": 963,
+      "reject_zero_p0025": {
+        "monte_carlo_ci95": [
+          0.018604096092635542,
+          0.0654527704282918
+        ],
+        "rate": 0.03515625
+      },
+      "reject_zero_p005": {
+        "monte_carlo_ci95": [
+          0.04187072285916844,
+          0.10376215263514196
+        ],
+        "rate": 0.06640625
+      },
+      "replications": 256
+    },
+    {
+      "case": "quantaalpha",
+      "covers_zero95": {
+        "monte_carlo_ci95": [
+          0.9008977667558741,
+          0.9611663588714884
+        ],
+        "rate": 0.9375
+      },
+      "detect_2pp_with_pointwise95_interval": {
+        "monte_carlo_ci95": [
+          0.06061336726621258,
+          0.1312015149581351
+        ],
+        "rate": 0.08984375
+      },
+      "dgp": "ar03_normal",
+      "false_equivalence_at_positive_2pp_boundary": {
+        "monte_carlo_ci95": [
+          0.0,
+          0.01478385642587143
+        ],
+        "rate": 0.0
+      },
+      "index": 5,
+      "mean_block": 20,
+      "mean_ci95_width": 0.2109134072542181,
+      "observations": 963,
+      "reject_zero_p0025": {
+        "monte_carlo_ci95": [
+          0.015918258891511296,
+          0.06044160650774316
+        ],
+        "rate": 0.03125
+      },
+      "reject_zero_p005": {
+        "monte_carlo_ci95": [
+          0.03883364112851165,
+          0.09910223324412587
+        ],
+        "rate": 0.0625
+      },
+      "replications": 256
+    },
+    {
+      "case": "quantaalpha",
+      "covers_zero95": {
+        "monte_carlo_ci95": [
+          0.8598151377544601,
+          0.9329759777778466
+        ],
+        "rate": 0.90234375
+      },
+      "detect_2pp_with_pointwise95_interval": {
+        "monte_carlo_ci95": [
+          0.08995183318684266,
+          0.17113605913256094
+        ],
+        "rate": 0.125
+      },
+      "dgp": "ar03_normal",
+      "false_equivalence_at_positive_2pp_boundary": {
+        "monte_carlo_ci95": [
+          0.0,
+          0.01478385642587143
+        ],
+        "rate": 0.0
+      },
+      "index": 5,
+      "mean_block": 60,
+      "mean_ci95_width": 0.20029997826004486,
+      "observations": 963,
+      "reject_zero_p0025": {
+        "monte_carlo_ci95": [
+          0.029913811386553534,
+          0.08493105962106533
+        ],
+        "rate": 0.05078125
+      },
+      "reject_zero_p005": {
+        "monte_carlo_ci95": [
+          0.07025498422463894,
+          0.14465090136472736
+        ],
+        "rate": 0.1015625
+      },
+      "replications": 256
+    },
+    {
+      "case": "quantaalpha",
+      "covers_zero95": {
+        "monte_carlo_ci95": [
+          0.8598151377544601,
+          0.9329759777778466
+        ],
+        "rate": 0.90234375
+      },
+      "detect_2pp_with_pointwise95_interval": {
+        "monte_carlo_ci95": [
+          0.05114064056843023,
+          0.11758323829089878
+        ],
+        "rate": 0.078125
+      },
+      "dgp": "ar06_t5",
+      "false_equivalence_at_positive_2pp_boundary": {
+        "monte_carlo_ci95": [
+          0.0,
+          0.01478385642587143
+        ],
+        "rate": 0.0
+      },
+      "index": 6,
+      "mean_block": 5,
+      "mean_ci95_width": 0.30214365912951974,
+      "observations": 963,
+      "reject_zero_p0025": {
+        "monte_carlo_ci95": [
+          0.0213540358427329,
+          0.07039983179986732
+        ],
+        "rate": 0.0390625
+      },
+      "reject_zero_p005": {
+        "monte_carlo_ci95": [
+          0.0638098481830768,
+          0.13570203516294374
+        ],
+        "rate": 0.09375
+      },
+      "replications": 256
+    },
+    {
+      "case": "quantaalpha",
+      "covers_zero95": {
+        "monte_carlo_ci95": [
+          0.886999229454155,
+          0.9519738928081888
+        ],
+        "rate": 0.92578125
+      },
+      "detect_2pp_with_pointwise95_interval": {
+        "monte_carlo_ci95": [
+          0.048026107191811204,
+          0.11300077054584494
+        ],
+        "rate": 0.07421875
+      },
+      "dgp": "ar06_t5",
+      "false_equivalence_at_positive_2pp_boundary": {
+        "monte_carlo_ci95": [
+          0.0,
+          0.01478385642587143
+        ],
+        "rate": 0.0
+      },
+      "index": 6,
+      "mean_block": 20,
+      "mean_ci95_width": 0.3102340085271853,
+      "observations": 963,
+      "reject_zero_p0025": {
+        "monte_carlo_ci95": [
+          0.027014851001628076,
+          0.0801330188843179
+        ],
+        "rate": 0.046875
+      },
+      "reject_zero_p005": {
+        "monte_carlo_ci95": [
+          0.05114064056843023,
+          0.11758323829089878
+        ],
+        "rate": 0.078125
+      },
+      "replications": 256
+    },
+    {
+      "case": "quantaalpha",
+      "covers_zero95": {
+        "monte_carlo_ci95": [
+          0.8553490986352725,
+          0.9297450157753611
+        ],
+        "rate": 0.8984375
+      },
+      "detect_2pp_with_pointwise95_interval": {
+        "monte_carlo_ci95": [
+          0.05743557903626671,
+          0.12668230206640807
+        ],
+        "rate": 0.0859375
+      },
+      "dgp": "ar06_t5",
+      "false_equivalence_at_positive_2pp_boundary": {
+        "monte_carlo_ci95": [
+          0.0,
+          0.01478385642587143
+        ],
+        "rate": 0.0
+      },
+      "index": 6,
+      "mean_block": 60,
+      "mean_ci95_width": 0.2981297649255706,
+      "observations": 963,
+      "reject_zero_p0025": {
+        "monte_carlo_ci95": [
+          0.04493554746197091,
+          0.10839432915401236
+        ],
+        "rate": 0.0703125
+      },
+      "reject_zero_p005": {
+        "monte_carlo_ci95": [
+          0.07025498422463894,
+          0.14465090136472736
+        ],
+        "rate": 0.1015625
+      },
+      "replications": 256
+    },
+    {
+      "case": "quantaalpha",
+      "covers_zero95": {
+        "monte_carlo_ci95": [
+          0.9198669811156821,
+          0.9729851489983719
+        ],
+        "rate": 0.953125
+      },
+      "detect_2pp_with_pointwise95_interval": {
+        "monte_carlo_ci95": [
+          0.06061336726621258,
+          0.1312015149581351
+        ],
+        "rate": 0.08984375
+      },
+      "dgp": "garch_t5",
+      "false_equivalence_at_positive_2pp_boundary": {
+        "monte_carlo_ci95": [
+          0.0,
+          0.01478385642587143
+        ],
+        "rate": 0.0
+      },
+      "index": 7,
+      "mean_block": 5,
+      "mean_ci95_width": 0.15759446042074596,
+      "observations": 963,
+      "reject_zero_p0025": {
+        "monte_carlo_ci95": [
+          0.013307156355121155,
+          0.05535570792246043
+        ],
+        "rate": 0.02734375
+      },
+      "reject_zero_p005": {
+        "monte_carlo_ci95": [
+          0.029913811386553534,
+          0.08493105962106533
+        ],
+        "rate": 0.05078125
+      },
+      "replications": 256
+    },
+    {
+      "case": "quantaalpha",
+      "covers_zero95": {
+        "monte_carlo_ci95": [
+          0.9150689403789347,
+          0.9700861886134464
+        ],
+        "rate": 0.94921875
+      },
+      "detect_2pp_with_pointwise95_interval": {
+        "monte_carlo_ci95": [
+          0.07025498422463894,
+          0.14465090136472736
+        ],
+        "rate": 0.1015625
+      },
+      "dgp": "garch_t5",
+      "false_equivalence_at_positive_2pp_boundary": {
+        "monte_carlo_ci95": [
+          0.0,
+          0.01478385642587143
+        ],
+        "rate": 0.0
+      },
+      "index": 7,
+      "mean_block": 20,
+      "mean_ci95_width": 0.15586939832376306,
+      "observations": 963,
+      "reject_zero_p0025": {
+        "monte_carlo_ci95": [
+          0.015918258891511296,
+          0.06044160650774316
+        ],
+        "rate": 0.03125
+      },
+      "reject_zero_p005": {
+        "monte_carlo_ci95": [
+          0.029913811386553534,
+          0.08493105962106533
+        ],
+        "rate": 0.05078125
+      },
+      "replications": 256
+    },
+    {
+      "case": "quantaalpha",
+      "covers_zero95": {
+        "monte_carlo_ci95": [
+          0.9008977667558741,
+          0.9611663588714884
+        ],
+        "rate": 0.9375
+      },
+      "detect_2pp_with_pointwise95_interval": {
+        "monte_carlo_ci95": [
+          0.08663517067416432,
+          0.1667557205235664
+        ],
+        "rate": 0.12109375
+      },
+      "dgp": "garch_t5",
+      "false_equivalence_at_positive_2pp_boundary": {
+        "monte_carlo_ci95": [
+          0.0,
+          0.01478385642587143
+        ],
+        "rate": 0.0
+      },
+      "index": 7,
+      "mean_block": 60,
+      "mean_ci95_width": 0.14890180402721834,
+      "observations": 963,
+      "reject_zero_p0025": {
+        "monte_carlo_ci95": [
+          0.024159813300607562,
+          0.07529105546366555
+        ],
+        "rate": 0.04296875
+      },
+      "reject_zero_p005": {
+        "monte_carlo_ci95": [
+          0.03582660763317509,
+          0.09441226561778955
+        ],
+        "rate": 0.05859375
+      },
+      "replications": 256
+    }
+  ],
+  "scope": "Synthetic known-zero paired differences only; no research strategy returns used. Rates have Monte Carlo uncertainty and do not prove universal coverage. Retain every DGP/block result; never choose a model or block based on real returns.",
+  "status": "complete"
+}

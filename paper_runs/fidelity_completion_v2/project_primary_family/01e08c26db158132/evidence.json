@@ -1,0 +1,7 @@
+[
+  {
+    "comparison_sha256": "fae531f2c6b6c9875f775de7b343b047980b9b23dd22020e8f1aa563f7771a2f",
+    "completion_sha256": "5924ef7f07cabc35b51b35ca3f34bb6948efd15091fcb3251e63c1b3e5657121",
+    "folder": "paper_runs/fidelity_completion_v2/native_grouped_oos_quantaalpha"
+  }
+]

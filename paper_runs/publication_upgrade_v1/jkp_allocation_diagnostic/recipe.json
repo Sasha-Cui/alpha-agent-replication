@@ -1,0 +1,14 @@
+{
+  "agent": "EFS fixed daily LLM path, aggregated to months, net of 10bp trading costs",
+  "agent_weight_constraint": "nonnegative",
+  "benchmark": "All 132 reconstructed JKP characteristic portfolios plus the provided top-1000 market portfolio",
+  "covariance_diagonal_shrinkage": 0.5,
+  "factor_weight_constraint": "signed",
+  "fees_boundary": "Agent internal 10bp fees are included. Factor internal turnover/financing and allocation changes are not costed; this is a synthetic gross-factor diagnostic.",
+  "fixed_before_allocator_results": true,
+  "interpretation": "A comparison for this fixed regularized allocation rule, not a test of unrestricted factor spanning or the best attainable factor frontier.",
+  "minimum_training_months": 36,
+  "per_sleeve_ex_ante_vol_target": 0.1,
+  "risk_aversion": 10.0,
+  "risk_budget_l1_cap": 1.0
+}

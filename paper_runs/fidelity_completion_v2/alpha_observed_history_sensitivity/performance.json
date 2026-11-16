@@ -1,0 +1,54 @@
+[
+  {
+    "annualized_arithmetic_return": 0.5602075015386496,
+    "annualized_volatility": 0.2274215167399788,
+    "arm": "alpha158",
+    "cagr": 0.7051127389081201,
+    "end": "2025-12-26 00:00:00",
+    "ending_wealth": 1.6553046187702058,
+    "execution": "native",
+    "max_drawdown": -0.12792059128368294,
+    "observations": 238,
+    "sharpe_zero_cash_rate": 2.463300348925032,
+    "start": "2025-01-06 00:00:00"
+  },
+  {
+    "annualized_arithmetic_return": 0.46206758350448535,
+    "annualized_volatility": 0.2132072376754509,
+    "arm": "alpha158_plus_library",
+    "cagr": 0.5509108466627304,
+    "end": "2025-12-26 00:00:00",
+    "ending_wealth": 1.513556633894461,
+    "execution": "native",
+    "max_drawdown": -0.11572962260221298,
+    "observations": 238,
+    "sharpe_zero_cash_rate": 2.167222785409638,
+    "start": "2025-01-06 00:00:00"
+  },
+  {
+    "annualized_arithmetic_return": 0.5782681521916221,
+    "annualized_volatility": 0.22330786036497957,
+    "arm": "alpha158",
+    "cagr": 0.7377682092183602,
+    "end": "2025-12-26 00:00:00",
+    "ending_wealth": 1.685229168849033,
+    "execution": "opening_information",
+    "max_drawdown": -0.12632888430726685,
+    "observations": 238,
+    "sharpe_zero_cash_rate": 2.5895557426706217,
+    "start": "2025-01-06 00:00:00"
+  },
+  {
+    "annualized_arithmetic_return": 0.44269410886249444,
+    "annualized_volatility": 0.21613100187304868,
+    "arm": "alpha158_plus_library",
+    "cagr": 0.5202053775519295,
+    "end": "2025-12-26 00:00:00",
+    "ending_wealth": 1.4852398157279587,
+    "execution": "opening_information",
+    "max_drawdown": -0.12167900141627219,
+    "observations": 238,
+    "sharpe_zero_cash_rate": 2.048267509177257,
+    "start": "2025-01-06 00:00:00"
+  }
+]

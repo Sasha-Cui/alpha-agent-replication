@@ -1,0 +1,66 @@
+[
+  {
+    "backend": "gpt41",
+    "contrast": "causal_LLM_pool_minus_causal_grammar_pool",
+    "cost_bps": 0,
+    "cumulative_return_difference": 0.3938486176587537,
+    "descriptive_only": true,
+    "full_sample_annualized_monthly_mean_increment": 0.015036777450760059
+  },
+  {
+    "backend": "gpt41",
+    "contrast": "causal_LLM_pool_minus_causal_grammar_pool",
+    "cost_bps": 10,
+    "cumulative_return_difference": 0.3322914795284726,
+    "descriptive_only": true,
+    "full_sample_annualized_monthly_mean_increment": 0.041280669549463335
+  },
+  {
+    "backend": "gpt41",
+    "contrast": "causal_LLM_pool_minus_causal_grammar_pool",
+    "cost_bps": 25,
+    "cumulative_return_difference": 0.1169873573793569,
+    "descriptive_only": true,
+    "full_sample_annualized_monthly_mean_increment": 0.07930016490895521
+  },
+  {
+    "backend": "gpt41",
+    "contrast": "causal_LLM_pool_minus_causal_grammar_pool",
+    "cost_bps": 50,
+    "cumulative_return_difference": 0.012499939694850457,
+    "descriptive_only": true,
+    "full_sample_annualized_monthly_mean_increment": 0.13921512621355392
+  },
+  {
+    "backend": "deepseek_v3",
+    "contrast": "causal_LLM_pool_minus_causal_grammar_pool",
+    "cost_bps": 0,
+    "cumulative_return_difference": -0.23830744808481974,
+    "descriptive_only": true,
+    "full_sample_annualized_monthly_mean_increment": -0.0022093951078244003
+  },
+  {
+    "backend": "deepseek_v3",
+    "contrast": "causal_LLM_pool_minus_causal_grammar_pool",
+    "cost_bps": 10,
+    "cumulative_return_difference": 0.135728845633863,
+    "descriptive_only": true,
+    "full_sample_annualized_monthly_mean_increment": 0.02728569015671617
+  },
+  {
+    "backend": "deepseek_v3",
+    "contrast": "causal_LLM_pool_minus_causal_grammar_pool",
+    "cost_bps": 25,
+    "cumulative_return_difference": 0.08395674393895569,
+    "descriptive_only": true,
+    "full_sample_annualized_monthly_mean_increment": 0.06993496610443196
+  },
+  {
+    "backend": "deepseek_v3",
+    "contrast": "causal_LLM_pool_minus_causal_grammar_pool",
+    "cost_bps": 50,
+    "cumulative_return_difference": 0.011033686271363325,
+    "descriptive_only": true,
+    "full_sample_annualized_monthly_mean_increment": 0.13694942258066306
+  }
+]

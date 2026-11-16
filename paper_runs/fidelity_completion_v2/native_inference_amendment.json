@@ -1,0 +1,14 @@
+{
+  "recorded_at_utc": "2026-09-17T19:52:03.836164+00:00",
+  "original_protocol_sha256": "0c46328c8b6257f6f3ae4a099842b8d5e5f70e2663b1cbfa18765e17e3c3d92e",
+  "bootstrap_calibration_summary_sha256": "30a2438e12d18f82f37487084d3c13764ed9e23433fefbfec997ca155101df7d",
+  "reason": "Nominal95percent bootstrap intervals covered only89.45\u201392.19percent across the four n238null DGPs; the fixed20session primary block is not adequately calibrated for a primary economic-confidence claim.",
+  "preserve": "Retain original bootstrap estimates and every block/DGP outcome as exploratory diagnostics. Strategies, feature selection, trial sets, dates, fees and primary contrasts remain unchanged.",
+  "alternative": "Existing contiguous4-group t estimator,99percent primary intervals, Holm-adjusted1percent significance across two primary contrasts,2ppannual economic margin. Report grouped and full-sample mean effects distinctly.",
+  "gate": "Complete the outcome-free4096-replication calibration in all8DGP/sample cells before inferential claims. If calibration remains poor, report descriptive bounds/uncertainty rather than forcing a significance result.",
+  "strategy_evaluation_returns_used_to_choose_method": false,
+  "source": "Existing publication_inference.grouped_t_effect and frozen v1 methodology; assumptions of approximately independent normal block estimates remain explicit.",
+  "execution_interpretation": "Economic primary uses the opening-information eligibility sensitivity for each of the same two feature-augmentation contrasts. Preserve source-native Qlib execution as a conformance diagnostic. This responds to the training-period/code timing audit, not evaluation performance.",
+  "partial_family": "For a case reported before the other is complete, use conservative Bonferroni2p upper bounds, never claim completed Holm-family inference.",
+  "grouped_calibration_observed": "Across8DGP/sample cells,99percent empirical coverage98.80\u201399.12percent with4096replications/cell; assumptions and Monte Carlo uncertainty remain explicit."
+}

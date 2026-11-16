@@ -1,0 +1,20 @@
+{
+  "complete_cases": [
+    "EFS",
+    "GuruAgents",
+    "QuantaAlpha",
+    "FinMem",
+    "TradingAgents",
+    "FinAgent"
+  ],
+  "economic_margin": 0.02,
+  "human_review": "pending",
+  "interpretation": "Historical conditional mechanism comparisons; no insignificant result is treated as proof of no alpha. Model-seed uncertainty is not estimated.",
+  "nominal_primary_confidence": 0.99,
+  "open_cases": [],
+  "primary_comparisons": 6,
+  "prospective_returns": "not_yet_observed",
+  "script_sha256": "2a79af62f5602284a2991d01b3526ead85b9b3f93c66cd533ea188fbcc94678f",
+  "source_paper_reproduction_claim": false,
+  "status": "complete"
+}

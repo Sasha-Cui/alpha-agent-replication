@@ -1,0 +1,61 @@
+{
+  "frozen_at_utc": "2026-09-17T19:52:03.833841+00:00",
+  "cells": [
+    {
+      "index": 0,
+      "case": "alphaagent",
+      "observations": 238,
+      "dgp": "iid_normal"
+    },
+    {
+      "index": 1,
+      "case": "alphaagent",
+      "observations": 238,
+      "dgp": "ar03_normal"
+    },
+    {
+      "index": 2,
+      "case": "alphaagent",
+      "observations": 238,
+      "dgp": "ar06_t5"
+    },
+    {
+      "index": 3,
+      "case": "alphaagent",
+      "observations": 238,
+      "dgp": "garch_t5"
+    },
+    {
+      "index": 4,
+      "case": "quantaalpha",
+      "observations": 963,
+      "dgp": "iid_normal"
+    },
+    {
+      "index": 5,
+      "case": "quantaalpha",
+      "observations": 963,
+      "dgp": "ar03_normal"
+    },
+    {
+      "index": 6,
+      "case": "quantaalpha",
+      "observations": 963,
+      "dgp": "ar06_t5"
+    },
+    {
+      "index": 7,
+      "case": "quantaalpha",
+      "observations": 963,
+      "dgp": "garch_t5"
+    }
+  ],
+  "replications": 4096,
+  "daily_sd": 0.005,
+  "seed": 20260918,
+  "groups": 4,
+  "primary_confidence": 0.99,
+  "primary_family_alpha": 0.01,
+  "margin_annual": 0.02,
+  "scope": "Prespecified conservative alternative motivated only by synthetic undercoverage, before inspection of new-library evaluation returns. Same existing v1 grouped estimator; no fitting to strategy outcomes."
+}

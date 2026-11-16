@@ -1,0 +1,35 @@
+{
+  "actual_grammar_pool": {
+    "days": 1510,
+    "months": 72,
+    "paths": 8,
+    "sha256": "44991cc9ce3a29988602d36152b9dfb7ee3ada54ae7bf7a3adef5ab3f320a7db",
+    "source": "artifacts/fidelity_completion_v2/analysis_runtime_20260917/real_grammar_pool_validation.json",
+    "status": "pass"
+  },
+  "created_utc": "2026-09-17T23:48:44.647543+00:00",
+  "date_storage_repair": "Arrow date32/Python date index normalized to Timestamp before fixed-window slicing; dates and values unchanged. Actual control and date32 fixtures pass.",
+  "environments": [
+    "3.12",
+    "3.9"
+  ],
+  "focused_guards_run_per_environment": 8,
+  "human_review": false,
+  "new_guards_this_heartbeat": 2,
+  "new_model_calls": 0,
+  "real_efs_llm_pooled_analysis_complete": false,
+  "real_four_case_family_complete": false,
+  "scope": "Distinguish actual control accounting from synthetic runtime checks; no LLM pooled treatment effect or full reproduction is credited.",
+  "synthetic_analysis_and_collector_runtime": {
+    "3.12": {
+      "path": "artifacts/fidelity_completion_v2/efs_analysis_synthetic_fixture_04/validation.json",
+      "sha256": "73691627fb4fbf6e950cbfcb493ada70f07e23018fd0151d58c2fc5185c39809",
+      "source_replay_gate_intentionally_stubbed": true
+    },
+    "3.9": {
+      "path": "artifacts/fidelity_completion_v2/efs_analysis_synthetic_fixture_05/validation.json",
+      "sha256": "73691627fb4fbf6e950cbfcb493ada70f07e23018fd0151d58c2fc5185c39809",
+      "source_replay_gate_intentionally_stubbed": true
+    }
+  }
+}

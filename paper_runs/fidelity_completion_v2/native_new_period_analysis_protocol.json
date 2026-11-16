@@ -1,0 +1,36 @@
+{
+  "frozen_at_utc": "2026-09-17T16:11:52.907889+00:00",
+  "status": "specified_before_new_period_returns",
+  "selection": "AlphaAgent primary library is the union of all source-consumed programs in the twenty prespecified GPT3.5 five-attempted-round searches. Exact expressions are deduplicated only after numerical equality; failed attempts remain in the denominator. The GPT4Turbo control and one-trial pilot are separate diagnostics. QuantaAlpha released-default library uses all seven actual source tasks, including its disclosed extra boundary task. A larger search variant requires a separate predeclared recipe and is not substituted based on returns.",
+  "primary_contrasts": [
+    "AlphaAgent pooled20 Alpha158+library minus identical Alpha158",
+    "QuantaAlpha bounded released-default Alpha158+library minus identical Alpha158"
+  ],
+  "secondary_contrasts": [
+    "source4+library minus identical source4 in each case",
+    "individual AlphaAgent trials and QuantaAlpha task libraries, reported without choosing the best test-period performer"
+  ],
+  "economic_estimand": "Annualized arithmetic mean paired daily net-return difference; original 2 percentage-point annual economic margin. CAGR difference is descriptive and is not the CI estimand.",
+  "inference": {
+    "method": "stationary bootstrap-t with HAC studentization from existing publication_inference.paired_effect",
+    "frequency": 252,
+    "mean_block_sessions": 20,
+    "hac_lags": 5,
+    "replicates": 4999,
+    "seed": 20260917,
+    "block_sensitivity_sessions": [
+      5,
+      60
+    ],
+    "multiplicity": "Holm adjustment over both primary contrasts only after both exist; incomplete families have no final adjusted claim."
+  },
+  "dependence": "Resample each paired market-date path jointly. Assets, features, model calls, evolutionary rounds and repeated searches do not create independent market histories. Sampling bounds are conditional on frozen libraries and do not estimate uncertainty over pretraining or unavailable historical model snapshots.",
+  "calendar": "Use the previously frozen source-specific label embargo and end2025-12-26. Require identical exact date indexes for each paired comparison; no intersection-based loss of bad/missing days.",
+  "completeness": "Any missing replay, full-universe proof, account validation or required trial stays explicit and blocks the complete primary claim. Do not silently evaluate a surviving subset as pooled20. Do not repair source algorithms to improve new-period returns.",
+  "claim_boundaries": [
+    "Chinese-market Alpha158 comparisons do not establish JKP132 alpha.",
+    "Historical periods and earlier project results were visible: exploratory chronological evidence, not pristine confirmatory evidence.",
+    "One short AlphaAgent later-period market path will give limited power even after20 search replicates.",
+    "Report positive, negative and inconclusive results under the same rule."
+  ]
+}

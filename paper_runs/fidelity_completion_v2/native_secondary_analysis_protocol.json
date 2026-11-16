@@ -1,0 +1,59 @@
+{
+  "created_utc": "2026-09-17T20:17:11.436352+00:00",
+  "status": "frozen_before_inspecting_individual_library_evaluation_returns",
+  "prior_information": "Pooled Quanta primary result already inspected; this secondary specification is exploratory, not an untouched preregistration. Task/trial inclusion and common baseline reuse were fixed earlier in native_oos_followthrough_jobs.json.",
+  "cases": {
+    "quantaalpha": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "alphaagent": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ]
+  },
+  "baselines": [
+    "alpha158",
+    "source4"
+  ],
+  "executions": [
+    "native",
+    "opening_information"
+  ],
+  "inference": {
+    "groups": 4,
+    "confidence": 0.99,
+    "annualization": 252,
+    "economic_margin": 0.02,
+    "secondary_family_size": 54,
+    "family_threshold": 0.01,
+    "multiplicity": "Holm over all54 opening-information unit/baseline contrasts when both cases complete; conservative54*p Bonferroni upper bound when one case complete. Native execution is diagnostic. Secondary tests never promote or replace a primary contrast."
+  },
+  "completeness": "Every prespecified task/trial required. Failed source rounds remain; no success-only filtering. Zero usable programs or a failed evaluation leaves a declared incomplete case; no fabricated portfolio.",
+  "baseline_reuse": "Use byte-identical complete-primary baseline accounts once per case/execution, explicitly reference them for every unit. Validate each subset against the complete parent library and its exact source-used program set.",
+  "interpretation": "Conditional on fixed libraries and one shared market history per case. Model trials and evolution tasks are not independent market histories. Pointwise intervals assume approximately independent normal time-block means; calibration is not a universal guarantee. No JKP132 attribution or pristine confirmatory/full-paper claim.",
+  "reporting": "All unit contrasts plus descriptive distributions. Do not rank/select/promote a unit on evaluation returns. Full-sample mean and grouped mean are distinct; annualized geometric returns are not calendar-time CAGR."
+}

@@ -1,0 +1,75 @@
+{
+  "frozen_at_utc": "2026-09-17T19:07:02.987072+00:00",
+  "cells": [
+    {
+      "index": 0,
+      "case": "alphaagent",
+      "observations": 238,
+      "dgp": "iid_normal"
+    },
+    {
+      "index": 1,
+      "case": "alphaagent",
+      "observations": 238,
+      "dgp": "ar03_normal"
+    },
+    {
+      "index": 2,
+      "case": "alphaagent",
+      "observations": 238,
+      "dgp": "ar06_t5"
+    },
+    {
+      "index": 3,
+      "case": "alphaagent",
+      "observations": 238,
+      "dgp": "garch_t5"
+    },
+    {
+      "index": 4,
+      "case": "quantaalpha",
+      "observations": 963,
+      "dgp": "iid_normal"
+    },
+    {
+      "index": 5,
+      "case": "quantaalpha",
+      "observations": 963,
+      "dgp": "ar03_normal"
+    },
+    {
+      "index": 6,
+      "case": "quantaalpha",
+      "observations": 963,
+      "dgp": "ar06_t5"
+    },
+    {
+      "index": 7,
+      "case": "quantaalpha",
+      "observations": 963,
+      "dgp": "garch_t5"
+    }
+  ],
+  "monte_carlo_replications": 256,
+  "bootstrap_replicates": 4999,
+  "mean_blocks": [
+    5,
+    20,
+    60
+  ],
+  "primary_mean_block": 20,
+  "hac_lags": 5,
+  "annualization": 252,
+  "seed": 20260917,
+  "difference_daily_sd": 0.005,
+  "true_annualized_mean_difference": 0,
+  "burn_in": 1000,
+  "student_t_degrees_of_freedom": 5,
+  "garch": {
+    "alpha": 0.05,
+    "beta": 0.9,
+    "omega_over_unconditional_variance": 0.05
+  },
+  "calendar_sha256": "40199c53de84bbb038acda9cffe5965aac9993010d26d38ecda5eb94cd7167d5",
+  "scope": "Outcome-free verification of the existing frozen estimator; uses only dates, never strategy returns. Report all DGP/block outcomes and Monte Carlo intervals. Calibration may limit interpretation; do not select a block/model using real return results. Shifted2pp power is interval-based and is not multiplicity-adjusted power."
+}

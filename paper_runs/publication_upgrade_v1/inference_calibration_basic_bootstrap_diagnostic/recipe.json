@@ -1,0 +1,21 @@
+{
+  "annual_alpha_cases": [
+    0,
+    0.02,
+    0.08
+  ],
+  "bootstrap_replicates_per_mc": 499,
+  "factor_ar": 0.15,
+  "factor_count": 6,
+  "mc_replications": 600,
+  "mean_blocks": [
+    3,
+    6,
+    12
+  ],
+  "months": 72,
+  "noise_ar": 0.3,
+  "noise_monthly_sd": 0.02,
+  "purpose": "Calibration and power evidence, not parameter tuning; all block lengths retained",
+  "seed": 68001
+}

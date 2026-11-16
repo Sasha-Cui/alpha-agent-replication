@@ -1,0 +1,1284 @@
+{
+  "actual_attempted_rounds": 96,
+  "evaluation_data_sha256": "9a90147d83275e636d5d17240b53fd5ab45f6ad20af8a703b8aede245d5354f8",
+  "implementation_sha256": "c1dfba0f8ecc5f77ed2d45ad32092e8af4abcb466f64b3180495da90517d74d7",
+  "planned_rounds": 100,
+  "protocol_sha256": "7b368a581b6a189fe0ff497309fe25c302d853372f5fb83969661dea329da60c",
+  "scope": "exploratory_all20_observed_history_sensitivity",
+  "source_python_sha256": "57e4f4515dcc68dd0a34c6b177a258f4d537629eb019b6a708135bf0cdec6500",
+  "status": "all20_observed_histories_verified_not_an_economic_result",
+  "strict_primary_eligibility": false,
+  "trials": [
+    {
+      "account_validation_sha256": "415b15a8c1e139bcb13a1c7cf62512b59bfecce50262d5a0cc67e5e812992951",
+      "attempted_rounds": 5,
+      "completed_trajectories": 5,
+      "execution_exit_sha256": "431962ceecb04a1bd479fa64aa63f979fdd81f9bda6f44ac4a557d70d75d9c83",
+      "failed_round_indices": [],
+      "native_status": "native_round_budget_exhausted",
+      "program_proofs": [
+        {
+          "code_sha256": "ccd7c6646011fc4c630e7552b76247905dff97bb09a564de0080d14df65e0571",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_01/causality_full_universe/ccd7c6646011fc4c630e7552b76247905dff97bb09a564de0080d14df65e0571.json",
+          "sha256": "f593829b3cfa49990150fbe64c0821059475192d04fc311b90f5b0bb60f79019"
+        },
+        {
+          "code_sha256": "c5091beaac77efa26f6719adc49253b81a1926ad0644265456478dfdbd0ee936",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_01/causality_full_universe/c5091beaac77efa26f6719adc49253b81a1926ad0644265456478dfdbd0ee936.json",
+          "sha256": "ce84fa7cdefe6ed6ce8c3e311f41b80c032e991db7c3b5d7329f98e16e7515ea"
+        },
+        {
+          "code_sha256": "44b2aa19b6481173581a4b4e34195d603b5633387229d773214ffc344bcccd2d",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_01/causality_full_universe/44b2aa19b6481173581a4b4e34195d603b5633387229d773214ffc344bcccd2d.json",
+          "sha256": "11a833fb1168799600f7b9b4bfade8110a07c960cd7ba9020a80479b2ec961ec"
+        },
+        {
+          "code_sha256": "4660ff5a5f6177593281a0158505659c4a1b0b3cfcca7e8d403f3d38b4342f3a",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_01/causality_full_universe/4660ff5a5f6177593281a0158505659c4a1b0b3cfcca7e8d403f3d38b4342f3a.json",
+          "sha256": "fadc7dd2ad559ddcec7ac28fce7b330bbe7dfb05bba101f804ac236b03d1b106"
+        },
+        {
+          "code_sha256": "e5666357e276fc623ddd69f6a5c59b210774dbc7be2f738fba597fc25cbea800",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_01/causality_full_universe/e5666357e276fc623ddd69f6a5c59b210774dbc7be2f738fba597fc25cbea800.json",
+          "sha256": "eb9f7b6318502f2883d33214153619f6784dd35f4ba21077a49d67037083b833"
+        },
+        {
+          "code_sha256": "f5009060fad9be7e6c06d9f042363add49515502a7b3306b609ddbaad639dc71",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_01/causality_full_universe/f5009060fad9be7e6c06d9f042363add49515502a7b3306b609ddbaad639dc71.json",
+          "sha256": "22dffd84a3ea4b69c778a4130e59c2000e4b8d02c25c3974e0ebcd1c75696b07"
+        },
+        {
+          "code_sha256": "416161a0175eace4880bbda292553014efcdd71998b692f15633c31afdb4a2d4",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_01/causality_full_universe/416161a0175eace4880bbda292553014efcdd71998b692f15633c31afdb4a2d4.json",
+          "sha256": "32bad8ce0a30a278194d1d53855182eb74bdd143d06f1db12e39990b4c394ebb"
+        }
+      ],
+      "recipe_sha256": "7e80d213f99995a1ea32db23911973d97c8ee3e79c39b11a299e80dc9126ccdc",
+      "replay": {
+        "attempted_rounds": 5,
+        "corrected_artifact_hashes": {
+          "embedding_calls.json": "9599b6e8687c5112e1e94a58d87daa1b9625a31da65ccbbd58c1d31fce942892",
+          "model_calls.json": "092338725e5bb22c07a73fbb2338a0a710cf2f11a43ef9f0e3668c985cdd9f61",
+          "stages.json": "cebb9bd32c6ddfe9a7c104de11aa26a3f442c4caa449095b307b65c65ff345c3",
+          "trajectories.json": "55d9598efae1a4386fee20c3994072a6aab149d7dcacfb2267e389e1529d142a"
+        },
+        "maximum_rechecked_numeric_difference": 3.4416913763379853e-15,
+        "parent_full_replay_sha256": "1399acadf8a9216933f3c0a50e5cfcd5cad0475c66344b888d6e147926f57aa2",
+        "path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_01/full_replay_validation.json",
+        "schema": "corrected_first_five_prefix_of_fully_replayed_bounded_parent",
+        "sha256": "4eb92240bc5ba9a2d5baeb7fad26e4514465fb3d6008bda562016f4f1f1cf807"
+      },
+      "run": "alphaagent_rounds_paper_gpt35_01",
+      "strict_budget_complete": true,
+      "trial": 1,
+      "unattempted_round_indices": [],
+      "used_manifest_sha256": "2d1afd6925ce2eed9595d83910b3bb13aed1861825966fcc406afc7e9539437f",
+      "used_program_count": 7
+    },
+    {
+      "account_validation_sha256": "adb7389aa247530b5891c8c7eb9cdf50a37165355008a69719938cb8654e35f0",
+      "attempted_rounds": 5,
+      "completed_trajectories": 4,
+      "execution_exit_sha256": "a493f13740b9d0202c324294eb3e830f13d32f698e21966dcd2c60a28d5bbfeb",
+      "failed_round_indices": [
+        4
+      ],
+      "native_status": "native_round_budget_exhausted",
+      "program_proofs": [
+        {
+          "code_sha256": "094a8b9596b0412e07726152c9a73e1a2befa115c213efc5bdbd2d9f1c5c4bdb",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_02/causality_full_universe/094a8b9596b0412e07726152c9a73e1a2befa115c213efc5bdbd2d9f1c5c4bdb.json",
+          "sha256": "9c951e6977cda3b9bbeb435e9d13859460e55b326583808f6f038c81a9f74cc4"
+        },
+        {
+          "code_sha256": "4146f927c67f85b4e8dee4351d36c62103edcd5e1194ae5324be9a74c52b08ef",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_02/causality_full_universe/4146f927c67f85b4e8dee4351d36c62103edcd5e1194ae5324be9a74c52b08ef.json",
+          "sha256": "a74f941cac02d46973b914bac55af25641c0adb8972916bd8dd5b8e31b2d8f82"
+        },
+        {
+          "code_sha256": "f696a43c3d675b8da028db694a7eecbbfd3d06170656859135b226bb5debd2ac",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_02/causality_full_universe/f696a43c3d675b8da028db694a7eecbbfd3d06170656859135b226bb5debd2ac.json",
+          "sha256": "a75710fc3fbb6beb05108368321697c4fb86c67d94d1c2ed846ff3f19a428810"
+        },
+        {
+          "code_sha256": "30d24b1dfcd2075e2fed350f2ed829ff021c4816d31da389f24b697b5cfbbf7c",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_02/causality_full_universe/30d24b1dfcd2075e2fed350f2ed829ff021c4816d31da389f24b697b5cfbbf7c.json",
+          "sha256": "11745b94289bd6e0698abc51dc881c21e3d321b0e2811770737f546882801cd8"
+        },
+        {
+          "code_sha256": "4b1e7b2866198f90c70443352c11400598ff4a432fd5054a9a5d19e3acb4deb6",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_02/causality_full_universe/4b1e7b2866198f90c70443352c11400598ff4a432fd5054a9a5d19e3acb4deb6.json",
+          "sha256": "9003ce9595249aa4795b63fef8396b5121cb78e432941f79df6d58a1bdf9eed7"
+        },
+        {
+          "code_sha256": "3be9cbdffec326a9d0adcb9d005bde8b1ca62fc51401ec3b8b74f2b48143aa6f",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_02/causality_full_universe/3be9cbdffec326a9d0adcb9d005bde8b1ca62fc51401ec3b8b74f2b48143aa6f.json",
+          "sha256": "fd58339cbeb9d1ac32be3e7578f8a53bf1cc431f6bc26380524562690a9752cb"
+        },
+        {
+          "code_sha256": "f91267a70e9099fb86e33b7553f0b5c2ecd80a28a5f8daff493ec99f71d50686",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_02/causality_full_universe/f91267a70e9099fb86e33b7553f0b5c2ecd80a28a5f8daff493ec99f71d50686.json",
+          "sha256": "c869aef394bedda85204c048c4ded238e32ce75f466eb41997fc7336587f0573"
+        },
+        {
+          "code_sha256": "e494ea3c1626628e9584355e447395e4e63d88ae214db424d527a0fb31366f02",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_02/causality_full_universe/e494ea3c1626628e9584355e447395e4e63d88ae214db424d527a0fb31366f02.json",
+          "sha256": "7c55e834284a1f3c32414160a5e01cbdd3773ea063c0b52b11f041de485440a9"
+        }
+      ],
+      "recipe_sha256": "084d7637d002d8da32ccc764612733e96398596bee0dd0b31e6298799616fdf0",
+      "replay": {
+        "attempted_rounds": 5,
+        "path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_02/full_replay_validation.json",
+        "sha256": "bf34bb9fc4c46af22d304bb997df1fc1d51685a6348a3ef47e509f42cbca1983"
+      },
+      "run": "alphaagent_rounds_paper_gpt35_02",
+      "strict_budget_complete": true,
+      "trial": 2,
+      "unattempted_round_indices": [],
+      "used_manifest_sha256": "fa1bfcdddcb4382015a4a4e4f7b62322ebe62cf41df7f834fe580d5ecd15541d",
+      "used_program_count": 8
+    },
+    {
+      "account_validation_sha256": "b846d456906d3b64580c9a4e2bcc505a00bc4ed520f4d367875f7083976b49b0",
+      "attempted_rounds": 5,
+      "completed_trajectories": 4,
+      "execution_exit_sha256": "a92c36c3f6549c0b41410d3e7d0537a24ca45bd0f610f6d46ca6a40f102ca145",
+      "failed_round_indices": [
+        3
+      ],
+      "native_status": "native_round_budget_exhausted",
+      "program_proofs": [
+        {
+          "code_sha256": "6c62f5a6e578213396b0a99b2d23a73922884c66f63f25620f659696b5c1e38f",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_03/causality_full_universe/6c62f5a6e578213396b0a99b2d23a73922884c66f63f25620f659696b5c1e38f.json",
+          "sha256": "b5a1b2d3aa51793fdedcce99eadc6b4edd9a028b36276625b559288409761349"
+        },
+        {
+          "code_sha256": "ab9aac05306f5f0e5c313b079b670681b73a4b3b39d3e43ceacf2e68da43f395",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_03/causality_full_universe/ab9aac05306f5f0e5c313b079b670681b73a4b3b39d3e43ceacf2e68da43f395.json",
+          "sha256": "05606725c6f790e161b35a766fd4630ac67cf5de92a335ba27047320ce1a619b"
+        },
+        {
+          "code_sha256": "3d1bac00167473223d7f4e58cbf9c2bcf01db071e868d48f3944c3e1f3755a55",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_03/causality_full_universe/3d1bac00167473223d7f4e58cbf9c2bcf01db071e868d48f3944c3e1f3755a55.json",
+          "sha256": "67808cd875186d49f313254089bfc6c06885dc104fa35fb995f6b176d72ebf24"
+        },
+        {
+          "code_sha256": "399f02e33405cce7ff2c2f954e1942cefe632e1fd31b1340379f1d7df2a37639",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_03/causality_full_universe/399f02e33405cce7ff2c2f954e1942cefe632e1fd31b1340379f1d7df2a37639.json",
+          "sha256": "5387529bac9331f7734db12d9828c05984eb7bc1f3b801a8c0841aececabfd14"
+        },
+        {
+          "code_sha256": "ff64425712501b73c65d8ad54fab72bec9cd7ad40fc8125fa4b982fc89cee708",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_03/causality_full_universe/ff64425712501b73c65d8ad54fab72bec9cd7ad40fc8125fa4b982fc89cee708.json",
+          "sha256": "1f88096ccb0ed7b9a315b818350a3578037988651c0fe111d2d3018e629dfc6c"
+        },
+        {
+          "code_sha256": "c7250f56f1d7797f519d470326bb009cd9d09708c9e77255ef49a362240f2e8b",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_03/causality_full_universe/c7250f56f1d7797f519d470326bb009cd9d09708c9e77255ef49a362240f2e8b.json",
+          "sha256": "902b9ad32a103177df1602c92acd0be8905567e1f622ab3a1f8770f10db00b66"
+        },
+        {
+          "code_sha256": "4100a6b25605cf53ce8e161bba7c2eb800b2bb044fab16812e19b97d45ba98ef",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_03/causality_full_universe/4100a6b25605cf53ce8e161bba7c2eb800b2bb044fab16812e19b97d45ba98ef.json",
+          "sha256": "793963ac964fb07ed274afb83567e6c3c5fe68b464adbb803bade0ea208c22f3"
+        },
+        {
+          "code_sha256": "86efa3cea5255b0d2a86034743963d56339ca40932804f2df0e23e1684fb9008",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_03/causality_full_universe/86efa3cea5255b0d2a86034743963d56339ca40932804f2df0e23e1684fb9008.json",
+          "sha256": "56a22d9eb1aeaeaa54057851844c30035d2507810b983ffef14092d1d2691177"
+        }
+      ],
+      "recipe_sha256": "8cf7f46377b09e16230cc4ee7cb07175d39f9c3da6e2a09fb20869f855b7095e",
+      "replay": {
+        "attempted_rounds": 5,
+        "path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_03/full_replay_validation.json",
+        "sha256": "f265dad7e21a1881076aeb8946f4d59ed13510709479c850bf8a0d2084bc901d"
+      },
+      "run": "alphaagent_rounds_paper_gpt35_03",
+      "strict_budget_complete": true,
+      "trial": 3,
+      "unattempted_round_indices": [],
+      "used_manifest_sha256": "b7d43df561602eed92c5786fe9aba636e7ac48da52ccaac8b0c7d9e4f82cbc21",
+      "used_program_count": 8
+    },
+    {
+      "account_validation_sha256": "2f710e33035d90b1a8cec26ecaed4f733dc1c04b7ac62ebeda21c85d39cf70e6",
+      "attempted_rounds": 5,
+      "completed_trajectories": 5,
+      "execution_exit_sha256": "6efa16b6bfae8a848c06823af28478993f3ac073a7226e799efc10b5537c4455",
+      "failed_round_indices": [],
+      "native_status": "native_round_budget_exhausted",
+      "program_proofs": [
+        {
+          "code_sha256": "9ebf9b0ed7dafe958f2f4eb21a0a02c6f3293ed0b1264d3c838ef821f08bfd75",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_04/causality_full_universe/9ebf9b0ed7dafe958f2f4eb21a0a02c6f3293ed0b1264d3c838ef821f08bfd75.json",
+          "sha256": "e070fab51fef46272e378e27b18b238fdb69a7516c739c9d54a9fbdd3a82cde9"
+        },
+        {
+          "code_sha256": "4acbd02261fcf004fd8e23c83eaf045c2f9972d828b837a5a64928105fbf6f67",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_04/causality_full_universe/4acbd02261fcf004fd8e23c83eaf045c2f9972d828b837a5a64928105fbf6f67.json",
+          "sha256": "fff634a51d0bdd57e8beac8c920b0c7e78eeabddba939f6fa012731c183a3a9c"
+        },
+        {
+          "code_sha256": "5c903399f7d660c9389b5544d2ba512a156fb806442d7a880a68ad01cc127cf8",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_04/causality_full_universe/5c903399f7d660c9389b5544d2ba512a156fb806442d7a880a68ad01cc127cf8.json",
+          "sha256": "fa404db10491584b07a020ece6b5ac276e3f7cbd3e26830cfb1bdbf4689b91c9"
+        },
+        {
+          "code_sha256": "cbb578d813e741d3a39ddd4717eb6b11bbfecf04b5f0b68fd6fd67ee9f31ad1d",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_04/causality_full_universe/cbb578d813e741d3a39ddd4717eb6b11bbfecf04b5f0b68fd6fd67ee9f31ad1d.json",
+          "sha256": "761c6132b11922e75b68672359cee86dc39ce6918dfa942b227ef58c4d0ea907"
+        },
+        {
+          "code_sha256": "3ce7c31eeee448c46de4c6c524873c2ec44f4955f520b184ff93378f30eaffcf",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_04/causality_full_universe/3ce7c31eeee448c46de4c6c524873c2ec44f4955f520b184ff93378f30eaffcf.json",
+          "sha256": "e4ac0f39416f7300ce0482010084ec6dc437565add2fa8782a292f7fef757d71"
+        },
+        {
+          "code_sha256": "e33e993054e2c77cb407be1c285d782db5e141749dea365403e33a185809530f",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_04/causality_full_universe/e33e993054e2c77cb407be1c285d782db5e141749dea365403e33a185809530f.json",
+          "sha256": "3898c3a04747b3c157dd656d4e161bfa4426efa9abbfdd7fb0352120579d55a8"
+        },
+        {
+          "code_sha256": "55684602e79e5d8249fc6c569a337a1762ee9d4e2e2e85e288198b735e888df8",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_04/causality_full_universe/55684602e79e5d8249fc6c569a337a1762ee9d4e2e2e85e288198b735e888df8.json",
+          "sha256": "fbd4b2d8c7d7a2a7cc94741b46896af7e051af642d5a76576654c3232a4143d1"
+        }
+      ],
+      "recipe_sha256": "4c58355e9c02a41e41d5273990676c9009d8ab68f9c11673103e22129969e28e",
+      "replay": {
+        "attempted_rounds": 5,
+        "path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_04/full_replay_validation.json",
+        "sha256": "9d5bc038655fb7bcd4ace5ef84d2a9f4544cf6c1b794235599f9e5b3e2cb5d9e"
+      },
+      "run": "alphaagent_rounds_paper_gpt35_04",
+      "strict_budget_complete": true,
+      "trial": 4,
+      "unattempted_round_indices": [],
+      "used_manifest_sha256": "826fb19a10f675ec028682fce4478542ce0b43d889284181862e7038b29b2698",
+      "used_program_count": 7
+    },
+    {
+      "account_validation_sha256": "6e4439cc28fc759c6b4f0367deebafee24945f8f2f3d6a868bebc0567ab5584b",
+      "attempted_rounds": 5,
+      "completed_trajectories": 5,
+      "execution_exit_sha256": "5f76802c1f127c87792dc51d518a8a75a8ac325161bdc6e1ad54e89bccf430e0",
+      "failed_round_indices": [],
+      "native_status": "native_round_budget_exhausted",
+      "program_proofs": [
+        {
+          "code_sha256": "4ad782438f5736a9b4746490b44410fa96d1cd140cc07dc80151684c7c182fb3",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_05/causality_full_universe/4ad782438f5736a9b4746490b44410fa96d1cd140cc07dc80151684c7c182fb3.json",
+          "sha256": "428e3a190449feb7912d9fe083dd3910c62f377d37d67ea8cf27cf614e2daf34"
+        },
+        {
+          "code_sha256": "fd949806262ca9866179de65327c4c4385a37fc014b1469a840fe568146564b2",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_05/causality_full_universe/fd949806262ca9866179de65327c4c4385a37fc014b1469a840fe568146564b2.json",
+          "sha256": "b1726613410f68679cb284d5eb3704604f551fb2bd8860588ccd3a4fe4e15c71"
+        },
+        {
+          "code_sha256": "c75d0cfc3a25dd8284a5801d81645d12ece640fa4ef5b9e5b12ee06cfc19aea1",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_05/causality_full_universe/c75d0cfc3a25dd8284a5801d81645d12ece640fa4ef5b9e5b12ee06cfc19aea1.json",
+          "sha256": "838711e0b58140c8cd27b99b0f85ed56e045b7f26c2ff178aa3dfa75fb8d3e5e"
+        },
+        {
+          "code_sha256": "adb01aab0b3c434d57230bf951a854a9f8dd87af02b5e4646270eb036533bfd3",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_05/causality_full_universe/adb01aab0b3c434d57230bf951a854a9f8dd87af02b5e4646270eb036533bfd3.json",
+          "sha256": "a31f010c6276c3d1a54d563e1025e735c9f3922a33e7ff1a1f611e4327b5e424"
+        },
+        {
+          "code_sha256": "87b7e28c4e6869ac08d22b0f06ffa1f17d67ef9fa31b72f033d5179d8b068437",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_05/causality_full_universe/87b7e28c4e6869ac08d22b0f06ffa1f17d67ef9fa31b72f033d5179d8b068437.json",
+          "sha256": "445cdb9a39435b0d4f414f17a3f2c36910c4eada4862defa108ff0e08959cfca"
+        },
+        {
+          "code_sha256": "b39d7c90ea1f8756a6a81b84b17bbd1f55993737e4ea917e24a378ee0739b64c",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_05/causality_full_universe/b39d7c90ea1f8756a6a81b84b17bbd1f55993737e4ea917e24a378ee0739b64c.json",
+          "sha256": "b48c7b89a2a85cc5f56cc17bceb4a2b13357af582013a5f9dd108e35968d77b7"
+        }
+      ],
+      "recipe_sha256": "c6e63ddbbf74e6e049aaba4e60f8ec6a03557508358477499e4016aa61bc53fe",
+      "replay": {
+        "attempted_rounds": 5,
+        "path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_05/full_replay_validation.json",
+        "sha256": "ddb4a408e0ce87ead8dfbdcd1c58c8c13beebe67356c34ece6a185c46fbdf771"
+      },
+      "run": "alphaagent_rounds_paper_gpt35_05",
+      "strict_budget_complete": true,
+      "trial": 5,
+      "unattempted_round_indices": [],
+      "used_manifest_sha256": "79387a8d84266506f2ba3d3d4fe96da09991f5251108f8789c7cab16e36858bd",
+      "used_program_count": 6
+    },
+    {
+      "account_validation_sha256": "1f4047ab6f194ab230b69f5106dbaeece9b73525c46d96d642f22616dd6a63d6",
+      "attempted_rounds": 5,
+      "completed_trajectories": 4,
+      "execution_exit_sha256": "85f753dec8a1b58f62e56bf9fadb791d08e1efc811e26301b39993774fd7d28c",
+      "failed_round_indices": [
+        4
+      ],
+      "native_status": "native_round_budget_exhausted",
+      "program_proofs": [
+        {
+          "code_sha256": "be4f79c5fae84a82f949871cf42fe3259305807843b2c618a95d2f01601ede9d",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_06/causality_full_universe/be4f79c5fae84a82f949871cf42fe3259305807843b2c618a95d2f01601ede9d.json",
+          "sha256": "32c063e2eec4a7f36097ec97315d4e8e8ba203e161b08e9fe707f507b6abe8c8"
+        },
+        {
+          "code_sha256": "98578b0bf0390b684b4039c1e6fdbe1175536997ba990fe441b09c3d496725ff",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_06/causality_full_universe/98578b0bf0390b684b4039c1e6fdbe1175536997ba990fe441b09c3d496725ff.json",
+          "sha256": "f3f58eb56f8414567b5c5ecc2642d1e109fc5c43b400856a6598fb8d3f4e4e1d"
+        },
+        {
+          "code_sha256": "8164463870de645d0b8a26893929a57ea4085ad98dffb1f5ade54586586ed3e9",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_06/causality_full_universe/8164463870de645d0b8a26893929a57ea4085ad98dffb1f5ade54586586ed3e9.json",
+          "sha256": "2d726a0c0e9a87f9561535170a8599e692c1f77118f68a178318da22faa3f977"
+        },
+        {
+          "code_sha256": "c5b64457c986dfe7fa9286d096b994cc5b070833b78c29c66fe4dd43917b4495",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_06/causality_full_universe/c5b64457c986dfe7fa9286d096b994cc5b070833b78c29c66fe4dd43917b4495.json",
+          "sha256": "19c5d6d8b52c286fa9e1d836674847cbd3e118d2a07804770e5d12a401061bd8"
+        },
+        {
+          "code_sha256": "e11981828bd2b056acc4759beca4101456fb72c0ea76af86cccaeac2fde6ca79",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_06/causality_full_universe/e11981828bd2b056acc4759beca4101456fb72c0ea76af86cccaeac2fde6ca79.json",
+          "sha256": "4e8d63129defb06a6053034ea9f449a2695b768330567d28629cd5142e0bec37"
+        },
+        {
+          "code_sha256": "12d4d71c8dbdb1b446b603f5d4e632ccf367a94435a92b8d422e1f4b415aa8c6",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_06/causality_full_universe/12d4d71c8dbdb1b446b603f5d4e632ccf367a94435a92b8d422e1f4b415aa8c6.json",
+          "sha256": "54dbfa90696c72f3909b4a1e9c54418e0ebc35b584a3ece0f936b844bb704a4e"
+        },
+        {
+          "code_sha256": "8477b242a34c7becaa3081a0cbf7a67a9f0ac703b883dadc1c15b46f1e9a78a2",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_06/causality_full_universe/8477b242a34c7becaa3081a0cbf7a67a9f0ac703b883dadc1c15b46f1e9a78a2.json",
+          "sha256": "bdf14c46e871858173d0d085ebab36ed0f5b732f587df11c5a66be49b35a4ed8"
+        },
+        {
+          "code_sha256": "bf850d6dd7fe0a370de0e27c1a2cd1d91003fafcb5f40a95e8e9d3c3f6185623",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_06/causality_full_universe/bf850d6dd7fe0a370de0e27c1a2cd1d91003fafcb5f40a95e8e9d3c3f6185623.json",
+          "sha256": "3bc310ebd586b1ae76fa3c3307769a36281fcde2d11ea5a17cbe7c73f6af0d5e"
+        },
+        {
+          "code_sha256": "04a415a1f2621ddc3f191eabc9b0fed5b6dbbffb0dcb020cc16afa3ec134c1af",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_06/causality_full_universe/04a415a1f2621ddc3f191eabc9b0fed5b6dbbffb0dcb020cc16afa3ec134c1af.json",
+          "sha256": "72380279ecd44c840b4ce5fdb39419fae5648a9dcae7823d41b6b45a93227bdb"
+        }
+      ],
+      "recipe_sha256": "f8ee83721c215f8e8f30b3b08dd96a49d9e23eff0a3305a6f7349af9b232d8c8",
+      "replay": {
+        "attempted_rounds": 5,
+        "path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_06/full_replay_validation.json",
+        "sha256": "ae8c623d46a5f0be06ca47dcc1d5d68eb66db79a05a88636dad2e18d28d14887"
+      },
+      "run": "alphaagent_rounds_paper_gpt35_06",
+      "strict_budget_complete": true,
+      "trial": 6,
+      "unattempted_round_indices": [],
+      "used_manifest_sha256": "dd594895568514affaf73526348325e31d492b7c311d2b07cbd9a09f39670b01",
+      "used_program_count": 9
+    },
+    {
+      "account_validation_sha256": "733c959ab8374a19b2b9ac17d883d4e52e570f315cbd04dc90e7957c3cabd536",
+      "attempted_rounds": 5,
+      "completed_trajectories": 4,
+      "execution_exit_sha256": "a8070c3691d991c92604e6e096f092d3fc6aa29ddb6871e04d3e3162e2300bd0",
+      "failed_round_indices": [
+        0
+      ],
+      "native_status": "native_round_budget_exhausted",
+      "program_proofs": [
+        {
+          "code_sha256": "cbb6d14b71931f8dcc03bbf98616afa5903c20fde219f06bddd63094d802e7ce",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_07/causality_full_universe/cbb6d14b71931f8dcc03bbf98616afa5903c20fde219f06bddd63094d802e7ce.json",
+          "sha256": "97061a35d62aaea1cd0155317c2bacabdedb7c9a5c6ae582e773c716d4d4b568"
+        },
+        {
+          "code_sha256": "8e8f33460cffd6fe1895d3491c474fd12b2f0fedbbbeb505bcb4bdc75eb382df",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_07/causality_full_universe/8e8f33460cffd6fe1895d3491c474fd12b2f0fedbbbeb505bcb4bdc75eb382df.json",
+          "sha256": "0cd807e641689db13128a353fc1c9043e0b486fd88cf0f2343bd0541320f67d5"
+        },
+        {
+          "code_sha256": "a96113926b24753185946b203638348f0377247d8266c9db914683ca5eaece48",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_07/causality_full_universe/a96113926b24753185946b203638348f0377247d8266c9db914683ca5eaece48.json",
+          "sha256": "cff343379d464fa8ee5ab22ed6390161cee451289b15e8e182d03929a9cd4d1e"
+        },
+        {
+          "code_sha256": "338b111680cca344134fb204866e617ccb93e620c422d80ef05185c396b67669",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_07/causality_full_universe/338b111680cca344134fb204866e617ccb93e620c422d80ef05185c396b67669.json",
+          "sha256": "8cb16630b4a0d1902cf6c97e302410375ef938a0cda0482797a9e8a258965566"
+        },
+        {
+          "code_sha256": "d9ccc488aa7d577277b721799c0dda04a8e866ca8ceef971507a28bc6cd575ae",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_07/causality_full_universe/d9ccc488aa7d577277b721799c0dda04a8e866ca8ceef971507a28bc6cd575ae.json",
+          "sha256": "917a9ba118bc75073b0c9fc1f23b34bf2f35eb37e862bd594f432a5dfc55159c"
+        }
+      ],
+      "recipe_sha256": "d9f7227738670c1a84592eeaaa9a9dcecfa9855b1bc8c41f7069203acb9400c4",
+      "replay": {
+        "attempted_rounds": 5,
+        "path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_07/full_replay_validation.json",
+        "sha256": "51386fa4bccde5153c5fa00d4c358a5bd8bf56a9e73c8cfaf8d9e6cfe3a963d3"
+      },
+      "run": "alphaagent_rounds_paper_gpt35_07",
+      "strict_budget_complete": true,
+      "trial": 7,
+      "unattempted_round_indices": [],
+      "used_manifest_sha256": "407e046095ebf6d9f8e72167bcc39bfea8eedd00e92be020cbb5fa32ea9b517c",
+      "used_program_count": 5
+    },
+    {
+      "account_validation_sha256": "0a9346f4fb5f88ff7ee55aaab08e8e03973a509d1fcf96e1ab9fab9edb7e9102",
+      "attempted_rounds": 5,
+      "completed_trajectories": 4,
+      "execution_exit_sha256": "9ff19505695fce67953e0c00098dfaa5087119e3b487deabffb368e1a9461f84",
+      "failed_round_indices": [
+        4
+      ],
+      "native_status": "native_final_attempt_failed",
+      "program_proofs": [
+        {
+          "code_sha256": "ec137b5c9e32947c24ca744fcc94ec632f71250777819510512c8ecbb5bce245",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_08/causality_full_universe/ec137b5c9e32947c24ca744fcc94ec632f71250777819510512c8ecbb5bce245.json",
+          "sha256": "757675454d57935fac81f2619730e921808dad1d132a9e3ecdd8ee402e1177b8"
+        },
+        {
+          "code_sha256": "38a8a45d51452b63a1bfd3a1d7d210ee2f3720a921b4333fbdfac80b7048b167",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_08/causality_full_universe/38a8a45d51452b63a1bfd3a1d7d210ee2f3720a921b4333fbdfac80b7048b167.json",
+          "sha256": "df88485ba48026eb4967450db8a7a7fa5b5d6922477e068a068edbfa45abb734"
+        },
+        {
+          "code_sha256": "e7259a68ca8a51c64c671aa8ced5817b2ec89c8078f7506d81d33066254daddc",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_08/causality_full_universe/e7259a68ca8a51c64c671aa8ced5817b2ec89c8078f7506d81d33066254daddc.json",
+          "sha256": "7a53d9529444c2b435e855c5c3997a141689d0a80229cc75cb312c60a1f10813"
+        },
+        {
+          "code_sha256": "16052a2c93c1d3a04ec713c6136f28a2bcfd40a73fb2cff05abb37aee989f8e7",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_08/causality_full_universe/16052a2c93c1d3a04ec713c6136f28a2bcfd40a73fb2cff05abb37aee989f8e7.json",
+          "sha256": "2a2c8acc94ee988067098e1baa6873de3827f4ec5f9ae5db6c07c789e3dc48ed"
+        },
+        {
+          "code_sha256": "9c21e51caf0409cc04822c644fc4a98b028faefb7b082656b204c42c66a6f471",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_08/causality_full_universe/9c21e51caf0409cc04822c644fc4a98b028faefb7b082656b204c42c66a6f471.json",
+          "sha256": "229df0af8268eb87b383b5365ac005ae03fad1b9deafaac9a27b94df844a4fb7"
+        },
+        {
+          "code_sha256": "328604531624fe9119d0be6f26ec97b2e52f8a8e0e76a2fa48d81bb772ea7dae",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_08/causality_full_universe/328604531624fe9119d0be6f26ec97b2e52f8a8e0e76a2fa48d81bb772ea7dae.json",
+          "sha256": "482e5f8bce3853b78c9ea8700055828d0df6eddadf8b0778bc36f8b630e13cb8"
+        },
+        {
+          "code_sha256": "833b4098315e8efdc3ec4877c36b338626de3286b1a30fa2355d3f6777787d1e",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_08/causality_full_universe/833b4098315e8efdc3ec4877c36b338626de3286b1a30fa2355d3f6777787d1e.json",
+          "sha256": "ea891793b656e3c71b681dd7d2b1804ccf8488c62abd27062bdd71abff943146"
+        },
+        {
+          "code_sha256": "0ce19cf896180bf44e2a3194087e2a5f903727b892ce26cda68cf43eb8fe0063",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_08/causality_full_universe/0ce19cf896180bf44e2a3194087e2a5f903727b892ce26cda68cf43eb8fe0063.json",
+          "sha256": "3971e9b153c48825554c9c5716f2cdc13552eb2161a41d94fbfeb149011c87c2"
+        }
+      ],
+      "recipe_sha256": "a02c83276b196d1493178e9658d23861d7af8f57be21667d01d58dbdf582d54c",
+      "replay": {
+        "attempted_rounds": 5,
+        "path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_08/full_replay_validation.json",
+        "sha256": "7e3daf96919b0be00cd21ad78e9024f7d90ab06ae8619e43440ce1cd5f4e5641"
+      },
+      "run": "alphaagent_rounds_paper_gpt35_08",
+      "strict_budget_complete": true,
+      "trial": 8,
+      "unattempted_round_indices": [],
+      "used_manifest_sha256": "c6c4c0c6dcd521e2b218d32c6c3403569357a55b769c10eb19812ea780cee25f",
+      "used_program_count": 8
+    },
+    {
+      "account_validation_sha256": "6ac55d719334c889bfa6b18ec7248e8a0e7a941c8b54cc0784efa58e7917e197",
+      "attempted_rounds": 5,
+      "completed_trajectories": 5,
+      "execution_exit_sha256": "3336aca5f644ca3be84833267becf2cf11ee77f71437efd862139201fc626465",
+      "failed_round_indices": [],
+      "native_status": "native_round_budget_exhausted",
+      "program_proofs": [
+        {
+          "code_sha256": "9c51267a0d18570ed5b2093e6e81dc8ad2bb1100b4c29376ea3046c3ba135f4b",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_09/causality_full_universe/9c51267a0d18570ed5b2093e6e81dc8ad2bb1100b4c29376ea3046c3ba135f4b.json",
+          "sha256": "e2c24db649e3fc67d368b7599cc92b4f0701e214b494b42880819ca308ef5854"
+        },
+        {
+          "code_sha256": "a65ebdc5f9a186877c97ef77d0a710c820f826151a8b39856cd0106b86af4c01",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_09/causality_full_universe/a65ebdc5f9a186877c97ef77d0a710c820f826151a8b39856cd0106b86af4c01.json",
+          "sha256": "c98548ff72a5b8933204420dc443e60d859122f917cc3bc41553095a17b2189b"
+        },
+        {
+          "code_sha256": "b38f0b76a394899e07f8fd061f6b9013ab4c9a4707723d3557e8ed3b860c7038",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_09/causality_full_universe/b38f0b76a394899e07f8fd061f6b9013ab4c9a4707723d3557e8ed3b860c7038.json",
+          "sha256": "558d36d431e08c5b0d614cc50996216041eeff634f277d8c5690975d10c500b0"
+        },
+        {
+          "code_sha256": "4bc5a12007625eb17e67e1c678ee7dd6dd76f25734481628a1651b9e814e3323",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_09/causality_full_universe/4bc5a12007625eb17e67e1c678ee7dd6dd76f25734481628a1651b9e814e3323.json",
+          "sha256": "6a13cb0d86637f299260ba80d8a0e32cdd71be9ddafeef68b010446c11ae4069"
+        },
+        {
+          "code_sha256": "d3c631415ccdea77b225f8f5476141dee54ca9597d0fd4145027ffbbed1cb84f",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_09/causality_full_universe/d3c631415ccdea77b225f8f5476141dee54ca9597d0fd4145027ffbbed1cb84f.json",
+          "sha256": "8b45b852ce84603cebc50821f58bd069687f597d085e6ba5647a1315e5db1a39"
+        },
+        {
+          "code_sha256": "36018a2bdb19b1c5a88596d32bcb05b3c460717cd366fd9538cd5e366a7309b1",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_09/causality_full_universe/36018a2bdb19b1c5a88596d32bcb05b3c460717cd366fd9538cd5e366a7309b1.json",
+          "sha256": "59bbdc2d6ed4c0021e2951f3112f46a81b3cf22e7eabc899b203065c75a112c1"
+        },
+        {
+          "code_sha256": "3ab5784d6d65dde9b7d06eb9aab198dac0d9d442b2b9c846ee9c4a80a7085939",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_09/causality_full_universe/3ab5784d6d65dde9b7d06eb9aab198dac0d9d442b2b9c846ee9c4a80a7085939.json",
+          "sha256": "6783761065770748671b758712b7bd31f52c38c9bc6dc712343c616d0227f311"
+        },
+        {
+          "code_sha256": "2ded78c8344c88e5023653610bd73b8cef240e842b2c1f7ab2841071c0ea73df",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_09/causality_full_universe/2ded78c8344c88e5023653610bd73b8cef240e842b2c1f7ab2841071c0ea73df.json",
+          "sha256": "05b3083a0dac964d4d8d70264674d19b807995eabc2823d863a96a45ebe6b05d"
+        },
+        {
+          "code_sha256": "729d860669cfc64e1accccb6ecebc922abf74fa3a2b1d76bc87bd7a2f41bd302",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_09/causality_full_universe/729d860669cfc64e1accccb6ecebc922abf74fa3a2b1d76bc87bd7a2f41bd302.json",
+          "sha256": "5b7738d83086694920fbd0159dc82657bc30c364bc7554b3656c14cb68038f7c"
+        }
+      ],
+      "recipe_sha256": "37ceab68f4a193b87d6b38ce60aa633479f799100297ce88f0929a0b76eaebb4",
+      "replay": {
+        "attempted_rounds": 5,
+        "path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_09/full_replay_validation.json",
+        "sha256": "82b584ea4e6a4b9fbe6b0219812a8ce78f7b74478798c76ac5a12110ec0c53b3"
+      },
+      "run": "alphaagent_rounds_paper_gpt35_09",
+      "strict_budget_complete": true,
+      "trial": 9,
+      "unattempted_round_indices": [],
+      "used_manifest_sha256": "5e03413e652b82e1e2c8e79eccd43e8781a4d46634094c6d6f969a06e199b55b",
+      "used_program_count": 9
+    },
+    {
+      "account_validation_sha256": "ba7ac862d85de1bf73eb92086a1981b5e55b08a8e6617aaab087f33b3459b452",
+      "attempted_rounds": 5,
+      "completed_trajectories": 5,
+      "execution_exit_sha256": "02a2dde26a43f65008bf53046f40b32d2aefb87be59d4a4c15a0758bf2dbd0d1",
+      "failed_round_indices": [],
+      "native_status": "native_round_budget_exhausted",
+      "program_proofs": [
+        {
+          "code_sha256": "cbb6d14b71931f8dcc03bbf98616afa5903c20fde219f06bddd63094d802e7ce",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_10/causality_full_universe/cbb6d14b71931f8dcc03bbf98616afa5903c20fde219f06bddd63094d802e7ce.json",
+          "sha256": "65d7537c846780fe7a46d346a5bdc0c8cace1d565292c674b4023aa98f2272f5"
+        },
+        {
+          "code_sha256": "314af10df3e3a1c6e24821cd872430dd5090bcfa1b84bd097dbef055d6c6e6ac",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_10/causality_full_universe/314af10df3e3a1c6e24821cd872430dd5090bcfa1b84bd097dbef055d6c6e6ac.json",
+          "sha256": "c777a3bef759d71fce2016e8d4c459dedee306624d6753af51edb21cddf5c6e2"
+        },
+        {
+          "code_sha256": "405cf9777ec7f89c5cc5b140aaba5931dd3ee172edf056f09a56f5106bf86876",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_10/causality_full_universe/405cf9777ec7f89c5cc5b140aaba5931dd3ee172edf056f09a56f5106bf86876.json",
+          "sha256": "3ad65a6d87ad91fe2f38ad241c6f07da8359b6f9f8a8f5b5f27121a4973d30d6"
+        },
+        {
+          "code_sha256": "4cff133b92e0a7a2162b09b14c46984c2f360ec5877fc6b95607f9dc79d2cf52",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_10/causality_full_universe/4cff133b92e0a7a2162b09b14c46984c2f360ec5877fc6b95607f9dc79d2cf52.json",
+          "sha256": "8388f0092b3b96e1ab2e3c79290f8cc3c52f3338b556cb3af9c27740c9e14942"
+        },
+        {
+          "code_sha256": "fd4b797396b5f7fc4431f3bb02d93d9639743849db6c26ea80af8217690931b4",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_10/causality_full_universe/fd4b797396b5f7fc4431f3bb02d93d9639743849db6c26ea80af8217690931b4.json",
+          "sha256": "b6b307c8f922f2e2660cef9ed0d80eec48d02147639e8e5250cf20c58999dcca"
+        },
+        {
+          "code_sha256": "9bf7cfb0fbd37ca8f15c4962da78327102b38653712b3a646fbd283279cc817d",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_10/causality_full_universe/9bf7cfb0fbd37ca8f15c4962da78327102b38653712b3a646fbd283279cc817d.json",
+          "sha256": "011d29667c367f34d6fd9ae7d15e02ba5e292f49ed9448c251f980212c1c4039"
+        },
+        {
+          "code_sha256": "18b694cda283c181daa6293f5f38241bf1fbb465f5194cb0effc50aae46c219e",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_10/causality_full_universe/18b694cda283c181daa6293f5f38241bf1fbb465f5194cb0effc50aae46c219e.json",
+          "sha256": "52623396782a6c430a31f5f8f2c3e8ebe279cce04a01d60d0e5108f3935ab7cd"
+        },
+        {
+          "code_sha256": "4bbd0439edfc77564db3cf3550257f421ef23bb9965d4d728f3fe87e23f177e2",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_10/causality_full_universe/4bbd0439edfc77564db3cf3550257f421ef23bb9965d4d728f3fe87e23f177e2.json",
+          "sha256": "217a4bb363580ff445c3bb2b40747724f3b6e009b22ca45e5c4304db0dc20987"
+        },
+        {
+          "code_sha256": "cb7fb0b67cf64690ae5f6458b78edd097709f67eb6042f9d16dd8445fa585d30",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_10/causality_full_universe/cb7fb0b67cf64690ae5f6458b78edd097709f67eb6042f9d16dd8445fa585d30.json",
+          "sha256": "3585f21e4ac70d478bce6a27578f58d36413fe880bdb8ecdf0d60709bd970c62"
+        }
+      ],
+      "recipe_sha256": "9fa156a04afc6712b1e28b6c0b1abea7b640c5642ea0ba8684583d29d6813bcc",
+      "replay": {
+        "attempted_rounds": 5,
+        "path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_10/full_replay_validation.json",
+        "sha256": "bde944a9c03fe44829dc65d4375c070a85a452432fe0a343f897cab654e4693a"
+      },
+      "run": "alphaagent_rounds_paper_gpt35_10",
+      "strict_budget_complete": true,
+      "trial": 10,
+      "unattempted_round_indices": [],
+      "used_manifest_sha256": "115f9d55141c3045bc687a2e0f9fcd908d4910506129436b61a3478dab66b765",
+      "used_program_count": 9
+    },
+    {
+      "account_validation_sha256": "eaa57c15dff5b9a682dd8d67e6eab0108a22d799b990b110015d1bf50ddf3509",
+      "attempted_rounds": 5,
+      "completed_trajectories": 5,
+      "execution_exit_sha256": "f18d66278c4e9a4cf7c4bfcb367bb525bffbccb9ce5fc9ece67b45d422eacadb",
+      "failed_round_indices": [],
+      "native_status": "native_round_budget_exhausted",
+      "program_proofs": [
+        {
+          "code_sha256": "89d5d2eeb5f9f44cc6d82beeaa5889e7745e7ae8656513784a5f9b16fad2ea04",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_11/causality_full_universe/89d5d2eeb5f9f44cc6d82beeaa5889e7745e7ae8656513784a5f9b16fad2ea04.json",
+          "sha256": "3d07649da520358679edf30bee3bf92975e548a3ab441d7bc651af5d9add43fb"
+        },
+        {
+          "code_sha256": "ad3b8cea32605e3da32978e2374dd2f66411233d8f9242e06e8d8696e9f633a8",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_11/causality_full_universe/ad3b8cea32605e3da32978e2374dd2f66411233d8f9242e06e8d8696e9f633a8.json",
+          "sha256": "8c63c6610cf36a708c04d65da72000fdcf654d949a1883f910e384d2c7b422b4"
+        },
+        {
+          "code_sha256": "33ce559405d11708cb48d5e8e24f7c9aa5196a702b432dcc117c0fb4136002ab",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_11/causality_full_universe/33ce559405d11708cb48d5e8e24f7c9aa5196a702b432dcc117c0fb4136002ab.json",
+          "sha256": "d051af68ec5a1b229410e3f93cec9a4ad6e0b7b253ad049cb77035d6db0a6da0"
+        },
+        {
+          "code_sha256": "71d32daf2db5cb74e6b7a6da4e596ad1805011ae170a088da37eb8ce15b434fc",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_11/causality_full_universe/71d32daf2db5cb74e6b7a6da4e596ad1805011ae170a088da37eb8ce15b434fc.json",
+          "sha256": "966d3044a0ccd4c132944c2ca32b4ef4c7f8afb261262923c212d57b0c5ada76"
+        },
+        {
+          "code_sha256": "7ebac798d4ade460844dced7c0a118de6a654541d44a09d42abbddd92bd3ef54",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_11/causality_full_universe/7ebac798d4ade460844dced7c0a118de6a654541d44a09d42abbddd92bd3ef54.json",
+          "sha256": "8574477c968e7328ba55af2b9bb97f5390ddfa238d9242bcc28fba467cca7ff2"
+        },
+        {
+          "code_sha256": "b8393dfc8c6cb41758c226767662b97d3ec5aee2fb2ed39074c77cfaa0c9e202",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_11/causality_full_universe/b8393dfc8c6cb41758c226767662b97d3ec5aee2fb2ed39074c77cfaa0c9e202.json",
+          "sha256": "940caefcab479b416fd69dab1c8d9c77b71fcca10d50931782d3161b8790c229"
+        },
+        {
+          "code_sha256": "0706779ec2c9f83aadd18be47bfa49878dc1394549ee47d4f150ac9c74d4665c",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_11/causality_full_universe/0706779ec2c9f83aadd18be47bfa49878dc1394549ee47d4f150ac9c74d4665c.json",
+          "sha256": "49aeec0fbeb8d8ce0882b65a79acbe5858434f4243d371064a4cc49ddaecf9e3"
+        },
+        {
+          "code_sha256": "5605455b45f214d0bc104e3545511b7f61d743bb5d073d28f4da30bc7123600a",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_11/causality_full_universe/5605455b45f214d0bc104e3545511b7f61d743bb5d073d28f4da30bc7123600a.json",
+          "sha256": "e2d9b66743eb9ec2e8f8f7065e864eec9db733291f86644946984b42f5ceee5f"
+        },
+        {
+          "code_sha256": "89bbae6f7af9e6cf36067700e344f863c313135491ef08c6ebcfd680be883b04",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_11/causality_full_universe/89bbae6f7af9e6cf36067700e344f863c313135491ef08c6ebcfd680be883b04.json",
+          "sha256": "844ce42673d2a431d962a30d9edcdd8ebfc7c0f56cf358b0890d60feb0b00454"
+        },
+        {
+          "code_sha256": "941a4558d3556410f3a91c96351b28a22cce642d4f0b3cbc424c8ff3ecaac394",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_11/causality_full_universe/941a4558d3556410f3a91c96351b28a22cce642d4f0b3cbc424c8ff3ecaac394.json",
+          "sha256": "46c7dd64c028a5663d678d9c1c7f5dcaa1a0b295d2d36159d5d221d71c018067"
+        }
+      ],
+      "recipe_sha256": "f87139e0cf6c616dc1b873ab1d635ecb7b6bdd3405279c42bd11c31c3abf1385",
+      "replay": {
+        "attempted_rounds": 5,
+        "path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_11/full_replay_validation.json",
+        "sha256": "a749268e4fe50ed684f479b1feb98ce7fa2cd0f08e6f73e99bd9b7c7949ba668"
+      },
+      "run": "alphaagent_rounds_paper_gpt35_11",
+      "strict_budget_complete": true,
+      "trial": 11,
+      "unattempted_round_indices": [],
+      "used_manifest_sha256": "6c6f6a625337986b7fb20bc0a876220ffc0474637759d82b9484e768d1cad723",
+      "used_program_count": 10
+    },
+    {
+      "account_validation_sha256": "95d92b2b4adb48d7410b9d1aaf0d0bde9aec2b88940b139794e0dcd68154e22a",
+      "attempted_rounds": 3,
+      "completed_trajectories": 2,
+      "execution_exit_sha256": "19612eca35ef188a303d8f036671e0c614baaecd0572f9efef1bea588e7eee4e",
+      "failed_round_indices": [
+        2
+      ],
+      "native_status": "native_early_abort",
+      "program_proofs": [
+        {
+          "code_sha256": "3cf2fbb3d0d00c2d4c056029da6b13385940ee1941eeb334286191d7b175174c",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_12/causality_full_universe/3cf2fbb3d0d00c2d4c056029da6b13385940ee1941eeb334286191d7b175174c.json",
+          "sha256": "f4478cb60347acfd0b8c70534760db253bf06de38aa694fee34fcb3f4e04deed"
+        },
+        {
+          "code_sha256": "56a743245dc489b53883ad0f9b25bc09b553c747fc7f41fa9a55914e6521d352",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_12/causality_full_universe/56a743245dc489b53883ad0f9b25bc09b553c747fc7f41fa9a55914e6521d352.json",
+          "sha256": "02e0b5fbc0d81803878800a2473c00dc21e6d52f7953f73913e376c2ec06b159"
+        }
+      ],
+      "recipe_sha256": "e3abcdf2133631038719a7b52abdeddbcaa310a077e7d2dcc8e01f877c860fc1",
+      "replay": {
+        "attempted_rounds": 3,
+        "path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_12/observed_abort_replay_validation.json",
+        "sha256": "d43a33f2d0da24b356b6948f5bb9541c12d9a0196d82be2da62f1706fda259cd"
+      },
+      "run": "alphaagent_rounds_paper_gpt35_12",
+      "strict_budget_complete": false,
+      "trial": 12,
+      "unattempted_round_indices": [
+        3,
+        4
+      ],
+      "used_manifest_sha256": "6c7a9090ead625ff4eba2dfdded04c3940b821af907d090b6b84a608671d9ab8",
+      "used_program_count": 2
+    },
+    {
+      "account_validation_sha256": "d674779700d8ea3a2c791ba82f6b183b29a02ea443473582e4a524b1d789f6b0",
+      "attempted_rounds": 5,
+      "completed_trajectories": 5,
+      "execution_exit_sha256": "361aac2af791d6c3fd010b01ae7bf38d91d2aa0a70ccf4c3d2955f7d604ac655",
+      "failed_round_indices": [],
+      "native_status": "native_round_budget_exhausted",
+      "program_proofs": [
+        {
+          "code_sha256": "3e1b67376bd2e08af32f93b139150df4ce101d97906409ace2e426d052171cf1",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_13/causality_full_universe/3e1b67376bd2e08af32f93b139150df4ce101d97906409ace2e426d052171cf1.json",
+          "sha256": "d98f1bc747fbe9517a4d8c0f8acc8e92a58ecef77217649e7efaacf720f411cf"
+        },
+        {
+          "code_sha256": "a062ad133afe23c614183c7655f7bb78c302323d278394df49768752bdb38ddd",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_13/causality_full_universe/a062ad133afe23c614183c7655f7bb78c302323d278394df49768752bdb38ddd.json",
+          "sha256": "a559c4754bc324d20c52c8eca5628c00d246129d799aa9ad26c1f9128793c0ec"
+        },
+        {
+          "code_sha256": "16def07df1880a84948f9e7a8c6279ef9d7b4d46a430d2afb8ee11c86dcb6df5",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_13/causality_full_universe/16def07df1880a84948f9e7a8c6279ef9d7b4d46a430d2afb8ee11c86dcb6df5.json",
+          "sha256": "47b358a65a94d6fe0021edea11801c9a248d15195f647751103a3489145e5881"
+        },
+        {
+          "code_sha256": "1b6327d0cf3353d9672eb584d1e45802770f8ff53b2770b3a6638657815a5406",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_13/causality_full_universe/1b6327d0cf3353d9672eb584d1e45802770f8ff53b2770b3a6638657815a5406.json",
+          "sha256": "ec00963748c618531c47968e739642d0f791f350446965584d93fd78ed301d58"
+        },
+        {
+          "code_sha256": "67be50d4c27ce694012f75299e2c2a244c362c95ae47515ef9cb76abb9695c25",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_13/causality_full_universe/67be50d4c27ce694012f75299e2c2a244c362c95ae47515ef9cb76abb9695c25.json",
+          "sha256": "fa18c7c2359966e56fe85888f82ad013e215a7d95a4e2124a908d0e8689656bc"
+        },
+        {
+          "code_sha256": "be3d14187207dce2c884763617eba5880848c85ed1cf3f8281cb14dbee7ddc13",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_13/causality_full_universe/be3d14187207dce2c884763617eba5880848c85ed1cf3f8281cb14dbee7ddc13.json",
+          "sha256": "9e636514c99c111725f121d327c77f50e6ea6bc9f43f2fdd024a09d0ac49ee3b"
+        },
+        {
+          "code_sha256": "f437179cefb534a34685ab224a010911b8578094b29fdc8f09c4d4aed5636b33",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_13/causality_full_universe/f437179cefb534a34685ab224a010911b8578094b29fdc8f09c4d4aed5636b33.json",
+          "sha256": "f2116a9f2a41c13249dd8cfaaf588d5cedde823edd9a52f26605e8ae32f628ac"
+        },
+        {
+          "code_sha256": "9f67c499063e61c695d044de2534961fcc00d7452b184154239c9185eb1acbb8",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_13/causality_full_universe/9f67c499063e61c695d044de2534961fcc00d7452b184154239c9185eb1acbb8.json",
+          "sha256": "c66e187a8ce5a21b132a919b01b2674243d079a23e9892cee2ff2d21289b1556"
+        },
+        {
+          "code_sha256": "abedc9ee4f1ac5df40e6690a8c6eaad8ee01dc5ba173bd4f4a9326183fe95f57",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_13/causality_full_universe/abedc9ee4f1ac5df40e6690a8c6eaad8ee01dc5ba173bd4f4a9326183fe95f57.json",
+          "sha256": "b88c80caf209fe30e67a4011851073541e4f24ff8424fe94225b1e960653dd02"
+        },
+        {
+          "code_sha256": "585095294f18cd3788ffaf7707a84390393ad3943d5d0aba4058b3a3f73dea7b",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_13/causality_full_universe/585095294f18cd3788ffaf7707a84390393ad3943d5d0aba4058b3a3f73dea7b.json",
+          "sha256": "b9eacf9d8e0b9a1d667a1e2107c4a97025b42b73702f75a3e300d13835557090"
+        }
+      ],
+      "recipe_sha256": "33a0461064a4be86422380752ea924e75604f336b61619caacb19ffa5ef328eb",
+      "replay": {
+        "attempted_rounds": 5,
+        "path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_13/full_replay_validation.json",
+        "sha256": "850df3e43ebdd9f714f96d34fa716b456d720a5e54c365ee78a182d3179a0f3c"
+      },
+      "run": "alphaagent_rounds_paper_gpt35_13",
+      "strict_budget_complete": true,
+      "trial": 13,
+      "unattempted_round_indices": [],
+      "used_manifest_sha256": "a7c064af0e78a63dd875f28b106ebd11986a8c3efac098fb9bfeb13303ea93eb",
+      "used_program_count": 10
+    },
+    {
+      "account_validation_sha256": "6ab0f1673b483d440de6d45029c54104db0ec15314cc486945b410bf1b80a477",
+      "attempted_rounds": 3,
+      "completed_trajectories": 2,
+      "execution_exit_sha256": "29998b0c27ba8b4a08a32d5334824229f9ec1663874f6ff5fe72af7f99bd069e",
+      "failed_round_indices": [
+        2
+      ],
+      "native_status": "native_early_abort",
+      "program_proofs": [
+        {
+          "code_sha256": "cbb6d14b71931f8dcc03bbf98616afa5903c20fde219f06bddd63094d802e7ce",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_14/causality_full_universe/cbb6d14b71931f8dcc03bbf98616afa5903c20fde219f06bddd63094d802e7ce.json",
+          "sha256": "b1e4b675bb97cc714dd6da677275a0758dc303829ba15320d8fe32ada279af30"
+        },
+        {
+          "code_sha256": "b0955ebc890f1ffd2c229769c72f5f034abef611c17fb3a1d5903bf97412f67b",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_14/causality_full_universe/b0955ebc890f1ffd2c229769c72f5f034abef611c17fb3a1d5903bf97412f67b.json",
+          "sha256": "14cc3f335dda056c706d75ebc1e9f865748f43e93a31acdc10650050fa6ce1d3"
+        },
+        {
+          "code_sha256": "e97297af702c5c3359de15366d3fb07cc04730dfce3da12d10ef24decbc063e4",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_14/causality_full_universe/e97297af702c5c3359de15366d3fb07cc04730dfce3da12d10ef24decbc063e4.json",
+          "sha256": "93629878261d7dade102b45e42a6993b47ed05c1453551ad54764ea3cbf48408"
+        },
+        {
+          "code_sha256": "cdd492c5cdd1b22bd6e892e4e6bfb66dc93e7816ab6473a358f6997890f3717a",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_14/causality_full_universe/cdd492c5cdd1b22bd6e892e4e6bfb66dc93e7816ab6473a358f6997890f3717a.json",
+          "sha256": "fd3bcafacca7a2feda56d92cf581c49d0493f113480f54c1cb0a862ef09e4d0f"
+        }
+      ],
+      "recipe_sha256": "cb3c104c11468a2147aa4f29d78315101f8528cef3f8f9f1f3e1c64b76526d17",
+      "replay": {
+        "attempted_rounds": 3,
+        "path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_14/observed_abort_replay_validation.json",
+        "sha256": "88751994c6d37e837bc01bee30467385f63ea54ee1fa995e9234e0c0230ee33c"
+      },
+      "run": "alphaagent_rounds_paper_gpt35_14",
+      "strict_budget_complete": false,
+      "trial": 14,
+      "unattempted_round_indices": [
+        3,
+        4
+      ],
+      "used_manifest_sha256": "b7c3d127b824ba22093949bfeb995bb50d2c000aea11ad56805b174eaf8efd7c",
+      "used_program_count": 4
+    },
+    {
+      "account_validation_sha256": "814d8c7b1614e374221fdbcc75a6aed68c7b90b3190fc7f83b46f206236df759",
+      "attempted_rounds": 5,
+      "completed_trajectories": 4,
+      "execution_exit_sha256": "50eb06cee34b13e802592a5d984d2142bffcf695b4ceb48de8701bd036502a70",
+      "failed_round_indices": [
+        4
+      ],
+      "native_status": "native_final_attempt_failed",
+      "program_proofs": [
+        {
+          "code_sha256": "d7b0c17b31ea2b33be41df7f3872088a7a26bcc17a54ac1e42e7854ec3d89511",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_15/causality_full_universe/d7b0c17b31ea2b33be41df7f3872088a7a26bcc17a54ac1e42e7854ec3d89511.json",
+          "sha256": "7e284b20c079d23f7790d27ab6efbd2e5724076ee936090d1956045f7a6a966b"
+        },
+        {
+          "code_sha256": "d225c1c5aacd40e1d529ece0dd42feeb23353b13ea168a72643541678df25c1b",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_15/causality_full_universe/d225c1c5aacd40e1d529ece0dd42feeb23353b13ea168a72643541678df25c1b.json",
+          "sha256": "4cf0b1e297bf86795f012efae31b5a38a2c0188fd4db34120da752829a4c4375"
+        },
+        {
+          "code_sha256": "32f7507d5e368fba787650dd77987cf97f7c8c5b219e9984ff1a65a5fbc54a1a",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_15/causality_full_universe/32f7507d5e368fba787650dd77987cf97f7c8c5b219e9984ff1a65a5fbc54a1a.json",
+          "sha256": "38ee719903da645cbfe5626810c4b66ed95f4ed288048a1c37a1c46199fe2163"
+        },
+        {
+          "code_sha256": "508003651ba1d8a62322fee0425ef690bf9705c0cac4e8ac16ed34204cb8a20c",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_15/causality_full_universe/508003651ba1d8a62322fee0425ef690bf9705c0cac4e8ac16ed34204cb8a20c.json",
+          "sha256": "45bcac0ed86e971956eca3677bc8ef78fc6fa92b35cd5ed7aedf77c7661a2970"
+        },
+        {
+          "code_sha256": "670e127084b62743977c9bd4322fad54d79ed9fafff4c3117ac0547dca1ba014",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_15/causality_full_universe/670e127084b62743977c9bd4322fad54d79ed9fafff4c3117ac0547dca1ba014.json",
+          "sha256": "0caad89eda0eb8df1cac3c64ba9530bc7686f30e1c53bd5fc186bcca70f2a84b"
+        },
+        {
+          "code_sha256": "58f10a1da69568db9448340a49218739eaf9f631694ee46e2db4be5417a3d257",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_15/causality_full_universe/58f10a1da69568db9448340a49218739eaf9f631694ee46e2db4be5417a3d257.json",
+          "sha256": "03f717d677c37d99b2bb4af1720a126be5eee9183372190835379b7a59c73a59"
+        },
+        {
+          "code_sha256": "dba1ec170b97820e7342779a52929e70fab819d36b7ea4417a89d9ad9e2f2c4d",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_15/causality_full_universe/dba1ec170b97820e7342779a52929e70fab819d36b7ea4417a89d9ad9e2f2c4d.json",
+          "sha256": "6975aacb18de84253e918e18b95fd227427d279cc9d2edfd4ddf3f4e355138c5"
+        }
+      ],
+      "recipe_sha256": "9b9ee866dc10a86ec98bdd879b297d13ed58cfcfc1ad36f43515a97d8ed1171d",
+      "replay": {
+        "attempted_rounds": 5,
+        "path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_15/full_replay_validation.json",
+        "sha256": "964a75439f3ed7808cdf1645ec4ee67c4d389e0ad23f3cde8d9afa6b367e9f88"
+      },
+      "run": "alphaagent_rounds_paper_gpt35_15",
+      "strict_budget_complete": true,
+      "trial": 15,
+      "unattempted_round_indices": [],
+      "used_manifest_sha256": "a3ee09fc21eb1429334c8b89b595fd944d10a0797280d8f21dee5f0b6a5458d4",
+      "used_program_count": 7
+    },
+    {
+      "account_validation_sha256": "b9f167d43f289c6188c77ae5980278f6be04609b947c781fb6aabe651962607f",
+      "attempted_rounds": 5,
+      "completed_trajectories": 4,
+      "execution_exit_sha256": "78793f1e9cff653ee4c744eb31de194626b7a6310e4e579dce9807fbf3a4497e",
+      "failed_round_indices": [
+        0
+      ],
+      "native_status": "native_round_budget_exhausted",
+      "program_proofs": [
+        {
+          "code_sha256": "689ece2ecff7fcdf07bf1d436fcd3beb41ede110f95a2b76410c6e9d1b11d06b",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_16/causality_full_universe/689ece2ecff7fcdf07bf1d436fcd3beb41ede110f95a2b76410c6e9d1b11d06b.json",
+          "sha256": "aab4f4e7e45051b96de66818119bf1e14d5582cd9aa72118a16dfef429c110c1"
+        },
+        {
+          "code_sha256": "853c7c59139df76af8c3fbc6a87cdfb5f7e779b654a695de645c3784a8d61ba8",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_16/causality_full_universe/853c7c59139df76af8c3fbc6a87cdfb5f7e779b654a695de645c3784a8d61ba8.json",
+          "sha256": "8585e1ebbc8387904bbad3cf69d8c1330bdc44e8d00492d009b0bbc385fb8f4b"
+        },
+        {
+          "code_sha256": "06c781e39c1814f33b827c0c0d26032d2154858e1725c106c9ae19a05160e2b0",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_16/causality_full_universe/06c781e39c1814f33b827c0c0d26032d2154858e1725c106c9ae19a05160e2b0.json",
+          "sha256": "51de2b292fbde4bceec4395745a525b873f6987b6560f2cbf3a5786de09a6ab2"
+        },
+        {
+          "code_sha256": "4bcdf39e64e8ec15139cab598ed3edf39692efa40ae738ea75c9600f4485e5c5",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_16/causality_full_universe/4bcdf39e64e8ec15139cab598ed3edf39692efa40ae738ea75c9600f4485e5c5.json",
+          "sha256": "0a02d5f668a634b0c8e9b426e7d811cbbdf81e975c07d2d88bb071171dd30038"
+        },
+        {
+          "code_sha256": "a28fb5d505f9d3a1d24a5985ffffbc19aa4287c846df03a2447930518a8ededf",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_16/causality_full_universe/a28fb5d505f9d3a1d24a5985ffffbc19aa4287c846df03a2447930518a8ededf.json",
+          "sha256": "2b6a80f1051734bf4cc7bb4b7d9465e6187a679333d935ceb9201cd22b4edceb"
+        },
+        {
+          "code_sha256": "42154d8578c2976045ee72904c9a579297aa21fc60f2882788c998a14209d95a",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_16/causality_full_universe/42154d8578c2976045ee72904c9a579297aa21fc60f2882788c998a14209d95a.json",
+          "sha256": "130bce06659e070166fdabb57b85a79bfacfc6ca32c0ca4c86746e3ea5ab5c6e"
+        },
+        {
+          "code_sha256": "bf0e6355fa49b8d0bf8ceb564dc9170f7b957be0d415f58bdd04b6b505fb1e4b",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_16/causality_full_universe/bf0e6355fa49b8d0bf8ceb564dc9170f7b957be0d415f58bdd04b6b505fb1e4b.json",
+          "sha256": "7a74e73ca8129f8b8ab1a0e71e6648207b771da69bf43f4f6c936579ac51b25f"
+        }
+      ],
+      "recipe_sha256": "3297250208b5369609743fd8a571d907d02a9d8e7784aad1346d7d77fc02e275",
+      "replay": {
+        "attempted_rounds": 5,
+        "path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_16/full_replay_validation.json",
+        "sha256": "52e220e2c3e0acfca9c7b8c6c735da26f59e7cf453fd0b61e998cad4ae74b483"
+      },
+      "run": "alphaagent_rounds_paper_gpt35_16",
+      "strict_budget_complete": true,
+      "trial": 16,
+      "unattempted_round_indices": [],
+      "used_manifest_sha256": "7c4faf00cfe1dc23a1f17aae60170f4dd6feb575a89bcf89d468cdab7b2a56d3",
+      "used_program_count": 7
+    },
+    {
+      "account_validation_sha256": "910128d3ac393e0d8822dba750e888017d1553da65543bccb338188b73a0b89a",
+      "attempted_rounds": 5,
+      "completed_trajectories": 4,
+      "execution_exit_sha256": "0dd95373be9d6af8bc568281cbf59dfc3a4b5a5f38fc884801960a65b324e1cd",
+      "failed_round_indices": [
+        1
+      ],
+      "native_status": "native_round_budget_exhausted",
+      "program_proofs": [
+        {
+          "code_sha256": "37205ef37e4a9552c8829bcf114192cffe80f6071f48fd880dc07c0ffc8aac81",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_17/causality_full_universe/37205ef37e4a9552c8829bcf114192cffe80f6071f48fd880dc07c0ffc8aac81.json",
+          "sha256": "8751c09f268bb3511daa88b16213297be682d8aa336f1e3d7f4bdfd3049f5d65"
+        },
+        {
+          "code_sha256": "b6537bb7f5f01a21c982aabeb7e76d3e79c05177af20f2786d183d51467a9b6e",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_17/causality_full_universe/b6537bb7f5f01a21c982aabeb7e76d3e79c05177af20f2786d183d51467a9b6e.json",
+          "sha256": "2a51a4bccc470484a7298262cd9815ffb4af43ad3f623bc30bd367e84bde8b98"
+        },
+        {
+          "code_sha256": "2e7e0d623ec9404e51bcac5f9d4b3811e5805de42c2f5de76c0d4210e1f156ba",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_17/causality_full_universe/2e7e0d623ec9404e51bcac5f9d4b3811e5805de42c2f5de76c0d4210e1f156ba.json",
+          "sha256": "4a662de82441d0e397b0296295ebff97c8f9944736a41375f84d9fc334e1998c"
+        },
+        {
+          "code_sha256": "53be4adc0633de4f07e844f0b80540a80d975e4ba651b9615810f4b5be3b9692",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_17/causality_full_universe/53be4adc0633de4f07e844f0b80540a80d975e4ba651b9615810f4b5be3b9692.json",
+          "sha256": "702f6d135006edb26c0966af6250fbb2007dd56aa11a8f0cdd8bb28d6e422d17"
+        },
+        {
+          "code_sha256": "6bcb36561a89a09f27c03d3ccaef629ac3461dbbcabf49c37120809406554b21",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_17/causality_full_universe/6bcb36561a89a09f27c03d3ccaef629ac3461dbbcabf49c37120809406554b21.json",
+          "sha256": "580f8432fc29a1decae9e6c70778f297a7c0262b1d4bd5560fcf83d6ffb03a86"
+        },
+        {
+          "code_sha256": "fb2ff6a30ef5f5fddefdf1863dd42975da4f7526e3a3e4a58e3f80032e6392ee",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_17/causality_full_universe/fb2ff6a30ef5f5fddefdf1863dd42975da4f7526e3a3e4a58e3f80032e6392ee.json",
+          "sha256": "66c5ec293ecc1d19b51f780029d624ebf0ca939d3689df2d8a1f38b2644f515b"
+        },
+        {
+          "code_sha256": "30717a5635cb543551657c4d408c00d679634a60a0d9866babf68e832a866df3",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_17/causality_full_universe/30717a5635cb543551657c4d408c00d679634a60a0d9866babf68e832a866df3.json",
+          "sha256": "12446a67f4aacae87e05c1998522af7936dabc52a1827841763346d935077873"
+        },
+        {
+          "code_sha256": "a6f2ae6a79be683dd431b6ced203171cd48c04a2d2bb2957cff0633c0ad70349",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_17/causality_full_universe/a6f2ae6a79be683dd431b6ced203171cd48c04a2d2bb2957cff0633c0ad70349.json",
+          "sha256": "a56c59d1dbf179817098833fc103d9ce8ab35c899a3da447bdffe85a0efbf4f8"
+        },
+        {
+          "code_sha256": "52d7a4235a355dd3923f7c84f3e1c31489e7d134698fdb2bfa1a19d5692404f2",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_17/causality_full_universe/52d7a4235a355dd3923f7c84f3e1c31489e7d134698fdb2bfa1a19d5692404f2.json",
+          "sha256": "7e4d5538dece8d0cba45b8c7e3c61968906b7d1f20de0f483b66e193e38108a4"
+        }
+      ],
+      "recipe_sha256": "fc80c513e2690fbb808ba9e99cb9ee7cf233633f1912d4c243444cc4d7dcf621",
+      "replay": {
+        "attempted_rounds": 5,
+        "path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_17/full_replay_validation.json",
+        "sha256": "fba2cec3fbd1d67c8ef35fd494700a67c149d0b35de6dd5083a81d270620ee8c"
+      },
+      "run": "alphaagent_rounds_paper_gpt35_17",
+      "strict_budget_complete": true,
+      "trial": 17,
+      "unattempted_round_indices": [],
+      "used_manifest_sha256": "640d762c5987064a43e38f548e963f3acb928276cd266c7194b0b4740c47d823",
+      "used_program_count": 9
+    },
+    {
+      "account_validation_sha256": "e0e5d8f28bc12ae69934086811d2ef458ad6f813fd42d29e7c0f67b3e7ea8cc5",
+      "attempted_rounds": 5,
+      "completed_trajectories": 5,
+      "execution_exit_sha256": "206e8e469eb0c3a15add555795a2fe19a0f30da56866b282a0b45a04ea05a879",
+      "failed_round_indices": [],
+      "native_status": "native_round_budget_exhausted",
+      "program_proofs": [
+        {
+          "code_sha256": "7495a9e261b9fe969b5bedfbc1cbf94c13321aba540f985237a08116acb895ea",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_18/causality_full_universe/7495a9e261b9fe969b5bedfbc1cbf94c13321aba540f985237a08116acb895ea.json",
+          "sha256": "aba4459b87e60f614c90b738956e4e2336c3a8c59e893e936639e7de403a9731"
+        },
+        {
+          "code_sha256": "b7e95170136fd746eceb723c5298426f7d4b2fb697f89b80dbca1638dfed3477",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_18/causality_full_universe/b7e95170136fd746eceb723c5298426f7d4b2fb697f89b80dbca1638dfed3477.json",
+          "sha256": "c01ca77dc64c803f3e418fb98796314d1be39f40cdd7f5c33f67897470af208d"
+        },
+        {
+          "code_sha256": "3658d7cdd53d487b77ac779e41e6b28017e84f68da25a211ef435cf72eba2736",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_18/causality_full_universe/3658d7cdd53d487b77ac779e41e6b28017e84f68da25a211ef435cf72eba2736.json",
+          "sha256": "72ee2ce5e2c1a2058fed8a87e99f5c8606846285564db26bc5c097666b70ded6"
+        },
+        {
+          "code_sha256": "8af6d11412e0d98ab8de7dff6b52af9e1b3ef22a0a4c3ece8cd1fd3ff6031932",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_18/causality_full_universe/8af6d11412e0d98ab8de7dff6b52af9e1b3ef22a0a4c3ece8cd1fd3ff6031932.json",
+          "sha256": "76baa50a64a2f7fddd7ec701d7c3e0ec91f13f2b2706931247dd0a040376957f"
+        },
+        {
+          "code_sha256": "3bb2c63f32770f7b4dd571d3b9d94f4c2318efa14cbd45cfe30f56ad495c3287",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_18/causality_full_universe/3bb2c63f32770f7b4dd571d3b9d94f4c2318efa14cbd45cfe30f56ad495c3287.json",
+          "sha256": "a3cc4478e6e0e20ca820c600c5bf3c4f03c22e37747a7633064897e282ac43d6"
+        },
+        {
+          "code_sha256": "1d52dd723d32fd56e7195879bcdcee6ac5272e9b4998d74534ddaa6672197789",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_18/causality_full_universe/1d52dd723d32fd56e7195879bcdcee6ac5272e9b4998d74534ddaa6672197789.json",
+          "sha256": "3a02fc93be2b64a085c3f8628cfb0df6dbec9c37535c7f3ef18b36031ecb9f36"
+        },
+        {
+          "code_sha256": "e9a816796b609e3243fbc65d05952beef3ab3353bad06f76944a34f5b8a83014",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_18/causality_full_universe/e9a816796b609e3243fbc65d05952beef3ab3353bad06f76944a34f5b8a83014.json",
+          "sha256": "7b07214c2ada47f4dc90b46cf0a0f27685f60e15b25e6d7e19c5932ad1198a96"
+        },
+        {
+          "code_sha256": "e43d9a8f06a1ad32abddf0ca8dbb0c6a1e821467d3846553eca5d82fd88f9e91",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_18/causality_full_universe/e43d9a8f06a1ad32abddf0ca8dbb0c6a1e821467d3846553eca5d82fd88f9e91.json",
+          "sha256": "82ba8d4bf0a29a833accec7975b5ae1563efd68c0cc63ed15647b0a2e6683c6f"
+        },
+        {
+          "code_sha256": "4cfa7e06fbbac04678a78453cd6471be5a2099a84428c3bb9ee5410ed462eb86",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_18/causality_full_universe/4cfa7e06fbbac04678a78453cd6471be5a2099a84428c3bb9ee5410ed462eb86.json",
+          "sha256": "dcc4b129e9d6444b3697f4bfe8e49245a867df1bbc6960fa28fc70143b1af5d0"
+        },
+        {
+          "code_sha256": "e83162b3e78cc1af4664e05c003ec8a9cec51c9e0ce4da25431b959a523359fd",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_18/causality_full_universe/e83162b3e78cc1af4664e05c003ec8a9cec51c9e0ce4da25431b959a523359fd.json",
+          "sha256": "92802d1998e543b4009b65bcb34fa5674361104cf748fa998c458981325590f1"
+        },
+        {
+          "code_sha256": "2be5c46b80451dbe1f6237158ee6e326a8e9fbf9d6a06b4bde61bb0c2b5fc81c",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_18/causality_full_universe/2be5c46b80451dbe1f6237158ee6e326a8e9fbf9d6a06b4bde61bb0c2b5fc81c.json",
+          "sha256": "927e4bd6219281c0aa14a9544ba1028f0d9f0d101ee4f815babf9a517caa6a86"
+        }
+      ],
+      "recipe_sha256": "53ffcce961558ad2796800c90cfdb2c16ebe1dfaa8831b1f3d99809a0305fbbd",
+      "replay": {
+        "attempted_rounds": 5,
+        "path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_18/full_replay_validation.json",
+        "sha256": "94d6739cca725824969e2e5b63efedc265e10d7f5556fe36ee930b547a1a14be"
+      },
+      "run": "alphaagent_rounds_paper_gpt35_18",
+      "strict_budget_complete": true,
+      "trial": 18,
+      "unattempted_round_indices": [],
+      "used_manifest_sha256": "d52882676a88be52cd93f8c45d045cf0d6da4ea454e65869ac9090ba7f92a69e",
+      "used_program_count": 11
+    },
+    {
+      "account_validation_sha256": "bfeddeec157ad9cc619c40f8e2479352a4275bba834e559090104f0135ba598b",
+      "attempted_rounds": 5,
+      "completed_trajectories": 5,
+      "execution_exit_sha256": "64910bd6c079e4a065de7711859fa974501e40223d3ffc31b339a46c14b719be",
+      "failed_round_indices": [],
+      "native_status": "native_round_budget_exhausted",
+      "program_proofs": [
+        {
+          "code_sha256": "0140a1086fc20a7836f0bb847acbf64275524018837c75d4b7bacd7bc42ee271",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_19/causality_full_universe/0140a1086fc20a7836f0bb847acbf64275524018837c75d4b7bacd7bc42ee271.json",
+          "sha256": "a6f1476a2993373857c772f970447daf9d99d438e6ae3cbadfaccc8023252874"
+        },
+        {
+          "code_sha256": "a3ddb0945f3158a22633525f7bac3e65c0870805b6dfd5547a73cd624b3b746e",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_19/causality_full_universe/a3ddb0945f3158a22633525f7bac3e65c0870805b6dfd5547a73cd624b3b746e.json",
+          "sha256": "03a0ee733fcd9bc361a1403e309ceb446d28ff6a4d50e9e37d86bab7c849a99f"
+        },
+        {
+          "code_sha256": "98d496ab1f6379a6e5971c13d2e64f5e0c32aafc9f4b46aa8e79e6f9851f7734",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_19/causality_full_universe/98d496ab1f6379a6e5971c13d2e64f5e0c32aafc9f4b46aa8e79e6f9851f7734.json",
+          "sha256": "415e1eb09e2ecb2f8fdd184ba23d11a2201d98dd9a4f5d2a21afcd189bc5c1ce"
+        },
+        {
+          "code_sha256": "d30d9d5f9e86e7eb67ed052da2095c3b7e29d56edf849c8ddb2bda823851ba8e",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_19/causality_full_universe/d30d9d5f9e86e7eb67ed052da2095c3b7e29d56edf849c8ddb2bda823851ba8e.json",
+          "sha256": "73a34938fda1afdb598d4012eaa4f5bc6c9b6a06d12d7b903c14b45bb7c16523"
+        },
+        {
+          "code_sha256": "984d4cc8e38c692694bed3a796fa998e6a50ce2f6dd4df84eb95fe62684d804d",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_19/causality_full_universe/984d4cc8e38c692694bed3a796fa998e6a50ce2f6dd4df84eb95fe62684d804d.json",
+          "sha256": "ae1c3c8cd99748c9d3e2454b7c0876badec778102b518dd35b815c4b74e1338c"
+        },
+        {
+          "code_sha256": "2d3d1b8b47c3d7ec70ef87c6a3bbb7da3646b26e73bbd68a2d9c5c16fa510683",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_19/causality_full_universe/2d3d1b8b47c3d7ec70ef87c6a3bbb7da3646b26e73bbd68a2d9c5c16fa510683.json",
+          "sha256": "001070f46c2f7f806e9643715459f5683eb5e5f317e585ab197d756096ed6aca"
+        },
+        {
+          "code_sha256": "0fdf0ed3f19253a5c70bca6c5143d1fc1dc22edbcf062a6352c484e869812cde",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_19/causality_full_universe/0fdf0ed3f19253a5c70bca6c5143d1fc1dc22edbcf062a6352c484e869812cde.json",
+          "sha256": "6c683d1e76752531f1d8874665ea629ebab1a2f3588deee539016f4257865bfe"
+        },
+        {
+          "code_sha256": "9e72da999d23b517877f7f4dc0dbb797f2575b23ea594eaa7fa3d375bce35d02",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_19/causality_full_universe/9e72da999d23b517877f7f4dc0dbb797f2575b23ea594eaa7fa3d375bce35d02.json",
+          "sha256": "ef37db9d9089650b23e7a36f08866b7508a20074ab2876dead85e52737689e6c"
+        },
+        {
+          "code_sha256": "b8fc9f827e1e27619f130454b5ee42ee3df65eb66e7b4b363923878b6feaaedc",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_19/causality_full_universe/b8fc9f827e1e27619f130454b5ee42ee3df65eb66e7b4b363923878b6feaaedc.json",
+          "sha256": "cc66ab00170961bee57dc4cb5d58320c9e5707c169a38f35218ff69731404f78"
+        },
+        {
+          "code_sha256": "187f2ad9e4e922e3c4a3443ddc8d0c10feb90cf8e0a832b996c8c7d43ab3e219",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_19/causality_full_universe/187f2ad9e4e922e3c4a3443ddc8d0c10feb90cf8e0a832b996c8c7d43ab3e219.json",
+          "sha256": "65ea526cc89726c81ddaa41da549d94d671ddcb92f715265e37de79455c43527"
+        },
+        {
+          "code_sha256": "862d95fa8e61df3f6c654344831d0bd722f4d15f80f0e3c5384ef03eac525ae5",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_19/causality_full_universe/862d95fa8e61df3f6c654344831d0bd722f4d15f80f0e3c5384ef03eac525ae5.json",
+          "sha256": "c36a54e9465c0c9f6a990e5b65d7a1182995416a8413418cd3b11d02b42a7cc9"
+        },
+        {
+          "code_sha256": "29518558dddd4fba81d7cb3da88e7cce6d05daedc2d4889cf71ddce7b7341067",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_19/causality_full_universe/29518558dddd4fba81d7cb3da88e7cce6d05daedc2d4889cf71ddce7b7341067.json",
+          "sha256": "db5e6b9e705f4ea445a3d67631c16b2150e0d0710c3b3bc7e10863d7530fceca"
+        },
+        {
+          "code_sha256": "e10d7f3c6da85d1a23c1535ad1c47cb865dbfbde602b78ffa5dd921a5b2b7d1c",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_19/causality_full_universe/e10d7f3c6da85d1a23c1535ad1c47cb865dbfbde602b78ffa5dd921a5b2b7d1c.json",
+          "sha256": "076668fce7ad9e0165247644cbb1a07497769582f34622337499cc32c13293cf"
+        }
+      ],
+      "recipe_sha256": "87f76f5aaa7481dd185eb86fac75f40295e6f6c4e5f892606a81f29fc453372b",
+      "replay": {
+        "attempted_rounds": 5,
+        "path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_19/full_replay_validation.json",
+        "sha256": "52df12379d865a476018dd43b0771c9dfd9fe5e64490849e03e560fb049642aa"
+      },
+      "run": "alphaagent_rounds_paper_gpt35_19",
+      "strict_budget_complete": true,
+      "trial": 19,
+      "unattempted_round_indices": [],
+      "used_manifest_sha256": "c97d9f08e253222edcfb7e4420d8db9e0f2b6140f34e56450a5096b38a1da094",
+      "used_program_count": 13
+    },
+    {
+      "account_validation_sha256": "a388fc66cfc772f324b6063b06e00be355d568be3e07f00945b06bfaeb58d64d",
+      "attempted_rounds": 5,
+      "completed_trajectories": 5,
+      "execution_exit_sha256": "9187851dfeb7fabb0f11a94ef7298026c8628fec6c7e41a54a54cc9a06071aa3",
+      "failed_round_indices": [],
+      "native_status": "native_round_budget_exhausted",
+      "program_proofs": [
+        {
+          "code_sha256": "963f2fd4094518513c6be866effbe1304294d1b255d1bb1c4dc7c986c7a2bfeb",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_20/causality_full_universe/963f2fd4094518513c6be866effbe1304294d1b255d1bb1c4dc7c986c7a2bfeb.json",
+          "sha256": "4fe12fd22d1c2e7bbf98a3b13c9b27599bc507073843457f84ac534cbab16656"
+        },
+        {
+          "code_sha256": "d5f409e95639a89af30e1803b4c3b02ebb7ea72cd930796ff5e89e567ca1f076",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_20/causality_full_universe/d5f409e95639a89af30e1803b4c3b02ebb7ea72cd930796ff5e89e567ca1f076.json",
+          "sha256": "0dec50a567f104629c8aa9b5bd194051dd0a2f35df3365c17895cee9d9259ff8"
+        },
+        {
+          "code_sha256": "2225c90afce097445c942d0c60b35bdc3439e2cdb485d9fa2b85e26e9e3a8e1a",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_20/causality_full_universe/2225c90afce097445c942d0c60b35bdc3439e2cdb485d9fa2b85e26e9e3a8e1a.json",
+          "sha256": "e2fc978b3dff2be47160b624c1e01c22bd542e0f49eba88fec83f9d99de31977"
+        },
+        {
+          "code_sha256": "ce4efef6867e96770ad3b5a079d5b089a5b39d20dc65b8de506e92df798f3c38",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_20/causality_full_universe/ce4efef6867e96770ad3b5a079d5b089a5b39d20dc65b8de506e92df798f3c38.json",
+          "sha256": "a5e3a85b73d8b16ca67d3a7b32d72971f6af79b11526878cbca2794a455032f4"
+        },
+        {
+          "code_sha256": "74d1e2338ca88d722826aee0dc6ca56eb5df08c72ce5ae923824f6ea68fd6a6a",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_20/causality_full_universe/74d1e2338ca88d722826aee0dc6ca56eb5df08c72ce5ae923824f6ea68fd6a6a.json",
+          "sha256": "bcd4c621c1301313487d78cf34866ebf5de038fe9d2aa2c7b8676ceab3828c7d"
+        },
+        {
+          "code_sha256": "cccf732b61b5f5a07a2b41a21e7081806d324248e570073822eac1222a48a4ef",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_20/causality_full_universe/cccf732b61b5f5a07a2b41a21e7081806d324248e570073822eac1222a48a4ef.json",
+          "sha256": "d61652479b5db970f410739f3de91336d75207286c96465bed7ec76cbc4da60d"
+        },
+        {
+          "code_sha256": "0094ba56f22f4b4bf431158b4cabd2770cb0e5dd9f995f1cde03326361c65ebe",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_20/causality_full_universe/0094ba56f22f4b4bf431158b4cabd2770cb0e5dd9f995f1cde03326361c65ebe.json",
+          "sha256": "a14c724a3ebcc95a64b8ac844cdc9077203608d68020183fd396e11b4541ab9d"
+        },
+        {
+          "code_sha256": "357db4e002bea5bb4981e3479e17dbd02ba0c750c17a9a00dfd5a50cec0fdcf2",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_20/causality_full_universe/357db4e002bea5bb4981e3479e17dbd02ba0c750c17a9a00dfd5a50cec0fdcf2.json",
+          "sha256": "ad05d090c5249f19c37c6de7598f7605c8a8de0bfb6fdd88b0489525b8d2493b"
+        },
+        {
+          "code_sha256": "098e17934243e71b29db43ecfb00fba04bd0bc8f795e2f506289a5fdad4bf1ad",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_20/causality_full_universe/098e17934243e71b29db43ecfb00fba04bd0bc8f795e2f506289a5fdad4bf1ad.json",
+          "sha256": "6a91f145f4ef342e94e1f29abf1f7a8c436e13d03c152e5728a0084e59f52d70"
+        },
+        {
+          "code_sha256": "3d6b910ce095ca4c27a0f0c204c52f6cf7d9dd1359638d55e959925cc30ab6d1",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_20/causality_full_universe/3d6b910ce095ca4c27a0f0c204c52f6cf7d9dd1359638d55e959925cc30ab6d1.json",
+          "sha256": "7d98ff86afec2943a6240f3800a78bbde354dceeee3a4484c6c1215ec4301292"
+        }
+      ],
+      "recipe_sha256": "6795ad85ba44f69e56b78943d06ebeaad8daebdd397df91cee66b347edb3b4db",
+      "replay": {
+        "attempted_rounds": 5,
+        "path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_20/full_replay_validation.json",
+        "sha256": "1cea2ce7d68720bdad94b3f5f7f0fe45b9002bfdc2383ec9447c094089df1b4f"
+      },
+      "run": "alphaagent_rounds_paper_gpt35_20",
+      "strict_budget_complete": true,
+      "trial": 20,
+      "unattempted_round_indices": [],
+      "used_manifest_sha256": "d7ca30e0062f1279668f8081ffaad5dcdb4dd1ee97db62065af3cac56b54c989",
+      "used_program_count": 10
+    }
+  ],
+  "unattempted_rounds": 4
+}

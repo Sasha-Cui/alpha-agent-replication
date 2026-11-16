@@ -1,0 +1,20 @@
+[
+  {
+    "completion_sha256": "c9a29a92d2d27bcb2244dcbc9c8438646b48a5f30b8d6f70cfa44e09b18a1d0d",
+    "group": "grammar_101_103",
+    "library_factors": 1104,
+    "maximum_reaccounting_difference": 9.35015953551499e-16
+  },
+  {
+    "completion_sha256": "65c9e96abd67de18e237cce712e0dfa643741e6a93a952139366c0a0c28c53e2",
+    "group": "gpt41",
+    "library_factors": 1820,
+    "maximum_reaccounting_difference": 9.35015953551499e-16
+  },
+  {
+    "completion_sha256": "e8320e43151ca900132ddca71c85ed74ee7375dc235476b0e35a6aef797cb3cf",
+    "group": "deepseek_v3",
+    "library_factors": 2198,
+    "maximum_reaccounting_difference": 9.35015953551499e-16
+  }
+]

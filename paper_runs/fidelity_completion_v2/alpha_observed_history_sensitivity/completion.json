@@ -1,0 +1,31 @@
+{
+  "JKP132_alpha_established": false,
+  "actual_source_attempted_rounds": 96,
+  "calibration_sha256": "bfd83327b6b2d5dbc12d72e95e1492f441482fe6b1eaba427e14c4828b568c9f",
+  "full_original_paper_reproduced": false,
+  "inference_boundary": "Pointwise99% grouped arithmetic-mean intervals and descriptive raw p values, conditional on the realized mixed-budget library. No project-family significance declaration. Cagr fields use252-session geometric annualization, not calendar-time CAGR.",
+  "language_model_specific_advantage_established": false,
+  "new_llm_calls": 0,
+  "original54_secondary_family_complete": false,
+  "original_four_case_family_complete": false,
+  "outputs": {
+    "comparisons.json": "805e8fb84acb64f27ecfac94f2fda5eac30b0e35894701880f780ff761f1f151",
+    "daily_net_returns.csv": "899b0f8204a472acdd2e6cfe17134c89bcd235d4199bf5d3929d68cff8a490c8",
+    "execution_evidence.json": "fa64e64323d588bfcac1286da83a077028f5ed7580a9a4ff5113061830803579",
+    "observed_source_catalogue.json": "67d2f123c3bd414433cfc836b6cae9b1080584c3ec50240c3f7ef7d979997da5",
+    "performance.json": "ddd1656b53f6ea0c8c8b94774234b27f0b0160671dbadc273be3c1f0d41a646a"
+  },
+  "pristine_confirmatory_claim": false,
+  "protocol_sha256": "7b368a581b6a189fe0ff497309fe25c302d853372f5fb83969661dea329da60c",
+  "scope": "exploratory_all20_observed_history_sensitivity",
+  "source_files": {
+    "scripts/alpha_observed_history_evidence_v2.py": "c1dfba0f8ecc5f77ed2d45ad32092e8af4abcb466f64b3180495da90517d74d7",
+    "scripts/analyze_alpha_observed_history_v2.py": "084fbc2f37bb83183cfc1fb66848657e0235bd2cba3e8cfff4767483dc1b4be5",
+    "scripts/analyze_native_oos_v2.py": "b4830bcd64727703b7f0fc33d928bc7131deac441fb2cdff1130998a40cbe711",
+    "scripts/native_secondary_evidence_v2.py": "9d0b168138f48d4ee210a46b1add1a6b1a2bc6581f50150936f3fe1196dc35b9",
+    "src/alpha_evolve/publication_inference.py": "60daa77c578640a4ef0be2ed5dd64b863b75f0c780efb21bf2c21c5670216b81"
+  },
+  "status": "exploratory_observed_history_sensitivity_complete_not_primary",
+  "strict_primary_eligibility": false,
+  "unattempted_rounds": 4
+}

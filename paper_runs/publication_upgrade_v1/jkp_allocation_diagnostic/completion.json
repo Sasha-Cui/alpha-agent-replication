@@ -1,0 +1,19 @@
+{
+  "agent_path_sha256": "bd8f2560cb01c32c7bce70063872980036d4952758293557029c881a9e0ae8cc",
+  "claim_boundary": "Conditional gross-factor allocation diagnostic; not unrestricted JKP132 alpha, not a net deployable fund, and not a test of the best possible allocator.",
+  "evaluation_end": "2024-12-31",
+  "evaluation_start": "2022-01-31",
+  "factor_panel_sha256": "84cd92c656ce309cdd2b996b8218942554fbe011e4f77ea08447a1b7cb81143d",
+  "mean_agent_weight_in_input_units": 0.002665175710917655,
+  "mean_factor_unit_gross_exposure": 1.622627981388023,
+  "months": 36,
+  "parameters": {
+    "covariance_diagonal_shrinkage": 0.5,
+    "min_train": 36,
+    "per_sleeve_past_vol_target": 0.1,
+    "risk_aversion": 10.0,
+    "risk_budget_l1_cap": 1.0
+  },
+  "status": "complete",
+  "training_start": "2019-01"
+}

@@ -1,0 +1,74 @@
+{
+  "fixed_utc": "2026-09-17T22:16:03.480852+00:00",
+  "status": "fixed_before_new_pooled_control_or_llm_pool_return_inspection",
+  "known_prior_results": "Frozen v1 results and the completed Quanta pooled/task results are known. This extension remains exploratory.",
+  "efs_pool_groups": [
+    "gpt41",
+    "deepseek_v3"
+  ],
+  "matched_grammar_pool_seeds": [
+    101,
+    102,
+    103
+  ],
+  "seed_selection": "First three frozen v1 seed IDs in protocol order, never ranked by economic outcomes. All ten existing seed results remain preserved as diagnostics.",
+  "matched_generation_budget": "Three trajectories per pool, each290scheduled search rounds and870planned candidates. Actual LLM parsing/admission counts are retained and reported; no successful-only replacement. Grammar has a narrower fixed hypothesis space.",
+  "control_library": "Recover every accepted code and its discovery date from byte-verified frozen v1 archive artifacts; independently re-account existing weights and verify every selected factor was available. No old search/model rerun. Pool with identical all-accepted union, source-code deduplication, earliest-discovery gate, source evaluator/ranking/normalization/portfolio/fees as LLM pools.",
+  "primary_efs_contrasts": "Each causal-discovery-gated three-trajectory LLM pool minus the causal-discovery-gated three-trajectory grammar pool at10bp, exact2019\u20132024dailycalendar, aggregated to72complete calendar months. No hindsight primary.",
+  "other_controls": "Initial library, equal-weight universe, ten-single-grammar-seed paths, every individual LLM trajectory, and0/25/50bp stress are retained as descriptive comparisons. They do not replace the matched pool based on returns.",
+  "inference": {
+    "frequency": 12,
+    "groups": 4,
+    "confidence": 0.99,
+    "economic_margin": 0.02,
+    "family_threshold": 0.01,
+    "project_v2_economic_family": [
+      "alphaagent_opening_alpha158_increment",
+      "quantaalpha_opening_alpha158_increment",
+      "efs_gpt41_pooled_minus_matched_grammar_pool",
+      "efs_deepseek_v3_pooled_minus_matched_grammar_pool"
+    ],
+    "project_family_size": 4,
+    "multiplicity": "Preserve previously frozen native two-contrast results as local-study results. Add a stricter four-contrast project-wide Holm correction when all four exist; a completed subset gets4*p conservative Bonferroni upper bounds. Missing contrasts never disappear from denominator. EFS local two-contrast values can be diagnostic only. Degenerate comparisons usep1.",
+    "limits": "Conditional on libraries and shared historical market paths; model/control trials are not independent histories. Four18-month blocks assume approximate independent normal estimates; prior calibration is diagnostic, not universal coverage."
+  },
+  "jkp": {
+    "factor_file": "paper_runs/prompt_replay/guruagents/performance/factor_panel_extended_realization.csv",
+    "factor_sha256": "84cd92c656ce309cdd2b996b8218942554fbe011e4f77ea08447a1b7cb81143d",
+    "factor_columns": "132char__ portfolios plus capm_top1000_mkt; exactly133",
+    "unrestricted_regression": "Report not_identified for72observations versus134intercept/coefficients; never fit a pseudoinverse and call it unrestricted alpha.",
+    "low_dimensional_diagnostic": [
+      "capm_top1000_mkt",
+      "char__be_me",
+      "char__market_equity",
+      "char__at_gr1",
+      "char__ope_be",
+      "char__ret_12_1"
+    ],
+    "regularized_projection": {
+      "min_train_months": 36,
+      "ridge_penalty": 10,
+      "pca_components": [
+        null,
+        5
+      ],
+      "label": "Expanding training-only coefficients/scaling/PCA, but contemporaneous factor returns reconstruct the current return difference. Attribution diagnostic, NOT a tradable forecast and NO unrestricted-alpha pvalue."
+    },
+    "allocation": {
+      "min_train_months": 36,
+      "risk_aversion": 10,
+      "covariance_diagonal_shrinkage": 0.5,
+      "per_sleeve_past_vol_target": 0.1,
+      "risk_budget_l1_cap": 1,
+      "agent_weight": "nonnegative",
+      "factor_weights": "signed",
+      "claims": "Fixed synthetic gross-factor allocation diagnostic; agent internal10bp costs included, factor internal turnover/financing/allocation-change costs absent. Not a deployable net fund, best attainable frontier or unrestricted spanning test. Agent and factor monthly-return conventions retained explicitly."
+    }
+  },
+  "frozen_source_recipe_sha256": "e1ed69a4c1fea2ae0647e225be77a991ae15c8d3a38c6433988f5d07e6853904",
+  "matched_grammar_recipe_sha256": "b67c3cf4ccc7257e2d5aba29c6260923cc2f3f504afacfd8160f00543919bffa",
+  "frozen_v1_package_manifest_sha256": "aabbeef6d3bc127d688fda31df7952624818d77e592a913dc87fd9be795dafdd",
+  "new_model_calls": 0,
+  "full_original_paper_reproduced": false,
+  "human_review": "external_pending"
+}

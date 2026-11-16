@@ -1,0 +1,54 @@
+[
+  {
+    "backend": "gpt41",
+    "components": null,
+    "evaluation_observations": 36,
+    "evaluation_start_index": 36,
+    "label": "regularized chronological reconstruction diagnostic; no unrestricted spanning-alpha inference",
+    "mean_residual": -0.005432871402512449,
+    "model": "ridge_all_factors",
+    "no_unrestricted_alpha_p_value": true,
+    "not_a_tradable_forecast": true,
+    "penalty": 10,
+    "rmse": 0.04866725259431703
+  },
+  {
+    "backend": "gpt41",
+    "components": 5,
+    "evaluation_observations": 36,
+    "evaluation_start_index": 36,
+    "label": "regularized chronological reconstruction diagnostic; no unrestricted spanning-alpha inference",
+    "mean_residual": -0.0047168268447699176,
+    "model": "pca5_ridge",
+    "no_unrestricted_alpha_p_value": true,
+    "not_a_tradable_forecast": true,
+    "penalty": 10,
+    "rmse": 0.04284807340358608
+  },
+  {
+    "backend": "deepseek_v3",
+    "components": null,
+    "evaluation_observations": 36,
+    "evaluation_start_index": 36,
+    "label": "regularized chronological reconstruction diagnostic; no unrestricted spanning-alpha inference",
+    "mean_residual": -0.017432468034207605,
+    "model": "ridge_all_factors",
+    "no_unrestricted_alpha_p_value": true,
+    "not_a_tradable_forecast": true,
+    "penalty": 10,
+    "rmse": 0.05057429693892846
+  },
+  {
+    "backend": "deepseek_v3",
+    "components": 5,
+    "evaluation_observations": 36,
+    "evaluation_start_index": 36,
+    "label": "regularized chronological reconstruction diagnostic; no unrestricted spanning-alpha inference",
+    "mean_residual": -0.019306057778430672,
+    "model": "pca5_ridge",
+    "no_unrestricted_alpha_p_value": true,
+    "not_a_tradable_forecast": true,
+    "penalty": 10,
+    "rmse": 0.04264086738132299
+  }
+]

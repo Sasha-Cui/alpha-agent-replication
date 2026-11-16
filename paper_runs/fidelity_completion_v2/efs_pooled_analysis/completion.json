@@ -1,0 +1,36 @@
+{
+  "JKP132_unrestricted_alpha_identified": false,
+  "days": 1510,
+  "factor_panel_sha256": "84cd92c656ce309cdd2b996b8218942554fbe011e4f77ea08447a1b7cb81143d",
+  "full_original_paper_reproduced": false,
+  "matched_financial_block_sha256": "73572bdc35e7a020e9a21f529c5b56f2b96264f866bedd490c57e1fdc59c7248",
+  "monthly_calibration_reference_sha256": "9fea572af0f095548bf3935cec66a9469c7ea98d42a977448137babd38d4845f",
+  "months": 72,
+  "new_model_calls": 0,
+  "outputs": {
+    "chronological_reconstruction_diagnostics.json": "c5bc8f652c9debe38dd653be47e7bbaac3da84c51ded723fa16185d89b131d93",
+    "daily_pool_returns.csv": "7faaba76c7493804530469f23cc560676f01e17e66dfb8dd5d7f6975a10eb70a",
+    "descriptive_comparisons.json": "3f93702dc4cd9470ef9d8eb90e2b3bddb8c7e2ff6a86772aefa810a0f00c2899",
+    "execution_evidence.json": "8ae321c78c038cd61528654876c9ff606fc6fd0166387a789f9da173085f3e06",
+    "factor_attribution_diagnostics.json": "92d4e76966e0c956d07ecf1eee0f09806e6e6aaf6e0fd405faed560bdbc64ddb",
+    "gross_factor_allocation_diagnostics.json": "bc5ab104ddc94330c5ccd367694741c05d7b8ba1b97b6379f80ef3b8c01e2bd0",
+    "performance.json": "75be9c0aababa316938e5acde2a7cd24ee6ac97476bf36b94d8e52ded4417a6f",
+    "primary_comparisons.json": "3e0febb6fcc7905dafb57ab7e99e630fbc8333448a06bd8dc51c8d54bef3bfed"
+  },
+  "pristine_confirmation": false,
+  "private_outputs": {
+    "deepseek_v3_allocation_returns.csv": "1921d9626415c7273390f1f3abba61b52f2d479dd70203b56cf5fb5b82ec95dd",
+    "deepseek_v3_allocation_weights.npz": "ce02d7d5edc9267f526a0c2faee19b1702d461156deea471c9eb7d29b8dd21b7",
+    "deepseek_v3_pca5_ridge_reconstruction.csv": "68ebe3ec1ce3f122505b5bef553dbb90ce34ab93f65bbcf7a509dbdb4b254e40",
+    "deepseek_v3_ridge_all_factors_reconstruction.csv": "f6dcf937336e4842e75af85f16f55af94955f04bc8ad7fef8a6cc88684d56321",
+    "gpt41_allocation_returns.csv": "49ee8d6c9fc5dcf5534ee8cfe35afb010569f44ff4ff680ea0f1bd4de52bf674",
+    "gpt41_allocation_weights.npz": "1a94d7649567affcf84207096cc8a93b769846d11b52b2ec4298a6de38e2a545",
+    "gpt41_pca5_ridge_reconstruction.csv": "8c41f2b8b4712a0c225eb395faaf4881ac2dcf4dd80c7fe427ec2caa2cc8abef",
+    "gpt41_ridge_all_factors_reconstruction.csv": "de01af0bc4b2559ac79e7c0f61782e184ff3b7482188adf07078a14a199f9c5d",
+    "grammar_allocation_returns.csv": "913404075a13acec3b3ad4372ea83f8bfb75e21f3f96ec6fe3330fcd16efb74b",
+    "grammar_allocation_weights.npz": "ed3005f35c317da1d8bb36cbc20a75e34741395cd10453b9455e639c154708b4"
+  },
+  "protocol_sha256": "bd4c85e87e84411bcbd120ad2de9b1cfb5793c83fcf1f33da253d2b6cf5694f3",
+  "script_sha256": "fbc84accc6af5ddc22cda43b136954723012cd1c30f42bf18ec1047fe4bf4f37",
+  "status": "both_efs_pooled_cases_complete_project_family_pending"
+}
