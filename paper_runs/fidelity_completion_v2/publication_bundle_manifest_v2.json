@@ -1,0 +1,53 @@
+{
+  "archive_rebuilds": 0,
+  "archive_records": [
+    {
+      "bytes": 12712059,
+      "different_inode": true,
+      "different_project_allocation": false,
+      "kind": "public",
+      "members": 1355,
+      "path": "/nfs/roberts/project/pi_jss233/zc362/alpha_evolve/archives/fidelity_completion_v2_20260922/fidelity_review_v2_20260922.tar.gz",
+      "second_copy": "/nfs/roberts/project/pi_jss233/zc362/alpha_evolve/artifacts/fidelity_completion_v2/packages/fidelity_completion_v2_20260922/fidelity_review_v2_20260922.tar.gz",
+      "second_copy_sha256_verified": true,
+      "sha256": "958c8f7e095e8351425fb3f075c89ffb8e4388a56284459e4e8fe9e43792fbf7"
+    },
+    {
+      "bytes": 109301231152,
+      "different_inode": true,
+      "different_project_allocation": false,
+      "kind": "private",
+      "logical_bytes": 369597797858,
+      "logical_files": 122956,
+      "members": 30598,
+      "path": "/nfs/roberts/project/pi_jss233/zc362/alpha_evolve/archives/fidelity_completion_v2_20260922/fidelity_execution_v2_20260922.tar.gz",
+      "second_copy": "/nfs/roberts/project/pi_jss233/zc362/alpha_evolve/artifacts/fidelity_completion_v2/packages/fidelity_completion_v2_20260922_private_second_copy/fidelity_execution_v2_20260922.tar.gz",
+      "second_copy_sha256_verified": true,
+      "sha256": "2b8b574a939d46d55ee6497d69c29cffac6991b0dd61d7e99ab899148cf7aa27"
+    }
+  ],
+  "cleanup_completion_sha256": "a78ce4fc196b9208e0545c44825816ba96c26437ffca575b43f7cfef00d72bf8",
+  "copy_continuation_job": "27549793",
+  "copy_destination_selection": "artifacts/fidelity_completion_v2/archive_copy_after_migration_v2_20260926/destination_selection.json",
+  "copy_destination_selection_sha256": "85f0300091758cfd435886057e82a31d60647b76bdcdb0398744121c442c3a02",
+  "full_original_paper_reproductions": 0,
+  "independent_human_review": false,
+  "ledger_mutations": 0,
+  "member_readbacks_reused_verified_not_reexecuted": true,
+  "migration_verification_sha256": "39130df0fda6ab3e172a901417946f614716a25962ca8f0a7f9461aa1462a537",
+  "new_model_calls": 0,
+  "original_package_job": "27159153",
+  "original_package_job_state_preserved": "FAILED_1:0_private_second_copy_capacity_only",
+  "original_strict_Alpha_primary_unavailable": true,
+  "original_v2_primary_available": 3,
+  "original_v2_primary_denominator": 4,
+  "prior_own_snapshot_gate": "artifacts/fidelity_completion_v2/final_package_setup_20260922/own_snapshot_gate.json",
+  "prior_own_snapshot_gate_sha256": "cf9f9c566bee2a15bd12a542d44bdf0ab639694755569c07c0095435b9cbde2c",
+  "private_copy_failure_domain_note": "Both primary archives and both second file copies are on the JSS project allocation. Different file inodes are verified; separate-allocation and off-cluster fault isolation are not established.",
+  "project_committed_usd_including_uncertainty": 371.06592557000306,
+  "recorded_at_utc": "2026-09-26T01:04:04.021295+00:00",
+  "scientific_jobs_rerun": 0,
+  "scope": "Completed byte archives and durable file copies under the recorded destination choice. No off-cluster resilience or independent human-review claim. Original scientific scopes and missing primary remain unchanged.",
+  "source_snapshot_ledger_unchanged": true,
+  "status": "complete_archives_with_verified_durable_file_copies"
+}

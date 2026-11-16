@@ -1,0 +1,23 @@
+{
+  "created_at_utc": "2026-09-09T04:25:37.687867+00:00",
+  "durable_primary_location": "Roberts project allocation",
+  "packages": [
+    {
+      "bytes": 2830349,
+      "path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/publication_upgrade_v1/packages/alpha_agent_publication_review_20260907.tar.gz",
+      "second_copy": "/nfs/roberts/scratch/pi_btk22/zc362/publication_upgrade_backup_20260907/alpha_agent_publication_review_20260907.tar.gz",
+      "second_copy_verified": true,
+      "sha256": "a29c527848991cc04647a944365cdda2741dd7f7471794b40530413ff6e2cfca"
+    },
+    {
+      "bytes": 2058752481,
+      "path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/publication_upgrade_v1/packages/alpha_agent_publication_execution_20260907.tar.gz",
+      "second_copy": "/nfs/roberts/scratch/pi_btk22/zc362/publication_upgrade_backup_20260907/alpha_agent_publication_execution_20260907.tar.gz",
+      "second_copy_verified": true,
+      "sha256": "b270aec8b434293ef31a003413dc92832c335a758d211037f0a4fcdf88db00e2"
+    }
+  ],
+  "private_bundle_scope": "Execution inputs, exact source dependency archives, caches, outputs, tests and provenance. Full multi-company FINSABER download files are excluded; used prepared views and pinned download manifests are included. Central Python environments are represented by versioned manifests, not vendored installed packages.",
+  "second_copy_retention": "Scratch is temporary and subject to purge; it is not the durable archive",
+  "status": "complete"
+}

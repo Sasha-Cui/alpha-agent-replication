@@ -1,0 +1,92 @@
+{
+  "archive_records": [
+    {
+      "bytes": 12712059,
+      "different_inode": true,
+      "different_project_allocation": false,
+      "kind": "public",
+      "members": 1355,
+      "path": "/nfs/roberts/project/pi_jss233/zc362/alpha_evolve/archives/fidelity_completion_v2_20260922/fidelity_review_v2_20260922.tar.gz",
+      "second_copy": "/nfs/roberts/project/pi_jss233/zc362/alpha_evolve/artifacts/fidelity_completion_v2/packages/fidelity_completion_v2_20260922/fidelity_review_v2_20260922.tar.gz",
+      "second_copy_sha256_verified": true,
+      "sha256": "958c8f7e095e8351425fb3f075c89ffb8e4388a56284459e4e8fe9e43792fbf7"
+    },
+    {
+      "bytes": 109301231152,
+      "different_inode": true,
+      "different_project_allocation": false,
+      "kind": "private",
+      "logical_bytes": 369597797858,
+      "logical_files": 122956,
+      "members": 30598,
+      "path": "/nfs/roberts/project/pi_jss233/zc362/alpha_evolve/archives/fidelity_completion_v2_20260922/fidelity_execution_v2_20260922.tar.gz",
+      "second_copy": "/nfs/roberts/project/pi_jss233/zc362/alpha_evolve/artifacts/fidelity_completion_v2/packages/fidelity_completion_v2_20260922_private_second_copy/fidelity_execution_v2_20260922.tar.gz",
+      "second_copy_sha256_verified": true,
+      "sha256": "2b8b574a939d46d55ee6497d69c29cffac6991b0dd61d7e99ab899148cf7aa27"
+    }
+  ],
+  "cache_deleted_logical_bytes": 12584898540,
+  "cache_observed_filesystem_free_increase_bytes": 12585009152,
+  "cleanup_completion_sha256": "a78ce4fc196b9208e0545c44825816ba96c26437ffca575b43f7cfef00d72bf8",
+  "cleanup_job": "27527518",
+  "closed_at_utc": "2026-09-26T01:18:30.439478+00:00",
+  "closure_helper_sha256": "83022107ffe39c08d0c3aefe99259063e322e4a5b180a1be212d3664c2d140aa",
+  "closure_supplements": {
+    "private": {
+      "all_member_readbacks_pass": true,
+      "bytes": 47847377,
+      "different_inode": true,
+      "different_project_allocation": false,
+      "members": 90,
+      "path": "/nfs/roberts/project/pi_jss233/zc362/alpha_evolve/archives/fidelity_completion_v2_closure_20260926/fidelity_release_closure_private_20260926.tar.gz",
+      "second_copy": "/nfs/roberts/project/pi_jss233/zc362/alpha_evolve/artifacts/fidelity_completion_v2/packages/fidelity_completion_v2_closure_20260926/fidelity_release_closure_private_20260926.tar.gz",
+      "second_copy_sha256_verified": true,
+      "sha256": "50fab095d864a0ceccb166ef3ebf3a0ae0956282c87a45e7b8ab6ab1a23fe83f"
+    },
+    "public": {
+      "all_member_readbacks_pass": true,
+      "bytes": 126129,
+      "different_inode": true,
+      "different_project_allocation": false,
+      "members": 10,
+      "path": "/nfs/roberts/project/pi_jss233/zc362/alpha_evolve/archives/fidelity_completion_v2_closure_20260926/fidelity_release_closure_public_20260926.tar.gz",
+      "second_copy": "/nfs/roberts/project/pi_jss233/zc362/alpha_evolve/artifacts/fidelity_completion_v2/packages/fidelity_completion_v2_closure_20260926/fidelity_release_closure_public_20260926.tar.gz",
+      "second_copy_sha256_verified": true,
+      "sha256": "1029d4063a5313dca3b68de1286fedaf695056e102209a34edad20d70ee61843"
+    }
+  },
+  "copy_job": "27549793",
+  "copy_receipt_sha256": "bc0533c7bd9f8033739a760fb09a602867ae415bf3a63e31d3c00fb9537e66f8",
+  "current_reporting_preserved_and_updated": true,
+  "detached_manifest_note": "Final manifest is detached from supplement archives to avoid self-referential hashes.",
+  "externally_submitted_or_published": false,
+  "full_original_paper_reproductions": 0,
+  "independent_human_review": false,
+  "installer_provenance_archive_sha256": "602acd5f324142d44989a2ac6d79d943ea9a3ef45b1114eca7cdb98f003e97ec",
+  "installer_provenance_files_preserved": 10210,
+  "installer_provenance_regular_bytes": 158849263,
+  "ledger_mutations": 0,
+  "ledger_sha256": "54c381b2fc56babb96ff8d35e5e38e319feee4029ee053a96001f4d1956664fb",
+  "limitations": [
+    "All69 papers retain separate evidence/gaps; zero full original-paper reproductions are certified.",
+    "Original strict Alpha20x5 and complete original four/54 families remain unavailable; observed-history/parameter sensitivities do not replace them.",
+    "Reported inconclusive-at-2pp results, pointwise uncertainty, historical model/data and timing limitations remain unchanged. No isolated-LLM, pristine-snapshot or untouched-holdout claim is added.",
+    "Independent human source review remains external and unasserted.",
+    "Primary archives and all second-file copies reside on JSS; separate-allocation/off-cluster fault isolation is not established."
+  ],
+  "migration_job": "27480268",
+  "migration_verification_sha256": "39130df0fda6ab3e172a901417946f614716a25962ca8f0a7f9461aa1462a537",
+  "new_model_calls": 0,
+  "original_archive_rebuilds": 0,
+  "original_scientific_archives_unchanged": true,
+  "original_strict_Alpha_primary_unavailable": true,
+  "original_v2_primary_available": 3,
+  "original_v2_primary_denominator": 4,
+  "papers_with_separate_evidence_and_gaps": 69,
+  "project_committed_usd_including_uncertainty": 371.06592557000306,
+  "recorded_at_utc": "2026-09-26T01:18:24.261005+00:00",
+  "scientific_reruns": 0,
+  "shared_filesystem_delta_not_exclusive_attribution": true,
+  "status": "complete_authorized_feasible_work_with_recorded_limitations",
+  "validated_new_records": 3877
+}

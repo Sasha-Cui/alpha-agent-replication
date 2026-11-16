@@ -1,0 +1,53 @@
+{
+  "AMZN_retry_authorized": false,
+  "archive_created": false,
+  "current_probe_path": "artifacts/fidelity_completion_v2/archive_readiness_20260918_1325/actual_final_probe.json",
+  "current_probe_sha256": "a3866b71eb321d7e59cf206802087b28e14ba7cf950a578b217760a610eeb945",
+  "current_probe_status": "read_only_archive_request_preflight_blocked",
+  "current_source_closures": [
+    {
+      "pass": false,
+      "path": "paper_runs/fidelity_completion_v2/accounts/validation.json",
+      "status": "missing"
+    },
+    {
+      "pass": false,
+      "path": "paper_runs/fidelity_completion_v2/quanta_paper_parameter_sensitivity/completion.json",
+      "status": "missing"
+    }
+  ],
+  "current_unclassified_by_study": {
+    "fidelity_v2_finagent_source_settings": 6,
+    "fidelity_v2_quantaalpha_fresh_search": 1
+  },
+  "current_unclassified_count": 7,
+  "final_publication_ready": false,
+  "fresh_journal_audit_deferred_while_sources_incomplete": true,
+  "implementation_sha256": "ccc4fea01d0b70fb6ec027843c586c689c42f8873628068d6ffca6d253e4865e",
+  "initial_probe_preserved": "artifacts/fidelity_completion_v2/archive_readiness_20260918_1325/actual_probe.json",
+  "ledger_status_or_charge_mutation_allowed": false,
+  "motivation": "Frozen v1 packager refuses every reserved ledger entry as in-flight. V2 deliberately retains four exactly witnessed terminal Alpha HTTP400 reservations. The v1 packager remains unchanged.",
+  "recognized_terminal_trials": [
+    8,
+    12,
+    14,
+    15
+  ],
+  "recorded_at_utc": "2026-09-18T13:39:18.057074+00:00",
+  "requirements": [
+    "Existing exact terminal/early-abort validators and full observed replay evidence, with immutable diagnostic and source-cost identities",
+    "Exact current status/study/PID/endpoint/model/created-time/reserved-charge match to archived failed entry",
+    "No retry mapping and no durable response; fresh locked SQLite/journal absence check before a snapshot",
+    "Required complete13-equity accounts and Quanta-parameter source/economic closure, with output/source hashes; a quiet gap between live requests is insufficient",
+    "Every unclassified reservation blocks; it is not implicitly labelled failed",
+    "Repeat this gate within the final packager ledger/journal snapshot transaction and perform all separate final evidence, privacy and archive checks"
+  ],
+  "retained_reservation_total_usd": 0.11608500000000001,
+  "scope": "Cache-request eligibility only, not final study/source/report/privacy/archive completion or retry permission.",
+  "status": "read_only_packaging_preflight_implemented_not_final_archive",
+  "tests_sha256": "0966d8673280ce3f8495eff2315be43e7c099f94ee4d3a831e5c684fb18098b5",
+  "unknown_or_age_only_failure_classification_allowed": false,
+  "unsupported_statuses_fail_closed": true,
+  "v1_packager_sha256": "fbac4ba98c26273ff0932cdf032822836716c929fb0fec69f6f3bb83246bf7b3",
+  "validation": "11 focused guards PASS on each Python3.12 and3.9, including refusal of unsupported future status values. The initial10-guard version/probe is preserved. Current actual four-witness probe blocks. No financial/model/replication credit."
+}

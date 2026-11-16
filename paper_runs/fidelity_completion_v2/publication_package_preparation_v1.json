@@ -1,0 +1,18 @@
+{
+  "actual_readonly_gate": "artifacts/fidelity_completion_v2/final_package_setup_20260922/actual_readonly_gate_validation_v2.json",
+  "actual_readonly_gate_sha256": "69e6d7ddd5dc634cd433f07097ad25202d9b642520940b45175ffe4eb5ccf302",
+  "archives_created": false,
+  "dependency": "afterok:27154958",
+  "durable_second_copies_verified": false,
+  "frozen_bindings": 31,
+  "hash_job": "27154958",
+  "human_review": false,
+  "new_model_calls": 0,
+  "package_job": "27159153",
+  "package_protocol": "artifacts/fidelity_completion_v2/final_package_setup_20260922/package_protocol.json",
+  "package_protocol_sha256": "7db550e21e20b9a93bc1d53fad353fbbb575cc0bad6f99c9376bd98f5c15d0d9",
+  "project_spend_last_verified_usd": 371.06592557,
+  "public_withheld_holdings_files": 11,
+  "scientific_jobs_rerun": 0,
+  "status": "source_binding_guards_pass_archiving_jobs_submitted_not_complete"
+}
