@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "updated_utc": "2026-09-07T05:03:57.983229+00:00",
+  "stages": [
+    {
+      "point": 1,
+      "name": "Economic fidelity",
+      "status": "in_progress",
+      "completed_pilots": [
+        "EFS arXiv v1 daily LLM evolution"
+      ],
+      "human_source_review": "pending"
+    },
+    {
+      "point": 2,
+      "name": "Matched agent and baseline comparisons",
+      "status": "queued"
+    },
+    {
+      "point": 3,
+      "name": "Economic-effect bounds and power",
+      "status": "queued"
+    },
+    {
+      "point": 4,
+      "name": "Benchmark and inference calibration",
+      "status": "queued"
+    },
+    {
+      "point": 5,
+      "name": "Independent review and new evaluation separation",
+      "status": "queued"
+    },
+    {
+      "point": 6,
+      "name": "Controlled adaptation comparisons and manuscript synthesis",
+      "status": "queued"
+    }
+  ],
+  "first_pilot_report": "paper_runs/economic_fidelity/efs_v1/REPORT.md",
+  "claim_boundary": "First pilot complete; broader program not complete."
+}

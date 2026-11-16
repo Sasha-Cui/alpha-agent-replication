@@ -1,0 +1,134 @@
+{
+  "study_id": "fidelity_completion_v2_efs_gpt41_3",
+  "status": "frozen_before_new_strategy_run",
+  "frozen_utc": "2026-09-07T03:57:14.986341+00:00",
+  "paper": "EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models",
+  "paper_version": "arXiv:2507.17211v1",
+  "paper_url": "https://arxiv.org/abs/2507.17211v1",
+  "audit_reference": "https://github.com/Sasha-Cui/alpha-agent-replication/pull/1",
+  "source_choice": "v1 supplies the released prompts and US50 list; this does not splice the materially different v2 mechanism into v1",
+  "start": "2019-01-01",
+  "end": "2024-12-31",
+  "cadence": "daily",
+  "factor_history_days": 30,
+  "portfolio_assets": 10,
+  "m_conflict_resolution": "m=10 main real-market table rather than contradictory m=5 setup prose",
+  "seed_families": 12,
+  "seed_functions": 42,
+  "seed_windows": [
+    3,
+    7,
+    14,
+    21
+  ],
+  "singletons": [
+    "log_return_1",
+    "rsi_14"
+  ],
+  "warmup_days": 60,
+  "feedback_days": 60,
+  "search_interval_days": 5,
+  "pool_max": 64,
+  "selected_factors": 5,
+  "prompt_factors": 8,
+  "new_factors_per_request": 3,
+  "factor_admission": "positive historical RankIC and past top-m mean return above contemporaneous equally weighted eligible universe",
+  "factor_selection": "highest trailing mean RankIC, tie by unannualized Sharpe then name/hash; retain latest and best version per base",
+  "normalization": "cross-sectional min-max [-1,1] per factor; constants zero; arithmetic average of selected factor scores",
+  "initial_price_normalization": "100 at first observed prehistory close (earliest 2018-10-01); IPO prehistory never backfilled",
+  "price_adjustment": "abs(prc)/adjfct from JKP daily CRSP-derived panel; prc_adj convention checked in JKP code",
+  "formation_execution": "observe close t, compute next target, execute close t+1, first earn t+1 to t+2 return",
+  "feedback_timing": "only realized outcomes through decision close t, from signals no later than t-2",
+  "cost_cases_bps": [
+    0,
+    10
+  ],
+  "return_cases": [
+    "split_adjusted_close_price_return",
+    "JKP_dividend_inclusive_total_return"
+  ],
+  "missing_policy": "eligible only with 30 finite positive past closes; fail on missing selected execution price or held realization, never reweight on future availability",
+  "model": "openai/gpt-4.1",
+  "provider": "OpenAI with fallback disabled",
+  "temperature": 0.3,
+  "max_output_tokens": 2048,
+  "search_trajectories": 1,
+  "seed": 20260907,
+  "network_retries": 0,
+  "api_cap_usd": 35,
+  "historical_usage_journals": [],
+  "preserved": [
+    "published source prompt content after TeX formatting removal",
+    "real LLM mutation and crossover with anonymized performance feedback",
+    "all 50 published US50 security identities",
+    "daily close/return inputs with 30-observation factor histories",
+    "twelve source seed families",
+    "weekly search and daily long-only top-m equal-weight allocation",
+    "version diversity, factor validation, and performance feedback loop"
+  ],
+  "approximated": [
+    "alternative JKP daily data rather than unreleased vendor snapshot",
+    "current GPT-4.1 endpoint rather than original historical model",
+    "one search trajectory rather than authors pooled three trajectories",
+    "execution timing delayed one trading session for causal feasibility"
+  ],
+  "invented": [
+    "explicit seed window expansion",
+    "exact pool pruning, admission, normalization, and numerical conventions",
+    "60-session feedback and warmup",
+    "five-factor aggregation",
+    "decoding/token limits and zero automatic retry",
+    "source-equation ambiguities resolved as documented"
+  ],
+  "original_paper_results_claim": false,
+  "independent_human_review_complete": false,
+  "pristine_holdout_claim": false,
+  "limitations": [
+    "static paper-selected universe contains selection/survivorship concerns",
+    "current-model historical replay can contain pretraining information",
+    "no released author EFS code or factor pool",
+    "new strategy outcomes are retrospective evidence",
+    "factor-source equivalence is not original-pipeline or paper-number reproduction"
+  ],
+  "data_manifest_sha256": "bc347c5eb611b13489ff1e64daacc3c94ea0e80e3b5a592d7dadcb051c8cc30a",
+  "system_prompt_sha256": "17e83acc38914157be7750ea8e8224a5860ded2d993a55c775123edfc4a93481",
+  "model_metadata_sha256": "04baf6ae44c4d92f42a852ec6584f342e1104e112008bca12eb1ef2a051d1e42",
+  "implementation_sha256": {
+    "scripts/run_efs_economic_fidelity.py": "9e5ee3d283633e7902343bb67da85a0393e990e648ed5f7642960afb55f7dc32",
+    "scripts/prepare_efs_economic_fidelity.py": "34d4b116a8351a46c29164c7c037a85d9aa600920c54056f4dd531b271abf50e",
+    "src/alpha_evolve/economic_fidelity.py": "f7c82633f618dcf59da27ff24b54d8c17524efe6989d15e2f43e688c3020eb5b",
+    "src/alpha_evolve/openrouter_budget.py": "4ade3308849505eba65a10a6655e5ec90b6641a4f22d9584e7ee93953ccb5ad3"
+  },
+  "implementation_refresh": {
+    "utc": "2026-09-07T03:32:23.493483+00:00",
+    "reason": "Cache repeated historical scalar metrics and clear lint before continuing. All financial, model, search, date, and data choices unchanged. First eight paid calls cached; no completed strategy result inspected."
+  },
+  "feedback_portfolio_assets": 25,
+  "recall_assets": 20,
+  "source_default_correction": {
+    "utc": "2026-09-07T03:57:14.986300+00:00",
+    "source": "EFS v1 sections/experiments.tex ablation paragraph and appendix prompt quality table",
+    "change": "Restore non-sparse m=25 search-feedback heuristic while trading m=10; report Recall@20. Earlier setup/control source and outputs are preserved in the project setup_prototype.tar.gz. No completed LLM strategy result used for this correction."
+  },
+  "storage_repair": {
+    "work_root": "/nfs/roberts/scratch/pi_btk22/zc362/economic_fidelity_20260907",
+    "reason": "Project group file-count quota remains full after 5,723 regenerable bytecode removals; read-only canonical code, temporary scratch results and durable metering within scratch. Final project promotion pending space.",
+    "response_cache": "transactional SQLite with persistent rollback journal",
+    "prior_setup_complete_calls": 54,
+    "prior_setup_unavailable_response_calls": 1,
+    "unavailable_policy": "retain reservation and do not repeat identical request"
+  },
+  "execution_adapter_sha256": "2cd6124156204fd281d16fb25ba0274f30c7cd24540c1919ad4f18397c07e94b",
+  "metadata_serialization_fix": {
+    "recorded_utc": "2026-09-07T04:40:47.327156+00:00",
+    "scope": "Cast numpy.int64 formation index to int in provenance metadata; economic protocol unchanged",
+    "verification": "Compare complete cached replay against the already-written live financial paths and private weights, without new network calls."
+  },
+  "provider_name": "OpenAI",
+  "input_usd_per_million": 2,
+  "output_usd_per_million": 8,
+  "api_seed": 103,
+  "trial": "gpt41_3",
+  "source_extension": "EFS v1 section5.1: three searches per backend; GPT4.1 trial1 is the frozen v1 run. DeepSeekV3-0324 is a disclosed current served revision, not recovered historical author responses.",
+  "pooling_protocol": "Primary pooled account admits factors only after their earliest discovery cutoff. Literal final-union whole-period re-evaluation, if shown, is a hindsight diagnostic."
+}

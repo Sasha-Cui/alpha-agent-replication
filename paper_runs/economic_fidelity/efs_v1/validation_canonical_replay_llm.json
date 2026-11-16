@@ -1,0 +1,16 @@
+{
+  "status": "pass",
+  "mode": "llm",
+  "network_calls": 0,
+  "authoritative_ledger_unchanged": true,
+  "exact_output_hashes": {
+    "llm_daily_returns.csv": "b052747a2fe5d3059ee0355892cc3ef4033006776d9c9b6525ea4081106fa002",
+    "llm_monthly_returns.csv": "bd8f2560cb01c32c7bce70063872980036d4952758293557029c881a9e0ae8cc",
+    "llm_metrics.csv": "329686761463b77aa4e8cc66defac7b0e67748b9e06e5be403f921a00fd0d804",
+    "llm_decisions.csv": "6d4592a740e3c0605d1166bf232cb6246bb399f6c52158871be70428451a9dee",
+    "llm_factor_library.json": "319722f873248323a009e0f4e7a7831d5834dc34e7fd8eb39cf9b0875ce382c4",
+    "llm_proposals.json": "e9752f0841d8695578ffe310a7322d30708ba5aefc3cb29d7970fd4f9221c97a",
+    "llm_llm_trace.json": "cdf2ab2cd8f9db27dbf2eca9128a70e96fe8db6061b48b786dc4ef36b9111b6b"
+  },
+  "holdings_byte_identical": true
+}

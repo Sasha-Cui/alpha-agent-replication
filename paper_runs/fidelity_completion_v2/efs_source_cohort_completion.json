@@ -1,0 +1,104 @@
+{
+  "financial_pool_completion_claim": false,
+  "new_model_calls": 0,
+  "planned_rounds_per_trial": 290,
+  "private_evidence_path": "artifacts/fidelity_completion_v2/efs_all6_source_audit_20260918_1024/all6_actual_source_gates.json",
+  "private_evidence_sha256": "d5f894aaa5c101c23cb212059814d836114e559779a64b1cdc4396f5e342a918",
+  "recorded_at_utc": "2026-09-18T10:30:31.058811+00:00",
+  "source_search_reruns": 0,
+  "status": "all_six_source_and_exact_replay_gates_pass",
+  "trial_bindings": {
+    "deepseek_v3_1": {
+      "frozen_implementation_sha256": {
+        "scripts/prepare_efs_economic_fidelity.py": "34d4b116a8351a46c29164c7c037a85d9aa600920c54056f4dd531b271abf50e",
+        "scripts/run_efs_economic_fidelity.py": "9e5ee3d283633e7902343bb67da85a0393e990e648ed5f7642960afb55f7dc32",
+        "src/alpha_evolve/economic_fidelity.py": "f7c82633f618dcf59da27ff24b54d8c17524efe6989d15e2f43e688c3020eb5b",
+        "src/alpha_evolve/openrouter_budget.py": "4ade3308849505eba65a10a6655e5ec90b6641a4f22d9584e7ee93953ccb5ad3"
+      },
+      "full_replay_path": "artifacts/fidelity_completion_v2/efs/deepseek_v3_1/offline_replay/validation.json",
+      "full_replay_sha256": "9a465b7b7889197a1fac55473ed32ec7974ae237615d8e213174e8b65b520a31",
+      "library_sha256": "7b52a9ca6460508efad9ab3588f1217ff72bf62ec7b9a54d814ec7b99881abb6",
+      "manifest_sha256": "14c1560a18b0f7163ddf71bfa7cb7162598a203efa31f36828153860d62c1f6b",
+      "private_weights_sha256": "4d9670cc777d158e6146aff2e8682d511b782c8844d6bc72bf48b8205a06bc7c",
+      "recipe_sha256": "32a0e051d8eb67f4e48953a3091911faca85a7b56ff030a04544cdbb59ca1231",
+      "transport_prefixes": 1
+    },
+    "deepseek_v3_2": {
+      "frozen_implementation_sha256": {
+        "scripts/prepare_efs_economic_fidelity.py": "34d4b116a8351a46c29164c7c037a85d9aa600920c54056f4dd531b271abf50e",
+        "scripts/run_efs_economic_fidelity.py": "9e5ee3d283633e7902343bb67da85a0393e990e648ed5f7642960afb55f7dc32",
+        "src/alpha_evolve/economic_fidelity.py": "f7c82633f618dcf59da27ff24b54d8c17524efe6989d15e2f43e688c3020eb5b",
+        "src/alpha_evolve/openrouter_budget.py": "4ade3308849505eba65a10a6655e5ec90b6641a4f22d9584e7ee93953ccb5ad3"
+      },
+      "full_replay_path": "artifacts/fidelity_completion_v2/efs/deepseek_v3_2/offline_replay/validation.json",
+      "full_replay_sha256": "c3636e0e2ad26c5839081810f845a9c2ba43bdc7461dccc2bb1fe81d5069be30",
+      "library_sha256": "bd6e621e9be6e264c938a59d947975013549793010b37ae8da03ad74690a5deb",
+      "manifest_sha256": "6fef0ceb6e1b8fbc1a800e96535ac9ae6859b097017fcd0daa56b7e69a81b72d",
+      "private_weights_sha256": "383d148e6b14a84b8af05eadb4942c88843072d846b54fd9cdec54423d07a7ac",
+      "recipe_sha256": "04c425bb1c2a33fb0d4aba9a2c89df45c640299b00fca2078d080023bcb711ba",
+      "transport_prefixes": 1
+    },
+    "deepseek_v3_3": {
+      "frozen_implementation_sha256": {
+        "scripts/prepare_efs_economic_fidelity.py": "34d4b116a8351a46c29164c7c037a85d9aa600920c54056f4dd531b271abf50e",
+        "scripts/run_efs_economic_fidelity.py": "9e5ee3d283633e7902343bb67da85a0393e990e648ed5f7642960afb55f7dc32",
+        "src/alpha_evolve/economic_fidelity.py": "f7c82633f618dcf59da27ff24b54d8c17524efe6989d15e2f43e688c3020eb5b",
+        "src/alpha_evolve/openrouter_budget.py": "4ade3308849505eba65a10a6655e5ec90b6641a4f22d9584e7ee93953ccb5ad3"
+      },
+      "full_replay_path": "artifacts/fidelity_completion_v2/efs/deepseek_v3_3/offline_replay/validation.json",
+      "full_replay_sha256": "21f706d10124a4345f3953ad6d9e010a8a59d68abca6b607b50281c43b372c83",
+      "library_sha256": "30b154569651f8ccdccc56df0d65e9f9a6a0089f555e8f4273f21fb5278b115c",
+      "manifest_sha256": "3125c304359e76565b0022e9e75154fb1857a096ba2665fbe1e2deafbefc4196",
+      "private_weights_sha256": "d8317115221d259ffecbe1e35feb705b98781ba96e9be7a79b1613d64b01b37d",
+      "recipe_sha256": "68b21248f3f3444f4a268f331eb7be90080ee3a511b96d690d9da051235ed89f",
+      "transport_prefixes": 0
+    },
+    "gpt41_1": {
+      "frozen_implementation_sha256": {
+        "scripts/prepare_efs_economic_fidelity.py": "34d4b116a8351a46c29164c7c037a85d9aa600920c54056f4dd531b271abf50e",
+        "scripts/run_efs_economic_fidelity.py": "9e5ee3d283633e7902343bb67da85a0393e990e648ed5f7642960afb55f7dc32",
+        "src/alpha_evolve/economic_fidelity.py": "f7c82633f618dcf59da27ff24b54d8c17524efe6989d15e2f43e688c3020eb5b",
+        "src/alpha_evolve/openrouter_budget.py": "4ade3308849505eba65a10a6655e5ec90b6641a4f22d9584e7ee93953ccb5ad3"
+      },
+      "full_replay_path": "paper_runs/economic_fidelity/efs_v1/validation_canonical_replay_llm.json",
+      "full_replay_sha256": "d0ede79ef8167f4fa59e3d3367f0175cffec0f58e05798be9c1ad8b53d619714",
+      "library_sha256": "319722f873248323a009e0f4e7a7831d5834dc34e7fd8eb39cf9b0875ce382c4",
+      "manifest_sha256": "e2b224ac3d49710ab2cb7ac58c87d586371709477d93c3c2389ca834262b4ac2",
+      "private_weights_sha256": "04e96fbf544d9d74509d618874240deb6d61e30c0f110e65abf97f34b6909971",
+      "recipe_sha256": "e1ed69a4c1fea2ae0647e225be77a991ae15c8d3a38c6433988f5d07e6853904",
+      "transport_prefixes": 0
+    },
+    "gpt41_2": {
+      "frozen_implementation_sha256": {
+        "scripts/prepare_efs_economic_fidelity.py": "34d4b116a8351a46c29164c7c037a85d9aa600920c54056f4dd531b271abf50e",
+        "scripts/run_efs_economic_fidelity.py": "9e5ee3d283633e7902343bb67da85a0393e990e648ed5f7642960afb55f7dc32",
+        "src/alpha_evolve/economic_fidelity.py": "f7c82633f618dcf59da27ff24b54d8c17524efe6989d15e2f43e688c3020eb5b",
+        "src/alpha_evolve/openrouter_budget.py": "4ade3308849505eba65a10a6655e5ec90b6641a4f22d9584e7ee93953ccb5ad3"
+      },
+      "full_replay_path": "artifacts/fidelity_completion_v2/efs/gpt41_2/offline_replay/validation.json",
+      "full_replay_sha256": "a6883303ce13185a4a0a8245781462f09bb3cfc20031a8c3048462fc89681296",
+      "library_sha256": "17555b0399452e36fcac0c231f891b8b5ee752bc04ec26dd3bc87936abdf6f61",
+      "manifest_sha256": "89d396c05f0796f119aac462d515e2c49200ad13186c548a6d7090727b6e2e32",
+      "private_weights_sha256": "4b9839fb65ab7068a0f0809bb58c6f42a8c7a2b08633d5a98e7b025315318a00",
+      "recipe_sha256": "b69ef3ba7936cd4ec6e7c3e2bddb4ec438222df811593bc30fc1e72ed1426c52",
+      "transport_prefixes": 1
+    },
+    "gpt41_3": {
+      "frozen_implementation_sha256": {
+        "scripts/prepare_efs_economic_fidelity.py": "34d4b116a8351a46c29164c7c037a85d9aa600920c54056f4dd531b271abf50e",
+        "scripts/run_efs_economic_fidelity.py": "9e5ee3d283633e7902343bb67da85a0393e990e648ed5f7642960afb55f7dc32",
+        "src/alpha_evolve/economic_fidelity.py": "f7c82633f618dcf59da27ff24b54d8c17524efe6989d15e2f43e688c3020eb5b",
+        "src/alpha_evolve/openrouter_budget.py": "4ade3308849505eba65a10a6655e5ec90b6641a4f22d9584e7ee93953ccb5ad3"
+      },
+      "full_replay_path": "artifacts/fidelity_completion_v2/efs/gpt41_3/offline_replay/validation.json",
+      "full_replay_sha256": "5c4b5db978514fc18a7be1721fd1608344358a9d73f6d24cf868d65cf80342c9",
+      "library_sha256": "a024aeb550e705bbf527828e5df61cffb17ff77a0d9b52170d183377a9783c52",
+      "manifest_sha256": "632827332852896ffb18b5903a3a8b1b475714ee0db72eb0e70f4e4f382e806c",
+      "private_weights_sha256": "6ca76a4e3421036479e7af542acddaba63bde50210b05e5068a2099630a8be8c",
+      "recipe_sha256": "c6e87c45210eea2ca8fb87ac9320f9b093bb1dd607f45041e76b03ab7ee35f70",
+      "transport_prefixes": 0
+    }
+  },
+  "trial_count": 6,
+  "validator_sha256": "e1d6adee7441e26a997f587fcda6961e68981cbe9afb21a71237e2f00434fe9a"
+}

@@ -1,0 +1,12 @@
+{
+  "python": "3.9.21 (main, May 11 2026, 00:00:00) \n[GCC 11.5.0 20240719 (Red Hat 11.5.0-5)]",
+  "executable": "/usr/bin/python3.9",
+  "numpy": "2.0.2",
+  "pandas": "2.3.3",
+  "scipy": "1.13.1",
+  "pyarrow": "21.0.0",
+  "sqlite": "3.34.1",
+  "platform": "Linux-5.14.0-570.119.1.el9_6.x86_64-x86_64-with-glibc2.34",
+  "project_environment_manifest_sha256": "bf92427bf141c1ba7a047da7f17f1c6e0a119ec51dbb3940cb52a769c3e240ca",
+  "requirements_lock_sha256": "22a83072026353d4b3f4f904bd07963c7dcd4f730802bb15b8fa7ec5742fcacd"
+}

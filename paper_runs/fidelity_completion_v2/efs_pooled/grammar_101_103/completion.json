@@ -1,0 +1,82 @@
+{
+  "causal_discovery_gating": true,
+  "control_seeds": [
+    101,
+    102,
+    103
+  ],
+  "full_original_paper_reproduced": false,
+  "identical_financial_block_sha256": "73572bdc35e7a020e9a21f529c5b56f2b96264f866bedd490c57e1fdc59c7248",
+  "input_control_gate_sha256": "038afb6becd29e1ed78a15326ae07cad715c836b96abb250c319f93fbcee8f0f",
+  "library_factors": 1104,
+  "maximum_independent_account_error": 1.1102230246251565e-15,
+  "new_model_calls": 0,
+  "new_search_runs": 0,
+  "output_sha256": {
+    "causal_discovery_gated_daily_returns.csv": "a06682d297e35d8207fbf39b2394ed3e990a6c21472244d5746b51bf06b4672f",
+    "causal_discovery_gated_selections.json": "cbdd878505041c4aec5d03cda23a973d7491f3df24140db4c785b80962067ee5",
+    "discovery_library.json": "b9d7db74b53006a6a40a10d98f3addccbd44ce13254b56624c6ca6347db60efa",
+    "input_control_gates.json": "038afb6becd29e1ed78a15326ae07cad715c836b96abb250c319f93fbcee8f0f",
+    "performance.json": "81b48b924c05c7fe60bf096221eb0ffc6e0b514555878d8028914ef1274221b1",
+    "retrospective_final_union_diagnostic_daily_returns.csv": "9e51abe5f71767bdf56b716f31d2ac1902dee9e2974e317ffc7dfa7680a13697",
+    "retrospective_final_union_diagnostic_selections.json": "d38ff6c62a8e14db25b904edab2a9cb14548cd973c43971f9e6fe0a800c42891"
+  },
+  "private_weights_sha256": {
+    "causal_discovery_gated_weights.parquet": "1ecc4c01fbc824a06f1618801b0d7b4a19094dac761d6a7460094e13e5f82bfc",
+    "retrospective_final_union_diagnostic_weights.parquet": "da174f354b75ed71525893ee950b0f3278ba42211ae5b5d61316102cbdbc7b9d"
+  },
+  "protocol_sha256": "bd4c85e87e84411bcbd120ad2de9b1cfb5793c83fcf1f33da253d2b6cf5694f3",
+  "retrospective_union_is_hindsight_diagnostic": true,
+  "script_sha256": "13aa91f68061229a432149a5d776f2c53b337882d791c4b0c951df2b02108382",
+  "source_proofs": {
+    "101": {
+      "accepted": 372,
+      "all870_candidate_codes_and_discovery_dates_match_sealed_generator": true,
+      "archived_formatted_driver_sha256": "d4b9b110f8570f0777a48c7a5a9bc3e491aa9917a4c88ddb0b0cc1a8ebda5d34",
+      "completion_sha256": "bc749fa1e2aeba3e796988855bfe16be54621e6356d6d5c70d2508b8b7da6c10",
+      "factors_including_initial": 414,
+      "maximum_independent_account_difference": 9.35015953551499e-16,
+      "new_search_or_model_run": false,
+      "raw_driver_bytes_identical_to_execution": false,
+      "recorded_execution_driver_sha256": "1552b1992f3d3bf8f51c8b2a77721459fcacdf1e83ae91ced41e858ea281a58c",
+      "recorded_selection_discovery_dates_pass": true,
+      "scope_of_replay": "Generator/schedule conformance and independent saved-weight accounting; no full search/model rerun. Historical raw execution script hash differs after formatting. Exact archive and sealed AST are verified, not mislabelled byte-identical historical source.",
+      "sealed_semantic_driver_sha256_python310": "63130930b4aa8febde9a8d0a559cadb7f5b43356b2ea3e06f669694301dbefe5",
+      "source": "artifacts/publication_upgrade_v1/efs_matched/seed_101",
+      "source_files_match_frozen_archive": true
+    },
+    "102": {
+      "accepted": 357,
+      "all870_candidate_codes_and_discovery_dates_match_sealed_generator": true,
+      "archived_formatted_driver_sha256": "d4b9b110f8570f0777a48c7a5a9bc3e491aa9917a4c88ddb0b0cc1a8ebda5d34",
+      "completion_sha256": "aa13d264336f08394ab216ea922a1c2646a35a0c1db9d939080407d93f454faa",
+      "factors_including_initial": 399,
+      "maximum_independent_account_difference": 1.1102230246251565e-15,
+      "new_search_or_model_run": false,
+      "raw_driver_bytes_identical_to_execution": false,
+      "recorded_execution_driver_sha256": "1552b1992f3d3bf8f51c8b2a77721459fcacdf1e83ae91ced41e858ea281a58c",
+      "recorded_selection_discovery_dates_pass": true,
+      "scope_of_replay": "Generator/schedule conformance and independent saved-weight accounting; no full search/model rerun. Historical raw execution script hash differs after formatting. Exact archive and sealed AST are verified, not mislabelled byte-identical historical source.",
+      "sealed_semantic_driver_sha256_python310": "63130930b4aa8febde9a8d0a559cadb7f5b43356b2ea3e06f669694301dbefe5",
+      "source": "artifacts/publication_upgrade_v1/efs_matched/seed_102",
+      "source_files_match_frozen_archive": true
+    },
+    "103": {
+      "accepted": 333,
+      "all870_candidate_codes_and_discovery_dates_match_sealed_generator": true,
+      "archived_formatted_driver_sha256": "d4b9b110f8570f0777a48c7a5a9bc3e491aa9917a4c88ddb0b0cc1a8ebda5d34",
+      "completion_sha256": "c3ab3ebb55909864bb070186f9ee22631480ddc8280f6f8da65e59881314609a",
+      "factors_including_initial": 375,
+      "maximum_independent_account_difference": 9.35015953551499e-16,
+      "new_search_or_model_run": false,
+      "raw_driver_bytes_identical_to_execution": false,
+      "recorded_execution_driver_sha256": "1552b1992f3d3bf8f51c8b2a77721459fcacdf1e83ae91ced41e858ea281a58c",
+      "recorded_selection_discovery_dates_pass": true,
+      "scope_of_replay": "Generator/schedule conformance and independent saved-weight accounting; no full search/model rerun. Historical raw execution script hash differs after formatting. Exact archive and sealed AST are verified, not mislabelled byte-identical historical source.",
+      "sealed_semantic_driver_sha256_python310": "63130930b4aa8febde9a8d0a559cadb7f5b43356b2ea3e06f669694301dbefe5",
+      "source": "artifacts/publication_upgrade_v1/efs_matched/seed_103",
+      "source_files_match_frozen_archive": true
+    }
+  },
+  "status": "complete"
+}

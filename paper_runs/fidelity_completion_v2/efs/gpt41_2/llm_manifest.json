@@ -1,0 +1,37 @@
+{
+  "accepted_llm_functions": 631,
+  "budget": {
+    "complete_calls": 1188,
+    "project_committed_usd": 224.20201941000278,
+    "project_soft_cap_usd": 450.0,
+    "study_cap_usd": 35,
+    "study_committed_usd": 11.042144750000013,
+    "uncertain_calls": 4
+  },
+  "completed_utc": "2026-09-18T05:00:17.515769+00:00",
+  "confirmatory_result": false,
+  "days": 1510,
+  "days_using_llm_factors": 1444,
+  "full_original_paper_reproduced": false,
+  "implementation_type": "paper_guided_native_cadence_reimplementation",
+  "independent_human_review_complete": false,
+  "llm_calls": 290,
+  "mode": "llm",
+  "months": 72,
+  "output_sha256": {
+    "llm_daily_returns.csv": "dc75bc0f657cd5ca95efc12ab72ef15273ef567e0aa5561a7a9c4e8c8cb5ffe0",
+    "llm_decisions.csv": "db8e90a8d318fb9b7b5dc6745b340f55589f6e20d978081fde9d0fa6e2a74408",
+    "llm_factor_library.json": "17555b0399452e36fcac0c231f891b8b5ee752bc04ec26dd3bc87936abdf6f61",
+    "llm_llm_trace.json": "1f2cfa065bf5c7aae9bc0731baf7ac49e50015c727522d7190705a8deb25b050",
+    "llm_metrics.csv": "84173ec8d95b36838895e7b82a01c38835ac16d1dcd87d6cc5e4d280a7ee68ff",
+    "llm_monthly_returns.csv": "52349536cab7eba67ccc3cca9183eabcab5aecde10d4f48aeba6ea8cee62a2bc",
+    "llm_proposals.json": "80f892520018c03dfb0ca4c590987dd32102162f2d5689b44ece7a398854df16"
+  },
+  "private_weights_path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/efs/gpt41_2/llm_daily_weights.parquet",
+  "private_weights_sha256": "4b9839fb65ab7068a0f0809bb58c6f42a8c7a2b08633d5a98e7b025315318a00",
+  "python": "3.12.4",
+  "recipe_sha256": "b69ef3ba7936cd4ec6e7c3e2bddb4ec438222df811593bc30fc1e72ed1426c52",
+  "source_daily_extract_sha256": "b0ff4dda0539ecd91ad210e4444b9ec7ecdcafca1e552613c85c8720c72f34da",
+  "status": "complete",
+  "tickers": 50
+}

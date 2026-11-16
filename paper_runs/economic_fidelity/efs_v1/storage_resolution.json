@@ -1,0 +1,13 @@
+{
+  "status": "promoted_to_canonical_project",
+  "utc": "2026-09-07T04:54:55.328426+00:00",
+  "canonical_results": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/paper_runs/economic_fidelity/efs_v1",
+  "canonical_private_artifacts": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/economic_fidelity/v1",
+  "authoritative_api_ledger": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/runs/economic_fidelity/openrouter/project_spend.json",
+  "temporary_second_copy": "/nfs/roberts/scratch/pi_btk22/zc362/economic_fidelity_20260907",
+  "source_paired_py39_bytecode_removed": 5723,
+  "source_paired_py312_bytecode_removed": 6348,
+  "scope": "Only regenerable bytecode with an existing .py source was removed; installed source and dependency versions were preserved.",
+  "all_copied_files_hash_verified": true,
+  "project_promotion_pending_quota": false
+}

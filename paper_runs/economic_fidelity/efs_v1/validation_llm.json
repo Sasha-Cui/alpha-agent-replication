@@ -1,0 +1,18 @@
+{
+  "accounting_cases": 4,
+  "daily_account_rows": 1510,
+  "daily_to_monthly_wealth_preserved": true,
+  "full_native_paper_reproduction": false,
+  "independent_daily_return_max_errors": {
+    "price_cost_0": 5.418842458082551e-16,
+    "price_cost_10": 7.389922007661198e-16,
+    "total_cost_0": 9.947554932554503e-17,
+    "total_cost_10": 5.403663627667754e-16
+  },
+  "independent_human_source_review_complete": false,
+  "mode": "llm",
+  "recipe_and_output_hashes_verified": true,
+  "signal_execution_order_verified": true,
+  "source_universe_size": 50,
+  "status": "pass"
+}

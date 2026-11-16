@@ -1,0 +1,44 @@
+{
+  "accepted_llm_functions": 535,
+  "artifact_relocation": {
+    "financial_outputs_unchanged": true,
+    "from": "/nfs/roberts/scratch/pi_btk22/zc362/economic_fidelity_20260907",
+    "to": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve",
+    "utc": "2026-09-07T04:54:54.917195+00:00"
+  },
+  "budget": {
+    "complete_calls": 344,
+    "project_committed_usd": 15.75540449999999,
+    "project_soft_cap_usd": 450.0,
+    "study_cap_usd": 25,
+    "study_committed_usd": 5.845102000000001,
+    "uncertain_calls": 1
+  },
+  "completed_utc": "2026-09-07T04:51:49.464745+00:00",
+  "confirmatory_result": false,
+  "days": 1510,
+  "days_using_llm_factors": 1438,
+  "executed_private_weights_path": "/nfs/roberts/scratch/pi_btk22/zc362/economic_fidelity_20260907/offline_replay/private/llm_daily_weights.parquet",
+  "full_original_paper_reproduced": false,
+  "implementation_type": "paper_guided_native_cadence_reimplementation",
+  "independent_human_review_complete": false,
+  "llm_calls": 290,
+  "mode": "llm",
+  "months": 72,
+  "output_sha256": {
+    "llm_daily_returns.csv": "b052747a2fe5d3059ee0355892cc3ef4033006776d9c9b6525ea4081106fa002",
+    "llm_decisions.csv": "6d4592a740e3c0605d1166bf232cb6246bb399f6c52158871be70428451a9dee",
+    "llm_factor_library.json": "319722f873248323a009e0f4e7a7831d5834dc34e7fd8eb39cf9b0875ce382c4",
+    "llm_llm_trace.json": "cdf2ab2cd8f9db27dbf2eca9128a70e96fe8db6061b48b786dc4ef36b9111b6b",
+    "llm_metrics.csv": "329686761463b77aa4e8cc66defac7b0e67748b9e06e5be403f921a00fd0d804",
+    "llm_monthly_returns.csv": "bd8f2560cb01c32c7bce70063872980036d4952758293557029c881a9e0ae8cc",
+    "llm_proposals.json": "e9752f0841d8695578ffe310a7322d30708ba5aefc3cb29d7970fd4f9221c97a"
+  },
+  "private_weights_path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/economic_fidelity/v1/llm_daily_weights.parquet",
+  "private_weights_sha256": "04e96fbf544d9d74509d618874240deb6d61e30c0f110e65abf97f34b6909971",
+  "python": "3.9.21",
+  "recipe_sha256": "e1ed69a4c1fea2ae0647e225be77a991ae15c8d3a38c6433988f5d07e6853904",
+  "source_daily_extract_sha256": "b0ff4dda0539ecd91ad210e4444b9ec7ecdcafca1e552613c85c8720c72f34da",
+  "status": "complete",
+  "tickers": 50
+}

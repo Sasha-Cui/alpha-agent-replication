@@ -1,0 +1,8 @@
+{
+  "identical_financial_block_sha256": "73572bdc35e7a020e9a21f529c5b56f2b96264f866bedd490c57e1fdc59c7248",
+  "llm_pool_evaluator_sha256": "be3baea33decfffdf56c0f5084346a8658dbcea7b9543ac9db100dbab4e72c3a",
+  "new_model_calls": 0,
+  "prepared_control_sha256": "d8c40bfe8b6e566c01f2c7ddc56625a1e728eaecdf63c02efb44d4499816e5cc",
+  "protocol_sha256": "bd4c85e87e84411bcbd120ad2de9b1cfb5793c83fcf1f33da253d2b6cf5694f3",
+  "status": "pass"
+}

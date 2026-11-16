@@ -1,0 +1,22 @@
+{
+  "status": "complete",
+  "scope": "source-motivated descriptive reference, added after pilot inspection",
+  "portfolio": "daily equal weight across stocks with thirty complete prior positive closes; execute at following close",
+  "same_calendar_as_llm": true,
+  "new_model_calls": 0,
+  "confirmatory_contrast": false,
+  "independent_account_max_errors": {
+    "price_cost_0": 0.0,
+    "price_cost_10": 6.661338147750939e-16,
+    "total_cost_0": 0.0,
+    "total_cost_10": 6.661338147750939e-16
+  },
+  "implementation_sha256": "5cb0e1c06a0b7b646320b3a2f04910cd9ab817f818d3f6d04fe9869f96abe4ff",
+  "input_sha256": "b0ff4dda0539ecd91ad210e4444b9ec7ecdcafca1e552613c85c8720c72f34da",
+  "private_weights_sha256": "44e6a82daa9aafdd56604d7aabb69bafacb6195d2013d7a1e22b3ddbce2c0cc7",
+  "output_sha256": {
+    "equal_weight_daily_returns.csv": "ed5870f172b4ba3ade3f69ab67cc1a8d11d8162d0a80a83a10cf2d6c7a8a7985",
+    "equal_weight_metrics.csv": "62740c1c0f8d9c7542409ce8c6caa874478a45c1e7379f06889545e577039e96",
+    "equal_weight_monthly_returns.csv": "ca27dee72142440820f33647e15592ae931383d2b979f2faf0f5d3eef627cfc0"
+  }
+}

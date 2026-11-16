@@ -1,0 +1,8 @@
+{
+  "canonical_code_root": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve",
+  "temporary_work_root": "/nfs/roberts/scratch/pi_btk22/zc362/economic_fidelity_20260907",
+  "authoritative_api_ledger": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/runs/economic_fidelity/openrouter/project_spend.json",
+  "project_cache_scope": "Authoritative canonical project ledger restored after verified promotion; scratch is a final snapshot.",
+  "code_was_not_copied_to_a_new_checkout": true,
+  "project_promotion_required": false
+}

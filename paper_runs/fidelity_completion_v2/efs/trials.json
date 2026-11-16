@@ -1,0 +1,13 @@
+{
+  "new_trials": [
+    "gpt41_2",
+    "gpt41_3",
+    "deepseek_v3_1",
+    "deepseek_v3_2",
+    "deepseek_v3_3"
+  ],
+  "carried_gpt41_trial_1": "paper_runs/economic_fidelity/efs_v1",
+  "declared_total_per_backend": 3,
+  "paper_source": "https://arxiv.org/html/2507.17211v1",
+  "independent_api_request_identity": "Prespecified distinct seed field per additional trial; vendor reproducibility not assumed."
+}

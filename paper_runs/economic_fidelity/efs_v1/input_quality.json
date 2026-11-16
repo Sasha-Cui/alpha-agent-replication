@@ -1,0 +1,16 @@
+{
+  "rows": 77487,
+  "tickers": 50,
+  "duplicate_security_days": 0,
+  "nonpositive_observed_prices": 0,
+  "nonfinite_observed_prices": 0,
+  "missing_total_returns": 3,
+  "max_abs_close_return": 0.4626520320379708,
+  "close_returns_over_50pct": 0,
+  "source_crsp_values": [
+    1
+  ],
+  "exchange_country_values": [
+    "USA"
+  ]
+}

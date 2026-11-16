@@ -1,0 +1,37 @@
+{
+  "account_paths": 8,
+  "analysis_loader_sha256": "fbc84accc6af5ddc22cda43b136954723012cd1c30f42bf18ec1047fe4bf4f37",
+  "days": 1510,
+  "evidence": {
+    "completion_sha256": "e8320e43151ca900132ddca71c85ed74ee7375dc235476b0e35a6aef797cb3cf",
+    "group": "deepseek_v3",
+    "library_factors": 2198,
+    "maximum_reaccounting_difference": 9.35015953551499e-16
+  },
+  "fees_bps": [
+    0,
+    10,
+    25,
+    50
+  ],
+  "financial_block_conformance": "73572bdc35e7a020e9a21f529c5b56f2b96264f866bedd490c57e1fdc59c7248",
+  "job": "26519342_1",
+  "market_sha256": "b0ff4dda0539ecd91ad210e4444b9ec7ecdcafca1e552613c85c8720c72f34da",
+  "modes": [
+    "causal_discovery_gated",
+    "retrospective_final_union_diagnostic"
+  ],
+  "months": 72,
+  "new_model_calls": 0,
+  "paired_efs_analysis_complete": false,
+  "private_validation_path": "artifacts/fidelity_completion_v2/efs_deep_pool_audit_20260918_1125/validation.json",
+  "private_validation_sha256": "0058653c9ceff19d8526b0562e4e178cc7c93bbe186adfcdbd7f69f43253d7a7",
+  "recorded_at_utc": "2026-09-18T12:02:43.126905+00:00",
+  "source_trials": [
+    "deepseek_v3_1",
+    "deepseek_v3_2",
+    "deepseek_v3_3"
+  ],
+  "status": "complete_deepseek_pool_all_eight_paths_reaccounted_no_paired_effect_yet",
+  "stocks": 50
+}

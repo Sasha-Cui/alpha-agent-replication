@@ -1,0 +1,24 @@
+{
+  "recorded_utc": "2026-09-07T04:27:24.078511+00:00",
+  "evidence": "Observed tool executions in this task",
+  "focused_pytest": {
+    "python_3_9": {
+      "passed": 21,
+      "failed": 0,
+      "cacheprovider_disabled": true
+    },
+    "python_3_12": {
+      "passed": 21,
+      "failed": 0,
+      "cacheprovider_disabled": true
+    }
+  },
+  "ruff_scoped_check": "passed",
+  "full_repository_suite_rerun": false,
+  "test_files_sha256": {
+    "tests/test_economic_fidelity.py": "50660d91119f12cf3709b776df67fa958e4c4fb00edf7c11933f43ac907fcd40",
+    "tests/test_openrouter_budget.py": "44f51724a68c8f7a5c28722f278abb697a1ed5d940dd1831770a28bc5cd34eec"
+  },
+  "independent_human_review": false,
+  "metadata_serialization_regression_test": true
+}

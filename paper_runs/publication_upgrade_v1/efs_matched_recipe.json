@@ -1,0 +1,11 @@
+{
+  "fixed_before_control_outcomes": true,
+  "seeds": [101,102,103,104,105,106,107,108,109,110],
+  "cost_bps": [0,10,25,50],
+  "primary_comparison": "Frozen EFS LLM path minus the arithmetic mean daily return across all ten programmatic-search seeds",
+  "secondary_comparisons": ["LLM versus initial library", "LLM versus equally weighted universe", "Fee and turnover attribution", "Paired individual-seed range; no best-seed selection"],
+  "matched": ["Exact number of returned source code candidates at each of 290 search dates", "Source seed library", "Training-only admission and feedback window", "Pool size, latest/best family retention, selected-factor count", "Universe, trading cadence, execution delay, transaction costs"],
+  "unmatched": ["A fixed eight-primitive grammar has a narrower hypothesis space than unrestricted LLM source generation", "Compute/model dollars are not candidate evaluations", "LLM is one realized trajectory while random-search variation is estimated with ten trajectories"],
+  "candidate_schedule_source": "paper_runs/economic_fidelity/efs_v1/llm_proposals.json",
+  "search_results_claim": "Mechanism comparison conditional on the declared hypothesis spaces, not a universal causal LLM advantage"
+}

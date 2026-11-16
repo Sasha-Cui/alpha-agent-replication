@@ -1,0 +1,26 @@
+{
+  "status": "first_economic_fidelity_pilot_complete",
+  "completed_utc": "2026-09-07T05:06:46.739972+00:00",
+  "canonical_project": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve",
+  "days": 1510,
+  "months": 72,
+  "generation_steps": 290,
+  "admitted_llm_functions": 535,
+  "days_using_llm_functions": 1438,
+  "focused_tests_per_python": 21,
+  "supported_python_tests": [
+    "3.9",
+    "3.12"
+  ],
+  "independent_accounting": "passed all four cases for initial, LLM, and equal-weight reference",
+  "canonical_network_disabled_replay": "byte_identical",
+  "new_calls_during_replays": 0,
+  "known_new_study_api_charges_usd": 5.808226,
+  "unavailable_response_reservation_usd": 0.036876,
+  "project_committed_usd": 15.7554045,
+  "project_promotion_pending": false,
+  "human_source_review": "pending",
+  "broader_point_1_complete": false,
+  "points_2_to_6_complete": false,
+  "committed_or_pushed": false
+}

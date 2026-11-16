@@ -1,0 +1,30 @@
+{
+  "accepted_llm_functions": 0,
+  "budget": null,
+  "completed_utc": "2026-09-07T04:43:19.447333+00:00",
+  "confirmatory_result": false,
+  "days": 1510,
+  "days_using_llm_factors": 0,
+  "full_original_paper_reproduced": false,
+  "implementation_type": "paper_guided_native_cadence_reimplementation",
+  "independent_human_review_complete": false,
+  "llm_calls": 0,
+  "mode": "initial",
+  "months": 72,
+  "output_sha256": {
+    "initial_daily_returns.csv": "e9d8f592f1f9e828a89b051592a4dfed399cec78283930b4c70c69cad307916a",
+    "initial_decisions.csv": "177f56555319ea7f108ae61d450d76d30153c7ba8693222f3db854e50cf01349",
+    "initial_factor_library.json": "7e1ab0559786d10b7e0c37116c07d0eabf2aa8fbcbdb12f9097783d0c2b1dbd6",
+    "initial_llm_trace.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "initial_metrics.csv": "c5bdaa26f3beaccb408bb4a6ac2d32bd908ff37a56f75d29ccf4dce69845630f",
+    "initial_monthly_returns.csv": "320d7e981e6417845792ef6365e95a7f4f4e61dcfe796f462415220649cdb132",
+    "initial_proposals.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "private_weights_path": "/nfs/roberts/scratch/pi_btk22/zc362/economic_fidelity_20260907/private/initial_daily_weights.parquet",
+  "private_weights_sha256": "6757819b870fb19917ec28a1f7a411f8c0fb45692bec86201fc3e81acc613c23",
+  "python": "3.9.21",
+  "recipe_sha256": "e1ed69a4c1fea2ae0647e225be77a991ae15c8d3a38c6433988f5d07e6853904",
+  "source_daily_extract_sha256": "b0ff4dda0539ecd91ad210e4444b9ec7ecdcafca1e552613c85c8720c72f34da",
+  "status": "complete",
+  "tickers": 50
+}

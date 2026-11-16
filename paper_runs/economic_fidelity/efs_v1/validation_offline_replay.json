@@ -1,0 +1,14 @@
+{
+  "metadata_reconstructed_after_serialization_fix": true,
+  "proposals_byte_identical_to_live_journal": true,
+  "status": "pass",
+  "network_calls": 0,
+  "ledger_unchanged": true,
+  "exact_output_hashes": {
+    "llm_daily_returns.csv": "b052747a2fe5d3059ee0355892cc3ef4033006776d9c9b6525ea4081106fa002",
+    "llm_monthly_returns.csv": "bd8f2560cb01c32c7bce70063872980036d4952758293557029c881a9e0ae8cc",
+    "llm_metrics.csv": "329686761463b77aa4e8cc66defac7b0e67748b9e06e5be403f921a00fd0d804",
+    "llm_decisions.csv": "6d4592a740e3c0605d1166bf232cb6246bb399f6c52158871be70428451a9dee"
+  },
+  "private_weights_byte_identical": true
+}

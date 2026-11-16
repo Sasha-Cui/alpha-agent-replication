@@ -1,0 +1,29 @@
+{
+  "archive": "artifacts/fidelity_completion_v2/efs_pool_walltime_recovery_20260918",
+  "cancelled_full_family_not_recreated": "26540174;strictAlpha remains unavailable",
+  "cancelled_never_started_analyses_replaced": [
+    "26540172",
+    "26589769"
+  ],
+  "claim": "Operational recovery only. No new completed economic result or improved model/search is claimed.",
+  "deep_action": "original_pending_job_extended_in_place",
+  "financial_method_changed": false,
+  "jobs": {
+    "deep_pool": "26519342",
+    "efs_pooled_analysis": "26599156",
+    "gpt_pool": "26599155",
+    "project_partial_family_after_efs": "26599157"
+  },
+  "new_gpt_time_limit_hours": 24,
+  "new_model_calls": 0,
+  "original_financial_modes_completed": 0,
+  "original_job": "26503312_0",
+  "original_state": "TIMEOUT_after_two_hours",
+  "pending_deep_time_limit_hours": 24,
+  "preserved_input_gate_sha256": "ed88bc657f656170e2c5369315a2c74f3123a4fc5987afbbb14193b173ec3e2e",
+  "preserved_partial_output": "input_replay_gates.json only; no finished account or mode output",
+  "recorded_at_utc": "2026-09-18T07:26:35.503245+00:00",
+  "same_evaluator_sha256": "be3baea33decfffdf56c0f5084346a8658dbcea7b9543ac9db100dbab4e72c3a",
+  "source_searches_rerun": 0,
+  "status": "deterministic_financial_recovery_submitted_not_completed"
+}

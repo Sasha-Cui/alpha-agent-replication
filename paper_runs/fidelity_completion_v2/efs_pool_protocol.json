@@ -1,0 +1,38 @@
+{
+  "frozen_at_utc": "2026-09-17T08:35:07.686409+00:00",
+  "basis": "EFS v1 section5.1 describes pooling three search trajectories and re-evaluation; exact author implementation unavailable.",
+  "groups": {
+    "gpt41": [
+      "frozen_v1",
+      "gpt41_2",
+      "gpt41_3"
+    ],
+    "deepseek_v3": [
+      "deepseek_v3_1",
+      "deepseek_v3_2",
+      "deepseek_v3_3"
+    ]
+  },
+  "primary_rule": "Union all accepted factors, deduplicate exact source-code hashes, gate by earliest discovery close across the three declared runs. Each day re-rank every causally available member using the unchanged trailing-feedback engine and source-family latest/best rule. Previously pruned members can re-enter this pooled-library evaluation. No cross-backend or return-selected pooling.",
+  "diagnostic_rule": "Identical evaluator on the final union with discovery gate disabled, explicitly labelled retrospective hindsight diagnostic. It is never tradable or confirmatory evidence.",
+  "clock": "Signal at close t, execute close t+1, first earn close t+1 to t+2.",
+  "claim_limits": [
+    "Conditional re-evaluation of previously generated candidate libraries, not a new pool-feedback search policy",
+    "Current LLM historical knowledge, static selected universe, substitute data and invented numerical conventions remain",
+    "Only US50; other original markets and full ablation suite remain unreplicated",
+    "No selection of trajectories or factor libraries by new evaluation return"
+  ],
+  "shared_engine_fields": [
+    "start",
+    "end",
+    "warmup_days",
+    "feedback_days",
+    "pool_max",
+    "selected_factors",
+    "portfolio_assets",
+    "feedback_portfolio_assets",
+    "recall_assets",
+    "data_manifest_sha256",
+    "implementation_sha256"
+  ]
+}

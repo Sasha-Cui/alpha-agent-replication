@@ -1,0 +1,27 @@
+{
+  "actual_preflight": [
+    "gpt41_1_frozen",
+    "gpt41_3",
+    "deepseek_v3_1"
+  ],
+  "complete_backend_pools": false,
+  "created_utc": "2026-09-17T21:32:57.559509+00:00",
+  "intrinsic_requirements": [
+    "All3 declared trials complete290search rounds",
+    "Everysource/output/replay hashmatches",
+    "Original and replay holdings match completed manifest",
+    "No replay network calls or authoritative-ledger changes",
+    "Every preserved transport prefix passes",
+    "Every original engine implementation file matches frozen recipe",
+    "Completion refusesoverwrite; publicoutput andprivateweight hashes recorded"
+  ],
+  "new_guard_tests": 4,
+  "new_model_calls": 0,
+  "scheduler": "Existing dependency chains retained; pool jobs26503312_0/26519342_1 were held only during validation-only edits and released afterwards.",
+  "scope": "Validation-only hardening before either pooled EFS financial evaluation. Original engine/source semantics and all existing studies remain frozen.",
+  "tested_python_versions": [
+    "3.12",
+    "3.9"
+  ],
+  "validation_sha256": "b2dacafacee9b6a201bec30bec05d2dde56556c1ed628e6645448b4bdd248e94"
+}
