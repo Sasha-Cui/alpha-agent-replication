@@ -1,0 +1,37 @@
+{
+  "recorded_at_utc": "2026-09-17T16:11:52.910521+00:00",
+  "native_and_full_replay_array": "26502926",
+  "causality_array": "26503314",
+  "replicates": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+  ],
+  "first_replica": "alphaagent_rounds_paper_gpt35_01",
+  "first_replica_full_replay": "pass",
+  "source_control_first_five_round_prefix": "pass;four successes and one failed round retained",
+  "bounded_pilot_causality_programs": {
+    "paper_gpt35": 7,
+    "source_gpt4turbo": 8
+  },
+  "gates": "All pilot code/matrix/full-universe prefixes pass; independent accounts pass. No new-period returns inspected.",
+  "same_shared_cap_usd": 20,
+  "five_rounds_mean_five_attempted_rounds": true,
+  "first_shared_HDF_pilots_counted": false
+}

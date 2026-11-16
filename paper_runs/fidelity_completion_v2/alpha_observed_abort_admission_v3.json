@@ -1,0 +1,53 @@
+{
+  "admissions": {
+    "14": {
+      "attempted_rounds": 3,
+      "diagnosis_path": "artifacts/fidelity_completion_v2/alpha_constructor_abort_v3_20260918/trial14/diagnosis.json",
+      "diagnosis_sha256": "c413698565e52d7634bcc1cc126363aca0cef74a1577bb206a84fffcb3153f03",
+      "eligibility": "Conditional on actual replay/account/all-used-program proofs. Diagnostic extraction is not execution completion.",
+      "evidence_path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_14/constructor_abort_evidence_v3.json",
+      "evidence_sha256": "010fcc5f1c990ad57e57d47a6947586642c2c7b70cf823335c3199d8f1bef60a",
+      "run": "alphaagent_rounds_paper_gpt35_14",
+      "unattempted_round_indices": [
+        3,
+        4
+      ],
+      "witness": {
+        "before": 20,
+        "calls": 96,
+        "key": "914f15d540e6453116f8222af881323b0af10b0eb280c70e307576fcdbb1bafb",
+        "pid": 2420513,
+        "reservation": 0.0273765,
+        "round": 2
+      }
+    },
+    "15": {
+      "attempted_rounds": 5,
+      "diagnosis_path": "artifacts/fidelity_completion_v2/alpha_constructor_abort_v3_20260918/trial15/diagnosis.json",
+      "diagnosis_sha256": "7c08cdea3db4598841ed986ddc3d8c3aa6e98b936be8970c3b320ff404dc03dd",
+      "eligibility": "Conditional on actual replay/account/all-used-program proofs. Diagnostic extraction is not execution completion.",
+      "evidence_path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_15/constructor_abort_evidence_v3.json",
+      "evidence_sha256": "e5fa4ac4f55c91f752b7dd595acd77ed8da53d67247dd2420ddc5dd5cf015850",
+      "run": "alphaagent_rounds_paper_gpt35_15",
+      "unattempted_round_indices": [],
+      "witness": {
+        "before": 84,
+        "calls": 151,
+        "key": "d5a2d39be66896ac71e93565176e8eab979953f30059a9fc2a1ebcad7107fc50",
+        "pid": 2420514,
+        "reservation": 0.0297075,
+        "round": 4
+      }
+    }
+  },
+  "generation_or_financial_settings_changed": false,
+  "new_source_calls": 0,
+  "original_primary_remains_blocked": true,
+  "original_protocol_sha256": "7b368a581b6a189fe0ff497309fe25c302d853372f5fb83969661dea329da60c",
+  "recorded_at_utc": "2026-09-18T04:36:00.668860+00:00",
+  "scope": "exploratory_all20_observed_history_sensitivity",
+  "scope_boundary": "Recognize explicitly witnessed source outcomes under the original all20 observed-history rule. Trial14 is early and cannot pass the five-attempt gate. Trial15 has five observed attempts including the failed last attempt; this is not a fifth successful backtest. No original protocol or frozen trial12 source is overwritten.",
+  "validator_archive": "artifacts/fidelity_completion_v2/alpha_constructor_abort_v3_20260918/alpha_constructor_abort_v3_frozen.py",
+  "validator_path": "scripts/alpha_constructor_abort_v3.py",
+  "validator_sha256": "90e7ff29c1e1951ce12b44188f56fb9d8431654021067417dee875d3feebbe25"
+}

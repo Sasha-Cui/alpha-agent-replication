@@ -1,0 +1,118 @@
+{
+  "scope": "exploratory_all20_observed_history_sensitivity",
+  "frozen_at_utc": "2026-09-18T03:22:26.131965+00:00",
+  "status": "protocol_frozen_implementation_and_all_source_gates_pending",
+  "reason": "The released trial12 terminated after3 of5 planned attempts. The frozen20-by5 contrast stays unavailable. This distinct sensitivity evaluates the pooled factors actually consumed by native backtests across every planned trial, with all failures and unattempted rounds retained.",
+  "source_case": "alphaagent",
+  "planned_trials": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+  ],
+  "run_names": [
+    "alphaagent_rounds_paper_gpt35_01",
+    "alphaagent_rounds_paper_gpt35_02",
+    "alphaagent_rounds_paper_gpt35_03",
+    "alphaagent_rounds_paper_gpt35_04",
+    "alphaagent_rounds_paper_gpt35_05",
+    "alphaagent_rounds_paper_gpt35_06",
+    "alphaagent_rounds_paper_gpt35_07",
+    "alphaagent_rounds_paper_gpt35_08",
+    "alphaagent_rounds_paper_gpt35_09",
+    "alphaagent_rounds_paper_gpt35_10",
+    "alphaagent_rounds_paper_gpt35_11",
+    "alphaagent_rounds_paper_gpt35_12",
+    "alphaagent_rounds_paper_gpt35_13",
+    "alphaagent_rounds_paper_gpt35_14",
+    "alphaagent_rounds_paper_gpt35_15",
+    "alphaagent_rounds_paper_gpt35_16",
+    "alphaagent_rounds_paper_gpt35_17",
+    "alphaagent_rounds_paper_gpt35_18",
+    "alphaagent_rounds_paper_gpt35_19",
+    "alphaagent_rounds_paper_gpt35_20"
+  ],
+  "planned_maximum_attempts_per_trial": 5,
+  "source_rule": "Wait for all20 original source execution outcomes and exact full-observed-history replay/account/program evidence. Never choose a completed subset, omit an aborted trial, resume missing rounds, replace a failed trial or select on returns.",
+  "library_rule": "Union of every program actually consumed by a completed native feedback backtest in all20 original runs, irrespective of feedback acceptance or performance. Exact-expression duplicates may merge only after identical numerical columns are proved. Failed/unattempted rounds contribute no invented factor or return.",
+  "zero_program_rule": "A verified run with no completed native backtest contributes an empty program set and remains explicitly represented. No per-trial portfolio/return is imputed. A wholly empty pooled set is not evaluable. A zero-program outcome requires its own exact terminal/source evidence; no generic unchecked empty manifest can pass.",
+  "causality_rule": "Every contributed source-used program must pass nonvacuous aligned full-universe prefix and native-matrix proofs. Do not discard a failing program to obtain an evaluable subset.",
+  "existing_early_abort_witnesses": [
+    12
+  ],
+  "additional_abort_rule": "Any additional early/fatal outcome must be separately diagnosed, preserved and fully replayed before admission. It cannot pass merely because a scheduler job terminated.",
+  "no_new_llm_calls": true,
+  "no_changed_generation_or_failure_handling": true,
+  "no_original_source_or_frozen_protocol_edits": true,
+  "financial_comparison": {
+    "baseline": "Alpha158",
+    "augmented": "Alpha158 plus all20 observed-history pooled library",
+    "economic_execution": "opening_information_limit_proxy",
+    "source_native_execution": "conformance diagnostic only",
+    "new_model_fits": 2,
+    "opening_replays": 2,
+    "per_trial_economic_winner_selection": false,
+    "per_trial_economic_panel": false
+  },
+  "financial_settings": "Same frozen native Alpha train/validation/later-period dates, fees, lots, capital, universe, model hyperparameters, label embargo and feature normalization as the strict planned comparison. The only feature intervention is this explicitly partial-budget source library.",
+  "inference": {
+    "estimator": "paired daily net returns; report full-sample annualized arithmetic mean and four contiguous-group mean separately",
+    "annualization": 252,
+    "groups": 4,
+    "pointwise_confidence": 0.99,
+    "economic_margin": 0.02,
+    "raw_two_sided_p_value": "descriptive exploratory diagnostic only",
+    "no_project_family_significance_flag": true,
+    "conditional_on_fixed_observed_library": true,
+    "no_new_market_histories_from_model_trials": true
+  },
+  "strict_primary_job_remains_held": "26515245",
+  "does_not_replace_strict_primary": true,
+  "does_not_complete_original_four_case_family": true,
+  "does_not_enter_original54_secondary_family": true,
+  "reporting": "Always label observed-history, mixed realized search budgets and exploratory scope. Report actual attempted/unattempted rounds, successful histories, source failures, factor counts and retained costs for all20 trials. Do not label this a full20-by5 replication, paper reproduction, pristine holdout or JKP132 attribution.",
+  "timing_disclosure": "Specified after observing the source failures and Quanta later-period results, before any Alpha later-period returns were inspected. This is an exploratory scope amendment, not pristine preregistration.",
+  "evidence": {
+    "strict_block_sha256": "89e7af91714134526324be3578f1ddd9964b3ed2fa75301837f97491c4bf51d8",
+    "opening_protocol_sha256": "e0f07647fd5e220d5234de8615ea10b56f44c2d8afd18ba82495fbfd1c926607",
+    "inference_amendment_sha256": "4275a41cf613aac715210c2294c9fbca8bba2ded6c36e98d781fde8f88c817f5",
+    "original_new_period_protocol_sha256": "0c46328c8b6257f6f3ae4a099842b8d5e5f70e2663b1cbfa18765e17e3c3d92e"
+  },
+  "original_primary_gates_unchanged": true,
+  "human_attestation": null,
+  "frozen_context": {
+    "alphaagent_early_abort_disposition.json": {
+      "path": "artifacts/fidelity_completion_v2/alpha_observed_history_scope_20260918/frozen_context/alphaagent_early_abort_disposition.json",
+      "sha256": "89e7af91714134526324be3578f1ddd9964b3ed2fa75301837f97491c4bf51d8"
+    },
+    "opening_execution_sensitivity_protocol.json": {
+      "path": "artifacts/fidelity_completion_v2/alpha_observed_history_scope_20260918/frozen_context/opening_execution_sensitivity_protocol.json",
+      "sha256": "e0f07647fd5e220d5234de8615ea10b56f44c2d8afd18ba82495fbfd1c926607"
+    },
+    "native_inference_amendment.json": {
+      "path": "artifacts/fidelity_completion_v2/alpha_observed_history_scope_20260918/frozen_context/native_inference_amendment.json",
+      "sha256": "4275a41cf613aac715210c2294c9fbca8bba2ded6c36e98d781fde8f88c817f5"
+    },
+    "native_new_period_analysis_protocol.json": {
+      "path": "artifacts/fidelity_completion_v2/alpha_observed_history_scope_20260918/frozen_context/native_new_period_analysis_protocol.json",
+      "sha256": "0c46328c8b6257f6f3ae4a099842b8d5e5f70e2663b1cbfa18765e17e3c3d92e"
+    }
+  },
+  "cost_reporting": "Keep seeded chat-request costs and failed-response reservations identifiable by logical trial. Shared cached embeddings are reported once as shared unique-response costs, not duplicated across trials. Reused historical-response costs are not labelled incremental new spending; canonical project/study totals remain separate."
+}

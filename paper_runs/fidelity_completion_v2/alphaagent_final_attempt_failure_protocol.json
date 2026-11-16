@@ -1,0 +1,19 @@
+{
+  "recorded_at_utc": "2026-09-18T00:30:58.020140+00:00",
+  "status": "observed_failure_closure_protocol_replay_pending",
+  "trial": 8,
+  "original_job": "26502926_8",
+  "observed_failure": "HTTP400 during factor_construct of zero-indexed round4 after110 completed chat responses;72 construction responses in this final attempt. These include duplication and expression parsing retries.",
+  "rule": "The already-prespecified five attempted rounds include this failed final round. Keep four native trajectories, all five attempted rounds, all response/prompt history, embedding records and full0.030346USD uncertain reservation. No paid retry, changed model/decoding, prompt truncation or replacement round.",
+  "new_status": "native_final_attempt_failed, distinct from a successful native return; not a fifth successful validation or backtest",
+  "eligibility": "Only after exact cached full replay, account reconstruction and actual-used-program full-universe causality. Twenty planned trials and every used program remain mandatory.",
+  "failure_replay_scope": "Regenerate the original source execution from cached successful responses. At the identical failed request hash, inject only the observed HTTP400 terminal event; never claim a new upstream response or independently observed cause.",
+  "scope_bound": "Only this exact final-round failure can use the new gate. Earlier aborts and unrelated failed trials cannot pass as five attempted rounds.",
+  "no_later_period_outcome_selection": true,
+  "primary_definition_unchanged": "All source-used programs across all twenty planned trials, irrespective of successful feedback or failed attempts. No surviving-trial selection.",
+  "provider_error_body_available": false,
+  "diagnosis_pending_exact_envelope": true,
+  "evidence_root": "artifacts/fidelity_completion_v2/alpha_trial08_failure_20260918",
+  "human_source_review": false,
+  "full_original_paper_reproduction": false
+}

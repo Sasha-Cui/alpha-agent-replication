@@ -1,0 +1,65 @@
+{
+  "actual_probe_sha256": "dc80076cb8315ad3a5f2a5d19c2966feb4fbbd3bc114fbfa3097cf9dc0682bca",
+  "additional_witness_extension": "paper_runs/fidelity_completion_v2/alpha_observed_abort_admission_v3.json",
+  "additional_witness_extension_sha256": "1356829f68ac527e85b5fe22ab946138e8a3b69ffb016bc639d1be5a89073455",
+  "additional_witness_runtime_status": "Trial14/15 observed replay, accounts and all used-program proofs complete; early14 retains three actual attempts.",
+  "current_admission_source_manifest": "artifacts/fidelity_completion_v2/alpha_constructor_abort_v3_20260918/source_manifest.json",
+  "current_admission_source_manifest_sha256": "c654a06187051dae75eb4d0b032f31062e3a45dd9a648644560842580bc34017",
+  "economic_completion_sha256": "2ba46271423bce725a48b7fd3b35aa6118f356dcf05b7b1dcaf83274d14ce516",
+  "economic_jobs_submitted": 4,
+  "financial_implementation_manifest": "artifacts/fidelity_completion_v2/alpha_observed_history_scope_20260918/financial_implementation/readiness.json",
+  "financial_implementation_manifest_sha256": "093e2d976353609c30682c6f11659ce8594a4c06441e5224043e36c6e3ea5070",
+  "financial_pipeline_status": "Complete source/library, both native fits/accounts, both byte-identical-prediction opening replays/accounts, and separate exploratory paired analysis; original strict scope remains unavailable",
+  "financial_software_guards": "Ten focused scope/scheduler/calendar/degeneracy guards PASS on each Python3.12 and3.9. Three financial statement blocks are byte-identical to the existing materializer/native runner. None is new economic evidence.",
+  "full_catalogue_ready": true,
+  "historical_implementation_probe": {
+    "additional_witness_runtime_status": "Trial14/15 replay/account/proofs submitted, not complete; neither is admitted merely by declaration.",
+    "all20_preflight_refusal": "All20 observed source outcomes/gates are required; missing: {\"alphaagent_rounds_paper_gpt35_14\": [\"execution_exit.json\", \"used_factor_manifest.json\", \"independent_accounts/validation.json\"], \"alphaagent_rounds_paper_gpt35_15\": [\"execution_exit.json\", \"used_factor_manifest.json\", \"independent_accounts/validation.json\"], \"alphaagent_rounds_paper_gpt35_16\": [\"execution_exit.json\", \"used_factor_manifest.json\", \"independent_accounts/validation.json\"], \"alphaagent_rounds_paper_gpt35_17\": [\"execution_exit.json\", \"used_factor_manifest.json\", \"independent_accounts/validation.json\"], \"alphaagent_rounds_paper_gpt35_18\": [\"execution_exit.json\", \"used_factor_manifest.json\", \"independent_accounts/validation.json\"], \"alphaagent_rounds_paper_gpt35_19\": [\"execution_exit.json\", \"used_factor_manifest.json\", \"independent_accounts/validation.json\"], \"alphaagent_rounds_paper_gpt35_20\": [\"execution_exit.json\", \"used_factor_manifest.json\", \"independent_accounts/validation.json\"]}",
+    "economic_jobs_submitted": 0,
+    "recorded_at_utc": "2026-09-18T03:35:54.805015+00:00",
+    "scope": "Preserved earlier software-readiness snapshot, superseded by complete source catalogue and submitted jobs."
+  },
+  "jobs": {
+    "analysis": "26607163",
+    "library": "26607160",
+    "models": "26607161",
+    "opening": "26607162"
+  },
+  "new_llm_calls": 0,
+  "no_economic_or_replication_credit_for_readiness": true,
+  "primary_pool_still_held": "26515245",
+  "representative_actual_trials": [
+    1,
+    8,
+    12
+  ],
+  "scope": "exploratory_all20_observed_history_sensitivity",
+  "software_guards": "Six focused scope/completeness/boundary guards PASS on Python3.12 and3.9; actual source probes separate evidence.",
+  "source_catalogue_sha256": "67d2f123c3bd414433cfc836b6cae9b1080584c3ec50240c3f7ef7d979997da5",
+  "source_generation_jobs_submitted": 0,
+  "sources": [
+    {
+      "copy": "artifacts/fidelity_completion_v2/alpha_observed_history_scope_20260918/frozen_sources/alpha_observed_history_evidence_v2.py",
+      "path": "scripts/alpha_observed_history_evidence_v2.py",
+      "sha256": "6f20e366190c094b7f020e22b1af9a5944740fc7e6e63352c02b7d6feeef740a"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/alpha_observed_history_scope_20260918/frozen_sources/build_alpha_observed_history_catalogue_v2.py",
+      "path": "scripts/build_alpha_observed_history_catalogue_v2.py",
+      "sha256": "85afba7332ad0c3f2f9eccb4c48dbddac0ad995ef64d36c1492b92b4861c58e6"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/alpha_observed_history_scope_20260918/frozen_sources/test_alpha_observed_history_scope_v2.py",
+      "path": "tests/test_alpha_observed_history_scope_v2.py",
+      "sha256": "0756c981ef6750c71766a90a2a4b26d70aeb177f9903dcaf55d7d81432deb105"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/alpha_observed_history_scope_20260918/frozen_sources/alpha_observed_history_sensitivity_protocol.json",
+      "path": "paper_runs/fidelity_completion_v2/alpha_observed_history_sensitivity_protocol.json",
+      "sha256": "7b368a581b6a189fe0ff497309fe25c302d853372f5fb83969661dea329da60c"
+    }
+  ],
+  "status": "separate_observed_history_sensitivity_complete_not_primary",
+  "strict_primary_status": "unchanged_blocked",
+  "updated_at_utc": "2026-09-18T11:52:05.590742+00:00"
+}

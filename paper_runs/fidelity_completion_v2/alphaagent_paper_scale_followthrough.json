@@ -1,0 +1,11 @@
+{
+  "recorded_at_utc": "2026-09-17T10:27:06.694815+00:00",
+  "source": "https://arxiv.org/html/2502.16789v2",
+  "verified_specification": "Section4.2:20independent trials, each five evolutionary rounds; optimal factors inserted into alpha zoos for a final combination, whose exact selection/combination lineage remains unreleased.",
+  "observed_feasibility": "Current source-defaultGPT4Turbo five-round run completed25stages with60chatcalls; the paper-familyGPT3.5 route is inexpensive and underway. Source25step depth agrees with paper5rounds.",
+  "next_gate": "Complete strict full replay and source-output/causality validation of the initial routes, then implement19additional GPT3.5 trajectories to target20 total within the same20USD shared study cap, using distinct prespecified API/native RNG seeds. Do not select trajectories on returns or treat model trials as independent market histories.",
+  "not_yet_launched": true,
+  "caps_unchanged": true,
+  "data_scope": "Alternative CSI500 only; original US data/anonymous five-factor lineage, exact historical endpoints and paper regularizer gaps remain.",
+  "evaluation": "Preserve all generated/failed candidates, compare source-used/selected factor libraries with an explicit frozen selection contract, and treat2021-2024assearchfeedback;2025comparison remainschronological but not pristine."
+}

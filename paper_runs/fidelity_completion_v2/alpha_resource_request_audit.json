@@ -1,0 +1,40 @@
+{
+  "changed_pending_task_ids": [
+    "26502926_10",
+    "26502926_11",
+    "26502926_12",
+    "26502926_13",
+    "26502926_14",
+    "26502926_15",
+    "26502926_16",
+    "26502926_17",
+    "26502926_18",
+    "26502926_19",
+    "26502926_20"
+  ],
+  "created_utc": "2026-09-17T23:28:40.906204+00:00",
+  "headroom_over_observed_peak": 2.477249377557948,
+  "limits": "Observed headroom does not guarantee every future generated program fits. Preserve all failures; never replace a failed scientific round to improve outcomes.",
+  "memory_request_change_gib": [
+    64,
+    32
+  ],
+  "observed_completed_trials": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "observed_maximum_rss_gib": 12.917552947998047,
+  "private_scheduler_evidence_sha256": "10c56a8170561fcae01e86c0c0399cff398f4d7b74d57b4b2e468da25e193e0c",
+  "status": "operational_change_not_model_or_data_change",
+  "unchanged": [
+    "20CPUs",
+    "3hour limit",
+    "array throttle2",
+    "model/data/code/seed/attempt/cost settings",
+    "all running tasks"
+  ]
+}

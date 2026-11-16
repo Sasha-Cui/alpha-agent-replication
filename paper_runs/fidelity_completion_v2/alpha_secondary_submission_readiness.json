@@ -1,0 +1,47 @@
+{
+  "status": "implemented_guarded_not_submitted",
+  "recorded_at_utc": "2026-09-18T01:21:09.981978+00:00",
+  "planned_augmented_fits": 40,
+  "planned_opening_replays": 40,
+  "new_common_baseline_fits": 0,
+  "new_llm_api_calls": 0,
+  "job_arrays_submitted": 0,
+  "real_preflight": "correctly_refused_missing_complete_parent",
+  "reason": "Complete pooled20 columns are not yet available; submit nothing",
+  "guard_tests": "Five synthetic submission/collision/completeness/uncertainty guards PASS on Python3.12 and3.9; software only, not runtime model/economic validation.",
+  "shell_checks": "All four SBATCH templates pass bash -n; this is not executed job completion.",
+  "sources": [
+    {
+      "path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/submit_alpha_secondary_v2.py",
+      "sha256": "8c95cdd5579a2cc82e8189a5e3f84478b0096c70ff1b082d584b3f67a7394f33",
+      "archive": "artifacts/fidelity_completion_v2/alpha_secondary_launcher_20260918/sources/submit_alpha_secondary_v2.py"
+    },
+    {
+      "path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/tests/test_alpha_secondary_submission_v2.py",
+      "sha256": "a118ee68ad17d068d9b1f337070ad0813e88d97a62cd532ddd5f6d146f9ddce7",
+      "archive": "artifacts/fidelity_completion_v2/alpha_secondary_launcher_20260918/sources/test_alpha_secondary_submission_v2.py"
+    },
+    {
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_alpha_secondary_libraries.sbatch",
+      "sha256": "e909fe995387142db0872a4b5565bc5d90806cd03fcb7148b857a0ff4b2b21a1",
+      "archive": "artifacts/fidelity_completion_v2/alpha_secondary_launcher_20260918/sources/alpha_fidelity_v2_alpha_secondary_libraries.sbatch"
+    },
+    {
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_alpha_secondary_models.sbatch",
+      "sha256": "0da420b1aaf1442ed911adb2d912661480d4fe3aa618d08569ed8e0bdf7f096c",
+      "archive": "artifacts/fidelity_completion_v2/alpha_secondary_launcher_20260918/sources/alpha_fidelity_v2_alpha_secondary_models.sbatch"
+    },
+    {
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_alpha_secondary_opening.sbatch",
+      "sha256": "5fbc8ab839a33a849c49e13da4a1d6790f8aabc67cbd668c731f2149661803bc",
+      "archive": "artifacts/fidelity_completion_v2/alpha_secondary_launcher_20260918/sources/alpha_fidelity_v2_alpha_secondary_opening.sbatch"
+    },
+    {
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_alpha_secondary_analysis.sbatch",
+      "sha256": "7cba74e5fd981693e0e2c7114d9242684902dd5207d912bd0a027f2115dbc053",
+      "archive": "artifacts/fidelity_completion_v2/alpha_secondary_launcher_20260918/sources/alpha_fidelity_v2_alpha_secondary_analysis.sbatch"
+    }
+  ],
+  "launch_after_complete_parent": "Central analysis Python3.12 scripts/submit_alpha_secondary_v2.py --submit; do not retry if alpha_secondary_jobs.json or any existing output already exists. Inspect saved intent/IDs and scheduler after any ambiguous failure.",
+  "evaluation_protocol_unchanged": true
+}

@@ -1,0 +1,8 @@
+{
+  "recorded_at_utc": "2026-09-17T09:12:24.702337+00:00",
+  "change": "Restore .env.example/README specified text-embedding-3-small and execute original APIBackend embedding method via metered SDK create. Native1536dimension unchanged; shared20USD cap covers embeddings.",
+  "source": "artifacts/fidelity_completion_v2/dependencies/alphaagent_95e478/.env.example",
+  "previous_wrapper_sha256": "44a787b5a734abc61541e427231a191781675727b38d9994d54e606714c416db",
+  "paid_search_started": false,
+  "source_default_model_was_empty_in_python_settings": true
+}

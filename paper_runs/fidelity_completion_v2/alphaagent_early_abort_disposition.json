@@ -1,0 +1,50 @@
+{
+  "attempted_rounds": 3,
+  "completed_trajectories": 2,
+  "diagnosis_sha256": "5544b0cd6e00df8a48ce2c012d8ce38dee098aee25a82f837164509473e2d199",
+  "early_abort_evidence_sha256": "c5d684f26e465823d2f1a2fc8d5d7b4d9c132c0b2fb78df2d383b09534d05d04",
+  "execution_exit_sha256": "19612eca35ef188a303d8f036671e0c614baaecd0572f9efef1bea588e7eee4e",
+  "failed_request_hash": "c8061be5982779ddeff6c1fbc67d773a431b2e2f6228817d8837094373988a9b",
+  "failed_round_indices": [
+    2
+  ],
+  "held_primary_pool_job": "26515245",
+  "jobs": {
+    "diagnostic_used_program_causality": "26570956_12",
+    "observed_replay_diagnostic_export_accounts": "26570955"
+  },
+  "no_primary_result_or_completed_family_claim": true,
+  "no_round_replacement_or_paid_retry": true,
+  "no_trial_dropped_or_replaced": true,
+  "planned_rounds": 5,
+  "primary_gate_rejection": "Alpha trial lacks all five attempted rounds",
+  "recorded_at_utc": "2026-09-18T02:31:00.135287+00:00",
+  "retained_reservation_usd": 0.028655,
+  "scope": "Replay/account/program proofs cover the observed early-aborted source history only. They cannot fill unattempted rounds or enable the frozen20-by5 primary/secondary comparison. Remaining original trials and FinAgent/EFS/Quanta studies continue. A different failure-handling experiment would require a separate declared scope; it has not been substituted here.",
+  "source_manifest_sha256": "a3c06f77cf694838cc5bd06d69a6f1849b1e3dc2cf08c646602c19458444f556",
+  "status": "strict_alpha_primary_and_complete_secondary_blocked_by_observed_early_abort",
+  "trial": 12,
+  "unattempted_round_indices": [
+    3,
+    4
+  ],
+  "diagnostic_chain_status": "observed_replay_accounts_and_all2_program_proofs_pass",
+  "diagnostic_verified_at_utc": "2026-09-18T03:41:07.286720+00:00",
+  "observed_replay_sha256": "d43a33f2d0da24b356b6948f5bb9541c12d9a0196d82be2da62f1706fda259cd",
+  "observed_replay_difference_count": 0,
+  "observed_replay_maximum_numeric_difference": 2.886579864025407e-15,
+  "independent_accounts_sha256": "95d92b2b4adb48d7410b9d1aaf0d0bde9aec2b88940b139794e0dcd68154e22a",
+  "used_factor_manifest_sha256": "6c7a9090ead625ff4eba2dfdded04c3940b821af907d090b6b84a608671d9ab8",
+  "actual_used_programs": 2,
+  "full_universe_causality": [
+    {
+      "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_12/causality_full_universe/3cf2fbb3d0d00c2d4c056029da6b13385940ee1941eeb334286191d7b175174c.json",
+      "sha256": "f4478cb60347acfd0b8c70534760db253bf06de38aa694fee34fcb3f4e04deed"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_12/causality_full_universe/56a743245dc489b53883ad0f9b25bc09b553c747fc7f41fa9a55914e6521d352.json",
+      "sha256": "02e0b5fbc0d81803878800a2473c00dc21e6d52f7953f73913e376c2ec06b159"
+    }
+  ],
+  "strict_primary_eligibility": false
+}

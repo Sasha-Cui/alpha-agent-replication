@@ -1,0 +1,65 @@
+{
+  "adaptations": [
+    "Current served model endpoints, no recovered historical snapshot",
+    "Verified QuantaAlpha alternative HDF/provider replace missing historicalBaostock data",
+    "Native qrun/read_exp_res in reconstructed centralCPU Qlib runtime, no unavailableCUDA Docker image",
+    "Metered SDK with complete response reassembled as one streamchunk",
+    "Distinct API seed percall gives independent cached identity; no original seed claim",
+    "Five source loops per route is a bounded experiment, not twenty author trials or exhaustive search"
+  ],
+  "alpha101_sha256": "d08d678a4a9003cf9427faa1f7b0d1a682a652bc51183d9f1b743bd3043524b5",
+  "evaluation_rule": "2021-2024 feedback is search-selection data, never untouched test. Preserve every candidate/failure; independently check prefix causality and account metrics. If complete, compare frozen accepted libraries against identical baseline in2025, without selecting on2025returns.",
+  "frozen_at_utc": "2026-09-17T13:56:13.455292+00:00",
+  "known_original_paper_gaps": [
+    "Exact historical five-factorUS lineage/data absent",
+    "Paper regularizer differs from released hard duplication retry; objective weights unresolved",
+    "Source defaultsGPT4Turbo versus paperGPT3.5; current routes separated",
+    "Historical model contamination and alternative data limit inference",
+    "No full original-paper reproduction or independent human review claim"
+  ],
+  "preserved": [
+    "Exact historical hypothesis/construct/calculate/backtest/feedback loop",
+    "Original prompts/parser/operators/hard subtree-duplication threshold and evolving reference zoo",
+    "Source initial directionNone and five steps per loop",
+    "Source temperature.5/max3000, streaming, JSON repair/continuation and retry semantics",
+    "Literal sourceCSI500 four-feature baseline/combinedLightGBM configs,2015-2019train/2020validation/2021-2024feedback,Top50/drop5 and fees",
+    "116-row reference zoo includes15 appended generated expressions, explicitly retained",
+    "Source ifFalse disables SOTA-feature concatenation/correlation deduplication; preserve and disclose"
+  ],
+  "project_budget_supplement_sha256": "e88e0eaad7438209b424b2ab0d812237ed4c52c10c22f37fc4e20d2b3ac0e01f",
+  "source_archive_manifest": "artifacts/fidelity_completion_v2/dependencies/alphaagent_95e478_manifest.json",
+  "source_commit": "95e47882cbed3ba0cafd42e812fe0032a8ae0681",
+  "source_inventory": "paper_runs/paper_replication_audits/alphaagent/paper_era_source_inventory.csv",
+  "trials": {
+    "paper_gpt35": {
+      "api_seed_base": 5000000,
+      "input_price_per_million": 0.5,
+      "openrouter_model": "openai/gpt-3.5-turbo",
+      "output_price_per_million": 1.5,
+      "source_model_name": "gpt-3.5-turbo",
+      "source_steps": 25
+    },
+    "source_gpt4turbo": {
+      "api_seed_base": 4000000,
+      "input_price_per_million": 10,
+      "openrouter_model": "openai/gpt-4-turbo",
+      "output_price_per_million": 30,
+      "source_model_name": "gpt-4-turbo",
+      "source_steps": 25
+    }
+  },
+  "input_variant": "source_five_OHLCV_fields_2015_start_and_bounded_search",
+  "original_protocol_sha256": "b84a4233701cc02228a92ed1202fdb7531491d0789495938aaf1c2d64bb24daf",
+  "target_paper_model_trajectories": 20,
+  "source_default_control_trajectories": 1,
+  "initial_shared_HDF_pilots_counted_in_twenty": false,
+  "replicate_rule": "Independent reset of the released116-row initial zoo and all native state; host RNG20260917+i-1; API base seed+100000*(i-1). No historical author seed or vendor determinism claim.",
+  "physical_search_boundary": "Only source-schema OHLCV from2015 through2025-01-02; debug100source-orderedinstruments through2024-12-30. EvaluationHDF must never be passed to generation.",
+  "same_shared_study_cap_usd": 20,
+  "scaling_gate": "Run corrected replicate1 and source-defaultcontrol first; fullreplay, code-to-matrix, accounting and meaningful prefix-validation before remaining19paidtrajectories. Keep every failed/incomplete attempt; do not select onreturns.",
+  "previous_protocol_sha256": "69b6f605ac2336e69780503d1848c51ecb7ab63ec1f86dcf0295241211d54ed0",
+  "round_budget": "Five attempted native rounds. Call unchanged native LoopBase.run one source step at a time until loop_idx reaches5; retain failures, never run extra rounds merely to obtain five successes.",
+  "reason": "The source25-step budget continued to a sixth proposal after a failed round. This does not equal the paper five-round design. Existing artifacts and all costs stay preserved.",
+  "reuse": "For replicate1, reuse verified cached source responses where request identities match. No extra response is chosen to turn a failed round into success.",
+  "source_control": "Existing four-success/one-failure control plus extra unscored proposal remains a diagnostic; the correctly stopped replay gives its first five attempted rounds."
+}

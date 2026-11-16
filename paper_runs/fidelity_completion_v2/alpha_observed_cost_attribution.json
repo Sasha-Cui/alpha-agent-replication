@@ -1,0 +1,409 @@
+{
+  "attributed_unique_response_cost_and_reservations_usd": 4.50081324,
+  "canonical_shared_alpha_study_commitment_usd": 12.773321939999931,
+  "incremental_new_spend_claim": false,
+  "ledger_snapshot_sha256": "9f8b73a02afe5ac835bd118208fa8011e145f368d49b4c81a46c77dff9e1592f",
+  "llm_trials_are_independent_market_histories": false,
+  "no_refunds_or_repricing": true,
+  "observed_missing_response_reservations_usd": 0.11608500000000001,
+  "other_original_pilot_or_route_commitment_usd": 8.272508699999932,
+  "private_ledger_exposed": false,
+  "recorded_at_utc": "2026-09-18T09:29:05.800252+00:00",
+  "returned_chat_cost_usd": 4.378667,
+  "shared_unique_embedding_cost_usd": 0.00606124,
+  "source_bindings": [
+    {
+      "chat_sha256": "092338725e5bb22c07a73fbb2338a0a710cf2f11a43ef9f0e3668c985cdd9f61",
+      "embedding_sha256": "9599b6e8687c5112e1e94a58d87daa1b9625a31da65ccbbd58c1d31fce942892",
+      "exit_sha256": "431962ceecb04a1bd479fa64aa63f979fdd81f9bda6f44ac4a557d70d75d9c83",
+      "run": "alphaagent_rounds_paper_gpt35_01"
+    },
+    {
+      "chat_sha256": "9d9339dfeb35f52f43b0b0fa8aba9930668ff90c936e7ae4906777213654d271",
+      "embedding_sha256": "278f9003d0d823f43b2a45e219d2ab5121c42c4eb3458940831135b3b51a234d",
+      "exit_sha256": "a493f13740b9d0202c324294eb3e830f13d32f698e21966dcd2c60a28d5bbfeb",
+      "run": "alphaagent_rounds_paper_gpt35_02"
+    },
+    {
+      "chat_sha256": "6145a3c8b9f405914a472c604b8cc67479bb5994d76f83d55489f9b1366565ed",
+      "embedding_sha256": "3f217309bae3c6defcaf90c184b76d6ff3ade26d75cc78546ee003f7b60b20de",
+      "exit_sha256": "a92c36c3f6549c0b41410d3e7d0537a24ca45bd0f610f6d46ca6a40f102ca145",
+      "run": "alphaagent_rounds_paper_gpt35_03"
+    },
+    {
+      "chat_sha256": "d1793a293af5ba440cd16506d69fa5380b83950d1bdc172ab5ac86bcc60c4d1e",
+      "embedding_sha256": "968156138443a74f7ca022f7cb5c3783ed5d33e1b7bf2ef97102370c40450223",
+      "exit_sha256": "6efa16b6bfae8a848c06823af28478993f3ac073a7226e799efc10b5537c4455",
+      "run": "alphaagent_rounds_paper_gpt35_04"
+    },
+    {
+      "chat_sha256": "df7d53e774d48e74e6a3eb441b5b562145ada8e960407ebaa71b73601fae5b7b",
+      "embedding_sha256": "decdbe581115f6d064c2fa1a81b39b8668ab4d7c71fda86a307ebbc1e2565104",
+      "exit_sha256": "5f76802c1f127c87792dc51d518a8a75a8ac325161bdc6e1ad54e89bccf430e0",
+      "run": "alphaagent_rounds_paper_gpt35_05"
+    },
+    {
+      "chat_sha256": "5cb294c0c80463125554e7228885003e0cb3f7f940028904250d60546b2bafd8",
+      "embedding_sha256": "db90924018652c2dd3514c8e9165d959ecb2f2f2515a495717328d2c2a8f0111",
+      "exit_sha256": "85f753dec8a1b58f62e56bf9fadb791d08e1efc811e26301b39993774fd7d28c",
+      "run": "alphaagent_rounds_paper_gpt35_06"
+    },
+    {
+      "chat_sha256": "09450e596429b7ddb806799c03d1f59f433f7a4e6c9f5e64e70d342a5a04dad6",
+      "embedding_sha256": "134ccdbfbda1de332066869519e3e399361208dfd0405d8011cd82e5e590036c",
+      "exit_sha256": "a8070c3691d991c92604e6e096f092d3fc6aa29ddb6871e04d3e3162e2300bd0",
+      "run": "alphaagent_rounds_paper_gpt35_07"
+    },
+    {
+      "chat_sha256": "7c4399fd453c3be52b0179564da4645ba88449e36ee8be9080b7e51e0db0370b",
+      "embedding_sha256": "34ddb9a0da3595ce3c1749120eec218efad35a63e354398a0df3b237be24af2b",
+      "exit_sha256": "9ff19505695fce67953e0c00098dfaa5087119e3b487deabffb368e1a9461f84",
+      "run": "alphaagent_rounds_paper_gpt35_08"
+    },
+    {
+      "chat_sha256": "f6d07766c6d9d3ca849f968c9bdf7adf4f87bcbaa9ec67636612e4cf29913bd7",
+      "embedding_sha256": "8b9677e7112d452ff60d4f2aceaf7c05d3ca1f42da3e669d89218f374a58ee3e",
+      "exit_sha256": "3336aca5f644ca3be84833267becf2cf11ee77f71437efd862139201fc626465",
+      "run": "alphaagent_rounds_paper_gpt35_09"
+    },
+    {
+      "chat_sha256": "68c0a42eb6c5c7d3aa7c174b2b9585f5eabb6d7e539d9a331031630240adf279",
+      "embedding_sha256": "472268a42f778b269f98c690fb1b41265d4d298cf29ac885c5cc34c6a6e60829",
+      "exit_sha256": "02a2dde26a43f65008bf53046f40b32d2aefb87be59d4a4c15a0758bf2dbd0d1",
+      "run": "alphaagent_rounds_paper_gpt35_10"
+    },
+    {
+      "chat_sha256": "910cfbed4c23407afd4eb3241b191bb5565718c94c4ed24514aedf4db4b89d92",
+      "embedding_sha256": "016836c0ce54920c70636e357624f1d132245419b6dc904aa552b4df2786ca2d",
+      "exit_sha256": "f18d66278c4e9a4cf7c4bfcb367bb525bffbccb9ce5fc9ece67b45d422eacadb",
+      "run": "alphaagent_rounds_paper_gpt35_11"
+    },
+    {
+      "chat_sha256": "50352848055b4681a7adfa668c3be119f74bfde989aa00af24f77619bbeb5db7",
+      "embedding_sha256": "f18ae9d428b3321e20a679acfafbf1cd326e3afb871a4400409e9fdc9187f2c0",
+      "exit_sha256": "19612eca35ef188a303d8f036671e0c614baaecd0572f9efef1bea588e7eee4e",
+      "run": "alphaagent_rounds_paper_gpt35_12"
+    },
+    {
+      "chat_sha256": "299ab0fcdeb568394248040b82d818d4bbe3ec1d7d2668bed68a8ade0d439f04",
+      "embedding_sha256": "47803de886a59fbdaefa8b68a34abc48c3352d5407a8c387932a048819f56cfb",
+      "exit_sha256": "361aac2af791d6c3fd010b01ae7bf38d91d2aa0a70ccf4c3d2955f7d604ac655",
+      "run": "alphaagent_rounds_paper_gpt35_13"
+    },
+    {
+      "chat_sha256": "f130cf23785305f2452fb927a26d18d3f0d25621149b0c4dd6c8cb01e566bc90",
+      "embedding_sha256": "4a1a7c3c3a83801602704878a5a16839bb5352c4cb5a90d0234310b7b73df765",
+      "exit_sha256": "29998b0c27ba8b4a08a32d5334824229f9ec1663874f6ff5fe72af7f99bd069e",
+      "run": "alphaagent_rounds_paper_gpt35_14"
+    },
+    {
+      "chat_sha256": "4cc91c7149c8d292e1d24eb3877947391639d8a42235f26b5c4886b5e95cfbe9",
+      "embedding_sha256": "c35eb4434db74d5128194ee1a2b0d2ae778f6461d312d32c10a32de2206b006e",
+      "exit_sha256": "50eb06cee34b13e802592a5d984d2142bffcf695b4ceb48de8701bd036502a70",
+      "run": "alphaagent_rounds_paper_gpt35_15"
+    },
+    {
+      "chat_sha256": "76e06acb20da094dbddd3622232eff17484a2465df94ba7e2cce5b9195d1137c",
+      "embedding_sha256": "31a9afd2ac101a5af6067455c08d5a37c036157f974e635cee634a6b74453f8c",
+      "exit_sha256": "78793f1e9cff653ee4c744eb31de194626b7a6310e4e579dce9807fbf3a4497e",
+      "run": "alphaagent_rounds_paper_gpt35_16"
+    },
+    {
+      "chat_sha256": "8126553b99657b3441e0fc5ec2ef3c8cf92532002fadff3406285aded9f031ff",
+      "embedding_sha256": "d5a2cb44d4ec4428d2c48471059ae75179fa8079644a24d8406670eba3cf5875",
+      "exit_sha256": "0dd95373be9d6af8bc568281cbf59dfc3a4b5a5f38fc884801960a65b324e1cd",
+      "run": "alphaagent_rounds_paper_gpt35_17"
+    },
+    {
+      "chat_sha256": "c067292f385f323992e24fc3c48d7ba082b506079d1c25a84cd037c814ec42a5",
+      "embedding_sha256": "b0b7fa1397aed1d9f10ca51ea14a5e56eab8424665ef9155da70be3fa2532f05",
+      "exit_sha256": "206e8e469eb0c3a15add555795a2fe19a0f30da56866b282a0b45a04ea05a879",
+      "run": "alphaagent_rounds_paper_gpt35_18"
+    },
+    {
+      "chat_sha256": "4166bc3dc529b9e0ac8024fb06ca6e2fc5562ae1f620a560969755afafdcd9af",
+      "embedding_sha256": "4bda5ccd54f298ab94a2c1380f541a779a368825cf0ea0e8aa17f491f2e3d8e8",
+      "exit_sha256": "64910bd6c079e4a065de7711859fa974501e40223d3ffc31b339a46c14b719be",
+      "run": "alphaagent_rounds_paper_gpt35_19"
+    },
+    {
+      "chat_sha256": "9d77fc0c957cb1a1185d0faa35317b413f5658c3c0973664c2a3901bcf3dd918",
+      "embedding_sha256": "a7c225a5c7479b35af88130b113d0ccdff0d9b05d0062be8419093c076b6827e",
+      "exit_sha256": "9187851dfeb7fabb0f11a94ef7298026c8628fec6c7e41a54a54cc9a06071aa3",
+      "run": "alphaagent_rounds_paper_gpt35_20"
+    }
+  ],
+  "source_catalogue_sha256": "67d2f123c3bd414433cfc836b6cae9b1080584c3ec50240c3f7ef7d979997da5",
+  "source_sha256": "a0a77d2da1dceb3661386c386d1fa98e310f1b152fcbfa3d12f0e1637864943f",
+  "status": "all20_observed_source_costs_bound_no_ledger_mutation",
+  "trials": [
+    {
+      "attempted_rounds": 5,
+      "chat_cost_plus_failed_reservations_usd": 0.15384349999999997,
+      "cost_basis": "Canonical historical cost of the recorded chat responses used by this trial, plus its full missing-response reservation. This is not necessarily incremental spending since the five-attempt correction; trial01 reuses its recorded bounded prefix. Embeddings are shared and accounted once below.",
+      "failed_response_reservations": [],
+      "native_status": "native_round_budget_exhausted",
+      "returned_chat_records": 125,
+      "returned_chat_response_cost_usd": 0.15384349999999997,
+      "trial": 1,
+      "unattempted_rounds": [],
+      "unique_embedding_requests_used": 27
+    },
+    {
+      "attempted_rounds": 5,
+      "chat_cost_plus_failed_reservations_usd": 0.15596300000000005,
+      "cost_basis": "Canonical historical cost of the recorded chat responses used by this trial, plus its full missing-response reservation. This is not necessarily incremental spending since the five-attempt correction; trial01 reuses its recorded bounded prefix. Embeddings are shared and accounted once below.",
+      "failed_response_reservations": [],
+      "native_status": "native_round_budget_exhausted",
+      "returned_chat_records": 108,
+      "returned_chat_response_cost_usd": 0.15596300000000005,
+      "trial": 2,
+      "unattempted_rounds": [],
+      "unique_embedding_requests_used": 28
+    },
+    {
+      "attempted_rounds": 5,
+      "chat_cost_plus_failed_reservations_usd": 0.23456999999999983,
+      "cost_basis": "Canonical historical cost of the recorded chat responses used by this trial, plus its full missing-response reservation. This is not necessarily incremental spending since the five-attempt correction; trial01 reuses its recorded bounded prefix. Embeddings are shared and accounted once below.",
+      "failed_response_reservations": [],
+      "native_status": "native_round_budget_exhausted",
+      "returned_chat_records": 140,
+      "returned_chat_response_cost_usd": 0.23456999999999983,
+      "trial": 3,
+      "unattempted_rounds": [],
+      "unique_embedding_requests_used": 31
+    },
+    {
+      "attempted_rounds": 5,
+      "chat_cost_plus_failed_reservations_usd": 0.14716450000000011,
+      "cost_basis": "Canonical historical cost of the recorded chat responses used by this trial, plus its full missing-response reservation. This is not necessarily incremental spending since the five-attempt correction; trial01 reuses its recorded bounded prefix. Embeddings are shared and accounted once below.",
+      "failed_response_reservations": [],
+      "native_status": "native_round_budget_exhausted",
+      "returned_chat_records": 121,
+      "returned_chat_response_cost_usd": 0.14716450000000011,
+      "trial": 4,
+      "unattempted_rounds": [],
+      "unique_embedding_requests_used": 37
+    },
+    {
+      "attempted_rounds": 5,
+      "chat_cost_plus_failed_reservations_usd": 0.2038235,
+      "cost_basis": "Canonical historical cost of the recorded chat responses used by this trial, plus its full missing-response reservation. This is not necessarily incremental spending since the five-attempt correction; trial01 reuses its recorded bounded prefix. Embeddings are shared and accounted once below.",
+      "failed_response_reservations": [],
+      "native_status": "native_round_budget_exhausted",
+      "returned_chat_records": 160,
+      "returned_chat_response_cost_usd": 0.2038235,
+      "trial": 5,
+      "unattempted_rounds": [],
+      "unique_embedding_requests_used": 24
+    },
+    {
+      "attempted_rounds": 5,
+      "chat_cost_plus_failed_reservations_usd": 0.127304,
+      "cost_basis": "Canonical historical cost of the recorded chat responses used by this trial, plus its full missing-response reservation. This is not necessarily incremental spending since the five-attempt correction; trial01 reuses its recorded bounded prefix. Embeddings are shared and accounted once below.",
+      "failed_response_reservations": [],
+      "native_status": "native_round_budget_exhausted",
+      "returned_chat_records": 101,
+      "returned_chat_response_cost_usd": 0.127304,
+      "trial": 6,
+      "unattempted_rounds": [],
+      "unique_embedding_requests_used": 28
+    },
+    {
+      "attempted_rounds": 5,
+      "chat_cost_plus_failed_reservations_usd": 0.16427099999999978,
+      "cost_basis": "Canonical historical cost of the recorded chat responses used by this trial, plus its full missing-response reservation. This is not necessarily incremental spending since the five-attempt correction; trial01 reuses its recorded bounded prefix. Embeddings are shared and accounted once below.",
+      "failed_response_reservations": [],
+      "native_status": "native_round_budget_exhausted",
+      "returned_chat_records": 152,
+      "returned_chat_response_cost_usd": 0.16427099999999978,
+      "trial": 7,
+      "unattempted_rounds": [],
+      "unique_embedding_requests_used": 25
+    },
+    {
+      "attempted_rounds": 5,
+      "chat_cost_plus_failed_reservations_usd": 0.49033600000000016,
+      "cost_basis": "Canonical historical cost of the recorded chat responses used by this trial, plus its full missing-response reservation. This is not necessarily incremental spending since the five-attempt correction; trial01 reuses its recorded bounded prefix. Embeddings are shared and accounted once below.",
+      "failed_response_reservations": [
+        {
+          "request_hash": "aa8d6503fc69f4c4f42d5561fc1c6110baeb88181c4d033efb85fe0fe7d64b91",
+          "retained_reserved_usd": 0.030346
+        }
+      ],
+      "native_status": "native_final_attempt_failed",
+      "returned_chat_records": 110,
+      "returned_chat_response_cost_usd": 0.4599900000000002,
+      "trial": 8,
+      "unattempted_rounds": [],
+      "unique_embedding_requests_used": 22
+    },
+    {
+      "attempted_rounds": 5,
+      "chat_cost_plus_failed_reservations_usd": 0.09222850000000006,
+      "cost_basis": "Canonical historical cost of the recorded chat responses used by this trial, plus its full missing-response reservation. This is not necessarily incremental spending since the five-attempt correction; trial01 reuses its recorded bounded prefix. Embeddings are shared and accounted once below.",
+      "failed_response_reservations": [],
+      "native_status": "native_round_budget_exhausted",
+      "returned_chat_records": 72,
+      "returned_chat_response_cost_usd": 0.09222850000000006,
+      "trial": 9,
+      "unattempted_rounds": [],
+      "unique_embedding_requests_used": 28
+    },
+    {
+      "attempted_rounds": 5,
+      "chat_cost_plus_failed_reservations_usd": 0.08605900000000001,
+      "cost_basis": "Canonical historical cost of the recorded chat responses used by this trial, plus its full missing-response reservation. This is not necessarily incremental spending since the five-attempt correction; trial01 reuses its recorded bounded prefix. Embeddings are shared and accounted once below.",
+      "failed_response_reservations": [],
+      "native_status": "native_round_budget_exhausted",
+      "returned_chat_records": 74,
+      "returned_chat_response_cost_usd": 0.08605900000000001,
+      "trial": 10,
+      "unattempted_rounds": [],
+      "unique_embedding_requests_used": 29
+    },
+    {
+      "attempted_rounds": 5,
+      "chat_cost_plus_failed_reservations_usd": 0.052787,
+      "cost_basis": "Canonical historical cost of the recorded chat responses used by this trial, plus its full missing-response reservation. This is not necessarily incremental spending since the five-attempt correction; trial01 reuses its recorded bounded prefix. Embeddings are shared and accounted once below.",
+      "failed_response_reservations": [],
+      "native_status": "native_round_budget_exhausted",
+      "returned_chat_records": 48,
+      "returned_chat_response_cost_usd": 0.052787,
+      "trial": 11,
+      "unattempted_rounds": [],
+      "unique_embedding_requests_used": 31
+    },
+    {
+      "attempted_rounds": 3,
+      "chat_cost_plus_failed_reservations_usd": 0.8534930000000001,
+      "cost_basis": "Canonical historical cost of the recorded chat responses used by this trial, plus its full missing-response reservation. This is not necessarily incremental spending since the five-attempt correction; trial01 reuses its recorded bounded prefix. Embeddings are shared and accounted once below.",
+      "failed_response_reservations": [
+        {
+          "request_hash": "c8061be5982779ddeff6c1fbc67d773a431b2e2f6228817d8837094373988a9b",
+          "retained_reserved_usd": 0.028655
+        }
+      ],
+      "native_status": "native_early_abort",
+      "returned_chat_records": 215,
+      "returned_chat_response_cost_usd": 0.8248380000000001,
+      "trial": 12,
+      "unattempted_rounds": [
+        3,
+        4
+      ],
+      "unique_embedding_requests_used": 9
+    },
+    {
+      "attempted_rounds": 5,
+      "chat_cost_plus_failed_reservations_usd": 0.0856865,
+      "cost_basis": "Canonical historical cost of the recorded chat responses used by this trial, plus its full missing-response reservation. This is not necessarily incremental spending since the five-attempt correction; trial01 reuses its recorded bounded prefix. Embeddings are shared and accounted once below.",
+      "failed_response_reservations": [],
+      "native_status": "native_round_budget_exhausted",
+      "returned_chat_records": 56,
+      "returned_chat_response_cost_usd": 0.0856865,
+      "trial": 13,
+      "unattempted_rounds": [],
+      "unique_embedding_requests_used": 28
+    },
+    {
+      "attempted_rounds": 3,
+      "chat_cost_plus_failed_reservations_usd": 0.4423435000000001,
+      "cost_basis": "Canonical historical cost of the recorded chat responses used by this trial, plus its full missing-response reservation. This is not necessarily incremental spending since the five-attempt correction; trial01 reuses its recorded bounded prefix. Embeddings are shared and accounted once below.",
+      "failed_response_reservations": [
+        {
+          "request_hash": "914f15d540e6453116f8222af881323b0af10b0eb280c70e307576fcdbb1bafb",
+          "retained_reserved_usd": 0.0273765
+        }
+      ],
+      "native_status": "native_early_abort",
+      "returned_chat_records": 96,
+      "returned_chat_response_cost_usd": 0.4149670000000001,
+      "trial": 14,
+      "unattempted_rounds": [
+        3,
+        4
+      ],
+      "unique_embedding_requests_used": 10
+    },
+    {
+      "attempted_rounds": 5,
+      "chat_cost_plus_failed_reservations_usd": 0.5206675000000002,
+      "cost_basis": "Canonical historical cost of the recorded chat responses used by this trial, plus its full missing-response reservation. This is not necessarily incremental spending since the five-attempt correction; trial01 reuses its recorded bounded prefix. Embeddings are shared and accounted once below.",
+      "failed_response_reservations": [
+        {
+          "request_hash": "d5a2d39be66896ac71e93565176e8eab979953f30059a9fc2a1ebcad7107fc50",
+          "retained_reserved_usd": 0.0297075
+        }
+      ],
+      "native_status": "native_final_attempt_failed",
+      "returned_chat_records": 151,
+      "returned_chat_response_cost_usd": 0.4909600000000001,
+      "trial": 15,
+      "unattempted_rounds": [],
+      "unique_embedding_requests_used": 30
+    },
+    {
+      "attempted_rounds": 5,
+      "chat_cost_plus_failed_reservations_usd": 0.19943650000000002,
+      "cost_basis": "Canonical historical cost of the recorded chat responses used by this trial, plus its full missing-response reservation. This is not necessarily incremental spending since the five-attempt correction; trial01 reuses its recorded bounded prefix. Embeddings are shared and accounted once below.",
+      "failed_response_reservations": [],
+      "native_status": "native_round_budget_exhausted",
+      "returned_chat_records": 163,
+      "returned_chat_response_cost_usd": 0.19943650000000002,
+      "trial": 16,
+      "unattempted_rounds": [],
+      "unique_embedding_requests_used": 35
+    },
+    {
+      "attempted_rounds": 5,
+      "chat_cost_plus_failed_reservations_usd": 0.12268400000000003,
+      "cost_basis": "Canonical historical cost of the recorded chat responses used by this trial, plus its full missing-response reservation. This is not necessarily incremental spending since the five-attempt correction; trial01 reuses its recorded bounded prefix. Embeddings are shared and accounted once below.",
+      "failed_response_reservations": [],
+      "native_status": "native_round_budget_exhausted",
+      "returned_chat_records": 100,
+      "returned_chat_response_cost_usd": 0.12268400000000003,
+      "trial": 17,
+      "unattempted_rounds": [],
+      "unique_embedding_requests_used": 28
+    },
+    {
+      "attempted_rounds": 5,
+      "chat_cost_plus_failed_reservations_usd": 0.1223385000000001,
+      "cost_basis": "Canonical historical cost of the recorded chat responses used by this trial, plus its full missing-response reservation. This is not necessarily incremental spending since the five-attempt correction; trial01 reuses its recorded bounded prefix. Embeddings are shared and accounted once below.",
+      "failed_response_reservations": [],
+      "native_status": "native_round_budget_exhausted",
+      "returned_chat_records": 106,
+      "returned_chat_response_cost_usd": 0.1223385000000001,
+      "trial": 18,
+      "unattempted_rounds": [],
+      "unique_embedding_requests_used": 36
+    },
+    {
+      "attempted_rounds": 5,
+      "chat_cost_plus_failed_reservations_usd": 0.15672599999999995,
+      "cost_basis": "Canonical historical cost of the recorded chat responses used by this trial, plus its full missing-response reservation. This is not necessarily incremental spending since the five-attempt correction; trial01 reuses its recorded bounded prefix. Embeddings are shared and accounted once below.",
+      "failed_response_reservations": [],
+      "native_status": "native_round_budget_exhausted",
+      "returned_chat_records": 117,
+      "returned_chat_response_cost_usd": 0.15672599999999995,
+      "trial": 19,
+      "unattempted_rounds": [],
+      "unique_embedding_requests_used": 50
+    },
+    {
+      "attempted_rounds": 5,
+      "chat_cost_plus_failed_reservations_usd": 0.08302649999999999,
+      "cost_basis": "Canonical historical cost of the recorded chat responses used by this trial, plus its full missing-response reservation. This is not necessarily incremental spending since the five-attempt correction; trial01 reuses its recorded bounded prefix. Embeddings are shared and accounted once below.",
+      "failed_response_reservations": [],
+      "native_status": "native_round_budget_exhausted",
+      "returned_chat_records": 75,
+      "returned_chat_response_cost_usd": 0.08302649999999999,
+      "trial": 20,
+      "unattempted_rounds": [],
+      "unique_embedding_requests_used": 30
+    }
+  ],
+  "unique_embedding_requests_shared_across_trials": 556,
+  "unique_returned_chat_requests": 2290
+}

@@ -1,0 +1,12 @@
+{
+  "current_project_committed_usd": 156.73247325999992,
+  "funding": "Unspent planned allowances from completed FinMem/TradingAgents; no additional paid repeats of those cohorts are scheduled. All older uncertain bounds remain included.",
+  "maximum_existing_queued_plus_new_cap_usd": 441.2856148999999,
+  "new_shared_cap_usd": 20,
+  "new_study": "fidelity_v2_alphaagent_source_search",
+  "project_hard_ceiling_unchanged_usd": 500,
+  "project_soft_stop_unchanged_usd": 450,
+  "recorded_at_utc": "2026-09-17T09:04:25.264281+00:00",
+  "remaining_existing_queued_caps_usd": 264.55314164000004,
+  "scope": "Two declared five-loop source searches: current source-defaultGPT4Turbo and paper-familyGPT3.5Turbo. Shared20USD and450USD global cap. Retain failed attempts; no outcome-based selection."
+}

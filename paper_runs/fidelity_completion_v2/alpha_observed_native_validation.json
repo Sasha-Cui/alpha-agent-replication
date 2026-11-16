@@ -1,0 +1,105 @@
+{
+  "arms": [
+    {
+      "account_sessions": 238,
+      "account_sha256": "3725a26ca1378b5e13274f48d69f23217dbf3903c0a9244c83e34d22db5bb76b",
+      "account_validation_sha256": "30e4a60029a8f6b14600ef6acc2820c60a8b4540cc6aec93553641df982008a4",
+      "arm": "alpha158",
+      "case": "alphaagent",
+      "completion_sha256": "6f4f6ec6daf67e813f42a5ed4c3db8ae4eb26e76300dae43d79ac92141d5ce10",
+      "core_settings": "{\"benchmark\": \"SH000905\", \"data_handler_config\": {\"data_loader\": {\"class\": \"qlib.contrib.data.loader.QlibDataLoader\", \"kwargs\": {\"config\": {\"feature\": \"DECLARED_FEATURE_INTERVENTION\", \"label\": [[\"Ref($close, -2)/Ref($close, -1) - 1\"], [\"LABEL0\"]]}}}, \"end_time\": \"2025-12-26\", \"infer_processors\": [{\"class\": \"Fillna\", \"kwargs\": {\"fields_group\": \"feature\"}}, {\"class\": \"CSZScoreNorm\", \"kwargs\": {\"fields_group\": \"feature\"}}, {\"class\": \"CSZScoreNorm\", \"kwargs\": {\"fields_group\": \"label\"}}], \"instruments\": \"csi500\", \"learn_processors\": [{\"class\": \"Fillna\", \"kwargs\": {\"fields_group\": \"feature\"}}, {\"class\": \"DropnaLabel\"}, {\"class\": \"CSZScoreNorm\", \"kwargs\": {\"fields_group\": \"feature\"}}, {\"class\": \"CSZScoreNorm\", \"kwargs\": {\"fields_group\": \"label\"}}], \"start_time\": \"2015-01-01\"}, \"market\": \"csi500\", \"port_analysis_config\": {\"backtest\": {\"account\": 100000000, \"benchmark\": \"SH000905\", \"end_time\": \"2025-12-26\", \"exchange_kwargs\": {\"close_cost\": 0.0015, \"deal_price\": \"open\", \"limit_threshold\": 0.095, \"min_cost\": 5, \"open_cost\": 0.0005}, \"start_time\": \"2025-01-06\"}, \"strategy\": {\"class\": \"TopkDropoutStrategy\", \"kwargs\": {\"n_drop\": 5, \"signal\": \"<PRED>\", \"topk\": 50}, \"module_path\": \"qlib.contrib.strategy\"}}, \"qlib_init\": {\"provider_uri\": \"/nfs/roberts/scratch/pi_btk22/zc362/quantaalpha_recovery/provider/cn_data\", \"region\": \"cn\"}, \"task\": {\"dataset\": {\"class\": \"DatasetH\", \"kwargs\": {\"handler\": {\"class\": \"DataHandlerLP\", \"kwargs\": {\"data_loader\": {\"class\": \"qlib.contrib.data.loader.QlibDataLoader\", \"kwargs\": {\"config\": {\"feature\": \"DECLARED_FEATURE_INTERVENTION\", \"label\": [[\"Ref($close, -2)/Ref($close, -1) - 1\"], [\"LABEL0\"]]}}}, \"end_time\": \"2025-12-26\", \"infer_processors\": [{\"class\": \"Fillna\", \"kwargs\": {\"fields_group\": \"feature\"}}, {\"class\": \"CSZScoreNorm\", \"kwargs\": {\"fields_group\": \"feature\"}}, {\"class\": \"CSZScoreNorm\", \"kwargs\": {\"fields_group\": \"label\"}}], \"instruments\": \"csi500\", \"learn_processors\": [{\"class\": \"Fillna\", \"kwargs\": {\"fields_group\": \"feature\"}}, {\"class\": \"DropnaLabel\"}, {\"class\": \"CSZScoreNorm\", \"kwargs\": {\"fields_group\": \"feature\"}}, {\"class\": \"CSZScoreNorm\", \"kwargs\": {\"fields_group\": \"label\"}}], \"start_time\": \"2015-01-01\"}, \"module_path\": \"qlib.contrib.data.handler\"}, \"segments\": {\"test\": [\"2025-01-03\", \"2025-12-26\"], \"train\": [\"2015-01-01\", \"2019-12-31\"], \"valid\": [\"2020-01-01\", \"2020-12-31\"]}}, \"module_path\": \"qlib.data.dataset\"}, \"model\": {\"class\": \"LGBModel\", \"kwargs\": {\"colsample_bytree\": 0.8879, \"lambda_l1\": 205.6999, \"lambda_l2\": 580.9768, \"learning_rate\": 0.1, \"loss\": \"mse\", \"max_depth\": 4, \"num_leaves\": 210, \"num_threads\": 20, \"subsample\": 0.8789}, \"module_path\": \"qlib.contrib.model.gbdt\"}, \"record\": [{\"class\": \"SignalRecord\", \"kwargs\": {\"dataset\": \"<DATASET>\", \"model\": \"<MODEL>\"}, \"module_path\": \"qlib.workflow.record_temp\"}, {\"class\": \"SigAnaRecord\", \"kwargs\": {\"ana_long_short\": false, \"ann_scaler\": 252}, \"module_path\": \"qlib.workflow.record_temp\"}, {\"class\": \"PortAnaRecord\", \"kwargs\": {\"config\": {\"backtest\": {\"account\": 100000000, \"benchmark\": \"SH000905\", \"end_time\": \"2025-12-26\", \"exchange_kwargs\": {\"close_cost\": 0.0015, \"deal_price\": \"open\", \"limit_threshold\": 0.095, \"min_cost\": 5, \"open_cost\": 0.0005}, \"start_time\": \"2025-01-06\"}, \"strategy\": {\"class\": \"TopkDropoutStrategy\", \"kwargs\": {\"n_drop\": 5, \"signal\": \"<PRED>\", \"topk\": 50}, \"module_path\": \"qlib.contrib.strategy\"}}}, \"module_path\": \"qlib.workflow.record_temp\"}]}}",
+      "execution_identity": "native",
+      "features": 158,
+      "first_account_date": "2025-01-06",
+      "last_account_date": "2025-12-26",
+      "library_manifest_sha256": "cbb76c45fe5b7ef1cee1b867aa4a06d35dc0a3a219b9cd6d5e42b5a8704f34cd",
+      "maximum_normalized_account_error": 1.3152234996893255e-14,
+      "processed_features": [
+        {
+          "constant_or_missing_columns": 0,
+          "features": 158,
+          "infinite_values": 0,
+          "missing_values": 0,
+          "rows": 573674,
+          "segment": "train"
+        },
+        {
+          "constant_or_missing_columns": 0,
+          "features": 158,
+          "infinite_values": 0,
+          "missing_values": 0,
+          "rows": 121213,
+          "segment": "valid"
+        },
+        {
+          "constant_or_missing_columns": 0,
+          "features": 158,
+          "infinite_values": 0,
+          "missing_values": 0,
+          "rows": 119410,
+          "segment": "test"
+        }
+      ],
+      "recipe_sha256": "0e2e7b8fc340f9bf6473be907438e61c45c046533163a6ac31db4bfd0e1dc0b1",
+      "run": "alphaagent_observed20_oos_alpha158"
+    },
+    {
+      "account_sessions": 238,
+      "account_sha256": "25e62e8b6e15c1e8ef9e030e9a933507702cc0e46408fb33373d5746e52e070d",
+      "account_validation_sha256": "64f5e72f5294ed72ebf8098ec40d9d9a3a97361f5eecbb43a75db88b1071e5e8",
+      "arm": "alpha158_plus_library",
+      "case": "alphaagent",
+      "completion_sha256": "3e695d8925d175b29bf5f42bb8e7c98657f850b60f48a07231935543f228c01b",
+      "core_settings": "{\"benchmark\": \"SH000905\", \"data_handler_config\": {\"data_loader\": {\"class\": \"qlib.contrib.data.loader.QlibDataLoader\", \"kwargs\": {\"config\": {\"feature\": \"DECLARED_FEATURE_INTERVENTION\", \"label\": [[\"Ref($close, -2)/Ref($close, -1) - 1\"], [\"LABEL0\"]]}}}, \"end_time\": \"2025-12-26\", \"infer_processors\": [{\"class\": \"Fillna\", \"kwargs\": {\"fields_group\": \"feature\"}}, {\"class\": \"CSZScoreNorm\", \"kwargs\": {\"fields_group\": \"feature\"}}, {\"class\": \"CSZScoreNorm\", \"kwargs\": {\"fields_group\": \"label\"}}], \"instruments\": \"csi500\", \"learn_processors\": [{\"class\": \"Fillna\", \"kwargs\": {\"fields_group\": \"feature\"}}, {\"class\": \"DropnaLabel\"}, {\"class\": \"CSZScoreNorm\", \"kwargs\": {\"fields_group\": \"feature\"}}, {\"class\": \"CSZScoreNorm\", \"kwargs\": {\"fields_group\": \"label\"}}], \"start_time\": \"2015-01-01\"}, \"market\": \"csi500\", \"port_analysis_config\": {\"backtest\": {\"account\": 100000000, \"benchmark\": \"SH000905\", \"end_time\": \"2025-12-26\", \"exchange_kwargs\": {\"close_cost\": 0.0015, \"deal_price\": \"open\", \"limit_threshold\": 0.095, \"min_cost\": 5, \"open_cost\": 0.0005}, \"start_time\": \"2025-01-06\"}, \"strategy\": {\"class\": \"TopkDropoutStrategy\", \"kwargs\": {\"n_drop\": 5, \"signal\": \"<PRED>\", \"topk\": 50}, \"module_path\": \"qlib.contrib.strategy\"}}, \"qlib_init\": {\"provider_uri\": \"/nfs/roberts/scratch/pi_btk22/zc362/quantaalpha_recovery/provider/cn_data\", \"region\": \"cn\"}, \"task\": {\"dataset\": {\"class\": \"DatasetH\", \"kwargs\": {\"handler\": {\"class\": \"DataHandlerLP\", \"kwargs\": {\"data_loader\": {\"class\": \"qlib.contrib.data.loader.QlibDataLoader\", \"kwargs\": {\"config\": {\"feature\": \"DECLARED_FEATURE_INTERVENTION\", \"label\": [[\"Ref($close, -2)/Ref($close, -1) - 1\"], [\"LABEL0\"]]}}}, \"end_time\": \"2025-12-26\", \"infer_processors\": [{\"class\": \"Fillna\", \"kwargs\": {\"fields_group\": \"feature\"}}, {\"class\": \"CSZScoreNorm\", \"kwargs\": {\"fields_group\": \"feature\"}}, {\"class\": \"CSZScoreNorm\", \"kwargs\": {\"fields_group\": \"label\"}}], \"instruments\": \"csi500\", \"learn_processors\": [{\"class\": \"Fillna\", \"kwargs\": {\"fields_group\": \"feature\"}}, {\"class\": \"DropnaLabel\"}, {\"class\": \"CSZScoreNorm\", \"kwargs\": {\"fields_group\": \"feature\"}}, {\"class\": \"CSZScoreNorm\", \"kwargs\": {\"fields_group\": \"label\"}}], \"start_time\": \"2015-01-01\"}, \"module_path\": \"qlib.contrib.data.handler\"}, \"segments\": {\"test\": [\"2025-01-03\", \"2025-12-26\"], \"train\": [\"2015-01-01\", \"2019-12-31\"], \"valid\": [\"2020-01-01\", \"2020-12-31\"]}}, \"module_path\": \"qlib.data.dataset\"}, \"model\": {\"class\": \"LGBModel\", \"kwargs\": {\"colsample_bytree\": 0.8879, \"lambda_l1\": 205.6999, \"lambda_l2\": 580.9768, \"learning_rate\": 0.1, \"loss\": \"mse\", \"max_depth\": 4, \"num_leaves\": 210, \"num_threads\": 20, \"subsample\": 0.8789}, \"module_path\": \"qlib.contrib.model.gbdt\"}, \"record\": [{\"class\": \"SignalRecord\", \"kwargs\": {\"dataset\": \"<DATASET>\", \"model\": \"<MODEL>\"}, \"module_path\": \"qlib.workflow.record_temp\"}, {\"class\": \"SigAnaRecord\", \"kwargs\": {\"ana_long_short\": false, \"ann_scaler\": 252}, \"module_path\": \"qlib.workflow.record_temp\"}, {\"class\": \"PortAnaRecord\", \"kwargs\": {\"config\": {\"backtest\": {\"account\": 100000000, \"benchmark\": \"SH000905\", \"end_time\": \"2025-12-26\", \"exchange_kwargs\": {\"close_cost\": 0.0015, \"deal_price\": \"open\", \"limit_threshold\": 0.095, \"min_cost\": 5, \"open_cost\": 0.0005}, \"start_time\": \"2025-01-06\"}, \"strategy\": {\"class\": \"TopkDropoutStrategy\", \"kwargs\": {\"n_drop\": 5, \"signal\": \"<PRED>\", \"topk\": 50}, \"module_path\": \"qlib.contrib.strategy\"}}}, \"module_path\": \"qlib.workflow.record_temp\"}]}}",
+      "execution_identity": "native",
+      "features": 304,
+      "first_account_date": "2025-01-06",
+      "last_account_date": "2025-12-26",
+      "library_manifest_sha256": "cbb76c45fe5b7ef1cee1b867aa4a06d35dc0a3a219b9cd6d5e42b5a8704f34cd",
+      "maximum_normalized_account_error": 1.504621992291689e-14,
+      "processed_features": [
+        {
+          "constant_or_missing_columns": 2,
+          "features": 304,
+          "infinite_values": 0,
+          "missing_values": 2206039,
+          "rows": 573674,
+          "segment": "train"
+        },
+        {
+          "constant_or_missing_columns": 2,
+          "features": 304,
+          "infinite_values": 0,
+          "missing_values": 372206,
+          "rows": 121213,
+          "segment": "valid"
+        },
+        {
+          "constant_or_missing_columns": 2,
+          "features": 304,
+          "infinite_values": 0,
+          "missing_values": 394459,
+          "rows": 119410,
+          "segment": "test"
+        }
+      ],
+      "recipe_sha256": "cc01c286abc591286c05564cde758b665f098d36c5cb99b89e74e068fa1e0c3f",
+      "run": "alphaagent_observed20_oos_alpha158_plus_library"
+    }
+  ],
+  "audit_source_sha256": "5354dd5df3c6ebb60d6ed94a03ea6f9b6693a30337c3d4e1fee3b7648624381f",
+  "execution_identity_validator_sha256": "9d0b168138f48d4ee210a46b1add1a6b1a2bc6581f50150936f3fe1196dc35b9",
+  "loader_sha256": "084fbc2f37bb83183cfc1fb66848657e0235bd2cba3e8cfff4767483dc1b4be5",
+  "missing_values_removed_or_imputed_by_this_audit": false,
+  "native_execution_role": "same-day eligibility diagnostic; opening-information replay and exploratory paired inference still required",
+  "new_llm_calls": 0,
+  "new_model_fits": 0,
+  "paired_economic_analysis_completed": false,
+  "private_validation_path": "artifacts/fidelity_completion_v2/alpha_observed_library_audit_20260918_1125/native_validation.json",
+  "private_validation_sha256": "50fbcac7c3afebc0f6cf39f4731863d399481650de69038b72547b54fc289bbc",
+  "project_family_significance_claim": false,
+  "raw_infinities_separately_preserved": true,
+  "recorded_at_utc": "2026-09-18T11:33:04.528633+00:00",
+  "status": "both_native_observed_history_arms_and_accounts_bound",
+  "strict_primary_eligibility": false
+}

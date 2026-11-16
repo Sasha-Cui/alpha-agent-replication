@@ -1,0 +1,84 @@
+{
+  "actual_pending_replay_rejected": true,
+  "attempted_rounds": 5,
+  "closure_sha256": "57354260ed7b1bf1b000e146d77324b1490fd5863996cf7a44dcbd75c375decb",
+  "completed_chat_responses": 110,
+  "context_metadata": {
+    "archived_endpoint_context_length": 16385,
+    "cause_claim": "The exactly reconstructed request exceeds the archived current provider context allowance. This is consistent with context overflow, but the original provider error body was not retained and the exact HTTP400 explanation remains unobserved.",
+    "content_tokens_plus_requested_output": 16485,
+    "excess_before_chat_framing": 100
+  },
+  "diagnosis_sha256": "64ec74e5e66d8a37f0c6db8935ba04a8915e11f73a5a3614b01fe80bc8060f08",
+  "diagnostic_postprocessing_disclosure": "The original diagnostic reproduced all72 native constructor responses and saved the hash-matching failed envelope. Its subsequent optional tokenizer load attempted10 downloads blocked by the socket guard because the cache environment variable was absent. Only tokenizer/postprocessing metadata was completed separately using the existing central cache. The native search and response matching were not rerun.",
+  "duplication_rejections": 66,
+  "economic_replication_credit": "All110 returned chat responses, embeddings, four financial trajectories and exact failed request pass replay; accounts and all8 actual-used-program full-universe proofs pass. The failed fifth attempt remains failed. This completes trial08 evidence, not the entire20-trial primary or a full-paper reproduction.",
+  "executed_and_queued_source_manifest_sha256": "3ddfa32e14dfb53998aaaa21b8c0824194619e9e921c67cae00c17f276710fea",
+  "expression_parse_rejections": 6,
+  "failed_http_status": 400,
+  "failed_reservation_retained_usd": 0.030346,
+  "final_construction_responses": 72,
+  "finalizer_attempt_disclosure": "Initial finalization refused a JobIDRaw-versus-array-ID string mismatch before writing outputs; raw26544035 was then independently mapped to26502926_8 by sacct. The failed helper/log are preserved.",
+  "guard_checks": "16 focused checks PASS on both Python3.12 and3.9;6 are new terminal-closure guards. No claim of a freshly run cumulative suite.",
+  "human_review": false,
+  "jobs": {
+    "full_cached_replay_export_accounts": "26553087",
+    "full_universe_causality": "26553088_8"
+  },
+  "network_retry_authorized_or_performed": false,
+  "new_paid_calls_for_diagnosis_or_closure": 0,
+  "original_job": "26502926_8",
+  "original_source_native_returned": false,
+  "provider_error_body_retained": false,
+  "recorded_at_utc": "2026-09-18T00:38:55.405488+00:00",
+  "retained_completed_trajectories": 4,
+  "status": "full_replay_accounts_and_all8_program_causality_pass",
+  "trial": 8,
+  "queued_provenance_revision_manifest": "artifacts/fidelity_completion_v2/alpha_trial08_failure_20260918/provenance_metadata_revision/manifest.json",
+  "queued_provenance_revision_manifest_sha256": "acbd6a8dd7aac62609c0a6f1f991bd71d985d3ab2103c31aa8b7236cd0438be2",
+  "verified_at_utc": "2026-09-18T01:23:50.309664+00:00",
+  "full_replay_sha256": "7e3daf96919b0be00cd21ad78e9024f7d90ab06ae8619e43440ce1cd5f4e5641",
+  "independent_accounts_sha256": "0a9346f4fb5f88ff7ee55aaab08e8e03973a509d1fcf96e1ab9fab9edb7e9102",
+  "used_factor_manifest_sha256": "c6c4c0c6dcd521e2b218d32c6c3403569357a55b769c10eb19812ea780cee25f",
+  "source_used_programs": 8,
+  "full_replay_maximum_numeric_difference": 4.440892098500626e-15,
+  "full_replay_difference_count": 0,
+  "observed_terminal_failure_stimulus_reproduced": true,
+  "full_universe_causality_pending": false,
+  "full_universe_causality": [
+    {
+      "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_08/causality_full_universe/ec137b5c9e32947c24ca744fcc94ec632f71250777819510512c8ecbb5bce245.json",
+      "sha256": "757675454d57935fac81f2619730e921808dad1d132a9e3ecdd8ee402e1177b8"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_08/causality_full_universe/38a8a45d51452b63a1bfd3a1d7d210ee2f3720a921b4333fbdfac80b7048b167.json",
+      "sha256": "df88485ba48026eb4967450db8a7a7fa5b5d6922477e068a068edbfa45abb734"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_08/causality_full_universe/e7259a68ca8a51c64c671aa8ced5817b2ec89c8078f7506d81d33066254daddc.json",
+      "sha256": "7a53d9529444c2b435e855c5c3997a141689d0a80229cc75cb312c60a1f10813"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_08/causality_full_universe/16052a2c93c1d3a04ec713c6136f28a2bcfd40a73fb2cff05abb37aee989f8e7.json",
+      "sha256": "2a2c8acc94ee988067098e1baa6873de3827f4ec5f9ae5db6c07c789e3dc48ed"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_08/causality_full_universe/9c21e51caf0409cc04822c644fc4a98b028faefb7b082656b204c42c66a6f471.json",
+      "sha256": "229df0af8268eb87b383b5365ac005ae03fad1b9deafaac9a27b94df844a4fb7"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_08/causality_full_universe/328604531624fe9119d0be6f26ec97b2e52f8a8e0e76a2fa48d81bb772ea7dae.json",
+      "sha256": "482e5f8bce3853b78c9ea8700055828d0df6eddadf8b0778bc36f8b630e13cb8"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_08/causality_full_universe/833b4098315e8efdc3ec4877c36b338626de3286b1a30fa2355d3f6777787d1e.json",
+      "sha256": "ea891793b656e3c71b681dd7d2b1804ccf8488c62abd27062bdd71abff943146"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_08/causality_full_universe/0ce19cf896180bf44e2a3194087e2a5f903727b892ce26cda68cf43eb8fe0063.json",
+      "sha256": "3971e9b153c48825554c9c5716f2cdc13552eb2161a41d94fbfeb149011c87c2"
+    }
+  ],
+  "own_trial_source_library_gates": "pass",
+  "whole20_trial_primary_complete": false
+}

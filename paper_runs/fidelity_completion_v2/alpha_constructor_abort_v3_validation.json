@@ -1,0 +1,132 @@
+{
+  "caller_implementation_updated_to_versioned_witness_delegation": true,
+  "cases": [
+    {
+      "actual_used_programs": 4,
+      "all_used_program_proofs": [
+        {
+          "code_sha256": "cbb6d14b71931f8dcc03bbf98616afa5903c20fde219f06bddd63094d802e7ce",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_14/causality_full_universe/cbb6d14b71931f8dcc03bbf98616afa5903c20fde219f06bddd63094d802e7ce.json",
+          "sha256": "b1e4b675bb97cc714dd6da677275a0758dc303829ba15320d8fe32ada279af30"
+        },
+        {
+          "code_sha256": "b0955ebc890f1ffd2c229769c72f5f034abef611c17fb3a1d5903bf97412f67b",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_14/causality_full_universe/b0955ebc890f1ffd2c229769c72f5f034abef611c17fb3a1d5903bf97412f67b.json",
+          "sha256": "14cc3f335dda056c706d75ebc1e9f865748f43e93a31acdc10650050fa6ce1d3"
+        },
+        {
+          "code_sha256": "e97297af702c5c3359de15366d3fb07cc04730dfce3da12d10ef24decbc063e4",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_14/causality_full_universe/e97297af702c5c3359de15366d3fb07cc04730dfce3da12d10ef24decbc063e4.json",
+          "sha256": "93629878261d7dade102b45e42a6993b47ed05c1453551ad54764ea3cbf48408"
+        },
+        {
+          "code_sha256": "cdd492c5cdd1b22bd6e892e4e6bfb66dc93e7816ab6473a358f6997890f3717a",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_14/causality_full_universe/cdd492c5cdd1b22bd6e892e4e6bfb66dc93e7816ab6473a358f6997890f3717a.json",
+          "sha256": "fd3bcafacca7a2feda56d92cf581c49d0493f113480f54c1cb0a862ef09e4d0f"
+        }
+      ],
+      "archived_context_limit": 16385,
+      "attempted_rounds": 3,
+      "completed_trajectories": 2,
+      "constructor_returned_responses": 76,
+      "content_plus_requested_output_tokens": 16438,
+      "diagnosis_sha256": "c413698565e52d7634bcc1cc126363aca0cef74a1577bb206a84fffcb3153f03",
+      "failed_round_indices": [
+        2
+      ],
+      "full_observed_replay_sha256": "88751994c6d37e837bc01bee30467385f63ea54ee1fa995e9234e0c0230ee33c",
+      "independent_accounts_sha256": "6ab0f1673b483d440de6d45029c54104db0ec15314cc486945b410bf1b80a477",
+      "maximum_replay_numeric_difference": 6.106226635438361e-16,
+      "pending_replay_correctly_rejected_before_execution": true,
+      "previous_empirical_prompt_overhead": 11,
+      "provider_error_body_available": false,
+      "replay_difference_count": 0,
+      "retained_reservation_usd": 0.0273765,
+      "returned_chat_responses": 96,
+      "source_exit_sha256": "29998b0c27ba8b4a08a32d5334824229f9ec1663874f6ff5fe72af7f99bd069e",
+      "status": "complete_observed_history_replay_account_program_evidence",
+      "trial": 14,
+      "unattempted_round_indices": [
+        3,
+        4
+      ],
+      "used_factor_manifest_sha256": "b7c3d127b824ba22093949bfeb995bb50d2c000aea11ad56805b174eaf8efd7c",
+      "whole20_trial_economic_completion": false
+    },
+    {
+      "actual_used_programs": 7,
+      "all_used_program_proofs": [
+        {
+          "code_sha256": "d7b0c17b31ea2b33be41df7f3872088a7a26bcc17a54ac1e42e7854ec3d89511",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_15/causality_full_universe/d7b0c17b31ea2b33be41df7f3872088a7a26bcc17a54ac1e42e7854ec3d89511.json",
+          "sha256": "7e284b20c079d23f7790d27ab6efbd2e5724076ee936090d1956045f7a6a966b"
+        },
+        {
+          "code_sha256": "d225c1c5aacd40e1d529ece0dd42feeb23353b13ea168a72643541678df25c1b",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_15/causality_full_universe/d225c1c5aacd40e1d529ece0dd42feeb23353b13ea168a72643541678df25c1b.json",
+          "sha256": "4cf0b1e297bf86795f012efae31b5a38a2c0188fd4db34120da752829a4c4375"
+        },
+        {
+          "code_sha256": "32f7507d5e368fba787650dd77987cf97f7c8c5b219e9984ff1a65a5fbc54a1a",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_15/causality_full_universe/32f7507d5e368fba787650dd77987cf97f7c8c5b219e9984ff1a65a5fbc54a1a.json",
+          "sha256": "38ee719903da645cbfe5626810c4b66ed95f4ed288048a1c37a1c46199fe2163"
+        },
+        {
+          "code_sha256": "508003651ba1d8a62322fee0425ef690bf9705c0cac4e8ac16ed34204cb8a20c",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_15/causality_full_universe/508003651ba1d8a62322fee0425ef690bf9705c0cac4e8ac16ed34204cb8a20c.json",
+          "sha256": "45bcac0ed86e971956eca3677bc8ef78fc6fa92b35cd5ed7aedf77c7661a2970"
+        },
+        {
+          "code_sha256": "670e127084b62743977c9bd4322fad54d79ed9fafff4c3117ac0547dca1ba014",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_15/causality_full_universe/670e127084b62743977c9bd4322fad54d79ed9fafff4c3117ac0547dca1ba014.json",
+          "sha256": "0caad89eda0eb8df1cac3c64ba9530bc7686f30e1c53bd5fc186bcca70f2a84b"
+        },
+        {
+          "code_sha256": "58f10a1da69568db9448340a49218739eaf9f631694ee46e2db4be5417a3d257",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_15/causality_full_universe/58f10a1da69568db9448340a49218739eaf9f631694ee46e2db4be5417a3d257.json",
+          "sha256": "03f717d677c37d99b2bb4af1720a126be5eee9183372190835379b7a59c73a59"
+        },
+        {
+          "code_sha256": "dba1ec170b97820e7342779a52929e70fab819d36b7ea4417a89d9ad9e2f2c4d",
+          "path": "artifacts/fidelity_completion_v2/alphaagent_rounds_paper_gpt35_15/causality_full_universe/dba1ec170b97820e7342779a52929e70fab819d36b7ea4417a89d9ad9e2f2c4d.json",
+          "sha256": "6975aacb18de84253e918e18b95fd227427d279cc9d2edfd4ddf3f4e355138c5"
+        }
+      ],
+      "archived_context_limit": 16385,
+      "attempted_rounds": 5,
+      "completed_trajectories": 4,
+      "constructor_returned_responses": 67,
+      "content_plus_requested_output_tokens": 16498,
+      "diagnosis_sha256": "7c08cdea3db4598841ed986ddc3d8c3aa6e98b936be8970c3b320ff404dc03dd",
+      "failed_round_indices": [
+        4
+      ],
+      "full_observed_replay_sha256": "964a75439f3ed7808cdf1645ec4ee67c4d389e0ad23f3cde8d9afa6b367e9f88",
+      "independent_accounts_sha256": "814d8c7b1614e374221fdbcc75a6aed68c7b90b3190fc7f83b46f206236df759",
+      "maximum_replay_numeric_difference": 2.609024107869118e-15,
+      "pending_replay_correctly_rejected_before_execution": true,
+      "previous_empirical_prompt_overhead": 11,
+      "provider_error_body_available": false,
+      "replay_difference_count": 0,
+      "retained_reservation_usd": 0.0297075,
+      "returned_chat_responses": 151,
+      "source_exit_sha256": "50eb06cee34b13e802592a5d984d2142bffcf695b4ceb48de8701bd036502a70",
+      "status": "complete_observed_history_replay_account_program_evidence",
+      "trial": 15,
+      "unattempted_round_indices": [],
+      "used_factor_manifest_sha256": "a3ee09fc21eb1429334c8b89b595fd944d10a0797280d8f21dee5f0b6a5458d4",
+      "whole20_trial_economic_completion": false
+    }
+  ],
+  "five_attempt_criterion_unchanged": true,
+  "guards": "39 focused abort/primary/secondary/observed-scope guards freshly PASS on each Python3.12 and3.9. Seven are new constructor-abort guards. No cumulative full-suite claim.",
+  "jobs": {
+    "full_universe_proofs": "26586297",
+    "replay_export_accounts": "26586296"
+  },
+  "old_trial08_and12_evidence_still_passes": true,
+  "original_primary_still_held": "26515245",
+  "scope": "Exact witnessed outcomes only; no API retries, new generation, imputed rounds or source/numerical-model changes. The final15 five-attempt gate requires its actual complete observed replay; early14 can never satisfy five attempts.",
+  "status": "both_observed_replays_accounts_and_all_used_program_proofs_pass",
+  "updated_utc": "2026-09-18T06:26:39.574165+00:00"
+}
