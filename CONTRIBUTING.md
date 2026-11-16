@@ -1,26 +1,39 @@
 # Contributing
 
-Contributions that improve correctness, auditability, or documentation are
-welcome. Keep each change narrow and make its evidentiary effect explicit.
+Keep changes narrow, reviewable, and explicit about their effect on the evidence.
+Start with [the current study](docs/CURRENT_STUDY.md), then the protocol for the
+specific code or result you intend to change.
 
-## Development setup
+## Development
 
-Use Python 3.9 or 3.12 and install `requirements-lock.txt` as shown in the
-README. Run before proposing a change:
+Use the [development guide](docs/DEVELOPMENT.md) for existing Bouchet environments,
+isolated setup elsewhere, and validation scopes. For documentation changes:
 
 ```bash
-python -m ruff check src scripts tests
-python -m pytest -q
-python scripts/validate_submission_package.py
+python scripts/check_repository_docs.py
 ```
 
-Changes to paper claims, mappings, sample construction, benchmarks, inference,
-or frozen outputs must include the relevant source citation, tests, a regenerated
-manifest, and an explanation of whether existing numerical results change.
-Never commit licensed security-level data, credentials, local environments, or
-unreviewed large artifacts. Keep raw inputs read-only and outside the checkout.
+Run focused software checks for changed code. Historical submission validation,
+source execution, financial recomputation, and model calls are different
+operations; none should be launched merely to tidy documentation.
 
-Do not rewrite a frozen result in place. Write a versioned run directory,
-compare it with the prior run, and update the public artifact only after the
-difference has been reviewed. Mapping changes must follow
-`docs/INDEPENDENT_MAPPING_REVIEW_PLAN.md` when presented as confirmatory.
+## Research changes
+
+Changes to inputs, clocks, methods, benchmarks, inference, or claims need
+source references and a versioned protocol fixed before inspecting new
+strategy outcomes. Explain which elements are native, transferred, reconstructed,
+or unavailable.
+
+Preserve completed and failed runs. Write a new version rather than editing
+frozen outputs, helpers, source bindings, request bodies, or sealed manuscripts
+in place. Do not replace a central mechanism with a generic proxy.
+
+## Publication and access
+
+Do not add credentials, licensed security-level inputs, derived holdings,
+private response/accounting stores, installed environments, or large archives
+to the public source tree. Third-party material retains its original license.
+
+A proposed commit must be reviewed for sensitive content and files over 100 MB.
+Commits, pushes, releases, and pull requests require an explicit user request
+in this workspace. Repository cleanup does not authorize them.

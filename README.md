@@ -1,286 +1,100 @@
 # Alpha Agent Replication
 
-## Publication upgrade: current-data evidence complete
+This repository studies whether published LLM investment methods deliver useful
+performance on U.S. equities beyond **actual FF5 + momentum + JKP132**. It keeps
+source-code audits, component experiments, transferred methods, and full-paper
+reproduction claims separate.
 
-The six source-specific cases—EFS, FinMem, FinAgent, TradingAgents, GuruAgents,
-and QuantaAlpha—are executed with declared economic adapters and matched controls.
-Read the [visual report](paper_runs/publication_upgrade_v1/VISUAL_REPORT.md),
-[manuscript](paper_runs/publication_upgrade_v1/manuscript.pdf), and
-[reproduction runbook](docs/PUBLICATION_UPGRADE_RUNBOOK.md).
+**Status on November 16, 2026: provisional.** The actual 138-factor benchmark is
+verified. The executable-method cohort and monthly transfer contract are not
+final, and the reopened investment study is not complete. Earlier manuscripts
+and completed studies remain historical evidence.
 
-None of the six primary comparisons establishes a positive advantage under the
-declared inference procedure. All remain inconclusive against the 2-percentage-
-point annual economic margin; this is not proof that the source agents have no
-alpha. Full cached source traces match exactly for FinMem (538 records), FinAgent
-(544), and TradingAgents (61); the original EFS replay and account checks remain
-frozen. Project API commitments total100.8075647USD, including0.60387354USD in
-retained uncertain reservations and all prior/setup usage.
+## Start here
 
-All current-data analyses, calibrated bounds, controlled adaptations, source-
-review workflows, and the18-page manuscript are complete and verified. Delivery
-archive checksums and second-copy verification are recorded separately in
-`paper_runs/publication_upgrade_v1/package_manifest.json` after packaging.
-Independent human source review remains pending. The sealed prospective pilot
-has a September9 evaluation close and no outcome yet; it is a development pilot,
-not public preregistration or confirmatory investment evidence.
+1. [Current study](docs/CURRENT_STUDY.md): the research question, completed work,
+   remaining decisions, and evidence locations.
+2. [Collaborator handoff](COLLABORATOR_HANDOFF.md): a short route from a paper
+   record to its implementation, input checks, and results.
+3. [Documentation index](docs/README.md): current guides and dated historical
+   studies.
+4. [Development guide](docs/DEVELOPMENT.md): environments and checks that do not
+   launch experiments.
 
-## Economic-fidelity repair: first pilot complete
+The [69-paper mechanism inventory](docs/study/method_readiness.csv) is a dated
+readiness record, not a list of 69 runnable strategies. Its
+[status snapshot](docs/study/status.json) records provenance and the distinction
+between executed mechanisms and methods admitted to a monthly evaluation.
 
-The first [EFS v1 economic-fidelity pilot](paper_runs/economic_fidelity/efs_v1/REPORT.md)
-now runs real GPT-4.1 evolution on daily source-universe prices, with 290 weekly
-generation steps and 1,510 traded days. Its independent account reconstruction
-and full cached replay pass. Start with the
-[outcome-free source-review packet](paper_runs/economic_fidelity/efs_v1/SOURCE_REVIEW_PACKET.md)
-and [protocol](docs/ECONOMIC_FIDELITY_PROTOCOL.md).
+## Current claim boundaries
 
-This is a fresh paper-guided implementation with disclosed assumptions, not the
-author's original code/model/run or a confirmatory alpha finding. The six-case
-fidelity cohort and publication-improvement analyses are now complete. The
-completed [62-path in-spirit comparison](paper_runs/us_jkp_in_spirit/REPORT.md)
-and [strict 69-paper audit](paper_runs/us_jkp_headline/FINAL_SUMMARY.md) remain frozen.
-The manuscript below still describes the earlier evidence packages.
+- A repository link, prompt collection, scoring script, or web demonstration is
+  not automatically an executable investment method.
+- A working source mechanism is not automatically a financially valid result.
+  Inputs, trading clocks, funding, costs, and corporate actions need separate
+  checks.
+- A monthly transfer changes a method when its native decisions are daily or
+  quarterly. Whether those transfers are included is still an unresolved scope
+  choice; they are not silently counted as faithful monthly replications.
+- The benchmark uses the five actual French factors, actual momentum, and the
+  fixed 132 actual JKP factor-return series. RF is separate. Characteristic
+  proxies and reduced factor models do not replace that benchmark.
+- Inconclusive evidence is not proof of no alpha. No full-paper reproduction or
+  external human review is asserted by the current readiness inventory.
 
-## Archived 69-paper study and earlier manuscript
+## Repository map
 
-The September 3, 2026 research direction is to implement each paper's central
-proposed trading strategy, or its strongest defensible partial version, on a
-common monthly U.S.-stock/JKP benchmark and then move to the next paper. The
-[working protocol](docs/US_JKP_HEADLINE_PROTOCOL.md) and
-[milestone ledger](paper_runs/us_jkp_headline/milestones.json) govern this work.
-The historical studies and submission artifact described below remain preserved
-as provenance; neither their full-paper flags nor software-test counts measure
-completion of the new 69-milestone study.
+- `src/alpha_evolve/`: reusable Python utilities for paths, data preparation,
+  portfolio construction, and evaluation.
+- [`scripts/`](scripts/README.md): entry points grouped by purpose. Many are
+  historical research runners; read their protocol before execution.
+- `tests/`: software and evidence-contract checks. A passing test suite is not
+  an investment-performance result.
+- `literature_review/`: paper records, bibliography, and source provenance.
+- [`paper_runs/`](paper_runs/README.md): versioned studies and compact evidence.
+  Some newer or licensed material exists only in the authorized Bouchet checkout.
+- `docs/`: reader guides, protocols, and historical manuscript sources.
+- `environment_specs/` and [`environment.toml`](environment.toml): runtime
+  specifications; installed environments live outside the checkout.
+- `artifacts/`, `runs/`, `archives/`, `relocated_scratch/`, `slurm/`,
+  `log/`, and `mlruns/`: private or generated local holdings, not a public
+  distribution of research inputs.
 
-This repository is the research artifact for an ICAIF 2026 submission asking
-whether public evidence substantiates claims that financial LLM agents discover
-alpha beyond familiar asset-pricing factors. The current study puts source
-fidelity before attribution. A strict audit of the prior 50 common-task mappings
-assigns A0/B0/C15/D33/U2: none is a faithful system replication or faithful
-disclosed component. Their broad benchmark ladder is retained only as a legacy
-construction diagnostic, not as evidence that factors span the papers' agents.
+Existing run paths are retained because manifests and source bindings refer to
+them. The directory structure is a research record, not an invitation to execute
+every runner.
 
-The primary formula evidence is now an exhaustive three-seed census from the
-pinned QuantEvolver release. All three counted rows preserve the released
-expressions, executable DSL semantics, pairwise missing-data rule, forward-close
-return definition, and equal-mean top/bottom-quintile evaluator; only cadence,
-universe, and holding horizon change. The fail-closed PR-style gate reports 3/3 strict grade
-B components (100%). The offline gate also executes the exact pinned upstream
-evaluator on outcome-blind synthetic OHLCV data; all 1,296 score comparisons
-and 105 portfolio timestamps conform. The separate D07 owner attestation is
-also complete: Sasha Cui approved all three rows on 2026-08-11. Nine additional
-formulas with unpinned or reconstructed
-semantics remain visible as non-primary diagnostics. A separate GuruAgents replay
-executes all 190 disclosed prompt cells, constructs 24 costed paths, and reports
-matched factor attribution for 12 long-archive paths over a shared 33-month
-window. These are component-level studies, not native-system replications.
+## Check the reader documentation
 
-A separate paper-level QuantEvolver audit prevents that 3/3 component result
-from being mistaken for the published study. It finds a substantial paper-era
-framework (38/67 mechanism matches or analogues; all released tests pass) but
-0/75 reproduced table results and 0/31 reproduced non-table numeric result
-claims because the paper data, checkpoint, logs, exact configuration, mined
-factors, baselines, fusion arrays, seeds, and costs are not released.
-
-The Alpha-R1 audit is more severe: the paper says its full implementation and
-resources are available, but the only pre-submission revision is a two-line
-title README and the current official repository still contains one README
-marking inference code and model weights Coming Soon. The audit enumerates 124
-table cells and all 528 visible heatmap cells, for 652 displayed numeric
-results, plus 27 numeric result claims in prose. It reproduces 0/652 results
-and 0/70 implementation dimensions because no executable source, model, data,
-prompt, environment, baseline, seed, path, or output has been released. The
-local Alpha-R1 motif proxy remains an M0 narrative translation with no native
-mechanism or paper-result credit.
-
-The cutoff-bounded 98-work screen, artifact audit, and 67-lineage native-fidelity
-ledger provide broader evidence about public availability and task compatibility;
-they are supporting parts of the current claim record rather than its sole center.
-
-## Collaborator Handoff
-
-Start with the current claim boundary
-([`docs/FIDELITY_AUDIT.md`](docs/FIDELITY_AUDIT.md)), current manuscript
-([`docs/paper/icaif2026_submission.tex`](docs/paper/icaif2026_submission.tex)), and
-tracked PDF ([`output/pdf/icaif2026_submission.pdf`](output/pdf/icaif2026_submission.pdf)),
-then inspect the three principal evidence packages:
-
-- [`paper_runs/submission_evidence/strict_proxy_fidelity_audit/`](paper_runs/submission_evidence/strict_proxy_fidelity_audit/) - strict A/B/C/D/U grades for the legacy 50 mappings.
-- [`paper_runs/faithful_component_replications/`](paper_runs/faithful_component_replications/) - primary three-component census, strict grade-B ledger, source pins, and attribution outputs.
-- [`paper_runs/paper_replication_audits/quantevolver/`](paper_runs/paper_replication_audits/quantevolver/) - fail-closed full-paper audit that keeps the 3/3 component gate separate from 0/75 paper results.
-- [`paper_runs/paper_replication_audits/alpha_r1/`](paper_runs/paper_replication_audits/alpha_r1/) - fail-closed audit of 652 displayed results and the paper/source availability conflict in the official one-file placeholder.
-- [`paper_runs/paper_replication_audits/alpha_jungle/`](paper_runs/paper_replication_audits/alpha_jungle/) - fail-closed three-edition audit of 64 official published cells, 2,268 extended-version cells, six disclosed formulas, prompt and figure evidence, version-lineage conflicts, and an unaffiliated community implementation; zero native paper results are claimed.
-- [`paper_runs/paper_replication_audits/alphaagents/`](paper_runs/paper_replication_audits/alphaagents/) - fail-closed arXiv-v1 paper/source audit that rebuilds the nine-page manuscript, recovers seven source-only portfolios with 77 ticker memberships, and inventories 20 plotted performance series; five unaffiliated implementations and both local M0 translations receive zero native paper-result credit.
-- [`paper_runs/paper_replication_audits/alpha_gpt_lineage/`](paper_runs/paper_replication_audits/alpha_gpt_lineage/) - fail-closed Alpha-GPT v1/v2/ACL-final and Alpha-GPT 2.0 lineage audit that rebuilds three official source packages, inventories 20 v1 and 47 final numeric result cells, checks four published formulas, and keeps the unevaluated Alpha-GPT 2.0 draft and both local M0 translations at zero native paper-result credit.
-- [`paper_runs/paper_replication_audits/llmfactor/`](paper_runs/paper_replication_audits/llmfactor/) - fail-closed arXiv-v1/ACL-final paper/source audit that rebuilds the official 12-page source, inventories all 82 native and 124 baseline cells, conditionally checks prompt skeletons and ACC/MCC formulas without replaying an LLM request, and keeps all 206 displayed cells plus the local M0 translation at zero paper-result credit.
-- [`paper_runs/paper_replication_audits/quantagent_self_improving/`](paper_runs/paper_replication_audits/quantagent_self_improving/) - fail-closed arXiv-v1 paper/source audit that rebuilds all 15 pages, checks four published Python listings, and keeps one conditional formula execution separate from zero of 17 plotted line series and zero of 400 heatmap cells reproduced.
-- [`paper_runs/paper_replication_audits/efs/`](paper_runs/paper_replication_audits/efs/) - fail-closed two-version audit of 773 original and 877 revised table cells, with cited-baseline credit kept separate from zero native EFS results and 48 semantically relabelled carryovers identified.
-- [`paper_runs/paper_replication_audits/fama/`](paper_runs/paper_replication_audits/fama/) - fail-closed ACL-final audit of 65 table results, 38 visible figure markers, 71 listed initial-factor IDs, the disclosed prompt, and equation/algorithm/split conflicts; the existing local score remains motif-only and zero native FAMA results are claimed.
-- [`paper_runs/paper_replication_audits/raptor/`](paper_runs/paper_replication_audits/raptor/) - fail-closed CEUR/OpenReview and public-source audit of all 42 empirical scalar units and three figure series; 166 shipped portfolio snapshots independently recover 16 scalar units, while missing inputs and conflicting paper/source protocols leave 0/42 results and 0/3 exact figure series reproduced end to end.
-- [`paper_runs/paper_replication_audits/aapm/`](paper_runs/paper_replication_audits/aapm/) - fail-closed two-version AAPM audit of 114 v1 and 162 v2 table cells, 54 quantitative figure units, the complete ten-file official source release, and 65,733 released metadata records; 112/114 common table cells change while 15/16 rasters are reused, and missing native inputs, outputs, evaluation code, and v2 implementation lineage leave 0/162 current-paper results reproduced.
-- [`paper_runs/prompt_replay/guruagents/performance/`](paper_runs/prompt_replay/guruagents/performance/) - the 190-cell GuruAgents replay, 24 costed paths, and 12-path-by-33-month matched attribution.
-
-The older 12-formula package in [`paper_runs/fidelity_formula_components/`](paper_runs/fidelity_formula_components/) is retained as a mixed-fidelity diagnostic and is not part of the 100% denominator.
-
-The cutoff-bounded artifact audit
-([`paper_runs/submission_evidence/artifact_audit/`](paper_runs/submission_evidence/artifact_audit/))
-and native-fidelity ledger
-([`paper_runs/submission_evidence/native_fidelity_ledger.csv`](paper_runs/submission_evidence/native_fidelity_ledger.csv))
-provide broader corpus and repository context. The experiment map is in
-[`docs/EXPERIMENT_INDEX.md`](docs/EXPERIMENT_INDEX.md). The older 50-row dataframe
-([`paper_runs/handoff/strategy_result_index.csv`](paper_runs/handoff/strategy_result_index.csv))
-is retained only as a legacy ladder-construction diagnostic.
-[`COLLABORATOR_HANDOFF.md`](COLLABORATOR_HANDOFF.md) provides a broader navigation
-guide. Documents now marked SUPERSEDED / INVALIDATED, including
-[`docs/SCIENTIFIC_AUDIT.md`](docs/SCIENTIFIC_AUDIT.md), are retained only for
-provenance and must not be used as the current claim record. The outcome-blind,
-double-coded protocol for historical mappings remains documented in
-[`docs/INDEPENDENT_MAPPING_REVIEW_PLAN.md`](docs/INDEPENDENT_MAPPING_REVIEW_PLAN.md).
-
-The 50 historical rows remain available as a reproducible common-construction
-diagnostic, but their strict fidelity grades preclude paper- or agent-level
-attribution. The formula and prompt packages are separately anchored to disclosed
-source components. Neither recovers a native agent, search trajectory, training
-process, or published performance table.
-
-## Current ICAIF Submission
-
-- [`output/pdf/icaif2026_submission.pdf`](output/pdf/icaif2026_submission.pdf) - current tracked six-page anonymous submission PDF (verified August 11, 2026). A later final build can change the page count, so rerun validation before submission.
-- [`docs/paper/icaif2026_submission.tex`](docs/paper/icaif2026_submission.tex) - submission source using the vendored ACM 2.19 template.
-- [`docs/FIDELITY_AUDIT.md`](docs/FIDELITY_AUDIT.md) - current claim and fidelity boundary.
-- [`paper_runs/submission_evidence/strict_proxy_fidelity_audit/`](paper_runs/submission_evidence/strict_proxy_fidelity_audit/) - strict audit of the legacy 50 mappings.
-- [`paper_runs/faithful_component_replications/`](paper_runs/faithful_component_replications/) - current primary 3/3 strict-B disclosed-component study.
-- [`paper_runs/fidelity_formula_components/`](paper_runs/fidelity_formula_components/) - non-primary mixed-fidelity 12-formula diagnostic.
-- [`paper_runs/prompt_replay/guruagents/performance/`](paper_runs/prompt_replay/guruagents/performance/) - current GuruAgents replay and factor-attribution package.
-- [`docs/source_anchor_review_packet.md`](docs/source_anchor_review_packet.md) - legacy page-anchored audit for the prior mapping layer.
-- [`docs/full_corpus_bibliography.md`](docs/full_corpus_bibliography.md) - all 98 screened canonical works.
-- [`paper_runs/submission_evidence/`](paper_runs/submission_evidence/) - supporting artifact, native-fidelity, scope, and robustness evidence.
-
-Build and validate the submission from the repository root:
+From the repository root, with Python 3.9 or newer:
 
 ```bash
-python scripts/validate_faithful_component_replications.py
-python scripts/validate_submission_package.py
+python scripts/check_repository_docs.py
 ```
 
-This fresh-clone gate performs 62 source/PDF artifact checks and does not depend
-on ignored LaTeX auxiliary files. A release build adds nine explicit build-log
-checks:
+This checks local navigation and the published readiness snapshot without
+accessing WRDS, making model calls, rebuilding a manuscript, or rerunning a
+study. See [development](docs/DEVELOPMENT.md) for package setup and the older
+submission-validation workflow.
 
-```bash
-python scripts/build_icaif2026_submission_assets.py
-python scripts/build_icaif2026_submission.py
-python scripts/validate_icaif_submission.py \
-  --pdf output/pdf/icaif2026_submission.pdf \
-  --log docs/paper/icaif2026_submission.log \
-  --bbl docs/paper/icaif2026_submission.bbl \
-  --require-build-log
-```
+## Historical material
 
-The release build must pass both fail-closed validators and the locked-evidence
-wording gate. The validation scopes, software prerequisites, hashes, and
-exact commands are recorded in
-[`docs/VALIDATION_STATUS.md`](docs/VALIDATION_STATUS.md).
-Large licensed security-level inputs and regenerated monthly reconstruction
-matrices remain outside Git; their paths and SHA-256 hashes are recorded in the
-run manifests.
-Authorized collaborators can use the documented external packager in
-[`docs/AUTHORIZED_COLLABORATOR_BUNDLE.md`](docs/AUTHORIZED_COLLABORATOR_BUNDLE.md)
-to receive the complete legacy 50-strategy and factor-reconstruction matrices without
-placing licensed derived data in the public repository.
+The [historical study index](paper_runs/README.md#historical-studies) explains the
+scope of earlier audits, reconstructions, native runs, and manuscripts.
+Statements such as “current” or “complete” inside a dated historical package
+apply to that package and its stated scope.
 
-## Repository Layout
+The [previous root README](docs/history/README_before_20261116_cleanup.md) is
+preserved for provenance. It is not the current project-status page.
 
-- `src/alpha_evolve/` - importable Python package for JKP return construction, benchmark evaluation, path policy, and shared utilities.
-- `scripts/` - research runners, deterministic artifact builders, and validation entry points.
-- `literature_review/` - source inventory used to build the paper/repository universe.
-- `paper_runs/` - compact tracked replication ledgers, summaries, verdicts, small CSV outputs, and final report figures.
-- `paper_runs/handoff/` - legacy 50-strategy construction-diagnostic index and scope manifest.
-- `paper_runs/submission_evidence/strict_proxy_fidelity_audit/` - strict fidelity grades for the legacy 50 mappings.
-- `paper_runs/faithful_component_replications/` - primary 100%-passing disclosed-component evidence.
-- `paper_runs/fidelity_formula_components/` - mixed-fidelity formula diagnostics retained outside the primary denominator.
-- `paper_runs/prompt_replay/guruagents/performance/` - current GuruAgents prompt-replay performance evidence.
-- `paper_runs/submission_evidence/native_fidelity_ledger.csv` - supporting 67-lineage native-fidelity ledger.
-- `paper_runs/submission_evidence/artifact_audit/` - supporting cutoff-bounded artifact-audit evidence.
-- `docs/FIDELITY_AUDIT.md` - current claim and fidelity boundary.
-- `output/pdf/icaif2026_submission.pdf` - tracked current submission artifact.
-- `report.md` - superseded legacy replication report retained for provenance.
-- `docs/alpha_agent_replication_report.tex` - superseded legacy TeX report retained for provenance.
-- `docs/PUBLICATION_BOUNDARY.md` - tracked-vs-generated publication boundary.
+## Data access and licensing
 
-## Install
+Licensed security-level data, holdings, private model responses, and accounting
+stores are not public repository inputs. Authorized readers can follow the
+Bouchet evidence links in the current-study guide. A source checkout alone
+does not reproduce an input-dependent experiment.
 
-For the tested dependency set, install the hash-pinned lock and then the
-editable project without re-resolving dependencies:
-
-```bash
-python -m venv .venv
-. .venv/bin/activate
-python -m pip install --upgrade pip
-python -m pip install --require-hashes -r requirements-lock.txt
-python -m pip install --no-deps -e .
-```
-
-Use `python -m pip install -e ".[dev]"` only when intentionally updating the
-lock. The Bouchet environment manifest is kept in `environment.toml`;
-installed packages and virtualenvs are intentionally not tracked.
-
-## External Inputs
-
-Counted experiments use read-only local research inputs. The official [JKP data library](https://www.jkpfactors.com/data) supplies public factor returns, while the [JKP WRDS guide](https://www.jkpfactors.com/jkp-wrds-guide) explains authorized access to the stock-level panel required for end-to-end portfolio reconstruction. See [`docs/DATA_AND_ARTIFACTS.md`](docs/DATA_AND_ARTIFACTS.md) for the exact boundary and hash-verification procedure. Defaults point to the Bouchet project layout, and public users can override them:
-
-```bash
-export ALPHA_EVOLVE_REPO=/path/to/alpha-agent-replication
-export ALPHA_EVOLVE_JKP_ROOT=/path/to/jkp-data
-export ALPHA_EVOLVE_JKP_USA=/path/to/USA.parquet
-export ALPHA_EVOLVE_FACTOR_DATA_ROOT=/path/to/KnowledgeTemplate
-export ALPHA_EVOLVE_RETURN_DATA_ROOT=/path/to/KnowledgeTemplate/return_pipeline/return_data_assembly
-export ALPHA_EVOLVE_FACTOR_PANEL=/path/to/benchmark_factor_panel.csv
-```
-
-Legacy diagnostics that use paper-shipped or official-French return streams are disabled by default. Enable them only for non-counting audit reproduction:
-
-```bash
-export ALLOW_LEGACY_NON_JKP_RETURNS=1
-```
-
-## Common Commands
-
-Build monthly JKP long-short candidate returns:
-
-```bash
-alpha-evolve-build-jkp \
-  --candidate-cols ret_12_1,be_me \
-  --out-dir paper_runs/example_jkp
-```
-
-Evaluate a candidate against a JKP-built factor panel:
-
-```bash
-alpha-evolve-evaluate-jkp \
-  --candidate-id example \
-  --candidate-csv paper_runs/example_jkp/candidate_returns_jkp_ret_12_1.csv \
-  --factor-panel-csv paper_runs/example_jkp/jkp_benchmark_factor_panel.csv \
-  --out-dir paper_runs/example_jkp/results
-```
-
-The `scripts/*.py` entry points remain available for research-specific and
-submission workflows; reusable portfolio and performance logic lives under
-`src/alpha_evolve/`.
-
-## Project Governance
-
-Contribution, security, citation, and release rules are recorded in [`CONTRIBUTING.md`](CONTRIBUTING.md), [`SECURITY.md`](SECURITY.md), [`CITATION.cff`](CITATION.cff), and [`docs/RELEASE_CHECKLIST.md`](docs/RELEASE_CHECKLIST.md). [`CHANGELOG.md`](CHANGELOG.md) distinguishes unreleased work from immutable releases.
-
-## Open-Source Licensing
-
-Alpha Agent Replication is open-source software intended to help researchers
-audit and replicate claims about large-language-model and agent-based alpha
-mining. The project's original source code, tests, and build scripts are
-licensed under the Apache License, Version 2.0; see [`LICENSE`](LICENSE).
-
-The manuscript, project-authored protocols, figures, tables, and original
-registry annotations are licensed under Creative Commons Attribution 4.0
-International. Third-party papers, repositories, software, and market data
-retain their own terms and are not relicensed here. Some replication inputs
-must therefore be obtained separately from their authorized sources. See
-[`LICENSES/README.md`](LICENSES/README.md) for the complete licensing map.
+Original software is Apache-2.0; original documentation and manuscript material
+are CC BY 4.0. Third-party code, papers, and data retain their own terms. See
+[the licensing map](LICENSES/README.md), [contribution guide](CONTRIBUTING.md),
+and [security policy](SECURITY.md).
