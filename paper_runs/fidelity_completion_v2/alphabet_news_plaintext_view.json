@@ -1,0 +1,320 @@
+{
+  "frozen_at_utc": "2026-09-17T09:58:01.071555+00:00",
+  "scope": "Only the separate TradingAgents issuer-news repair. Original completed runs and frozen recipe bytes remain unchanged.",
+  "source_formatter_reference": "/nfs/roberts/scratch/pi_btk22/zc362/tradingagents_v010/tradingagents/dataflows/interface.py:get_finnhub_news uses plaintext dated headline/summary blocks",
+  "format": "Retain every full text, source symbol and publication date in source-style plaintext news blocks. All cutoff checks/traces remain in originalDatedTools; audit hashes, summary-method labels and issuer IDs stay in frozen input/manifest instead of repeated model text.",
+  "reason": "Original audit-rich JSON news tool alone reaches197775tokens, beyond128000. Plaintext removes only bookkeeping syntax/metadata; no news items, text or financial words are truncated.",
+  "maximum_tool_tokens": 88614,
+  "completion_token_reserve": 16384,
+  "extra_context_reserve": 12000,
+  "context_window": 128000,
+  "full_text_coverage_asserted_all61days": true,
+  "implementation_sha256": "578de0480a69398f14ba560f8a26b440ff063e98b5be7f076c00eeb53f2c6097",
+  "days": [
+    {
+      "date": "2024-01-02",
+      "news_items": 36,
+      "tool_tokens": 2651
+    },
+    {
+      "date": "2024-01-03",
+      "news_items": 125,
+      "tool_tokens": 9760
+    },
+    {
+      "date": "2024-01-04",
+      "news_items": 258,
+      "tool_tokens": 19947
+    },
+    {
+      "date": "2024-01-05",
+      "news_items": 385,
+      "tool_tokens": 30193
+    },
+    {
+      "date": "2024-01-08",
+      "news_items": 601,
+      "tool_tokens": 45269
+    },
+    {
+      "date": "2024-01-09",
+      "news_items": 740,
+      "tool_tokens": 56901
+    },
+    {
+      "date": "2024-01-10",
+      "news_items": 841,
+      "tool_tokens": 65493
+    },
+    {
+      "date": "2024-01-11",
+      "news_items": 894,
+      "tool_tokens": 70030
+    },
+    {
+      "date": "2024-01-12",
+      "news_items": 923,
+      "tool_tokens": 72534
+    },
+    {
+      "date": "2024-01-16",
+      "news_items": 864,
+      "tool_tokens": 68331
+    },
+    {
+      "date": "2024-01-17",
+      "news_items": 862,
+      "tool_tokens": 67469
+    },
+    {
+      "date": "2024-01-18",
+      "news_items": 856,
+      "tool_tokens": 66292
+    },
+    {
+      "date": "2024-01-19",
+      "news_items": 870,
+      "tool_tokens": 67154
+    },
+    {
+      "date": "2024-01-22",
+      "news_items": 920,
+      "tool_tokens": 70132
+    },
+    {
+      "date": "2024-01-23",
+      "news_items": 1038,
+      "tool_tokens": 78786
+    },
+    {
+      "date": "2024-01-24",
+      "news_items": 900,
+      "tool_tokens": 69356
+    },
+    {
+      "date": "2024-01-25",
+      "news_items": 895,
+      "tool_tokens": 68337
+    },
+    {
+      "date": "2024-01-26",
+      "news_items": 913,
+      "tool_tokens": 69543
+    },
+    {
+      "date": "2024-01-29",
+      "news_items": 965,
+      "tool_tokens": 72457
+    },
+    {
+      "date": "2024-01-30",
+      "news_items": 901,
+      "tool_tokens": 69456
+    },
+    {
+      "date": "2024-01-31",
+      "news_items": 923,
+      "tool_tokens": 71495
+    },
+    {
+      "date": "2024-02-01",
+      "news_items": 940,
+      "tool_tokens": 72138
+    },
+    {
+      "date": "2024-02-02",
+      "news_items": 971,
+      "tool_tokens": 74478
+    },
+    {
+      "date": "2024-02-05",
+      "news_items": 1057,
+      "tool_tokens": 81016
+    },
+    {
+      "date": "2024-02-06",
+      "news_items": 1000,
+      "tool_tokens": 77488
+    },
+    {
+      "date": "2024-02-07",
+      "news_items": 983,
+      "tool_tokens": 75188
+    },
+    {
+      "date": "2024-02-08",
+      "news_items": 977,
+      "tool_tokens": 74882
+    },
+    {
+      "date": "2024-02-09",
+      "news_items": 989,
+      "tool_tokens": 76179
+    },
+    {
+      "date": "2024-02-12",
+      "news_items": 1030,
+      "tool_tokens": 79160
+    },
+    {
+      "date": "2024-02-13",
+      "news_items": 924,
+      "tool_tokens": 71354
+    },
+    {
+      "date": "2024-02-14",
+      "news_items": 918,
+      "tool_tokens": 70881
+    },
+    {
+      "date": "2024-02-15",
+      "news_items": 921,
+      "tool_tokens": 70256
+    },
+    {
+      "date": "2024-02-16",
+      "news_items": 950,
+      "tool_tokens": 72596
+    },
+    {
+      "date": "2024-02-20",
+      "news_items": 869,
+      "tool_tokens": 64980
+    },
+    {
+      "date": "2024-02-21",
+      "news_items": 861,
+      "tool_tokens": 64544
+    },
+    {
+      "date": "2024-02-22",
+      "news_items": 853,
+      "tool_tokens": 64220
+    },
+    {
+      "date": "2024-02-23",
+      "news_items": 881,
+      "tool_tokens": 66443
+    },
+    {
+      "date": "2024-02-26",
+      "news_items": 967,
+      "tool_tokens": 71512
+    },
+    {
+      "date": "2024-02-27",
+      "news_items": 1164,
+      "tool_tokens": 85877
+    },
+    {
+      "date": "2024-02-28",
+      "news_items": 1002,
+      "tool_tokens": 75048
+    },
+    {
+      "date": "2024-02-29",
+      "news_items": 1020,
+      "tool_tokens": 75901
+    },
+    {
+      "date": "2024-03-01",
+      "news_items": 1018,
+      "tool_tokens": 75326
+    },
+    {
+      "date": "2024-03-04",
+      "news_items": 1091,
+      "tool_tokens": 79540
+    },
+    {
+      "date": "2024-03-05",
+      "news_items": 1021,
+      "tool_tokens": 75481
+    },
+    {
+      "date": "2024-03-06",
+      "news_items": 980,
+      "tool_tokens": 73194
+    },
+    {
+      "date": "2024-03-07",
+      "news_items": 997,
+      "tool_tokens": 74059
+    },
+    {
+      "date": "2024-03-08",
+      "news_items": 988,
+      "tool_tokens": 73513
+    },
+    {
+      "date": "2024-03-11",
+      "news_items": 1087,
+      "tool_tokens": 79855
+    },
+    {
+      "date": "2024-03-12",
+      "news_items": 971,
+      "tool_tokens": 72947
+    },
+    {
+      "date": "2024-03-13",
+      "news_items": 916,
+      "tool_tokens": 69015
+    },
+    {
+      "date": "2024-03-14",
+      "news_items": 921,
+      "tool_tokens": 69133
+    },
+    {
+      "date": "2024-03-15",
+      "news_items": 917,
+      "tool_tokens": 69999
+    },
+    {
+      "date": "2024-03-18",
+      "news_items": 1025,
+      "tool_tokens": 77600
+    },
+    {
+      "date": "2024-03-19",
+      "news_items": 960,
+      "tool_tokens": 74336
+    },
+    {
+      "date": "2024-03-20",
+      "news_items": 1024,
+      "tool_tokens": 79541
+    },
+    {
+      "date": "2024-03-21",
+      "news_items": 1027,
+      "tool_tokens": 79452
+    },
+    {
+      "date": "2024-03-22",
+      "news_items": 1025,
+      "tool_tokens": 79328
+    },
+    {
+      "date": "2024-03-25",
+      "news_items": 1147,
+      "tool_tokens": 88614
+    },
+    {
+      "date": "2024-03-26",
+      "news_items": 1049,
+      "tool_tokens": 81687
+    },
+    {
+      "date": "2024-03-27",
+      "news_items": 1022,
+      "tool_tokens": 78819
+    },
+    {
+      "date": "2024-03-28",
+      "news_items": 1004,
+      "tool_tokens": 76938
+    }
+  ]
+}

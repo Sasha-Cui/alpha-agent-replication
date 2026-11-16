@@ -1,0 +1,14 @@
+{
+  "duplicated_payload_characters": 229201,
+  "earlier_results_retained": "Original three-asset cohort and the five-day failed company-news attempt are preserved. The corrected source-mapping run is a separate variant; its first five days are not asserted identical.",
+  "failed_job": "26477936",
+  "failed_request_hash": "985425d8a261f29e123b4fbff08fec54ca289cfede29f75114670bad3c6c7dc3",
+  "frozen_at_utc": "2026-09-17T12:36:35.748258+00:00",
+  "method": "Source/data-availability correction, not a return-selected model or strategy change.",
+  "new_output": "tradingagents_GOOGL_single_news_source",
+  "original_failed_bound_retained": true,
+  "repair": "Expose complete issuer-news text through the canonical get_finnhub_news tool. Google/global tools explicitly report unavailable independent data and point to the existing canonical corpus; no article is truncated or summarized away. Honor explicit Finnhub start/end dates rather than silently defaulting them to seven days.",
+  "root_cause": "The frozen adapter mapped both Finnhub and Google tools to the identical single FNSPID corpus, duplicating the whole text in one conversation. There is no independent dated Google/global snapshot.",
+  "same_corpus_sha256": "5233a4727e8c2484dac7679808f3b3f5a494bae2445fe1937f762a0085dc4043",
+  "shared_existing_repair_cap_usd": 5
+}

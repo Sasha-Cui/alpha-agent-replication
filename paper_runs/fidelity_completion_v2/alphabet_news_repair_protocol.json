@@ -1,0 +1,18 @@
+{
+  "evidence_sha256": "ec80169c778c4606744659ac79c6ae17f41fd3555e65865a57d93d89a01b1406",
+  "frozen_at_utc": "2026-09-17T09:35:36.265441+00:00",
+  "issue": "Symbol-only text selection misses same-issuer Alphabet news. GOOG has33182 dated news rows2021-2024; GOOGL has355 only in2024. Both source news, filing and price tables identify CIK0001652044.",
+  "new_finagent_run": "finagent_GOOGL_company_news",
+  "new_tradingagents_cap_usd": 5,
+  "new_tradingagents_run": "tradingagents_GOOGL_company_news",
+  "new_tradingagents_study": "fidelity_v2_tradingagents_alphabet_news_repair",
+  "original_finagent_GOOGL_decisions_started": false,
+  "price_substitution_forbidden": true,
+  "project_hard_ceiling_usd": 500,
+  "project_soft_stop_usd": 450,
+  "research_status": "Data mapping correction defined by issuer identifier after existingTAresults were available; no pristine confirmatory claim and no evaluation-return selection.",
+  "selection_rule": "Add all GOOG news tagged with exactly the same sourceCIK within the existing declared periods. Keep GOOGL prices and base items unchanged; discard only newly added exact same-date/source-text duplicates. Date-only news remains next-session available.",
+  "summary_calls_share_existing_5USD_cap": true,
+  "tradingagents_original_preserved": "tradingagents_GOOGL with completed exact replay remains untouched; repaired issuer-news case is a separately labeled data-coverage sensitivity, not a replacement selected for performance.",
+  "worst_existing_queued_plus_repairs_usd": 446.2856149
+}
