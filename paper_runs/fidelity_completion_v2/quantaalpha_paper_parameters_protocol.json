@@ -1,0 +1,34 @@
+{
+  "recorded_at_utc": "2026-09-17T17:07:50.005484+00:00",
+  "source": "https://arxiv.org/html/2602.07085v3",
+  "paper_sections": "5.1, A.4, B",
+  "round_interpretation": "A.4 explicitly says five total main iterations including the initial round. Use original,mutation,crossover,mutation,crossover. Appendix B instead describes five mutation+crossover pairs after the original; this conflicts. The A.4 interpretation is predeclared, not selected on outcomes.",
+  "declared_parameters": {
+    "planning_directions": 10,
+    "controller_rounds": 5,
+    "crossover_combinations": 10,
+    "factor_attempts_per_hypothesis": 3,
+    "consistency": true,
+    "symbol_length": 250,
+    "base_features": 6,
+    "duplication_threshold": 5
+  },
+  "configuration_wiring": "Source factor YAML is inactive. Explicitly bind constructor/coder settings and replace only the source 2-3factor prompt clause. Guard all three recursive phase methods at round5 BEFORE generation. Actual counts and failures remain audited.",
+  "model": "openai/gpt-5.2",
+  "provider_slug": "openai",
+  "input_usd_per_million": 1.75,
+  "output_usd_per_million": 14,
+  "decoding": "Current model route supports neither source temperature nor sampling penalties. Omit temperature/top_p/frequency_penalty/presence_penalty/top_k; retain max_tokens3000 and source JSON repair, use reasoning effort none explicitly. Historical paper decoding/checkpoint equivalence is not claimed.",
+  "api_seed_base": 6100000,
+  "shared_study_cap_usd": 75,
+  "planning_cost_bound": "Paper A.4 states approximately1.8Mtokens. At the current standard tariff this is at most25.20USD if all were output tokens; this is a feasibility scale, not a run guarantee. Canonical reservation caps control actual execution.",
+  "search_economics": "Retain the released four-feature2016-2019train/2020validation/2021feedback and physicalJan5data boundary. This preserves an outside-search comparison; it is not the paper historical train/validation reconstruction.",
+  "initial_direction": "Price-Volume Factor Mining; original run-specific seed-group insertion is unrecovered.",
+  "claim_boundaries": [
+    "Separate secondary paper-parameter variant; do not replace the already-frozen released-default primary based on results.",
+    "Historical seed grouping, reference zoo and structured segment-splicing are missing; no full-paper replication claim.",
+    "Current model/embedding/alternative data remain disclosed adaptations.",
+    "Source asks for three factors but actual accepted counts may differ; never fabricate150factors."
+  ],
+  "full_original_paper_reproduced": false
+}

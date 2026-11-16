@@ -1,0 +1,19 @@
+{
+  "case": "QuantaAlpha released complete factor-library and native predictor/portfolio reexecution",
+  "source_snapshot": "quantaalpha_recovery/source_8a0343, pinned by existing conformance audit",
+  "arms": ["Released 150 custom factors plus Alpha158(20)", "Alpha158(20) with the same predictor, split and portfolio"],
+  "market": "CSI300",
+  "test_start": "2022-01-01",
+  "test_end": "2025-12-26",
+  "portfolio": "Native Top50/drop5, open execution, 0.05% buys / 0.15% sells, source minimum commission",
+  "mechanism_preserved": "All 150 released expressions, one documented cross-sectional MEAN broadcasting repair, native LightGBM training and Qlib trading",
+  "comparison_estimand": "Value of the released factor library conditional on its availability and selection, not causal value of fresh LLM search",
+  "account_export": "Capture the actual Qlib daily return, cost, benchmark, predictions and positions without changing the native evaluator",
+  "important_metric_boundary": "The native annualized_return is benchmark-relative return after costs, not standalone portfolio CAGR",
+  "fresh_agent_search": false,
+  "network_calls": 0,
+  "jkp132_native_test": "Not applicable to this Chinese native market; any U.S. transfer belongs to the separately labelled common-adaptation study",
+  "selection_limitation": "The released pool may reflect post-test selection; no pristine holdout or pre-test factor availability is claimed",
+  "human_source_review": "pending",
+  "fixed_before_new_account_exports": true
+}

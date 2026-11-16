@@ -1,0 +1,149 @@
+{
+  "baseline_refits": 0,
+  "bindings": [
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/evaluation/frozen_sources/quanta_continued_source_admission_v3.py",
+      "path": "scripts/quanta_continued_source_admission_v3.py",
+      "sha256": "6d8438398aafcc387fa51238225697b5b816578418c40d61a19cffb690cc3afe"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/evaluation/frozen_sources/quanta_native_population_v3.py",
+      "path": "scripts/quanta_native_population_v3.py",
+      "sha256": "077727b20568f8ffb7cc389ef9d2cbf29684ff0e245fe876284db1952ec28d58"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/evaluation/frozen_sources/audit_quanta_native_population_v3.py",
+      "path": "scripts/audit_quanta_native_population_v3.py",
+      "sha256": "67ab7bcbbd5a311f302ceb69cc8c256a1353104a054304da9e22c6f3884809c7"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/evaluation/frozen_sources/quanta_paper_evaluation_evidence_v5.py",
+      "path": "scripts/quanta_paper_evaluation_evidence_v5.py",
+      "sha256": "b16a078294c198ed467e62b1e48aac34ab83ec85fff3541f7ea2db11889a6782"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/evaluation/frozen_sources/run_quanta_paper_eval_stage_v5.py",
+      "path": "scripts/run_quanta_paper_eval_stage_v5.py",
+      "sha256": "92a6216a408ceb549602d1e0c0290366bac810b2c142167b7b726e01f39706aa"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/evaluation/frozen_sources/analyze_quanta_paper_parameter_v5.py",
+      "path": "scripts/analyze_quanta_paper_parameter_v5.py",
+      "sha256": "1f13092b37b12248ad3393ad2bbb1d53093b4f244e8a555daaa0fc228bb31add"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/evaluation/frozen_sources/submit_quanta_paper_eval_v5.py",
+      "path": "scripts/submit_quanta_paper_eval_v5.py",
+      "sha256": "9617c6b1a884736d97ffc7a43fbf6271fe8ebf2d947eeb74fed8b97adc421bcf"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/evaluation/frozen_sources/close_quanta_continued_source_v4.py",
+      "path": "scripts/close_quanta_continued_source_v4.py",
+      "sha256": "9a70ae6f0e6ece456845e15c9e6bcc268700f790a13a00ce8033f074c73d3866"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/evaluation/frozen_sources/export_quantaalpha_used_factors_v2.py",
+      "path": "scripts/export_quantaalpha_used_factors_v2.py",
+      "sha256": "c11a3b8f53a8be8dd6b2beda4ffece8597bb435716bdf173e6ed4f4d77d2820b"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/evaluation/frozen_sources/validate_native_qlib_accounts_v2.py",
+      "path": "scripts/validate_native_qlib_accounts_v2.py",
+      "sha256": "31dd8bc1ae02484b3dbcdce51c06d27ceced5bba01701e730c108abac38a0aea"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/evaluation/frozen_sources/quanta_paper_evaluation_evidence_v2.py",
+      "path": "scripts/quanta_paper_evaluation_evidence_v2.py",
+      "sha256": "02ab906e2dd8699e2bfee0126f09690ae7abd4cce71708df9a6620d71cb048c2"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/evaluation/frozen_sources/run_quanta_paper_eval_stage_v2.py",
+      "path": "scripts/run_quanta_paper_eval_stage_v2.py",
+      "sha256": "55457852d36e8cc6130cdd20735b406f1dabe5de48c90090888a707b46f6613a"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/evaluation/frozen_sources/analyze_quanta_paper_parameter_v2.py",
+      "path": "scripts/analyze_quanta_paper_parameter_v2.py",
+      "sha256": "9a8f041f07d844a67d849439351957d6c01d1974370facfb56feb575cac29054"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/evaluation/frozen_sources/test_quanta_paper_eval_v5.py",
+      "path": "tests/test_quanta_paper_eval_v5.py",
+      "sha256": "bcbb1474b5b5f96459f71ed281b66b931526de8e0f7ede8c0dcd9f33a1766693"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/evaluation/frozen_sources/quanta_walltime_continuation_protocol_v3.json",
+      "path": "paper_runs/fidelity_completion_v2/quanta_walltime_continuation_protocol_v3.json",
+      "sha256": "4833fc5adca4c67fceded0c6941c769ddeac9b1dd7fd912ef11fdeec6c46fce5"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/evaluation/frozen_sources/quanta_paper_parameter_evaluation_protocol.json",
+      "path": "paper_runs/fidelity_completion_v2/quanta_paper_parameter_evaluation_protocol.json",
+      "sha256": "a8e7087b201164aad90034ca899dfd6adef408b20ecea2f190587a24d68a5e88"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/evaluation/frozen_sources/financial_conformance.json",
+      "path": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/evaluation/financial_conformance.json",
+      "sha256": "f8642a87c0cef345bf38010a8620784984c9bdd7feda8c0e448cbb87ceecb349"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/evaluation/frozen_sources/guards_py312.log",
+      "path": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/evaluation/guards_py312.log",
+      "sha256": "95f84d7f72b0d1225db828c17b2dd5107996392b990d6ff700e94a3d2f766962"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/evaluation/frozen_sources/guards_py39.log",
+      "path": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/evaluation/guards_py39.log",
+      "sha256": "124c9056b51ce63807300f8789e51a73064e1f5586f72677acbe74d59088f396"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/evaluation/frozen_sources/freeze_and_submit_closure_once.py",
+      "path": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/evaluation/freeze_and_submit_closure_once.py",
+      "sha256": "d434d99b29a42b085e9e546af0bc56943a16b192dfbcf2ecae2be8c005366ba7"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/evaluation/frozen_sources/alpha_fidelity_v2_quanta_parameter_proof_v5.sbatch",
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_quanta_parameter_proof_v5.sbatch",
+      "sha256": "d57a4288c7a42f21d6e751bf5fb1a8e9dbe27bbdb1b27bed0d50436bcd6189c9"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/evaluation/frozen_sources/alpha_fidelity_v2_quanta_parameter_library_v5.sbatch",
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_quanta_parameter_library_v5.sbatch",
+      "sha256": "94e2a584e0f8fad92690868bc7e49da33cc343e4ec57b8b20bf3ac1657793b8c"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/evaluation/frozen_sources/alpha_fidelity_v2_quanta_parameter_models_v5.sbatch",
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_quanta_parameter_models_v5.sbatch",
+      "sha256": "be43a4fe0f089e43969ba342027f19f3a1a4144f2ea271a8d42b52b045b1281e"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/evaluation/frozen_sources/alpha_fidelity_v2_quanta_parameter_opening_v5.sbatch",
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_quanta_parameter_opening_v5.sbatch",
+      "sha256": "3370e94379bd61021718a9b3f89c52bc4a7bed656caf2bb248405b6235d2b644"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/evaluation/frozen_sources/alpha_fidelity_v2_quanta_parameter_analysis_v5.sbatch",
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_quanta_parameter_analysis_v5.sbatch",
+      "sha256": "08b072b4863037bf375f5416c758b85785819ae2d46963aa6ba750d0587b36b6"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/evaluation/frozen_sources/alpha_fidelity_v2_quanta_continued_closure_v4.sbatch",
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_quanta_continued_closure_v4.sbatch",
+      "sha256": "f0e5f9ea5b496f83b5dc35cefd4fea2165530bcbea2a2b2912010c67ff57bac8"
+    }
+  ],
+  "continued_source_run": "quantaalpha_paper_parameters_walltime_continuation_v3",
+  "earlier_V3_V4_evaluation_adapters_and_cancelled_workers_preserved": true,
+  "economic_completion_claim": false,
+  "financial_expressions_changed": false,
+  "financial_output_prefix": "quantaalpha_paper_parameters",
+  "full_observed_population_gate": true,
+  "new_augmented_fits": 2,
+  "new_opening_replays": 2,
+  "new_primary_substitution": false,
+  "original_economic_protocol_changed": false,
+  "original_source_run": "quantaalpha_paper_parameters",
+  "recorded_at_utc": "2026-09-19T19:07:26.226415+00:00",
+  "scope": "V5 economics source admission for exact V3 continuation of both original and failed V2 histories",
+  "source_and_replay_helpers_unchanged_after_submission": true
+}

@@ -1,0 +1,23 @@
+{
+  "JKP132_alpha_established": false,
+  "calibration_sha256": "bfd83327b6b2d5dbc12d72e95e1492f441482fe6b1eaba427e14c4828b568c9f",
+  "cases": [
+    "quantaalpha"
+  ],
+  "full_original_paper_reproduced": false,
+  "inference": "Four contiguous block means,99percent pointwise intervals,1percent family significance. Block independence/approximate normality are assumptions; calibration is not a universal coverage guarantee.",
+  "inference_amendment_sha256": "4275a41cf613aac715210c2294c9fbca8bba2ded6c36e98d781fde8f88c817f5",
+  "new_model_calls": 0,
+  "opening_rule_protocol_sha256": "e0f07647fd5e220d5234de8615ea10b56f44c2d8afd18ba82495fbfd1c926607",
+  "outputs": {
+    "comparisons.json": "fae531f2c6b6c9875f775de7b343b047980b9b23dd22020e8f1aa563f7771a2f",
+    "daily_net_returns.csv": "ca66191ad4ba6ed0801bfa3acb31c23c03b0bbedeff7d41e61f356d6db403cd3",
+    "execution_evidence.json": "a61970a0ac10cfb66c94dad0ce5a750cdfd2dfa8844300683e50c4e2128ec270",
+    "performance.json": "794280ca68d4e1226666bcb4109e6313796bac09e1266ae1e1b3ee68513534ef"
+  },
+  "primary_family_complete": false,
+  "pristine_confirmatory_claim": false,
+  "return_metric_convention": "cagr fields are252-session annualized geometric returns, not calendar-time CAGR; primary intervals cover annualized arithmetic mean differences, not CAGR differences.",
+  "script_sha256": "f6c86967d613638b5afbc6105f7fe9373bd76bf40b3386dc7151b1e51ce01066",
+  "status": "partial_case_analysis"
+}

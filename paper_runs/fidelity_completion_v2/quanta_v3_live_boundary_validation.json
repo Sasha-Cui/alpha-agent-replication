@@ -1,0 +1,45 @@
+{
+  "actual_new_pool_id": "d9a8a2b2b8c6",
+  "closure_job": "26770179",
+  "copied_bytes": 167846223,
+  "distinct_original_result_keys_at_read": 34,
+  "evidence": "artifacts/fidelity_completion_v2/quanta_v3_live_gate_audit_20260919_2224/validation.json",
+  "evidence_sha256": "0058c39574391c428546ef15c5382d1b9785a6c321928e63a1dfa4a97fd9d463",
+  "final_archive_claim": false,
+  "first_gate_sha256": "d2cef7e992d3cbf4ce0674c51b02028c9db5b38c8ed1d7bc497b5398226a1ef7",
+  "first_verified_new_model_cache_key": "quantaalpha.factors.runner.develop/a5f31f7d8aa4dd90be9d6595f5466355.pkl",
+  "full_original_paper_replication_claim": false,
+  "full_replay_complete": false,
+  "full_replay_job": "26769832",
+  "historical_loop_id_preserved": "aaaaa9987047",
+  "independent_full_source_accounts_complete": false,
+  "later_period_economics_complete": false,
+  "ledger_mutations_by_audit": 0,
+  "lineage_note": "Reuse events are not independent new model fits or success counts. Only the first new result was physically audited here; further live results may exist.",
+  "new_source_model_API_execution_by_audit": 0,
+  "original_prefix_counts": {
+    "chats": 2259,
+    "durable_orphan": 1,
+    "embedding": 373,
+    "loops": 34,
+    "pool": 33,
+    "quality": 419
+  },
+  "original_result_reuse_events_at_read": 35,
+  "orphan_status_and_full_charge_unchanged": true,
+  "parent_ids": [
+    "82d3c31f146e"
+  ],
+  "partial_gate_sha256": "4dd73c9fb947fb7337df4383ac4288312a84e83f7da6c33b334f80aaa4613886",
+  "partial_prefix_counts": {
+    "chat": 2264,
+    "embedding": 379,
+    "loops": 34,
+    "pool": 33,
+    "quality": 419
+  },
+  "recorded_at_utc": "2026-09-19T22:30:24.983474+00:00",
+  "source_complete": false,
+  "source_job": "26769831",
+  "status": "both_actual_v3_prefix_gates_and_first_previously_unexecuted_native_result_verified"
+}

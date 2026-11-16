@@ -1,0 +1,79 @@
+{
+  "backtested_workspaces": 51,
+  "closure_elapsed": "00:02:46",
+  "closure_job": "26832188",
+  "copied_bytes": 9354295,
+  "evidence": "artifacts/fidelity_completion_v2/quanta_source_closure_completion_20260920_0732/validation.json",
+  "evidence_sha256": "18eeffd30c6ead8fe50c132b4752079d5a7490dc8b32f26a12f81288b6ff2e57",
+  "explicit_baselines": 1,
+  "exported_unique_program_hashes": 142,
+  "final_archive_claim": false,
+  "financial_chain_scope": "Initial V6five-stage chain was submitted once; proofs0-9 failed matrix-root precondition after full-panel calculation. Remaining proofs and descendants cancelledunstarted; no completed proof or later-period economics.",
+  "financial_job_manifest_preserved": "artifacts/fidelity_completion_v2/quanta_paper_evaluation_jobs.json",
+  "full_original_paper_claim": false,
+  "later_period_economics_complete": false,
+  "ledger_mutations": 0,
+  "maximum_native_metric_error": 3.3306690738754696e-16,
+  "maximum_normalized_account_error": 1.893656031642505e-14,
+  "new_equity_headline_credit": 0,
+  "new_source_model_API_account_calculations_by_audit": 0,
+  "pool_workspaces": 50,
+  "recorded_at_utc": "2026-09-20T07:41:28.479076+00:00",
+  "script_sha256": "c35e95d95d58542d35175c937718a33ff7643e7fb08e1918f4e36f2575667455",
+  "source_account_days": {
+    "243": 50
+  },
+  "source_account_experiments": 50,
+  "source_gate": {
+    "account_gate_sha256": "80cf3cf0f6e97f364397d6e5702fbbd062c730418a91ac856d153838b0a92177",
+    "actual_trajectories": 50,
+    "continuation_lineage": {
+      "continuation_protocol_sha256": "4833fc5adca4c67fceded0c6941c769ddeac9b1dd7fd912ef11fdeec6c46fce5",
+      "continued_source": "quantaalpha_paper_parameters_walltime_continuation_v3",
+      "current_pool_entries": 50,
+      "full_replay_sha256": "bf464728707d5968f02cf4b63e52c1f9b87a3dea242f1ec49ea9f9e4492616b9",
+      "native_population_gate": {
+        "backtested_workspaces": 51,
+        "baseline_workspaces": 1,
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/native_model_population_validation.json",
+        "pool_workspaces": 50,
+        "sha256": "10780b8719e03e433cf8e83e3fce6f7b7951038f61ad727c1ed1f6f3a74003dd"
+      },
+      "original_loops_preserved": 34,
+      "original_native_artifact_lineage_sha256": "eeeb80ac423f665b3c7e539b33d61fa2057c36a54e0909b079ecb9f0e7b5695b",
+      "original_orphan_full_reservation_retained": 0.0556885,
+      "original_pool_entries_preserved": 33,
+      "original_run": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters",
+      "scope": "Source/replay ancestry and native artifact reuse only; no economic completion, strict-primary substitution or full-paper claim.",
+      "source_completion_sha256": "63b08dccc4ea2d788aa0e5643254985f5d67df30a1ad75e15c5b2f147e6b60b7",
+      "status": "pass",
+      "terminal_parameter_wiring": {
+        "completed_events": [
+          {
+            "phase_method": "_get_mutation_task",
+            "round": 5,
+            "round_limit": 5
+          }
+        ],
+        "completed_events_ignored": false,
+        "full_replay_must_match_entire_completed_wiring": true,
+        "interrupted_event_count": 0,
+        "original_partial_parameter_wiring_exact": true,
+        "status": "exact_static_parameters_and_single_terminal_round_event_pass"
+      }
+    },
+    "data_sha256": "a357dcc5f641161af9661d9b1605f2f66844de37f8e02b0bc881e87ed16f3e9b",
+    "program_count": 142,
+    "program_proofs": [],
+    "protocol_sha256": "a8e7087b201164aad90034ca899dfd6adef408b20ecea2f190587a24d68a5e88",
+    "run": "quantaalpha_paper_parameters_walltime_continuation_v3",
+    "scope": "exploratory_quanta_paper_parameter_fixed_library_sensitivity",
+    "source_exit_sha256": "6df9ac39c0d4d082891a006d71c29deae2c77af1c25465011b2b13af8a608a95",
+    "source_python_sha256": "54ce3296cbf941c24abddf6d076c7f706a84327f87a540c3e740d5df365a6e78",
+    "source_recipe_sha256": "09ee9bd2ba32b245feadbcbd3fcf181827f09207bee6cd0e2bedcb7f5cc5a0bc",
+    "source_replay_sha256": "bf464728707d5968f02cf4b63e52c1f9b87a3dea242f1ec49ea9f9e4492616b9",
+    "strict_primary_eligibility": false,
+    "used_manifest_sha256": "5802a07b03ba8262ba95fddc1492d166efb25bc6248419cf4f2a6cbef5dbd1e6"
+  },
+  "status": "actual_full_native_population_export_and_independent_source_accounts_pass"
+}

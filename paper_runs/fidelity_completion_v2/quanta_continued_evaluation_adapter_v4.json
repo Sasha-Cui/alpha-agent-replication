@@ -1,0 +1,108 @@
+{
+  "bindings": [
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/evaluation/v4/frozen_sources/quanta_native_population_v2.py",
+      "path": "scripts/quanta_native_population_v2.py",
+      "sha256": "8fb69e18929fc8549dd1b4fd586c9f373f8d8f0a908f2f70a69fa4ad5cc6a9c2"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/evaluation/v4/frozen_sources/audit_quanta_native_population_v2.py",
+      "path": "scripts/audit_quanta_native_population_v2.py",
+      "sha256": "61accbf6683fc2a6421792f8d65b1652200ef24a4e7ffc38e6e2df649a2419d7"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/evaluation/v4/frozen_sources/quanta_paper_evaluation_evidence_v4.py",
+      "path": "scripts/quanta_paper_evaluation_evidence_v4.py",
+      "sha256": "efdfd99135acc5f575ed562e199a4ffd75c63be80416c08ff3e45c2eccb11795"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/evaluation/v4/frozen_sources/run_quanta_paper_eval_stage_v4.py",
+      "path": "scripts/run_quanta_paper_eval_stage_v4.py",
+      "sha256": "7c0b20f87b03a928ef7fc8c5ccb94683f81452db8fb70fe112665f96248076c8"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/evaluation/v4/frozen_sources/analyze_quanta_paper_parameter_v4.py",
+      "path": "scripts/analyze_quanta_paper_parameter_v4.py",
+      "sha256": "040b241961a73c4d46888dc5e2d1fb1f4a6148e0ec58aa5bc456b66fcfeae356"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/evaluation/v4/frozen_sources/submit_quanta_paper_eval_v4.py",
+      "path": "scripts/submit_quanta_paper_eval_v4.py",
+      "sha256": "33574809a5457c0bfdf771636549f294b0d7f31484cc8cb954344f56f272b9ed"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/evaluation/v4/frozen_sources/close_quanta_continued_source_v3.py",
+      "path": "scripts/close_quanta_continued_source_v3.py",
+      "sha256": "387e543ef06cfd58b95bc7776a645d3f4129b9cbf90b7e0129b0a7188a6bb36a"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/evaluation/v4/frozen_sources/test_quanta_paper_eval_v4.py",
+      "path": "tests/test_quanta_paper_eval_v4.py",
+      "sha256": "dfc9a2260c91d1eed776bdf04b01827308b6b2fded88a92849ba309e267b091b"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/evaluation/v4/frozen_sources/financial_conformance.json",
+      "path": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/evaluation/v4/financial_conformance.json",
+      "sha256": "0ea72fd9de01727aa3cf1c65d3430b7654c2ff92b1d2a640ef42cc3b3c132f48"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/evaluation/v4/frozen_sources/guards_py312.log",
+      "path": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/evaluation/v4/guards_py312.log",
+      "sha256": "0f762776cb3b4f2bda7072649c2a6061ee09bb674e074c38dc61b9236389f976"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/evaluation/v4/frozen_sources/guards_py39.log",
+      "path": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/evaluation/v4/guards_py39.log",
+      "sha256": "82051bac1b9b988dff3b082b900c41405be68476ab2c285808f48508de509fab"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/evaluation/v4/frozen_sources/quanta_continued_evaluation_adapter_v3.json",
+      "path": "paper_runs/fidelity_completion_v2/quanta_continued_evaluation_adapter_v3.json",
+      "sha256": "ba690e8cc43917997ec3213232320e4f15bdda11b68e69d2d262f0de3536590c"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/evaluation/v4/frozen_sources/freeze_and_replace_closure_once.py",
+      "path": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/evaluation/v4/freeze_and_replace_closure_once.py",
+      "sha256": "1e9aa7ac8f71997dc491d93497571159b54443244acf16b34ec32e7582b8f80e"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/evaluation/v4/frozen_sources/alpha_fidelity_v2_quanta_parameter_proof_v4.sbatch",
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_quanta_parameter_proof_v4.sbatch",
+      "sha256": "aff8a3fdb78b66407d11a2fb023968d809d9ffe127bd9c6680cf48448d57bd94"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/evaluation/v4/frozen_sources/alpha_fidelity_v2_quanta_parameter_library_v4.sbatch",
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_quanta_parameter_library_v4.sbatch",
+      "sha256": "994d07ebe2eb67ca498dbc92dff1dc61088cb1040cddfc5b0d55b253b692c2ea"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/evaluation/v4/frozen_sources/alpha_fidelity_v2_quanta_parameter_models_v4.sbatch",
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_quanta_parameter_models_v4.sbatch",
+      "sha256": "bee4465083a5d6ee2dcc49815df8eeee0214661bae8e81264d26082786e99485"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/evaluation/v4/frozen_sources/alpha_fidelity_v2_quanta_parameter_opening_v4.sbatch",
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_quanta_parameter_opening_v4.sbatch",
+      "sha256": "da30158e812d4093bc8e03aa9fd3a8541d4de7b837e2311a7008d52ef15499d2"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/evaluation/v4/frozen_sources/alpha_fidelity_v2_quanta_parameter_analysis_v4.sbatch",
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_quanta_parameter_analysis_v4.sbatch",
+      "sha256": "1cd4b241691aa1d99456d54577d5628a998d972b287bc01de6ad2cb62408f868"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/evaluation/v4/frozen_sources/alpha_fidelity_v2_quanta_continued_closure_v3.sbatch",
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_quanta_continued_closure_v3.sbatch",
+      "sha256": "b3eb5fb054969bd8ccef0c3cd3f9e51eabe66b8592ec95311609db87a00a934f"
+    }
+  ],
+  "completion_claim": false,
+  "financial_expressions_changed": false,
+  "new_primary_substitution": false,
+  "old_closure_job": "26767708",
+  "prior_v3_protocol_preserved": true,
+  "recorded_at_utc": "2026-09-19T18:40:07.272261+00:00",
+  "replacement_reason": "Require saved native model population, including backtests potentially followed by feedback failures, before any financial work.",
+  "scope": "V3 unchanged source/financial gates plus intrinsic all-native-backtest population accounting",
+  "source_and_replay_helpers_unchanged": true
+}

@@ -1,0 +1,21 @@
+{
+  "catalog_sha256": "42c42f08e860e7556780650b27536b62227ed98abc60f8437c09003336c93ab0",
+  "cause": "Native knowledge-memory retrieval requires an embedding route. Source default is empty and optional .env example suggests text-embedding-v4, which is not in the authorized OpenRouter catalog. First attempt stopped before any embedding call after18completed chat calls.",
+  "dimensions": 1024,
+  "endpoint_catalog_sha256": "7c7bce55e146f663a6c8001f7a0463b5a0e813ddcc34769ae706da99644c9e2b",
+  "full_original_paper_reproduced": false,
+  "input_price_per_million": 0.01,
+  "model": "qwen/qwen3-embedding-8b",
+  "native_method_preserved": "Restore original APIBackend._create_embedding_inner_function, including native batching, order and retrieval computation. Bind only SDK create; no manual truncation/normalization or changes to retrieval rankings.",
+  "provider": "Nebius",
+  "recorded_at_utc": "2026-09-17T09:09:52.049496+00:00",
+  "resume_rule": "Use separate new output/cache directory. All18previous chat envelopes must match their saved hashes before any continued chat call can be charged. Original failed execution and recipe are retained.",
+  "same_existing_study_cap_usd": 75,
+  "selection_basis": "Alibaba documents text-embedding-v4 as Qwen3-Embedding family with default1024dimensions. Select an available Qwen3 family route at1024dimensions, subject to shape validation. It is an explicit model/weight substitution, not the same text-embedding-v4 checkpoint or embedding geometry.",
+  "source_example": "artifacts/fidelity_completion_v2/dependencies/quantaalpha_b7ceb27/configs/.env.example",
+  "sources": [
+    "https://www.alibabacloud.com/help/en/model-studio/embedding",
+    "https://openrouter.ai/qwen/qwen3-embedding-8b",
+    "https://openrouter.ai/docs/api/api-reference/embeddings/list-embeddings-models"
+  ]
+}

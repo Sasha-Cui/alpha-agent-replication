@@ -1,0 +1,70 @@
+[
+  {
+    "baseline": "alpha158",
+    "case": "quantaalpha",
+    "descriptive_effect_quantiles": {
+      "max": 0.06233510806886553,
+      "median": -0.001987212568666712,
+      "min": -0.034192237654638066,
+      "q25": -0.005734397510561845,
+      "q75": 0.02218534672041145
+    },
+    "execution": "native",
+    "independent_market_histories": 1,
+    "no_selected_winner": true,
+    "not_sampling_inference_across_model_trials": true,
+    "positive_full_sample_mean_units": 3,
+    "units": 7
+  },
+  {
+    "baseline": "source4",
+    "case": "quantaalpha",
+    "descriptive_effect_quantiles": {
+      "max": 0.04103904735810414,
+      "median": 0.013899938352889099,
+      "min": -0.020728121336483912,
+      "q25": -0.00871824328315713,
+      "q75": 0.029834109885821258
+    },
+    "execution": "native",
+    "independent_market_histories": 1,
+    "no_selected_winner": true,
+    "not_sampling_inference_across_model_trials": true,
+    "positive_full_sample_mean_units": 4,
+    "units": 7
+  },
+  {
+    "baseline": "alpha158",
+    "case": "quantaalpha",
+    "descriptive_effect_quantiles": {
+      "max": 0.02500785913515645,
+      "median": -0.006612089190930495,
+      "min": -0.020205259188982,
+      "q25": -0.014045334314139703,
+      "q75": -0.004160075624236764
+    },
+    "execution": "opening_information",
+    "independent_market_histories": 1,
+    "no_selected_winner": true,
+    "not_sampling_inference_across_model_trials": true,
+    "positive_full_sample_mean_units": 1,
+    "units": 7
+  },
+  {
+    "baseline": "source4",
+    "case": "quantaalpha",
+    "descriptive_effect_quantiles": {
+      "max": 0.032857101414363245,
+      "median": -0.001707688319530952,
+      "min": -0.016349722177962545,
+      "q25": -0.010802433603938344,
+      "q75": 0.01747169483861298
+    },
+    "execution": "opening_information",
+    "independent_market_histories": 1,
+    "no_selected_winner": true,
+    "not_sampling_inference_across_model_trials": true,
+    "positive_full_sample_mean_units": 3,
+    "units": 7
+  }
+]

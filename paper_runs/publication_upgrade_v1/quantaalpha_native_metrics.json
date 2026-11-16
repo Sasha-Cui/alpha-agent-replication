@@ -1,0 +1,25 @@
+{
+  "metrics": {
+    "alpha158_20": {
+      "IC": 0.005071733580974592,
+      "ICIR": 0.03287938627233083,
+      "Rank IC": 0.01838526953812549,
+      "Rank ICIR": 0.11770777250034052,
+      "annualized_return": 0.04629928329578063,
+      "calmar_ratio": 0.20865323814507175,
+      "information_ratio": 0.5043710541234918,
+      "max_drawdown": -0.22189582921109433
+    },
+    "released_170": {
+      "IC": 0.04228714198020135,
+      "ICIR": 0.24450177492931327,
+      "Rank IC": 0.04112504915862232,
+      "Rank ICIR": 0.2409205148586877,
+      "annualized_return": 0.03608321762580473,
+      "calmar_ratio": 0.28732059203638854,
+      "information_ratio": 0.5136689182304123,
+      "max_drawdown": -0.12558521256713429
+    }
+  },
+  "scope": "Released library/predictor native metrics; no fresh LLM search."
+}

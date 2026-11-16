@@ -1,0 +1,33 @@
+{
+  "JKP132_alpha_established": false,
+  "calibration_sha256": "bfd83327b6b2d5dbc12d72e95e1492f441482fe6b1eaba427e14c4828b568c9f",
+  "cases": [
+    "quantaalpha"
+  ],
+  "comparisons": 28,
+  "conditional_on_fixed_libraries": true,
+  "full_original_paper_reproduced": false,
+  "inference_amendment_sha256": "4275a41cf613aac715210c2294c9fbca8bba2ded6c36e98d781fde8f88c817f5",
+  "new_model_calls": 0,
+  "no_primary_result_replacement": true,
+  "one_shared_market_history_per_case": true,
+  "opening_protocol_sha256": "e0f07647fd5e220d5234de8615ea10b56f44c2d8afd18ba82495fbfd1c926607",
+  "outputs": {
+    "comparisons.json": "199888aaafe9554a36e1e421ce990fb4fc639ec5f6380cab91300b9a45db9b40",
+    "daily_net_returns.csv": "480a5821d507051186d4044c89afbcd286cbc1bfbb3bda7e76a2cb4729f7ade1",
+    "descriptive_distribution.json": "ec75e8fad4eeb24f5535ecd21261debd3a50435b8f94bad44ea70bcbc2b3ef3f",
+    "execution_evidence.json": "e22bad24bc92e75dd034c9dfc63a25ff09e87d958ba75161454606caea4b994f",
+    "performance.json": "f03e0590009bcabc0bf88c7419be6b99d84b9cfec6fb617ec6ae725f188a2a37"
+  },
+  "pristine_confirmatory_claim": false,
+  "protocol_sha256": "ae4414e80f7b8e91e36f307ef143d94a9b91e0385743fa613358038461282d67",
+  "secondary_family_complete": false,
+  "source_files": {
+    "scripts/analyze_native_oos_v2.py": "688baa6f46e574c8de1e61ccd171b8f1fbb33c194a2806838dd5311b4c2284d4",
+    "scripts/analyze_native_secondary_oos_v2.py": "35aa9eef1149332d897a6ac969d807ce8d8838a217a3eea6db66438b6d043d97",
+    "scripts/native_secondary_evidence_v2.py": "d0728346b55b87960f125d469bcb70663fcec5308789da6ff46435c802925483",
+    "src/alpha_evolve/fidelity_inference_v2.py": "d4de175ff82e3e1028edb50f49b45a3a6efd0b2aae3fb4803c049654054430c9",
+    "src/alpha_evolve/publication_inference.py": "60daa77c578640a4ef0be2ed5dd64b863b75f0c780efb21bf2c21c5670216b81"
+  },
+  "status": "complete_case_partial_secondary_family"
+}

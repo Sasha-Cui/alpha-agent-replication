@@ -1,0 +1,100 @@
+{
+  "AMZN_retry_authorized": false,
+  "bindings": [
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/frozen_sources/quanta_walltime_continuation_v2.py",
+      "path": "scripts/quanta_walltime_continuation_v2.py",
+      "sha256": "d88f6306e2306b2114fde9e61554ffc6bbab4cf1e30b58b8ca437a797ee5a8be"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/frozen_sources/run_quanta_walltime_continuation_v2.py",
+      "path": "scripts/run_quanta_walltime_continuation_v2.py",
+      "sha256": "f72a76cb376af2eb296fffe6aece29133102526f5c54abb12971d0a75f586634"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/frozen_sources/test_quanta_walltime_continuation_v2.py",
+      "path": "tests/test_quanta_walltime_continuation_v2.py",
+      "sha256": "42ec6030bc8b270c55ab5a260a8bb0c5522922c10af6c727eb8118c810c1ab9d"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/frozen_sources/native_artifact_lineage.json",
+      "path": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/native_artifact_lineage.json",
+      "sha256": "eeeb80ac423f665b3c7e539b33d61fa2057c36a54e0909b079ecb9f0e7b5695b"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/frozen_sources/audit_native_lineage.py",
+      "path": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/audit_native_lineage.py",
+      "sha256": "f4bfca3cd29e10f11efb8cbb8af91d3710162293dcfb5547725f58f8f02ab86d"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/frozen_sources/submit_once.py",
+      "path": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/submit_once.py",
+      "sha256": "f75bbfddcbb4a0ebc3cb1ffe8f010337f6974dcdd391c303b81d301bf3dda7f5"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/frozen_sources/quanta_walltime_reconstruction_protocol_v4.json",
+      "path": "paper_runs/fidelity_completion_v2/quanta_walltime_reconstruction_protocol_v4.json",
+      "sha256": "e96a2dd64766a2f2ed7c691f6204b5e971428965b24e379aee46052b1b49bd72"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/frozen_sources/reconstruction_validation.json",
+      "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_reconstruction_probe__v4/reconstruction_validation.json",
+      "sha256": "231658ca010ca8a327bf30e38dbd34400470125b4c3a9185b077ab6e071da0e7"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/frozen_sources/reconstructed_rng_state.json",
+      "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_reconstruction_probe__v4/reconstructed_rng_state.json",
+      "sha256": "8a5cf54e1ef76805cdaefef92dc68b2834d17e2bb064a5f9ce7ee852ad0fa17a"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/frozen_sources/alpha_fidelity_v2_quanta_walltime_live_v2.sbatch",
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_quanta_walltime_live_v2.sbatch",
+      "sha256": "9d2f56d21ba74269c8019d60b60c5cdd42a7246edf2a2ad3e1428f0c20846f60"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/frozen_sources/alpha_fidelity_v2_quanta_walltime_replay_v2.sbatch",
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_quanta_walltime_replay_v2.sbatch",
+      "sha256": "b70140d46419424f04b47e9f2f9cb2ba2ffd4b45662f84c25c190744ef32d17d"
+    }
+  ],
+  "boundary": {
+    "cache_key": "quantaalpha.factors.coder.factor.execute/aaace511efa760540c532a7d835af034.pkl",
+    "data_type": "Debug",
+    "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_reconstruction_probe__v4/results/workspace/f8af46fb78284292b79d69b1ee0056e3/factor.py",
+    "sha256": "737638e3e114525c0004c564fa2a642caa8ebf9107ffa0238ca204b895385e67"
+  },
+  "cache_policy": "Original cache keys always read preserved hash-bound results and exact factor code; cached models explicitly retain actual original experiment workspace. Only unseen keys after full gate can execute in new output workspaces. Unknown or mismatched identities stop.",
+  "completed_model_rerun_allowed": false,
+  "economic_launcher_submitted": false,
+  "final_archive_authorized_by_this_receipt": false,
+  "live_model_calls": "Only ordinary future requests after exact prefix/identity/RNG/native artifact gate through original CohortOpenRouter; no key/response replacement.",
+  "new_primary_substitution": false,
+  "original_run": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters",
+  "orphan_policy": "Only the exact journal-verified body at its original request ordinal. Preserve original RESERVED entry and full0.0556885USD commitment; no replacement or recovery mapping. Future canonical requests use unchanged study/project caps.",
+  "orphan_settlement_allowed": false,
+  "prepared_at_utc": "2026-09-19T18:22:30.936404+00:00",
+  "reconstruction_protocol": "paper_runs/fidelity_completion_v2/quanta_walltime_reconstruction_protocol_v4.json",
+  "reconstruction_receipt": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_reconstruction_probe__v4/reconstruction_validation.json",
+  "replacement_response_allowed": false,
+  "required_prefix": {
+    "durable_orphan": 1,
+    "embeddings": 373,
+    "loop_ids": 34,
+    "pool_ids": 33,
+    "quality_events": 419,
+    "recorded_chats": 2259
+  },
+  "rng_policy": "Reconstruct original control flow and match successful probe boundary RNG bytes; never claim original RAM snapshot. Native future factor/model work must leave parent Python/NumPy RNG unchanged, or stop for diagnosis.",
+  "scope": "Continue the exact observed paper-parameter source after the actual reconstructed boundary, with original/new native result lineage; full replay remains mandatory. No new search, completed-model retraining or financial-method change.",
+  "source_completion": "Distinct continued output and receipt; preserve original TIMEOUT source. No source/economic credit until actual completion and full replay.",
+  "templates": {
+    "live": {
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_quanta_walltime_live_v2.sbatch",
+      "sha256": "9d2f56d21ba74269c8019d60b60c5cdd42a7246edf2a2ad3e1428f0c20846f60"
+    },
+    "replay": {
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_quanta_walltime_replay_v2.sbatch",
+      "sha256": "b70140d46419424f04b47e9f2f9cb2ba2ffd4b45662f84c25c190744ef32d17d"
+    }
+  }
+}

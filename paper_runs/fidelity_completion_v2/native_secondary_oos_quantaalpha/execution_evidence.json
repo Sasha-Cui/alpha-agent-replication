@@ -1,0 +1,841 @@
+[
+  {
+    "case": "quantaalpha",
+    "library_sha256": "54b5de2672cb71218c2698021016d7a5ea62a459def550cfbd8248b46a51108c",
+    "program_proofs": {
+      "026491f964d7976192b1b2f29af13129d8f746db26edff9b045e91d4b2bb6203": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/026491f964d7976192b1b2f29af13129d8f746db26edff9b045e91d4b2bb6203.json",
+          "sha256": "0e0f0b289ccdf79da973ada0caa865e73abcf3b61292bd80a3c2b92c61a72d4d"
+        }
+      ],
+      "0316e5d59a976004dd2b9e5d85e90cf57759efd68e41f85cb9b7507d4642991b": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/0316e5d59a976004dd2b9e5d85e90cf57759efd68e41f85cb9b7507d4642991b.json",
+          "sha256": "2946feb8f3e2df5542612da670c055e7496a7cd4475cbb0b4c93850ccf45d96f"
+        }
+      ],
+      "09dee0b199940bc849b58f6b5b02508723270c61ad393951f5c4e8df54abf4fa": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/09dee0b199940bc849b58f6b5b02508723270c61ad393951f5c4e8df54abf4fa.json",
+          "sha256": "948308d8edfefa906a9bf411327b75f68260612e1345a05a6c1199b69d0760cb"
+        }
+      ],
+      "0e0de4fd8237b80f41804a3f45ecd7b5e7679ac21239576fcbe16ace5207fdd0": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/0e0de4fd8237b80f41804a3f45ecd7b5e7679ac21239576fcbe16ace5207fdd0.json",
+          "sha256": "566b8d7f0d8298a24fa7d1634bd272166ddcb260d243bd32a6418b42ef80dbf5"
+        }
+      ],
+      "29d7458177641704a8909b341ac63ccca1496c5621c705631f1fad880c985a85": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/29d7458177641704a8909b341ac63ccca1496c5621c705631f1fad880c985a85.json",
+          "sha256": "a38344bf69d5b0a153bf716e3d6c69564a6a931ef769b381c3b317957d044ab1"
+        }
+      ],
+      "326dfac532849c8300021cbbf7561f79bc51a9952e2ef0fd49cf33e362d52259": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/326dfac532849c8300021cbbf7561f79bc51a9952e2ef0fd49cf33e362d52259.json",
+          "sha256": "3df195a28672930dbb36760400f8593bf868a82654f7aab05defb5b3d0c8e4d3"
+        }
+      ],
+      "3ce9ecde93dd08ee0a14732351c29ebec6a801a2113501c4bbe455855dab0300": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/3ce9ecde93dd08ee0a14732351c29ebec6a801a2113501c4bbe455855dab0300.json",
+          "sha256": "d02bf7a97bb5e696eba267cc27c27bff0534136d830178f29b66054d2747d2de"
+        }
+      ],
+      "3ceebd7a0b840583dd843dba0c58a406789ad60d8f90c0ba610135cbe8525c38": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/3ceebd7a0b840583dd843dba0c58a406789ad60d8f90c0ba610135cbe8525c38.json",
+          "sha256": "455667d887947cf50ea034640895628a5aa7a9c919138b1ba23951ce20083789"
+        }
+      ],
+      "525c24fcc059ce0eadd783a6a136fd3688cc17cf3a509508551b2d91580546a2": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/525c24fcc059ce0eadd783a6a136fd3688cc17cf3a509508551b2d91580546a2.json",
+          "sha256": "2bb6700eb3a3b64547a75ca337decbc7e8f4ddfeb9e9c67bc2ff73d8b834a3cb"
+        }
+      ],
+      "68a9df8be28be91eb85d5be9b9c87360a96ed9041778c050ae1d586853946fb2": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/68a9df8be28be91eb85d5be9b9c87360a96ed9041778c050ae1d586853946fb2.json",
+          "sha256": "e060df2ae9ebf5cc12246b8bc65d7cd60ec6cbf3d2a4cc2e4d4da626fcd75977"
+        }
+      ],
+      "73eb770bb584315790b69bcc00633751e061e2b9223077843d3e5122ebfbc07d": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/73eb770bb584315790b69bcc00633751e061e2b9223077843d3e5122ebfbc07d.json",
+          "sha256": "41325ae6b75b385e6184de48fdc1e2d69ba75d11153ecd90e6c3e47cc7f6ea12"
+        }
+      ],
+      "92636e7fc3aaafbc04ec54c7ae291b3c0779b0bd381e15cf54d772d8e58a896e": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/92636e7fc3aaafbc04ec54c7ae291b3c0779b0bd381e15cf54d772d8e58a896e.json",
+          "sha256": "558d98c8df079f30053e81469de6e35bbd3cbe789265f7a5054b6473efc58e8d"
+        }
+      ],
+      "b3f44c5efedfe66facacca7e83eaf528f93407fa3f3aa9122ed63ac71aafeb63": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/b3f44c5efedfe66facacca7e83eaf528f93407fa3f3aa9122ed63ac71aafeb63.json",
+          "sha256": "3f9f3d01a8a022109774f80de03c93427d38e05b7d6367495032be8014635548"
+        }
+      ],
+      "c2bf72f29feb5f5c0f5019184ff6eeee2e0982648dfae3ef26a29403a4863a7b": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/c2bf72f29feb5f5c0f5019184ff6eeee2e0982648dfae3ef26a29403a4863a7b.json",
+          "sha256": "127fb024107f4e3c81fcc6c58a0870749fe39ad2da23887d25969c15263a93b5"
+        }
+      ],
+      "d714d32c39e6c3443755a0325720a0df4915f964e94c66fd1dcaf15e2d93c00d": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/d714d32c39e6c3443755a0325720a0df4915f964e94c66fd1dcaf15e2d93c00d.json",
+          "sha256": "bd16618e82b16e26bc368ef2c2c1a041c99f3ac845bc62f4568d7edea0917be5"
+        }
+      ],
+      "f9ceec34e5f823723cfe903205c2433e8019063f53b186a37ab6322f69d6129e": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/f9ceec34e5f823723cfe903205c2433e8019063f53b186a37ab6322f69d6129e.json",
+          "sha256": "21174a86754e732b5f162ccfa1e7451cc08a6c1ed310798ce0a641335ce03007"
+        }
+      ]
+    },
+    "role": "complete_parent_library",
+    "source_gates": {
+      "quantaalpha_bounded": {
+        "full_replay_validation.json": "0071a996e227195505718b70783872dfd6d3ed6195317eefe29d82182f2cc949",
+        "independent_accounts/validation.json": "6183cfc792a54db9b081dd1274b5d93ba7e859a3948b91321d2f1344425e7413"
+      }
+    },
+    "source_python_sha256": "54ce3296cbf941c24abddf6d076c7f706a84327f87a540c3e740d5df365a6e78"
+  },
+  {
+    "case": "quantaalpha",
+    "library_sha256": "7de942fbd6f0c4103a62802c3200fecd7492ad3b5da12bc28965a67db9aa45d8",
+    "program_proofs": {
+      "0e0de4fd8237b80f41804a3f45ecd7b5e7679ac21239576fcbe16ace5207fdd0": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/0e0de4fd8237b80f41804a3f45ecd7b5e7679ac21239576fcbe16ace5207fdd0.json",
+          "sha256": "566b8d7f0d8298a24fa7d1634bd272166ddcb260d243bd32a6418b42ef80dbf5"
+        }
+      ],
+      "326dfac532849c8300021cbbf7561f79bc51a9952e2ef0fd49cf33e362d52259": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/326dfac532849c8300021cbbf7561f79bc51a9952e2ef0fd49cf33e362d52259.json",
+          "sha256": "3df195a28672930dbb36760400f8593bf868a82654f7aab05defb5b3d0c8e4d3"
+        }
+      ],
+      "f9ceec34e5f823723cfe903205c2433e8019063f53b186a37ab6322f69d6129e": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/f9ceec34e5f823723cfe903205c2433e8019063f53b186a37ab6322f69d6129e.json",
+          "sha256": "21174a86754e732b5f162ccfa1e7451cc08a6c1ed310798ce0a641335ce03007"
+        }
+      ]
+    },
+    "role": "secondary_library",
+    "source_gates": {
+      "quantaalpha_bounded": {
+        "full_replay_validation.json": "0071a996e227195505718b70783872dfd6d3ed6195317eefe29d82182f2cc949",
+        "independent_accounts/validation.json": "6183cfc792a54db9b081dd1274b5d93ba7e859a3948b91321d2f1344425e7413"
+      }
+    },
+    "source_python_sha256": "54ce3296cbf941c24abddf6d076c7f706a84327f87a540c3e740d5df365a6e78",
+    "unit": 0
+  },
+  {
+    "case": "quantaalpha",
+    "library_sha256": "69e7e2c66e9f4a0ea0fc67c83cf3b48ca09abe8a628f3e954ad0752b340535ee",
+    "program_proofs": {
+      "3ceebd7a0b840583dd843dba0c58a406789ad60d8f90c0ba610135cbe8525c38": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/3ceebd7a0b840583dd843dba0c58a406789ad60d8f90c0ba610135cbe8525c38.json",
+          "sha256": "455667d887947cf50ea034640895628a5aa7a9c919138b1ba23951ce20083789"
+        }
+      ],
+      "b3f44c5efedfe66facacca7e83eaf528f93407fa3f3aa9122ed63ac71aafeb63": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/b3f44c5efedfe66facacca7e83eaf528f93407fa3f3aa9122ed63ac71aafeb63.json",
+          "sha256": "3f9f3d01a8a022109774f80de03c93427d38e05b7d6367495032be8014635548"
+        }
+      ],
+      "c2bf72f29feb5f5c0f5019184ff6eeee2e0982648dfae3ef26a29403a4863a7b": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/c2bf72f29feb5f5c0f5019184ff6eeee2e0982648dfae3ef26a29403a4863a7b.json",
+          "sha256": "127fb024107f4e3c81fcc6c58a0870749fe39ad2da23887d25969c15263a93b5"
+        }
+      ]
+    },
+    "role": "secondary_library",
+    "source_gates": {
+      "quantaalpha_bounded": {
+        "full_replay_validation.json": "0071a996e227195505718b70783872dfd6d3ed6195317eefe29d82182f2cc949",
+        "independent_accounts/validation.json": "6183cfc792a54db9b081dd1274b5d93ba7e859a3948b91321d2f1344425e7413"
+      }
+    },
+    "source_python_sha256": "54ce3296cbf941c24abddf6d076c7f706a84327f87a540c3e740d5df365a6e78",
+    "unit": 1
+  },
+  {
+    "case": "quantaalpha",
+    "library_sha256": "433defb86db162733c39f37fdef3216c0288d688a7ae506b1d0e7efb58bd8110",
+    "program_proofs": {
+      "525c24fcc059ce0eadd783a6a136fd3688cc17cf3a509508551b2d91580546a2": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/525c24fcc059ce0eadd783a6a136fd3688cc17cf3a509508551b2d91580546a2.json",
+          "sha256": "2bb6700eb3a3b64547a75ca337decbc7e8f4ddfeb9e9c67bc2ff73d8b834a3cb"
+        }
+      ],
+      "d714d32c39e6c3443755a0325720a0df4915f964e94c66fd1dcaf15e2d93c00d": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/d714d32c39e6c3443755a0325720a0df4915f964e94c66fd1dcaf15e2d93c00d.json",
+          "sha256": "bd16618e82b16e26bc368ef2c2c1a041c99f3ac845bc62f4568d7edea0917be5"
+        }
+      ]
+    },
+    "role": "secondary_library",
+    "source_gates": {
+      "quantaalpha_bounded": {
+        "full_replay_validation.json": "0071a996e227195505718b70783872dfd6d3ed6195317eefe29d82182f2cc949",
+        "independent_accounts/validation.json": "6183cfc792a54db9b081dd1274b5d93ba7e859a3948b91321d2f1344425e7413"
+      }
+    },
+    "source_python_sha256": "54ce3296cbf941c24abddf6d076c7f706a84327f87a540c3e740d5df365a6e78",
+    "unit": 2
+  },
+  {
+    "case": "quantaalpha",
+    "library_sha256": "7262ec51b439a7d19893c3f47ff6d908983bc51281cf375a200b13bfa482653a",
+    "program_proofs": {
+      "0316e5d59a976004dd2b9e5d85e90cf57759efd68e41f85cb9b7507d4642991b": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/0316e5d59a976004dd2b9e5d85e90cf57759efd68e41f85cb9b7507d4642991b.json",
+          "sha256": "2946feb8f3e2df5542612da670c055e7496a7cd4475cbb0b4c93850ccf45d96f"
+        }
+      ],
+      "73eb770bb584315790b69bcc00633751e061e2b9223077843d3e5122ebfbc07d": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/73eb770bb584315790b69bcc00633751e061e2b9223077843d3e5122ebfbc07d.json",
+          "sha256": "41325ae6b75b385e6184de48fdc1e2d69ba75d11153ecd90e6c3e47cc7f6ea12"
+        }
+      ]
+    },
+    "role": "secondary_library",
+    "source_gates": {
+      "quantaalpha_bounded": {
+        "full_replay_validation.json": "0071a996e227195505718b70783872dfd6d3ed6195317eefe29d82182f2cc949",
+        "independent_accounts/validation.json": "6183cfc792a54db9b081dd1274b5d93ba7e859a3948b91321d2f1344425e7413"
+      }
+    },
+    "source_python_sha256": "54ce3296cbf941c24abddf6d076c7f706a84327f87a540c3e740d5df365a6e78",
+    "unit": 3
+  },
+  {
+    "case": "quantaalpha",
+    "library_sha256": "e76254770bef0c120153a52b55acbe23f6375c711ae2fea5582131c092400826",
+    "program_proofs": {
+      "29d7458177641704a8909b341ac63ccca1496c5621c705631f1fad880c985a85": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/29d7458177641704a8909b341ac63ccca1496c5621c705631f1fad880c985a85.json",
+          "sha256": "a38344bf69d5b0a153bf716e3d6c69564a6a931ef769b381c3b317957d044ab1"
+        }
+      ],
+      "68a9df8be28be91eb85d5be9b9c87360a96ed9041778c050ae1d586853946fb2": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/68a9df8be28be91eb85d5be9b9c87360a96ed9041778c050ae1d586853946fb2.json",
+          "sha256": "e060df2ae9ebf5cc12246b8bc65d7cd60ec6cbf3d2a4cc2e4d4da626fcd75977"
+        }
+      ]
+    },
+    "role": "secondary_library",
+    "source_gates": {
+      "quantaalpha_bounded": {
+        "full_replay_validation.json": "0071a996e227195505718b70783872dfd6d3ed6195317eefe29d82182f2cc949",
+        "independent_accounts/validation.json": "6183cfc792a54db9b081dd1274b5d93ba7e859a3948b91321d2f1344425e7413"
+      }
+    },
+    "source_python_sha256": "54ce3296cbf941c24abddf6d076c7f706a84327f87a540c3e740d5df365a6e78",
+    "unit": 4
+  },
+  {
+    "case": "quantaalpha",
+    "library_sha256": "47bf093a601c67d5b95b0d3941613f5dec5b2370a4d83e31df47922349f68723",
+    "program_proofs": {
+      "026491f964d7976192b1b2f29af13129d8f746db26edff9b045e91d4b2bb6203": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/026491f964d7976192b1b2f29af13129d8f746db26edff9b045e91d4b2bb6203.json",
+          "sha256": "0e0f0b289ccdf79da973ada0caa865e73abcf3b61292bd80a3c2b92c61a72d4d"
+        }
+      ],
+      "92636e7fc3aaafbc04ec54c7ae291b3c0779b0bd381e15cf54d772d8e58a896e": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/92636e7fc3aaafbc04ec54c7ae291b3c0779b0bd381e15cf54d772d8e58a896e.json",
+          "sha256": "558d98c8df079f30053e81469de6e35bbd3cbe789265f7a5054b6473efc58e8d"
+        }
+      ]
+    },
+    "role": "secondary_library",
+    "source_gates": {
+      "quantaalpha_bounded": {
+        "full_replay_validation.json": "0071a996e227195505718b70783872dfd6d3ed6195317eefe29d82182f2cc949",
+        "independent_accounts/validation.json": "6183cfc792a54db9b081dd1274b5d93ba7e859a3948b91321d2f1344425e7413"
+      }
+    },
+    "source_python_sha256": "54ce3296cbf941c24abddf6d076c7f706a84327f87a540c3e740d5df365a6e78",
+    "unit": 5
+  },
+  {
+    "case": "quantaalpha",
+    "library_sha256": "bee95bb7eb2e0b8aaf1368461618432f214fc1aafa4860558eeb570778921209",
+    "program_proofs": {
+      "09dee0b199940bc849b58f6b5b02508723270c61ad393951f5c4e8df54abf4fa": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/09dee0b199940bc849b58f6b5b02508723270c61ad393951f5c4e8df54abf4fa.json",
+          "sha256": "948308d8edfefa906a9bf411327b75f68260612e1345a05a6c1199b69d0760cb"
+        }
+      ],
+      "3ce9ecde93dd08ee0a14732351c29ebec6a801a2113501c4bbe455855dab0300": [
+        {
+          "path": "artifacts/fidelity_completion_v2/quantaalpha_bounded/causality_full_universe/3ce9ecde93dd08ee0a14732351c29ebec6a801a2113501c4bbe455855dab0300.json",
+          "sha256": "d02bf7a97bb5e696eba267cc27c27bff0534136d830178f29b66054d2747d2de"
+        }
+      ]
+    },
+    "role": "secondary_library",
+    "source_gates": {
+      "quantaalpha_bounded": {
+        "full_replay_validation.json": "0071a996e227195505718b70783872dfd6d3ed6195317eefe29d82182f2cc949",
+        "independent_accounts/validation.json": "6183cfc792a54db9b081dd1274b5d93ba7e859a3948b91321d2f1344425e7413"
+      }
+    },
+    "source_python_sha256": "54ce3296cbf941c24abddf6d076c7f706a84327f87a540c3e740d5df365a6e78",
+    "unit": 6
+  },
+  {
+    "account_sha256": "ce006a6ce3e6f81120c7bdb4218236f6c94b83eef58ac8da9678a0036c4ce03a",
+    "account_validation_sha256": "0b5bdb31cecdefb83a022d8ec92c093f1e7205d0931ebd385eaaaa5a52ed5df7",
+    "arm": "alpha158",
+    "case": "quantaalpha",
+    "completion_sha256": "e481dcff471ebdf782a45828858489b98d80d9c1a4d7d801b2e3b5365039a8bd",
+    "core_settings_sha256": "9acebbb69e19345f9ff11e8d3d402fbdaa0bc9cb90d2bffbd8160930768633d1",
+    "execution": "native",
+    "execution_identity": "native",
+    "features": 158,
+    "library_manifest_sha256": "54b5de2672cb71218c2698021016d7a5ea62a459def550cfbd8248b46a51108c",
+    "recipe_sha256": "8d75226d3f0b12ff29c7d7367b945e8946da00fdc5645400e08129da8a10776e",
+    "role": "common_baseline_reused",
+    "run": "quantaalpha_bounded_oos_alpha158"
+  },
+  {
+    "account_sha256": "80fc1f99f7a617f90e611e9c8d8dea4a2097b8a6b9971f9ee6f4aa8a7d6ab1f1",
+    "account_validation_sha256": "b38f26bb12b376da00140a1f4ecc14a3b5a1ffaca43938ee7b5039b88c705a5e",
+    "arm": "alpha158_plus_library",
+    "case": "quantaalpha",
+    "completion_sha256": "85c102be52d5a3cb3abfbd2bba1e5509231f1f4cbad417933fb8c814f951500e",
+    "execution": "native",
+    "execution_identity": "native",
+    "features": 161,
+    "library_manifest_sha256": "7de942fbd6f0c4103a62802c3200fecd7492ad3b5da12bc28965a67db9aa45d8",
+    "recipe_sha256": "fb7fa2a779b4d7ee6617e765abd2120da81e0070241dd170f4ea7e280e9f2875",
+    "reused_baseline": "quantaalpha_bounded_oos_alpha158",
+    "run": "quantaalpha_bounded_task_00_oos_alpha158_plus_library",
+    "unit": 0
+  },
+  {
+    "account_sha256": "48013a0a42f0d22749f442976eca265e48fe6710316f838938de3d74428c8348",
+    "account_validation_sha256": "3deba4bddd3b819edf30e846d0e799ac8d85cb0aa49dafdd8a11a0660e3ef678",
+    "arm": "alpha158_plus_library",
+    "case": "quantaalpha",
+    "completion_sha256": "aaca54148b96196ab193ea4302d415b98538053f89fb1732ff8cc9b63160b8d9",
+    "execution": "native",
+    "execution_identity": "native",
+    "features": 161,
+    "library_manifest_sha256": "69e7e2c66e9f4a0ea0fc67c83cf3b48ca09abe8a628f3e954ad0752b340535ee",
+    "recipe_sha256": "b840e06e3aade43f584d1312a4a45389604886b01b91a7825a09721e7ff43c45",
+    "reused_baseline": "quantaalpha_bounded_oos_alpha158",
+    "run": "quantaalpha_bounded_task_01_oos_alpha158_plus_library",
+    "unit": 1
+  },
+  {
+    "account_sha256": "93823ab0183410db980ad1130fc00f6b738fb317f8fbee5594c5734cfe09cee1",
+    "account_validation_sha256": "155a2aadd6021e2d93e6242f96ea6baab358319b2e9ba7b7c0a6e8ac35c8b56e",
+    "arm": "alpha158_plus_library",
+    "case": "quantaalpha",
+    "completion_sha256": "b2d50b15813219c047d67175c4544c155347495a8391e1a324ac3f78799a3f57",
+    "execution": "native",
+    "execution_identity": "native",
+    "features": 160,
+    "library_manifest_sha256": "433defb86db162733c39f37fdef3216c0288d688a7ae506b1d0e7efb58bd8110",
+    "recipe_sha256": "365d9d6a09b90ebf536eed4f6b0c1c7e88365bd59e3fff39e1b2a68531a7f0b7",
+    "reused_baseline": "quantaalpha_bounded_oos_alpha158",
+    "run": "quantaalpha_bounded_task_02_oos_alpha158_plus_library",
+    "unit": 2
+  },
+  {
+    "account_sha256": "2655fe2be7708f028753416c22b37509df3ea26ffb0bea02731e698eac863ab3",
+    "account_validation_sha256": "94caaa82d4c087bb3ef623dd22bb7a83ac7ebb8d7200977b423f46ce5e9e673b",
+    "arm": "alpha158_plus_library",
+    "case": "quantaalpha",
+    "completion_sha256": "fc86e0a3652293fd898fb795e291cd39447faa3877d412464be432d8a2a9de63",
+    "execution": "native",
+    "execution_identity": "native",
+    "features": 160,
+    "library_manifest_sha256": "7262ec51b439a7d19893c3f47ff6d908983bc51281cf375a200b13bfa482653a",
+    "recipe_sha256": "911ffc8819c36edeba05129832cd7ae69ac6b09d98d15f94c0197a0e99676a12",
+    "reused_baseline": "quantaalpha_bounded_oos_alpha158",
+    "run": "quantaalpha_bounded_task_03_oos_alpha158_plus_library",
+    "unit": 3
+  },
+  {
+    "account_sha256": "98dd66b1e0b8b75c52af9417ad3e1d91507f86c193f2bb751af7a80191abacd6",
+    "account_validation_sha256": "e51e8ba999fe579d3a74f3ee49a116404b793b43843e55e5d4d14c9f6e199155",
+    "arm": "alpha158_plus_library",
+    "case": "quantaalpha",
+    "completion_sha256": "08987c63e177359b62da3bf28302bbbd69fc9cd4f34bcd64c68f336305f50824",
+    "execution": "native",
+    "execution_identity": "native",
+    "features": 160,
+    "library_manifest_sha256": "e76254770bef0c120153a52b55acbe23f6375c711ae2fea5582131c092400826",
+    "recipe_sha256": "41a4ff7286bd68b2c8fe997d4a178d3da751ab1f8c5985c2f00f06505ae8c258",
+    "reused_baseline": "quantaalpha_bounded_oos_alpha158",
+    "run": "quantaalpha_bounded_task_04_oos_alpha158_plus_library",
+    "unit": 4
+  },
+  {
+    "account_sha256": "8a6d603d4d353220bf92b4f57396428492c2bef246f319ea206bb11a712c5000",
+    "account_validation_sha256": "ad62bbd4f95c413b6ee1259af45d83a74f1c8c889b361c06848423dcd2b8a0b2",
+    "arm": "alpha158_plus_library",
+    "case": "quantaalpha",
+    "completion_sha256": "25df1eea8c93296df08651d7cf2a271067639b540916a1ca3de7d5d0646e3296",
+    "execution": "native",
+    "execution_identity": "native",
+    "features": 160,
+    "library_manifest_sha256": "47bf093a601c67d5b95b0d3941613f5dec5b2370a4d83e31df47922349f68723",
+    "recipe_sha256": "e217a46ca1c05634df6ddf677c4ac15c211986790cd7685b06c41f3c7ad77b05",
+    "reused_baseline": "quantaalpha_bounded_oos_alpha158",
+    "run": "quantaalpha_bounded_task_05_oos_alpha158_plus_library",
+    "unit": 5
+  },
+  {
+    "account_sha256": "bae2f59d9d357a4658240aad4e6a0fbb59a8efce26c894a8090384bc7258fcb7",
+    "account_validation_sha256": "c25d205473c80186407c17881fe1fb04e479854d54150bf33fe2862d21fcade4",
+    "arm": "alpha158_plus_library",
+    "case": "quantaalpha",
+    "completion_sha256": "076dd5c0d043756d92caebb51936a04e219ead7292da2a95a48bdbeb8cf7566d",
+    "execution": "native",
+    "execution_identity": "native",
+    "features": 160,
+    "library_manifest_sha256": "bee95bb7eb2e0b8aaf1368461618432f214fc1aafa4860558eeb570778921209",
+    "recipe_sha256": "742f56038abb596781ed59cbb74a5cc4ed02459d51368a0653b0723c785598c1",
+    "reused_baseline": "quantaalpha_bounded_oos_alpha158",
+    "run": "quantaalpha_bounded_task_06_oos_alpha158_plus_library",
+    "unit": 6
+  },
+  {
+    "account_sha256": "95b758384bd132b2be47733b432e1d16a270397082bd9f19fa6aa2e8426f2641",
+    "account_validation_sha256": "5e8e2e4d1debc6cdd055e63d6410950f893f4d1186b9f795dd4cfc3b51740d16",
+    "arm": "source4",
+    "case": "quantaalpha",
+    "completion_sha256": "e2bb7566fb4f616de5e7daf95db51cfaeeb8c3f76af6502b0ff98f24d245b6a4",
+    "core_settings_sha256": "9acebbb69e19345f9ff11e8d3d402fbdaa0bc9cb90d2bffbd8160930768633d1",
+    "execution": "native",
+    "execution_identity": "native",
+    "features": 4,
+    "library_manifest_sha256": "54b5de2672cb71218c2698021016d7a5ea62a459def550cfbd8248b46a51108c",
+    "recipe_sha256": "f0b2a1d695f7a0e661bb0c13ad642fa337dcb20669185f83467fd69a31c42274",
+    "role": "common_baseline_reused",
+    "run": "quantaalpha_bounded_oos_source4"
+  },
+  {
+    "account_sha256": "2649a39340431a705a2704272046af6495bd3bc6cff4caa56b549b1ae8e74a32",
+    "account_validation_sha256": "3e7b490caea7c8a672556fffbe60754411ba0b2c6c15bd6d7a0528c590ce56ce",
+    "arm": "source4_plus_library",
+    "case": "quantaalpha",
+    "completion_sha256": "8493964550d05540ab69964731aa17a86079ab6a03dd770f9445d4d5f1601764",
+    "execution": "native",
+    "execution_identity": "native",
+    "features": 7,
+    "library_manifest_sha256": "7de942fbd6f0c4103a62802c3200fecd7492ad3b5da12bc28965a67db9aa45d8",
+    "recipe_sha256": "05c316a40cff72a1673aab98bd7f92d0363d016525066c7f49709dbd72091c84",
+    "reused_baseline": "quantaalpha_bounded_oos_source4",
+    "run": "quantaalpha_bounded_task_00_oos_source4_plus_library",
+    "unit": 0
+  },
+  {
+    "account_sha256": "28318d0867901b842d437a6c5e7989af6f11cb1f2e74d20be470fd611d0d9056",
+    "account_validation_sha256": "7d63da73f84cc75de9752cbbb9226e3d13e4218de59d34d0a13a37cdd6ab0110",
+    "arm": "source4_plus_library",
+    "case": "quantaalpha",
+    "completion_sha256": "8b6855310b3ae7b710de078c16309382cc40f9309d17247bfaca068d6598f241",
+    "execution": "native",
+    "execution_identity": "native",
+    "features": 7,
+    "library_manifest_sha256": "69e7e2c66e9f4a0ea0fc67c83cf3b48ca09abe8a628f3e954ad0752b340535ee",
+    "recipe_sha256": "46abf67ff1438ae9b0baa6e3e217c1e4a335b9389d86cf10f1fc45bebe70098f",
+    "reused_baseline": "quantaalpha_bounded_oos_source4",
+    "run": "quantaalpha_bounded_task_01_oos_source4_plus_library",
+    "unit": 1
+  },
+  {
+    "account_sha256": "d2bf87a842d1da7657a6ea068be74bd386997b1631ebaabd8d7ebb05c0f73465",
+    "account_validation_sha256": "d059fa4c2616db4b41800a510ab9d391b32534702558fa58ca543531adbd45f5",
+    "arm": "source4_plus_library",
+    "case": "quantaalpha",
+    "completion_sha256": "926899658cd62be2eda76a77b25c6b9cb4ae8be71116ee48e6149e2ddbcb9aee",
+    "execution": "native",
+    "execution_identity": "native",
+    "features": 6,
+    "library_manifest_sha256": "433defb86db162733c39f37fdef3216c0288d688a7ae506b1d0e7efb58bd8110",
+    "recipe_sha256": "116a458f6e8fcd777bf3cc93a1584d963b23a26d662b8f976b84763bbb53ca93",
+    "reused_baseline": "quantaalpha_bounded_oos_source4",
+    "run": "quantaalpha_bounded_task_02_oos_source4_plus_library",
+    "unit": 2
+  },
+  {
+    "account_sha256": "26c25f7d7e9a24e756060c01fffffebf7e3715f97a0f1da2be4c674114af3e93",
+    "account_validation_sha256": "76f7e0aaeee770c9e0c27784ddd89bfa3b49dba94d5c1a4d4a9aed5e9ac6b831",
+    "arm": "source4_plus_library",
+    "case": "quantaalpha",
+    "completion_sha256": "e4b893ab20c98745e57b924943e8c47bcf4bdaa0d4a356fd33b330ded93dbc09",
+    "execution": "native",
+    "execution_identity": "native",
+    "features": 6,
+    "library_manifest_sha256": "7262ec51b439a7d19893c3f47ff6d908983bc51281cf375a200b13bfa482653a",
+    "recipe_sha256": "d22d5a9350022424d2328097dc1d5675d47c78a84278e31f3e601c4a4836977b",
+    "reused_baseline": "quantaalpha_bounded_oos_source4",
+    "run": "quantaalpha_bounded_task_03_oos_source4_plus_library",
+    "unit": 3
+  },
+  {
+    "account_sha256": "e427b35fd6ddb06221286ef698a75331ae879f37c3a69fcef3d90d41b66957d3",
+    "account_validation_sha256": "dfe617e147ac622a9192d741001f260ff4b6c9c73bd3b1134c5583b960fdf7ff",
+    "arm": "source4_plus_library",
+    "case": "quantaalpha",
+    "completion_sha256": "2e30de1252533e9b9a1e9b28da51e02ec77ec96f83c66a865fd542ae87dcf000",
+    "execution": "native",
+    "execution_identity": "native",
+    "features": 6,
+    "library_manifest_sha256": "e76254770bef0c120153a52b55acbe23f6375c711ae2fea5582131c092400826",
+    "recipe_sha256": "516f15fc0b70bba87b07b599e6cf4c5d67c311f7b944742c072b957402d9b78a",
+    "reused_baseline": "quantaalpha_bounded_oos_source4",
+    "run": "quantaalpha_bounded_task_04_oos_source4_plus_library",
+    "unit": 4
+  },
+  {
+    "account_sha256": "23a83e38992428ef03987753f3033aed267459c49110d623c061f9b2daffa221",
+    "account_validation_sha256": "39071d3b74e4807dffb7aa4e0d06572a9f129c47e487a54490a9812b69a4c6c6",
+    "arm": "source4_plus_library",
+    "case": "quantaalpha",
+    "completion_sha256": "9442617ab7e59bdf573fcd95934de983e8bdcd456a8a5c4166e287cb1372752c",
+    "execution": "native",
+    "execution_identity": "native",
+    "features": 6,
+    "library_manifest_sha256": "47bf093a601c67d5b95b0d3941613f5dec5b2370a4d83e31df47922349f68723",
+    "recipe_sha256": "a3cb026fc7f4ccf51c0f2b2424e83ab35eb59b521c621ce581185ae51e25d529",
+    "reused_baseline": "quantaalpha_bounded_oos_source4",
+    "run": "quantaalpha_bounded_task_05_oos_source4_plus_library",
+    "unit": 5
+  },
+  {
+    "account_sha256": "c6ba704c95e9e21f1cc0aaf87cafb5313561cf0ebd71a14f852480daa7d2f274",
+    "account_validation_sha256": "b7c2833a956f99c23cbace516c5c8282b3f6ddf81f8a3395c7f26be8c1af28b6",
+    "arm": "source4_plus_library",
+    "case": "quantaalpha",
+    "completion_sha256": "7f2ef86c08df893136e47870a018bc6dbd73996710b4410e7b1084211b9bddfe",
+    "execution": "native",
+    "execution_identity": "native",
+    "features": 6,
+    "library_manifest_sha256": "bee95bb7eb2e0b8aaf1368461618432f214fc1aafa4860558eeb570778921209",
+    "recipe_sha256": "00be2d0ca89fdbc622edd95362967c1a697672992b7fdfd38592de5a47abcaa9",
+    "reused_baseline": "quantaalpha_bounded_oos_source4",
+    "run": "quantaalpha_bounded_task_06_oos_source4_plus_library",
+    "unit": 6
+  },
+  {
+    "account_sha256": "f024c545a0ae553d7942840ea734b5afbf66acb133bd041debdf1cdfbac01f11",
+    "account_validation_sha256": "b38c8e5e7ca21a5f34e26c2e77e8649c9d12240bc1fe21ff287f5eb4fde6b6d4",
+    "arm": "alpha158",
+    "case": "quantaalpha",
+    "completion_sha256": "c7987bbcd1e1074aef89f614ccb28ac5ace7409dea97029513cbb03a703316a2",
+    "core_settings_sha256": "6d77249c9ffc9e081b7a430dbfe877e6c86ec641840b3511fa32c2afb01d0b9b",
+    "execution": "opening_information",
+    "execution_identity": "opening_information",
+    "features": 158,
+    "library_manifest_sha256": "54b5de2672cb71218c2698021016d7a5ea62a459def550cfbd8248b46a51108c",
+    "recipe_sha256": "8bee4dcec42b7f7fc8642fb9bb7f02b73493f32db58bff219cc7664c9cab5805",
+    "role": "common_baseline_reused",
+    "run": "quantaalpha_bounded_oos_alpha158_open_information",
+    "source_label_sha256": "e458d3eb544a83b8badb343efc38441a4776468091bdd90370d78d3dc986fbb2",
+    "source_prediction_sha256": "cf66088be1361915f9973ff2d13e52ed22da3b33487243ed6c71e7b9a0d6d401",
+    "source_run": "quantaalpha_bounded_oos_alpha158"
+  },
+  {
+    "account_sha256": "92a76ddb0eb7434055104cb55c178c4be748a89541c916776fbe3b297097e6eb",
+    "account_validation_sha256": "e78313434f194f90bf231541b9bd8e3ad93206cfba0584ede209a554b66eb192",
+    "arm": "alpha158_plus_library",
+    "case": "quantaalpha",
+    "completion_sha256": "5f87b60838faa5a0d561be04d02344b827a995633216500acd1c43ce587a1b1e",
+    "execution": "opening_information",
+    "execution_identity": "opening_information",
+    "features": 161,
+    "library_manifest_sha256": "7de942fbd6f0c4103a62802c3200fecd7492ad3b5da12bc28965a67db9aa45d8",
+    "recipe_sha256": "cd32d1c482b1ac3e2310d880d2ab9c3ee4dd094e0bf3c2e434b2e20f3196e788",
+    "reused_baseline": "quantaalpha_bounded_oos_alpha158_open_information",
+    "run": "quantaalpha_bounded_task_00_oos_alpha158_plus_library_open_information",
+    "source_label_sha256": "e458d3eb544a83b8badb343efc38441a4776468091bdd90370d78d3dc986fbb2",
+    "source_prediction_sha256": "19050a94059b033ca7897e3f3b1ab2c6e9e581e72ae78744bf2853379613aca2",
+    "source_run": "quantaalpha_bounded_task_00_oos_alpha158_plus_library",
+    "unit": 0
+  },
+  {
+    "account_sha256": "92f45d45fc0858188d6bc22118fdfc4b718ee376208300cfccab1e82c670401b",
+    "account_validation_sha256": "ab543cd8ccc574e896ef9c99708aee35144984e17b4575328617f0d9f1feab5d",
+    "arm": "alpha158_plus_library",
+    "case": "quantaalpha",
+    "completion_sha256": "ccd0f5d56cbed7b9e1f1273345ab1e0a36ffee081c58f41be6fd9b7f4ea11ad7",
+    "execution": "opening_information",
+    "execution_identity": "opening_information",
+    "features": 161,
+    "library_manifest_sha256": "69e7e2c66e9f4a0ea0fc67c83cf3b48ca09abe8a628f3e954ad0752b340535ee",
+    "recipe_sha256": "4398a194017ff72df083efdaa89564abd0a3f44a332108f62bcea3c88e59971d",
+    "reused_baseline": "quantaalpha_bounded_oos_alpha158_open_information",
+    "run": "quantaalpha_bounded_task_01_oos_alpha158_plus_library_open_information",
+    "source_label_sha256": "e458d3eb544a83b8badb343efc38441a4776468091bdd90370d78d3dc986fbb2",
+    "source_prediction_sha256": "37e80f4776cc624d523df28ec8d6bc5bf8904b66729fabf45e9ab58426eb0abf",
+    "source_run": "quantaalpha_bounded_task_01_oos_alpha158_plus_library",
+    "unit": 1
+  },
+  {
+    "account_sha256": "58ae966c3f6027c80b9c2f156869475beaf6eefc97d8d04128ea6a549a32b40d",
+    "account_validation_sha256": "a87b9fb3396e2cc829ec40bf576e6271d19b172c28cbaaa13c413de98118f665",
+    "arm": "alpha158_plus_library",
+    "case": "quantaalpha",
+    "completion_sha256": "9e6286a88589560b9a7ad99dddd769823b211e531fb7e39847bc69a448e39b7b",
+    "execution": "opening_information",
+    "execution_identity": "opening_information",
+    "features": 160,
+    "library_manifest_sha256": "433defb86db162733c39f37fdef3216c0288d688a7ae506b1d0e7efb58bd8110",
+    "recipe_sha256": "6d59f4d11a125f01211af7847b296f44678ef3d2ce943ca5c0a2731024490b16",
+    "reused_baseline": "quantaalpha_bounded_oos_alpha158_open_information",
+    "run": "quantaalpha_bounded_task_02_oos_alpha158_plus_library_open_information",
+    "source_label_sha256": "e458d3eb544a83b8badb343efc38441a4776468091bdd90370d78d3dc986fbb2",
+    "source_prediction_sha256": "7bdaeee8968063fd72a858b8796fa249124c4235a263ad32cda2218a3a54fad6",
+    "source_run": "quantaalpha_bounded_task_02_oos_alpha158_plus_library",
+    "unit": 2
+  },
+  {
+    "account_sha256": "58e07605cee9a55d8cdf62f82e6dd38fc947c482c8128abb9044c788b25bc125",
+    "account_validation_sha256": "cb5ddb85f47afdb2c70b44a8d7ca9f09bd3f19217ba855a3272ba252c1030053",
+    "arm": "alpha158_plus_library",
+    "case": "quantaalpha",
+    "completion_sha256": "c71a03632757817c1662165fa5f66ef70362861139695c706cfbad1810ee0043",
+    "execution": "opening_information",
+    "execution_identity": "opening_information",
+    "features": 160,
+    "library_manifest_sha256": "7262ec51b439a7d19893c3f47ff6d908983bc51281cf375a200b13bfa482653a",
+    "recipe_sha256": "9822caf4fadc0757e38785523ab3738d4ce2c47c8b1cce5e72dc1e9e131a47e8",
+    "reused_baseline": "quantaalpha_bounded_oos_alpha158_open_information",
+    "run": "quantaalpha_bounded_task_03_oos_alpha158_plus_library_open_information",
+    "source_label_sha256": "e458d3eb544a83b8badb343efc38441a4776468091bdd90370d78d3dc986fbb2",
+    "source_prediction_sha256": "ed29a0a9f0e2b437906d4889fb29a2dfb10b940af63ff843131aaf5a8002f055",
+    "source_run": "quantaalpha_bounded_task_03_oos_alpha158_plus_library",
+    "unit": 3
+  },
+  {
+    "account_sha256": "ceb10a329a843c1b720e8cce7508ac7a2009b3e0ac596b6047335609190c3b08",
+    "account_validation_sha256": "0db4c7d94d8273d26d81a4f9583e966ebb803e47c88e541468250dee05bae88e",
+    "arm": "alpha158_plus_library",
+    "case": "quantaalpha",
+    "completion_sha256": "aa49b83fbf802b54f8740bedc6f9c06200b818da63b6acbd2a1c373f89de0a24",
+    "execution": "opening_information",
+    "execution_identity": "opening_information",
+    "features": 160,
+    "library_manifest_sha256": "e76254770bef0c120153a52b55acbe23f6375c711ae2fea5582131c092400826",
+    "recipe_sha256": "59857a5f8299637f67d6842115439cc9453854cdfad117f47be781c21ecdcf09",
+    "reused_baseline": "quantaalpha_bounded_oos_alpha158_open_information",
+    "run": "quantaalpha_bounded_task_04_oos_alpha158_plus_library_open_information",
+    "source_label_sha256": "e458d3eb544a83b8badb343efc38441a4776468091bdd90370d78d3dc986fbb2",
+    "source_prediction_sha256": "89b80533e6352185c1088fc4c459f7a59ceb1de1a2aef0eb9338df3427e80ca9",
+    "source_run": "quantaalpha_bounded_task_04_oos_alpha158_plus_library",
+    "unit": 4
+  },
+  {
+    "account_sha256": "e99fb1bac52e8e7794120ebb1c63081a0bb74762ae8e90a1f744acec1e4450e1",
+    "account_validation_sha256": "49e3270fcd3dc71de0aa1cbfe3f346cca7ba750aafa8e74b2c8aacb5bc35b1db",
+    "arm": "alpha158_plus_library",
+    "case": "quantaalpha",
+    "completion_sha256": "30b1097a482e91c1583071b8d1892168352ff2cc6e1755b89324f34f53714d1b",
+    "execution": "opening_information",
+    "execution_identity": "opening_information",
+    "features": 160,
+    "library_manifest_sha256": "47bf093a601c67d5b95b0d3941613f5dec5b2370a4d83e31df47922349f68723",
+    "recipe_sha256": "910a5baa8afe55a9adf7e53c00e7b636c288448bba2ce15868f282ff970b9f3f",
+    "reused_baseline": "quantaalpha_bounded_oos_alpha158_open_information",
+    "run": "quantaalpha_bounded_task_05_oos_alpha158_plus_library_open_information",
+    "source_label_sha256": "e458d3eb544a83b8badb343efc38441a4776468091bdd90370d78d3dc986fbb2",
+    "source_prediction_sha256": "69f6a29344eb521b15e53d2855942df94c6f5329715f668ee04762f7cf1aedd0",
+    "source_run": "quantaalpha_bounded_task_05_oos_alpha158_plus_library",
+    "unit": 5
+  },
+  {
+    "account_sha256": "31c4319410c9a76dadba86839d9a3eabaf83db1ebdd88d9c846166c16c174b27",
+    "account_validation_sha256": "314a84fda0d283ede86f0bdf47ce12aae947d1042d70f92fcbf015219386889d",
+    "arm": "alpha158_plus_library",
+    "case": "quantaalpha",
+    "completion_sha256": "83ea9c135953c1a84106915ff39dc8f688e15fcb832b05bb817f53f4eb64dfc8",
+    "execution": "opening_information",
+    "execution_identity": "opening_information",
+    "features": 160,
+    "library_manifest_sha256": "bee95bb7eb2e0b8aaf1368461618432f214fc1aafa4860558eeb570778921209",
+    "recipe_sha256": "3c979a283228c1c52891b46579afb86ff9d335a7d645d490562c2d371e23d02f",
+    "reused_baseline": "quantaalpha_bounded_oos_alpha158_open_information",
+    "run": "quantaalpha_bounded_task_06_oos_alpha158_plus_library_open_information",
+    "source_label_sha256": "e458d3eb544a83b8badb343efc38441a4776468091bdd90370d78d3dc986fbb2",
+    "source_prediction_sha256": "1828054fc999d4287538cb227b688f8a5ca16a7187c2794c1709abfe89b2284f",
+    "source_run": "quantaalpha_bounded_task_06_oos_alpha158_plus_library",
+    "unit": 6
+  },
+  {
+    "account_sha256": "c3223342f20e716367d9668778621a5e73edfc7dc313a904af06ee86c309f873",
+    "account_validation_sha256": "763d487d292ea2f9185b884423d1adedbe8345427310d2fc7f2b9deac7b847b1",
+    "arm": "source4",
+    "case": "quantaalpha",
+    "completion_sha256": "c3b8a003f804aab31ea532afc56e2e02ee2f5c71ced440165132a611c779af8a",
+    "core_settings_sha256": "6d77249c9ffc9e081b7a430dbfe877e6c86ec641840b3511fa32c2afb01d0b9b",
+    "execution": "opening_information",
+    "execution_identity": "opening_information",
+    "features": 4,
+    "library_manifest_sha256": "54b5de2672cb71218c2698021016d7a5ea62a459def550cfbd8248b46a51108c",
+    "recipe_sha256": "8883b546c2ea9625a5059fd4153e45d72698164608540aea7ac9a9536f14340a",
+    "role": "common_baseline_reused",
+    "run": "quantaalpha_bounded_oos_source4_open_information",
+    "source_label_sha256": "e458d3eb544a83b8badb343efc38441a4776468091bdd90370d78d3dc986fbb2",
+    "source_prediction_sha256": "3684d0751f663cad42b1259424b50d3b838add683a2d22f4b04d416eb1c5c2de",
+    "source_run": "quantaalpha_bounded_oos_source4"
+  },
+  {
+    "account_sha256": "50b77230751c18a5e7505d57787c12438c7f30bcbcc5f9bea5ebc5f78d144a62",
+    "account_validation_sha256": "0fcbc4a52a07fa5fbfae5144aee1dbd1d15aeb1f71747966c642171e9623ea7d",
+    "arm": "source4_plus_library",
+    "case": "quantaalpha",
+    "completion_sha256": "6397dec277459ecea053bf63227622f52d68a1349f302aa16bfecb556c0d3278",
+    "execution": "opening_information",
+    "execution_identity": "opening_information",
+    "features": 7,
+    "library_manifest_sha256": "7de942fbd6f0c4103a62802c3200fecd7492ad3b5da12bc28965a67db9aa45d8",
+    "recipe_sha256": "e65a45ab7ce0f1e1915dae8438bcbef86fa9b04e0648d2ab8a83b931c268d217",
+    "reused_baseline": "quantaalpha_bounded_oos_source4_open_information",
+    "run": "quantaalpha_bounded_task_00_oos_source4_plus_library_open_information",
+    "source_label_sha256": "e458d3eb544a83b8badb343efc38441a4776468091bdd90370d78d3dc986fbb2",
+    "source_prediction_sha256": "cf1bb963058fe2de5402b86efadedbd6fa6b1819bc0a09638f56bad2941fdb7c",
+    "source_run": "quantaalpha_bounded_task_00_oos_source4_plus_library",
+    "unit": 0
+  },
+  {
+    "account_sha256": "cd0e8116d6d3e9a3ac28d68fec387ca9b15171a06ebc5166d840c0b8565898ad",
+    "account_validation_sha256": "8bc106ec39935380bc2114245fe0379fd4ff689834bb9643a7924f3d08ec0df9",
+    "arm": "source4_plus_library",
+    "case": "quantaalpha",
+    "completion_sha256": "f59cc47763aeabeb4607f79661bbb6dfdfae88190270d253583a8e02bdf45241",
+    "execution": "opening_information",
+    "execution_identity": "opening_information",
+    "features": 7,
+    "library_manifest_sha256": "69e7e2c66e9f4a0ea0fc67c83cf3b48ca09abe8a628f3e954ad0752b340535ee",
+    "recipe_sha256": "77c535767315fc5fa4c441584d1c0906cc38988e18668f8daced363d5d9aa6af",
+    "reused_baseline": "quantaalpha_bounded_oos_source4_open_information",
+    "run": "quantaalpha_bounded_task_01_oos_source4_plus_library_open_information",
+    "source_label_sha256": "e458d3eb544a83b8badb343efc38441a4776468091bdd90370d78d3dc986fbb2",
+    "source_prediction_sha256": "b48fa8cca492729130817c02ee3682d6747c8480418891c40d08012cc8ce5467",
+    "source_run": "quantaalpha_bounded_task_01_oos_source4_plus_library",
+    "unit": 1
+  },
+  {
+    "account_sha256": "aea7d3ca21f8c838ddd164caff0a7730deba9964a3108df920592e82373f5556",
+    "account_validation_sha256": "7426fdc3133fcb7bc23bff171370e7267395de6146df238fb794f680f17146b7",
+    "arm": "source4_plus_library",
+    "case": "quantaalpha",
+    "completion_sha256": "c8fce3349b965749c91a39129fc97de285a97cca0741d73cc4523dcf5bb37f41",
+    "execution": "opening_information",
+    "execution_identity": "opening_information",
+    "features": 6,
+    "library_manifest_sha256": "433defb86db162733c39f37fdef3216c0288d688a7ae506b1d0e7efb58bd8110",
+    "recipe_sha256": "11c6c030c3b23c73f7193dc699ca4b429bf49611069acb1adedcacd00c23ffc5",
+    "reused_baseline": "quantaalpha_bounded_oos_source4_open_information",
+    "run": "quantaalpha_bounded_task_02_oos_source4_plus_library_open_information",
+    "source_label_sha256": "e458d3eb544a83b8badb343efc38441a4776468091bdd90370d78d3dc986fbb2",
+    "source_prediction_sha256": "69e7b3bc74f4eaf1a565dd8d21fdb3978c90fdd8b56fa0e3715a4f41fa19aa9d",
+    "source_run": "quantaalpha_bounded_task_02_oos_source4_plus_library",
+    "unit": 2
+  },
+  {
+    "account_sha256": "ca114d1011cd0abc6e57a1a70a39986491b40f119fff8af33e77590b521c7f37",
+    "account_validation_sha256": "b139cd5f64f33075ef6909072f2d9f353c678bed9eb02f2010b50a240279f78d",
+    "arm": "source4_plus_library",
+    "case": "quantaalpha",
+    "completion_sha256": "45ea7f20e8a72ec187485f50f6e68c1758267e88d512ad120516e28bafb36e59",
+    "execution": "opening_information",
+    "execution_identity": "opening_information",
+    "features": 6,
+    "library_manifest_sha256": "7262ec51b439a7d19893c3f47ff6d908983bc51281cf375a200b13bfa482653a",
+    "recipe_sha256": "998aa8b671458d347c471e16e73f287b76f6dc7eb3874a16f37ca5cbf74197b4",
+    "reused_baseline": "quantaalpha_bounded_oos_source4_open_information",
+    "run": "quantaalpha_bounded_task_03_oos_source4_plus_library_open_information",
+    "source_label_sha256": "e458d3eb544a83b8badb343efc38441a4776468091bdd90370d78d3dc986fbb2",
+    "source_prediction_sha256": "e07f0e1138c9b9fc45f375f5466157ea55fe8c8faa9c96430fe87aaa69fabd14",
+    "source_run": "quantaalpha_bounded_task_03_oos_source4_plus_library",
+    "unit": 3
+  },
+  {
+    "account_sha256": "c9dde5d19e3d3c7068973c4344ba6e3c788dfe8309a6aacb5ff8b86e70c9b650",
+    "account_validation_sha256": "e43db5707f4cf9db1426bd1a58c097d974a3c4b5c6233e05e7934037797d132d",
+    "arm": "source4_plus_library",
+    "case": "quantaalpha",
+    "completion_sha256": "6a1e2f61e50c2d6a961fa7ae26919ee52deb7ee3f10f4aa382b46b9ea125e7a1",
+    "execution": "opening_information",
+    "execution_identity": "opening_information",
+    "features": 6,
+    "library_manifest_sha256": "e76254770bef0c120153a52b55acbe23f6375c711ae2fea5582131c092400826",
+    "recipe_sha256": "66d95e1c9550ee17f07e4d2a172eb5eec454fd41eee0fc77aaa33f3a3395f3d3",
+    "reused_baseline": "quantaalpha_bounded_oos_source4_open_information",
+    "run": "quantaalpha_bounded_task_04_oos_source4_plus_library_open_information",
+    "source_label_sha256": "e458d3eb544a83b8badb343efc38441a4776468091bdd90370d78d3dc986fbb2",
+    "source_prediction_sha256": "872b8de540c780b2d0442605272531a45e8b753d9eef986c6d1cb8c4654eb7bd",
+    "source_run": "quantaalpha_bounded_task_04_oos_source4_plus_library",
+    "unit": 4
+  },
+  {
+    "account_sha256": "2b6c5c84b75cbd47323eaad9bea559196f4608f6f86e4adcadb91ce3cc3995c1",
+    "account_validation_sha256": "3a475f51e58e4dc64b53f2c427365bdfd2d9041f8dd7aa65cb3f0001f05fc5d9",
+    "arm": "source4_plus_library",
+    "case": "quantaalpha",
+    "completion_sha256": "79b5103f8d4aa7a38729598281fcd5b6b1b6c3e48ed69640aa53117804363543",
+    "execution": "opening_information",
+    "execution_identity": "opening_information",
+    "features": 6,
+    "library_manifest_sha256": "47bf093a601c67d5b95b0d3941613f5dec5b2370a4d83e31df47922349f68723",
+    "recipe_sha256": "44236cf1044d3804e0e47e8ebb1286f82cbdf728b51b2aadf19c0a1ec53e5c28",
+    "reused_baseline": "quantaalpha_bounded_oos_source4_open_information",
+    "run": "quantaalpha_bounded_task_05_oos_source4_plus_library_open_information",
+    "source_label_sha256": "e458d3eb544a83b8badb343efc38441a4776468091bdd90370d78d3dc986fbb2",
+    "source_prediction_sha256": "aefdd37b193df15ee3d9b61c15d7503d11bd3ab9c54b46cceccde2512007658e",
+    "source_run": "quantaalpha_bounded_task_05_oos_source4_plus_library",
+    "unit": 5
+  },
+  {
+    "account_sha256": "924385db251b7dee86a07744c3bc23ab6b0cf1efc7f0197bab517e7f27ab25de",
+    "account_validation_sha256": "0c6341c57254f28391e6d0109e54ea3142af61ba5e7f8505a983451736f68653",
+    "arm": "source4_plus_library",
+    "case": "quantaalpha",
+    "completion_sha256": "f736b3f18fd47b0b516ef87536f9e7baea1b1cae8ece7360badd5fbea23e27fa",
+    "execution": "opening_information",
+    "execution_identity": "opening_information",
+    "features": 6,
+    "library_manifest_sha256": "bee95bb7eb2e0b8aaf1368461618432f214fc1aafa4860558eeb570778921209",
+    "recipe_sha256": "28683ab5f33962c3dd620557693557dcedbafdc408b0dd94b1100cd6e5318dd4",
+    "reused_baseline": "quantaalpha_bounded_oos_source4_open_information",
+    "run": "quantaalpha_bounded_task_06_oos_source4_plus_library_open_information",
+    "source_label_sha256": "e458d3eb544a83b8badb343efc38441a4776468091bdd90370d78d3dc986fbb2",
+    "source_prediction_sha256": "c5ae3f4aafe10acfd1544ad4072e00ca7a18db7d48d4c7ad839407429ee61dcc",
+    "source_run": "quantaalpha_bounded_task_06_oos_source4_plus_library",
+    "unit": 6
+  }
+]

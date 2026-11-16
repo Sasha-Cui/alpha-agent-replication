@@ -1,0 +1,123 @@
+{
+  "actual_probe_complete": false,
+  "bindings": [
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continued_proof_setup_20260920_0732/frozen_sources/scripts/check_fidelity_factor_causality_v2.py",
+      "path": "scripts/check_fidelity_factor_causality_v2.py",
+      "sha256": "aa22e79cf5d8603f615d9baa271df097b81823ba4a3a79720d2326da326ffa11"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continued_proof_setup_20260920_0732/frozen_sources/scripts/check_fidelity_factor_causality_v3.py",
+      "path": "scripts/check_fidelity_factor_causality_v3.py",
+      "sha256": "d11ad4f6f8dd9e8d46383f79f07ef69702eac5d69f06eed09d6f31c9aa79ef2e"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continued_proof_setup_20260920_0732/frozen_sources/scripts/quanta_continued_matrix_lineage_v1.py",
+      "path": "scripts/quanta_continued_matrix_lineage_v1.py",
+      "sha256": "6ea2acdc5cd50229cfb466218a2a1543ba1d1b05ca21a3cc2904fface24e47ab"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continued_proof_setup_20260920_0732/frozen_sources/scripts/run_fidelity_factor_prefix_child_v2.py",
+      "path": "scripts/run_fidelity_factor_prefix_child_v2.py",
+      "sha256": "5bf654af2b248f1f433b2c2fd83052470ab2a0b9029dae217865b52fda80ed52"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continued_proof_setup_20260920_0732/frozen_sources/scripts/quanta_paper_evaluation_evidence_v6.py",
+      "path": "scripts/quanta_paper_evaluation_evidence_v6.py",
+      "sha256": "0671e14f042276014ebf7a6cb66a2e7ece46a57a0a975feff005c3f94ce7b4c7"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continued_proof_setup_20260920_0732/frozen_sources/scripts/quanta_continued_source_admission_v4.py",
+      "path": "scripts/quanta_continued_source_admission_v4.py",
+      "sha256": "9fc1669f901083cd88852a408600e69030667dbda3fdd20b1bd0ef9cb0c8cc23"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continued_proof_setup_20260920_0732/frozen_sources/scripts/quanta_native_population_v3.py",
+      "path": "scripts/quanta_native_population_v3.py",
+      "sha256": "077727b20568f8ffb7cc389ef9d2cbf29684ff0e245fe876284db1952ec28d58"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continued_proof_setup_20260920_0732/frozen_sources/scripts/audit_quanta_native_population_v3.py",
+      "path": "scripts/audit_quanta_native_population_v3.py",
+      "sha256": "67ab7bcbbd5a311f302ceb69cc8c256a1353104a054304da9e22c6f3884809c7"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continued_proof_setup_20260920_0732/frozen_sources/scripts/close_quanta_continued_source_v5.py",
+      "path": "scripts/close_quanta_continued_source_v5.py",
+      "sha256": "9b0d5a5bbf3c1da08b62c7a6a674af458819267e8aa049a0bca2cb60c51070e1"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continued_proof_setup_20260920_0732/frozen_sources/src/alpha_evolve/fidelity_causality_v2.py",
+      "path": "src/alpha_evolve/fidelity_causality_v2.py",
+      "sha256": "6e36e50f0ea70241d0a5aab5b289ae2d7ac901968abdeff3db4bd0b0756f0ac0"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continued_proof_setup_20260920_0732/frozen_sources/tests/test_quanta_continued_matrix_lineage_v1.py",
+      "path": "tests/test_quanta_continued_matrix_lineage_v1.py",
+      "sha256": "c2890af6670a96f0c802d41ed8bfe939c74af2202995fe4834be240511d96335"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continued_proof_setup_20260920_0732/frozen_sources/paper_runs/fidelity_completion_v2/quanta_continued_evaluation_adapter_v6.json",
+      "path": "paper_runs/fidelity_completion_v2/quanta_continued_evaluation_adapter_v6.json",
+      "sha256": "a6d93b57f3e64ccb8a6d2eb3b8acbf5877d3cd2487190dac3310539d7f2d4fa8"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continued_proof_setup_20260920_0732/frozen_sources/artifacts/fidelity_completion_v2/quanta_parameter_proof_stop_20260920_0732/matrix_path_diagnosis.json",
+      "path": "artifacts/fidelity_completion_v2/quanta_parameter_proof_stop_20260920_0732/matrix_path_diagnosis.json",
+      "sha256": "c20a3941854a4706635b4e5c5114473e5aef031279aa089220c3041842442070"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continued_proof_setup_20260920_0732/frozen_sources/artifacts/fidelity_completion_v2/quanta_parameter_proof_stop_20260920_0732/initial_preservation.json",
+      "path": "artifacts/fidelity_completion_v2/quanta_parameter_proof_stop_20260920_0732/initial_preservation.json",
+      "sha256": "6d6279d64a0db49a339cb3bea386cbb22caba7e271423818f8f4d593fdae6bd9"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continued_proof_setup_20260920_0732/frozen_sources/artifacts/fidelity_completion_v2/quanta_source_closure_completion_20260920_0732/validation.json",
+      "path": "artifacts/fidelity_completion_v2/quanta_source_closure_completion_20260920_0732/validation.json",
+      "sha256": "18eeffd30c6ead8fe50c132b4752079d5a7490dc8b32f26a12f81288b6ff2e57"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continued_proof_setup_20260920_0732/frozen_sources/artifacts/fidelity_completion_v2/quanta_continued_proof_setup_20260920_0732/guards_py312.log",
+      "path": "artifacts/fidelity_completion_v2/quanta_continued_proof_setup_20260920_0732/guards_py312.log",
+      "sha256": "8c12836c6b318891ee679126094dd1eeac5dd90cd0672445010f59f187a7d53a"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continued_proof_setup_20260920_0732/frozen_sources/artifacts/fidelity_completion_v2/quanta_continued_proof_setup_20260920_0732/guards_py39.log",
+      "path": "artifacts/fidelity_completion_v2/quanta_continued_proof_setup_20260920_0732/guards_py39.log",
+      "sha256": "be135ec6b2d4fa6b99038fbed587fdbbc2a28cdadb64870aa57ce7cea4ccc48c"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continued_proof_setup_20260920_0732/frozen_sources/artifacts/fidelity_completion_v2/quanta_continued_proof_setup_20260920_0732/calculation_conformance.json",
+      "path": "artifacts/fidelity_completion_v2/quanta_continued_proof_setup_20260920_0732/calculation_conformance.json",
+      "sha256": "e4d484c4acbd8a71f8eba78fd004aa78f8509135179d18bb469cc32a7ff82826"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continued_proof_setup_20260920_0732/frozen_sources/artifacts/fidelity_completion_v2/quanta_continued_proof_setup_20260920_0732/freeze.py",
+      "path": "artifacts/fidelity_completion_v2/quanta_continued_proof_setup_20260920_0732/freeze.py",
+      "sha256": "be0c27c85e9fa6fe278008f87cb0d081e442a5fb8d3d23f6f3e26d034729f7c5"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continued_proof_setup_20260920_0732/frozen_sources/_slurm/alpha_fidelity_v2_quanta_continued_proof_probe_v1.sbatch",
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_quanta_continued_proof_probe_v1.sbatch",
+      "sha256": "6eff807556ff5e5929ea5de0947283b44c88da4736c1e0b510e1dc6944937ad5"
+    }
+  ],
+  "completed_source_model_rerun_allowed": false,
+  "financial_expressions_changed": false,
+  "new_stage_chain_manifest_must_have_new_versioned_name": true,
+  "no_completed_proof_rerun": true,
+  "no_paid_API_calls": true,
+  "old_failed_or_cancelled_jobs": [
+    "26832768",
+    "26832769",
+    "26832770",
+    "26832771",
+    "26832772"
+  ],
+  "old_manifest_preserved": "artifacts/fidelity_completion_v2/quanta_paper_evaluation_jobs.json",
+  "program_index": 0,
+  "recorded_at_utc": "2026-09-20T07:42:51.946340+00:00",
+  "remaining_array_may_submit_before_actual_probe_pass": false,
+  "scope": "Bounded program0 full-universe proof with exact preserved matrix lineage before restarting unfinished proof chain",
+  "source_run": "quantaalpha_paper_parameters_walltime_continuation_v3"
+}

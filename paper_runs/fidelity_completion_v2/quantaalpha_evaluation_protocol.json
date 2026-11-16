@@ -1,0 +1,35 @@
+{
+  "frozen_at_utc": "2026-09-17T08:41:57.283735+00:00",
+  "scope": "Fresh released-default QuantaAlpha search, followed by a declared chronological evaluation. Original-paper and pristine-holdout claims remain false.",
+  "search_feedback_period": "2021-01-01 through2021-12-31, exactly source conf_baseline/conf_combined native feedback. This period is part of search selection, not an untouched test.",
+  "evaluation_period": [
+    "2022-01-01",
+    "2025-12-26"
+  ],
+  "train_period": [
+    "2016-01-01",
+    "2019-12-31"
+  ],
+  "validation_period": [
+    "2020-01-01",
+    "2020-12-31"
+  ],
+  "baseline": "Exact four source OHLCV features and unchanged native Qlib preprocessing, LightGBM, CSI300 Top50/drop5, next-open execution and fees.",
+  "candidate_rule": "Retain every generated candidate/failed attempt. For fixed-library evaluation, union all factors accepted by completed native trajectories, deduplicate exact expressions; do not select on2022-2025 returns. Also report each source-selected trajectory separately without promoting the best evaluation result.",
+  "causality_gate": "Independently audit expression lags and test prefix invariance using native generated code on full-universe historical HDF prefixes. A factor whose earlier values change when future rows are removed is not eligible for the causal economic claim. Preserve native output and label any leakage-contaminated native result; do not silently patch or select around failures.",
+  "completion_gate": [
+    "all source-declared original/mutation/crossover phases evidenced",
+    "all model calls and failed/reserved attempts accounted",
+    "actual calculated factors and native backtests present",
+    "strict replay or concrete documented replay failure",
+    "prefix causality and independent account/metric checks",
+    "new-period frozen-library comparison and bounded inference"
+  ],
+  "remaining_limitations": [
+    "Current release defaults differ from150-factor/ten-direction paper experiments",
+    "Current GPT4Turbo route and alternative/restored data are not historical model/data snapshots",
+    "Public historical periods were already available to models and earlier project analysis",
+    "Quality flags match release defaults; unavailable factor-zoo comparison must be recorded as inactive rather than credited",
+    "Independent human source review remains external"
+  ]
+}

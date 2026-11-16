@@ -1,0 +1,130 @@
+{
+  "four_existing_native_opening_baseline_checks": [
+    {
+      "account_sha256": "95b758384bd132b2be47733b432e1d16a270397082bd9f19fa6aa2e8426f2641",
+      "account_validation_sha256": "5e8e2e4d1debc6cdd055e63d6410950f893f4d1186b9f795dd4cfc3b51740d16",
+      "arm": "source4",
+      "case": "quantaalpha",
+      "completion_sha256": "e2bb7566fb4f616de5e7daf95db51cfaeeb8c3f76af6502b0ff98f24d245b6a4",
+      "execution_identity": "native",
+      "explicit_baseline_reuse": true,
+      "features": 4,
+      "library_manifest_sha256": "54b5de2672cb71218c2698021016d7a5ea62a459def550cfbd8248b46a51108c",
+      "observations": 963,
+      "recipe_sha256": "f0b2a1d695f7a0e661bb0c13ad642fa337dcb20669185f83467fd69a31c42274",
+      "run": "quantaalpha_bounded_oos_source4"
+    },
+    {
+      "account_sha256": "ce006a6ce3e6f81120c7bdb4218236f6c94b83eef58ac8da9678a0036c4ce03a",
+      "account_validation_sha256": "0b5bdb31cecdefb83a022d8ec92c093f1e7205d0931ebd385eaaaa5a52ed5df7",
+      "arm": "alpha158",
+      "case": "quantaalpha",
+      "completion_sha256": "e481dcff471ebdf782a45828858489b98d80d9c1a4d7d801b2e3b5365039a8bd",
+      "execution_identity": "native",
+      "explicit_baseline_reuse": true,
+      "features": 158,
+      "library_manifest_sha256": "54b5de2672cb71218c2698021016d7a5ea62a459def550cfbd8248b46a51108c",
+      "observations": 963,
+      "recipe_sha256": "8d75226d3f0b12ff29c7d7367b945e8946da00fdc5645400e08129da8a10776e",
+      "run": "quantaalpha_bounded_oos_alpha158"
+    },
+    {
+      "account_sha256": "c3223342f20e716367d9668778621a5e73edfc7dc313a904af06ee86c309f873",
+      "account_validation_sha256": "763d487d292ea2f9185b884423d1adedbe8345427310d2fc7f2b9deac7b847b1",
+      "arm": "source4",
+      "case": "quantaalpha",
+      "completion_sha256": "c3b8a003f804aab31ea532afc56e2e02ee2f5c71ced440165132a611c779af8a",
+      "execution_identity": "opening_information",
+      "explicit_baseline_reuse": true,
+      "features": 4,
+      "library_manifest_sha256": "54b5de2672cb71218c2698021016d7a5ea62a459def550cfbd8248b46a51108c",
+      "observations": 963,
+      "recipe_sha256": "8883b546c2ea9625a5059fd4153e45d72698164608540aea7ac9a9536f14340a",
+      "run": "quantaalpha_bounded_oos_source4_open_information",
+      "source_label_sha256": "e458d3eb544a83b8badb343efc38441a4776468091bdd90370d78d3dc986fbb2",
+      "source_prediction_sha256": "3684d0751f663cad42b1259424b50d3b838add683a2d22f4b04d416eb1c5c2de",
+      "source_run": "quantaalpha_bounded_oos_source4"
+    },
+    {
+      "account_sha256": "f024c545a0ae553d7942840ea734b5afbf66acb133bd041debdf1cdfbac01f11",
+      "account_validation_sha256": "b38c8e5e7ca21a5f34e26c2e77e8649c9d12240bc1fe21ff287f5eb4fde6b6d4",
+      "arm": "alpha158",
+      "case": "quantaalpha",
+      "completion_sha256": "c7987bbcd1e1074aef89f614ccb28ac5ace7409dea97029513cbb03a703316a2",
+      "execution_identity": "opening_information",
+      "explicit_baseline_reuse": true,
+      "features": 158,
+      "library_manifest_sha256": "54b5de2672cb71218c2698021016d7a5ea62a459def550cfbd8248b46a51108c",
+      "observations": 963,
+      "recipe_sha256": "8bee4dcec42b7f7fc8642fb9bb7f02b73493f32db58bff219cc7664c9cab5805",
+      "run": "quantaalpha_bounded_oos_alpha158_open_information",
+      "source_label_sha256": "e458d3eb544a83b8badb343efc38441a4776468091bdd90370d78d3dc986fbb2",
+      "source_prediction_sha256": "cf66088be1361915f9973ff2d13e52ed22da3b33487243ed6c71e7b9a0d6d401",
+      "source_run": "quantaalpha_bounded_oos_alpha158"
+    }
+  ],
+  "launch_rule": "Only after actual source/replay/export/accounts are complete, run centralPy312 scripts/submit_quanta_paper_eval_v2.py --submit. Array size comes from actual program manifest, not an invented150. Existing manifest/output or ambiguous submit means inspect, never duplicate.",
+  "new_baseline_fits": 0,
+  "new_jobs_submitted": 0,
+  "new_llm_calls": 0,
+  "pipeline": "allusedprogram proof array -> collect/materialize -> two augmented models -> two savedprediction opening replays -> separate exploratory analysis. Common source4/Alpha158 baselines reused. Wholearrayafterok dependencies.",
+  "protocol_sha256": "a8e7087b201164aad90034ca899dfd6adef408b20ecea2f190587a24d68a5e88",
+  "real_source_preflight_refusal": "Quanta variant source gates incomplete: execution_exit.json, full_replay_validation.json, used_factor_manifest.json, independent_accounts/validation.json",
+  "recorded_at_utc": "2026-09-18T07:35:36.218034+00:00",
+  "software_guards": "Six focused completeness/protocol/population/calendar/degeneracy guards PASS on both Python3.12/3.9; shell syntax checked for allfive templates. These are not executed variant source/economic comparisons.",
+  "source_gate_runtime_credit": false,
+  "sources": [
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_paper_eval_setup_20260918/sources/quanta_paper_evaluation_evidence_v2.py",
+      "path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/quanta_paper_evaluation_evidence_v2.py",
+      "sha256": "02ab906e2dd8699e2bfee0126f09690ae7abd4cce71708df9a6620d71cb048c2"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_paper_eval_setup_20260918/sources/analyze_quanta_paper_parameter_v2.py",
+      "path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/analyze_quanta_paper_parameter_v2.py",
+      "sha256": "9a8f041f07d844a67d849439351957d6c01d1974370facfb56feb575cac29054"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_paper_eval_setup_20260918/sources/run_quanta_paper_eval_stage_v2.py",
+      "path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/run_quanta_paper_eval_stage_v2.py",
+      "sha256": "55457852d36e8cc6130cdd20735b406f1dabe5de48c90090888a707b46f6613a"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_paper_eval_setup_20260918/sources/submit_quanta_paper_eval_v2.py",
+      "path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/submit_quanta_paper_eval_v2.py",
+      "sha256": "4b6abf5898fdd86be04869c545f19c8a75d7589826761cb937f1ac9e8c4ebf36"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_paper_eval_setup_20260918/sources/test_quanta_paper_eval_v2.py",
+      "path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/tests/test_quanta_paper_eval_v2.py",
+      "sha256": "723a0ba9fb61662e9cd8354e0edc23ada2417c2167dee35a63931523064dc5ad"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_paper_eval_setup_20260918/sources/alpha_fidelity_v2_quanta_parameter_proof.sbatch",
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_quanta_parameter_proof.sbatch",
+      "sha256": "d91eb1b2908cc890cbe66d9467bf9172f07cc8056ba1ea505f986bcd301838d5"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_paper_eval_setup_20260918/sources/alpha_fidelity_v2_quanta_parameter_library.sbatch",
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_quanta_parameter_library.sbatch",
+      "sha256": "e6d990d7357ff1cf9bb557df65a2071b9a1a07626b8a6c61a2887cc41a80741f"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_paper_eval_setup_20260918/sources/alpha_fidelity_v2_quanta_parameter_models.sbatch",
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_quanta_parameter_models.sbatch",
+      "sha256": "ef57c355385ab8ed2df911015d3b2599170f19937f625c02f7567172def7f49c"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_paper_eval_setup_20260918/sources/alpha_fidelity_v2_quanta_parameter_opening.sbatch",
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_quanta_parameter_opening.sbatch",
+      "sha256": "8787c96696e4dfa0a3ed93053cefc14449a3ce3a432c4395e28a52d7b2f4a7c4"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_paper_eval_setup_20260918/sources/alpha_fidelity_v2_quanta_parameter_analysis.sbatch",
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_quanta_parameter_analysis.sbatch",
+      "sha256": "77e492544b5808e49364cc7c1b3226fc07080a8fb79be5d8dd17bc45ba713ccf"
+    }
+  ],
+  "status": "implemented_but_variant_source_incomplete_no_economic_submission",
+  "strict_primary_replaced": false
+}

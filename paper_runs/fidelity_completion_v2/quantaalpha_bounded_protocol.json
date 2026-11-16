@@ -1,0 +1,10 @@
+{
+  "frozen_at_utc": "2026-09-17T12:01:11.228994+00:00",
+  "base_wrapper_sha256": "58b4637815ab880dec79005cc964e8d224898bbb61c2850ed099e656f24dbf95",
+  "scope": "Same source defaults and embedding amendment, physical factor-data cutoff2022-01-05 and model-handler feature end2021-12-31. Native backtest/train/validation segments unchanged. Original shared-HDF execution remains preserved as a diagnostic.",
+  "prior_prefix": "First18unchanged chat requests must match original interrupted execution; later identical envelopes reuse verified cache, while genuinely changed messages can generate new responses under the same75USDcap.",
+  "source_behavior": "Original configuredmax_rounds3 produced7trajectories:2original,2mutation,2crossover,1extra mutation at round3. Preserve and report actual behavior. Larger paper-scale or fixed-round variants remain separately declared work.",
+  "new_period_information": "No evaluationHDF is given to search; fixed base Qlib label expressions require only final feedback outcomes throughJan5. Earliest separate evaluation signalJan6/fillJan7 per embargo amendment.",
+  "full_paper_reproduction": false,
+  "shared_cap_usd": 75
+}

@@ -1,0 +1,66 @@
+{
+  "scope": "exploratory_quanta_paper_parameter_fixed_library_sensitivity",
+  "frozen_at_utc": "2026-09-18T07:30:38.137179+00:00",
+  "source_run": "quantaalpha_paper_parameters",
+  "source_status_at_specification": "Running; actual-used-program manifest not available; no variant later-period output exists",
+  "source_protocol_sha256": "ab112155489e0bedba97b79227a9c0784c5da4855f6f7cd104e72de71fff6cf1",
+  "frozen_context": {
+    "quantaalpha_paper_parameters_protocol.json": {
+      "path": "artifacts/fidelity_completion_v2/quanta_paper_eval_setup_20260918/frozen_context/quantaalpha_paper_parameters_protocol.json",
+      "sha256": "ab112155489e0bedba97b79227a9c0784c5da4855f6f7cd104e72de71fff6cf1"
+    },
+    "quantaalpha_paper_parameters.yaml": {
+      "path": "artifacts/fidelity_completion_v2/quanta_paper_eval_setup_20260918/frozen_context/quantaalpha_paper_parameters.yaml",
+      "sha256": "634313ad2b6487fc949fe1726f969e7a6a428d319a4c2cb776ffdf64e13b71d4"
+    },
+    "opening_execution_sensitivity_protocol.json": {
+      "path": "artifacts/fidelity_completion_v2/quanta_paper_eval_setup_20260918/frozen_context/opening_execution_sensitivity_protocol.json",
+      "sha256": "e0f07647fd5e220d5234de8615ea10b56f44c2d8afd18ba82495fbfd1c926607"
+    },
+    "native_inference_amendment.json": {
+      "path": "artifacts/fidelity_completion_v2/quanta_paper_eval_setup_20260918/frozen_context/native_inference_amendment.json",
+      "sha256": "4275a41cf613aac715210c2294c9fbca8bba2ded6c36e98d781fde8f88c817f5"
+    },
+    "evaluation_label_embargo_amendment.json": {
+      "path": "artifacts/fidelity_completion_v2/quanta_paper_eval_setup_20260918/frozen_context/evaluation_label_embargo_amendment.json",
+      "sha256": "e0ea4def1c31de9c002f68a4f4af720f5dbbc958bcf390ff61ea612ab83fe3ff"
+    }
+  },
+  "library_rule": "All actual source-backtested programs from the completed native pipeline and its actual trajectory pool, including negative/failed-quality-feedback cases if consumed by a backtest. No performance selection, no forcing150 factors or50 successful tasks. Complete cached replay retains all responses, failures, parameter wiring, quality telemetry and lineage. No new source/model call.",
+  "failure_boundary": "Any source interruption/failed replay/program causality failure needs its own preserved diagnosis. Do not restart new trajectory IDs, silently drop failed programs or treat semantic fallback as independent validation.",
+  "generation_data_not_changed": true,
+  "same_released_default_primary_preserved": true,
+  "new_primary_substitution": false,
+  "financial_arms": [
+    "source4_plus_library",
+    "alpha158_plus_library"
+  ],
+  "common_baselines": {
+    "source4": "quantaalpha_bounded_oos_source4",
+    "alpha158": "quantaalpha_bounded_oos_alpha158"
+  },
+  "opening_common_baselines": {
+    "source4": "quantaalpha_bounded_oos_source4_open_information",
+    "alpha158": "quantaalpha_bounded_oos_alpha158_open_information"
+  },
+  "baseline_reuse": "Explicit reuse of two completed baseline fits, each once; require identical nonfeature financial configuration, exact963-session calendar, input/universe identities and verified accounts. No per-arm baseline refitting or labelling shared baselines independent.",
+  "new_augmented_model_fits": 2,
+  "new_opening_replays": 2,
+  "new_llm_api_calls": 0,
+  "period": "Same2022-01-07 execution through2025-12-26, Jan6 signal embargo, source2016\u201319 train/2020validation and bounded2021feedback. No pristine holdout or historical checkpoint claim.",
+  "inference": {
+    "groups": 4,
+    "confidence": 0.99,
+    "annualization": 252,
+    "economic_margin": 0.02,
+    "p_values": "Raw exploratory diagnostics only; no original project-family/54-secondary significance flag",
+    "intervals": "Pointwise arithmetic mean differences, conditional on the one fixed library and one shared market history; fullsample and grouped means remain distinct"
+  },
+  "comparisons": "Both common baseline increments reported for native diagnostic and opening-information economic paths. No best-task/parameter winner selection or promotion over original primary.",
+  "families": "Does not enter or complete the original four-primary or54-secondary families. Its search recipe/model/settings differ jointly; do not isolate the effect of any one parameter or claim LLM-specific advantage.",
+  "timing_disclosure": "Specified after known released-default Quanta results but before this variant has any later-period returns; exploratory, not pristine preregistration.",
+  "source_round_conflict_disclosed": "A.4 five total phases chosen; AppendixB conflicts. No full-paper reproduction claim.",
+  "full_original_paper_reproduced": false,
+  "JKP132_alpha_established": false,
+  "human_attestation": null
+}

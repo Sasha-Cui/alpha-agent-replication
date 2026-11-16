@@ -1,0 +1,27 @@
+{
+  "JKP132_alpha_established": false,
+  "baseline_models_refitted": 0,
+  "full_original_paper_reproduced": false,
+  "new_llm_calls": 0,
+  "original_project_family_complete": false,
+  "outputs": {
+    "comparisons.json": "cdb21b954110845bbeeb9639eec91ce9f3ea3168da2aa503ab35c307375bb879",
+    "daily_net_returns.csv": "57cc6f465a33b20a2300a19ea9dcbccdfcb47fd0895729c3fc8412d5e2e35482",
+    "execution_evidence.json": "e430add8e024a36bcaeeb0d0bba04d207e525cc5c626ebd5a1200998bef398fc",
+    "performance.json": "5279b0b93300f5bfbf491107f1a04315a14899065406a13467ed3243513de38e",
+    "source_evidence.json": "6c530445710cd44a3a3bd31af55b97ccce21a452d6f279f5ed29ffa66367c7de"
+  },
+  "pointwise_intervals_not_simultaneous": true,
+  "primary_replaced": false,
+  "pristine_confirmation": false,
+  "protocol_sha256": "a8e7087b201164aad90034ca899dfd6adef408b20ecea2f190587a24d68a5e88",
+  "scope": "exploratory_quanta_paper_parameter_fixed_library_sensitivity",
+  "source_files": {
+    "scripts/analyze_native_oos_v2.py": "b4830bcd64727703b7f0fc33d928bc7131deac441fb2cdff1130998a40cbe711",
+    "scripts/analyze_quanta_paper_parameter_v7.py": "45c57471eeb8ce9c3389f68c985764e56ee502a9b209853ce8fec07f9aa8946b",
+    "scripts/native_secondary_evidence_v2.py": "9d0b168138f48d4ee210a46b1add1a6b1a2bc6581f50150936f3fe1196dc35b9",
+    "scripts/quanta_paper_evaluation_evidence_v7.py": "84cb730c03fc8f1c9af223cb01cf94337331a34869ec1484aa4b1716bb91de01",
+    "src/alpha_evolve/publication_inference.py": "60daa77c578640a4ef0be2ed5dd64b863b75f0c780efb21bf2c21c5670216b81"
+  },
+  "status": "separate_exploratory_parameter_sensitivity_complete_not_primary"
+}

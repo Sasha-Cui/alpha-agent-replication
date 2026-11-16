@@ -1,0 +1,1266 @@
+{
+  "AMZN_retry_authorized": false,
+  "accounts": [
+    {
+      "account_validation_sha256": "97c7f7c71bbf39e8b655a6e4cc4df23f65f574451cc12187bd5e02d8199a9fe0",
+      "baseline": "source4",
+      "days": 963,
+      "execution": "native",
+      "maximum_normalized_account_error": 1.8240401735458184e-14,
+      "processed_features": [
+        {
+          "constant_or_missing_columns": 0,
+          "features": 146,
+          "infinite_values": 0,
+          "missing_values": 0,
+          "rows": 282088,
+          "segment": "train"
+        },
+        {
+          "constant_or_missing_columns": 0,
+          "features": 146,
+          "infinite_values": 0,
+          "missing_values": 0,
+          "rows": 72754,
+          "segment": "valid"
+        },
+        {
+          "constant_or_missing_columns": 0,
+          "features": 146,
+          "infinite_values": 0,
+          "missing_values": 0,
+          "rows": 289011,
+          "segment": "test"
+        }
+      ],
+      "role": "variant_augmented",
+      "run": "quantaalpha_paper_parameters_oos_source4_plus_library"
+    },
+    {
+      "account_validation_sha256": "5e8e2e4d1debc6cdd055e63d6410950f893f4d1186b9f795dd4cfc3b51740d16",
+      "baseline": "source4",
+      "days": 963,
+      "execution": "native",
+      "maximum_normalized_account_error": 9.958482539794307e-15,
+      "processed_features": [
+        {
+          "constant_or_missing_columns": 0,
+          "features": 4,
+          "infinite_values": 0,
+          "missing_values": 0,
+          "rows": 282088,
+          "segment": "train"
+        },
+        {
+          "constant_or_missing_columns": 0,
+          "features": 4,
+          "infinite_values": 0,
+          "missing_values": 0,
+          "rows": 72754,
+          "segment": "valid"
+        },
+        {
+          "constant_or_missing_columns": 0,
+          "features": 4,
+          "infinite_values": 0,
+          "missing_values": 0,
+          "rows": 289011,
+          "segment": "test"
+        }
+      ],
+      "role": "explicitly_reused_common_baseline",
+      "run": "quantaalpha_bounded_oos_source4"
+    },
+    {
+      "account_validation_sha256": "c220562d21b016782fcf24e02988ec9e514a566a25567c1b46cc8a05104bc012",
+      "baseline": "alpha158",
+      "days": 963,
+      "execution": "native",
+      "maximum_normalized_account_error": 1.7786657662962875e-14,
+      "processed_features": [
+        {
+          "constant_or_missing_columns": 0,
+          "features": 300,
+          "infinite_values": 0,
+          "missing_values": 0,
+          "rows": 282088,
+          "segment": "train"
+        },
+        {
+          "constant_or_missing_columns": 0,
+          "features": 300,
+          "infinite_values": 0,
+          "missing_values": 0,
+          "rows": 72754,
+          "segment": "valid"
+        },
+        {
+          "constant_or_missing_columns": 0,
+          "features": 300,
+          "infinite_values": 0,
+          "missing_values": 0,
+          "rows": 289011,
+          "segment": "test"
+        }
+      ],
+      "role": "variant_augmented",
+      "run": "quantaalpha_paper_parameters_oos_alpha158_plus_library"
+    },
+    {
+      "account_validation_sha256": "0b5bdb31cecdefb83a022d8ec92c093f1e7205d0931ebd385eaaaa5a52ed5df7",
+      "baseline": "alpha158",
+      "days": 963,
+      "execution": "native",
+      "maximum_normalized_account_error": 1.130204745615877e-14,
+      "processed_features": [
+        {
+          "constant_or_missing_columns": 0,
+          "features": 158,
+          "infinite_values": 0,
+          "missing_values": 0,
+          "rows": 282088,
+          "segment": "train"
+        },
+        {
+          "constant_or_missing_columns": 0,
+          "features": 158,
+          "infinite_values": 0,
+          "missing_values": 0,
+          "rows": 72754,
+          "segment": "valid"
+        },
+        {
+          "constant_or_missing_columns": 0,
+          "features": 158,
+          "infinite_values": 0,
+          "missing_values": 0,
+          "rows": 289011,
+          "segment": "test"
+        }
+      ],
+      "role": "explicitly_reused_common_baseline",
+      "run": "quantaalpha_bounded_oos_alpha158"
+    },
+    {
+      "account_validation_sha256": "6c9216b46511c7c7b39520798efa6b3f8f44c09bdd7542bb58e3f93334aa98f1",
+      "baseline": "source4",
+      "days": 963,
+      "execution": "opening_information",
+      "maximum_normalized_account_error": 1.7341130198773378e-14,
+      "processed_features": [
+        {
+          "constant_or_missing_columns": 0,
+          "features": 146,
+          "infinite_values": 0,
+          "missing_values": 0,
+          "rows": 282088,
+          "segment": "train"
+        },
+        {
+          "constant_or_missing_columns": 0,
+          "features": 146,
+          "infinite_values": 0,
+          "missing_values": 0,
+          "rows": 72754,
+          "segment": "valid"
+        },
+        {
+          "constant_or_missing_columns": 0,
+          "features": 146,
+          "infinite_values": 0,
+          "missing_values": 0,
+          "rows": 289011,
+          "segment": "test"
+        }
+      ],
+      "role": "variant_augmented",
+      "run": "quantaalpha_paper_parameters_oos_source4_plus_library_open_information"
+    },
+    {
+      "account_validation_sha256": "763d487d292ea2f9185b884423d1adedbe8345427310d2fc7f2b9deac7b847b1",
+      "baseline": "source4",
+      "days": 963,
+      "execution": "opening_information",
+      "maximum_normalized_account_error": 9.673121495270367e-15,
+      "processed_features": [
+        {
+          "constant_or_missing_columns": 0,
+          "features": 4,
+          "infinite_values": 0,
+          "missing_values": 0,
+          "rows": 282088,
+          "segment": "train"
+        },
+        {
+          "constant_or_missing_columns": 0,
+          "features": 4,
+          "infinite_values": 0,
+          "missing_values": 0,
+          "rows": 72754,
+          "segment": "valid"
+        },
+        {
+          "constant_or_missing_columns": 0,
+          "features": 4,
+          "infinite_values": 0,
+          "missing_values": 0,
+          "rows": 289011,
+          "segment": "test"
+        }
+      ],
+      "role": "explicitly_reused_common_baseline",
+      "run": "quantaalpha_bounded_oos_source4_open_information"
+    },
+    {
+      "account_validation_sha256": "4293143fbf11b3b230758c1ab26c92749ee8393449dba96733f7a07cf401bd5d",
+      "baseline": "alpha158",
+      "days": 963,
+      "execution": "opening_information",
+      "maximum_normalized_account_error": 1.9097867104776863e-14,
+      "processed_features": [
+        {
+          "constant_or_missing_columns": 0,
+          "features": 300,
+          "infinite_values": 0,
+          "missing_values": 0,
+          "rows": 282088,
+          "segment": "train"
+        },
+        {
+          "constant_or_missing_columns": 0,
+          "features": 300,
+          "infinite_values": 0,
+          "missing_values": 0,
+          "rows": 72754,
+          "segment": "valid"
+        },
+        {
+          "constant_or_missing_columns": 0,
+          "features": 300,
+          "infinite_values": 0,
+          "missing_values": 0,
+          "rows": 289011,
+          "segment": "test"
+        }
+      ],
+      "role": "variant_augmented",
+      "run": "quantaalpha_paper_parameters_oos_alpha158_plus_library_open_information"
+    },
+    {
+      "account_validation_sha256": "b38c8e5e7ca21a5f34e26c2e77e8649c9d12240bc1fe21ff287f5eb4fde6b6d4",
+      "baseline": "alpha158",
+      "days": 963,
+      "execution": "opening_information",
+      "maximum_normalized_account_error": 1.1000271060296675e-14,
+      "processed_features": [
+        {
+          "constant_or_missing_columns": 0,
+          "features": 158,
+          "infinite_values": 0,
+          "missing_values": 0,
+          "rows": 282088,
+          "segment": "train"
+        },
+        {
+          "constant_or_missing_columns": 0,
+          "features": 158,
+          "infinite_values": 0,
+          "missing_values": 0,
+          "rows": 72754,
+          "segment": "valid"
+        },
+        {
+          "constant_or_missing_columns": 0,
+          "features": 158,
+          "infinite_values": 0,
+          "missing_values": 0,
+          "rows": 289011,
+          "segment": "test"
+        }
+      ],
+      "role": "explicitly_reused_common_baseline",
+      "run": "quantaalpha_bounded_oos_alpha158_open_information"
+    }
+  ],
+  "all_four_comparisons_inconclusive_at_2pp_pointwise99": true,
+  "all_jobs_complete": true,
+  "analysis_completion_sha256": "8394e0f8d5f47825425a94d83f5e789e69fd3438614aa8c81c93cce6c4625fd7",
+  "analysis_job": "26836414",
+  "baseline_refits": 0,
+  "closure_job": "26832188",
+  "comparisons": [
+    {
+      "annualized_arithmetic_effect": 0.04252572052082595,
+      "assumption": "approximately independent normal block estimates; assessed in explicit simulation cases, not guaranteed for every financial process",
+      "baseline": "source4",
+      "block_estimates_annualized": [
+        0.1315312285408041,
+        -0.09127205535604169,
+        0.008346209305453196,
+        0.12149749959308818
+      ],
+      "block_lengths": [
+        241,
+        241,
+        241,
+        240
+      ],
+      "ci90_high": 0.1663638662406681,
+      "ci90_low": -0.08131242519901623,
+      "ci95_high": 0.20999167306825012,
+      "ci95_low": -0.12494023202659826,
+      "degenerate_sampling_variation": false,
+      "degrees_of_freedom": 3,
+      "economic_margin_annualized": 0.02,
+      "execution": "native",
+      "factor_count": 0,
+      "full_sample_annualized_effect": 0.04244371451971248,
+      "group_standard_error_annualized": 0.05262176843937851,
+      "group_t_p_two_sided": 0.4781492647416619,
+      "group_t_statistic": 0.8081393267848183,
+      "groups": 4,
+      "inference_method": "contiguous-group estimator t inference; all factor coefficients refitted within each block",
+      "isolated_parameter_effect_claim": false,
+      "margin_upper_bound": 0.34988469769302455,
+      "margin_upper_bound_nominal_one_sided_confidence": 0.995,
+      "mde80_t_normal_approx_annualized": 0.35164657483893663,
+      "observations": 963,
+      "one_sided95_upper": 0.1663638662406681,
+      "original54_family_complete": false,
+      "original_primary_replaced": false,
+      "primary_ci_high": 0.34988469769302455,
+      "primary_ci_low": -0.2648332566513727,
+      "primary_confidence": 0.99,
+      "project_family_significance_claim": false,
+      "role": "native_conformance_diagnostic",
+      "rules_out_positive_margin_pointwise99": false,
+      "scope": "exploratory_quanta_paper_parameter_fixed_library_sensitivity",
+      "within_margin_pointwise99": false
+    },
+    {
+      "annualized_arithmetic_effect": 0.03870561740018569,
+      "assumption": "approximately independent normal block estimates; assessed in explicit simulation cases, not guaranteed for every financial process",
+      "baseline": "alpha158",
+      "block_estimates_annualized": [
+        0.017278476317974422,
+        -0.0047188779636528275,
+        0.052339946079766136,
+        0.089922925166655
+      ],
+      "block_lengths": [
+        241,
+        241,
+        241,
+        240
+      ],
+      "ci90_high": 0.08747722557587269,
+      "ci90_low": -0.010065990775501323,
+      "ci95_high": 0.10465931666574647,
+      "ci95_low": -0.027248081865375112,
+      "degenerate_sampling_variation": false,
+      "degrees_of_freedom": 3,
+      "economic_margin_annualized": 0.02,
+      "execution": "native",
+      "factor_count": 0,
+      "full_sample_annualized_effect": 0.03865243224154968,
+      "group_standard_error_annualized": 0.020724214311502634,
+      "group_t_p_two_sided": 0.15862204128814553,
+      "group_t_statistic": 1.867651859723472,
+      "groups": 4,
+      "inference_method": "contiguous-group estimator t inference; all factor coefficients refitted within each block",
+      "isolated_parameter_effect_claim": false,
+      "margin_upper_bound": 0.15975387370915062,
+      "margin_upper_bound_nominal_one_sided_confidence": 0.995,
+      "mde80_t_normal_approx_annualized": 0.13849019512264119,
+      "observations": 963,
+      "one_sided95_upper": 0.08747722557587269,
+      "original54_family_complete": false,
+      "original_primary_replaced": false,
+      "primary_ci_high": 0.15975387370915062,
+      "primary_ci_low": -0.08234263890877923,
+      "primary_confidence": 0.99,
+      "project_family_significance_claim": false,
+      "role": "native_conformance_diagnostic",
+      "rules_out_positive_margin_pointwise99": false,
+      "scope": "exploratory_quanta_paper_parameter_fixed_library_sensitivity",
+      "within_margin_pointwise99": false
+    },
+    {
+      "annualized_arithmetic_effect": 0.040904448485432586,
+      "assumption": "approximately independent normal block estimates; assessed in explicit simulation cases, not guaranteed for every financial process",
+      "baseline": "source4",
+      "block_estimates_annualized": [
+        0.1350250223521774,
+        -0.08157451831777515,
+        -0.005969426859359178,
+        0.11613671676668728
+      ],
+      "block_lengths": [
+        241,
+        241,
+        241,
+        240
+      ],
+      "ci90_high": 0.1618927259716089,
+      "ci90_low": -0.08008382900074373,
+      "ci95_high": 0.2045165327791671,
+      "ci95_low": -0.12270763580830192,
+      "degenerate_sampling_variation": false,
+      "degrees_of_freedom": 3,
+      "economic_margin_annualized": 0.02,
+      "execution": "opening_information",
+      "factor_count": 0,
+      "full_sample_annualized_effect": 0.04082632567309483,
+      "group_standard_error_annualized": 0.05141079176169174,
+      "group_t_p_two_sided": 0.48438054143542314,
+      "group_t_statistic": 0.7956393411531184,
+      "groups": 4,
+      "inference_method": "contiguous-group estimator t inference; all factor coefficients refitted within each block",
+      "isolated_parameter_effect_claim": false,
+      "margin_upper_bound": 0.3411902207070606,
+      "margin_upper_bound_nominal_one_sided_confidence": 0.995,
+      "mde80_t_normal_approx_annualized": 0.3435541862030632,
+      "observations": 963,
+      "one_sided95_upper": 0.1618927259716089,
+      "original54_family_complete": false,
+      "original_primary_replaced": false,
+      "primary_ci_high": 0.3411902207070606,
+      "primary_ci_low": -0.25938132373619543,
+      "primary_confidence": 0.99,
+      "project_family_significance_claim": false,
+      "role": "opening_information_exploratory",
+      "rules_out_positive_margin_pointwise99": false,
+      "scope": "exploratory_quanta_paper_parameter_fixed_library_sensitivity",
+      "within_margin_pointwise99": false
+    },
+    {
+      "annualized_arithmetic_effect": 0.037861442246255976,
+      "assumption": "approximately independent normal block estimates; assessed in explicit simulation cases, not guaranteed for every financial process",
+      "baseline": "alpha158",
+      "block_estimates_annualized": [
+        0.0016419994268931223,
+        -0.008138691190987589,
+        0.021377323548338253,
+        0.13656513720078012
+      ],
+      "block_lengths": [
+        241,
+        241,
+        241,
+        240
+      ],
+      "ci90_high": 0.11662592382671544,
+      "ci90_low": -0.04090303933420347,
+      "ci95_high": 0.14437441414278399,
+      "ci95_low": -0.06865152965027203,
+      "degenerate_sampling_variation": false,
+      "degrees_of_freedom": 3,
+      "economic_margin_annualized": 0.02,
+      "execution": "opening_information",
+      "factor_count": 0,
+      "full_sample_annualized_effect": 0.03775894619749737,
+      "group_standard_error_annualized": 0.03346889835019983,
+      "group_t_p_two_sided": 0.3402102346108352,
+      "group_t_statistic": 1.1312425598863467,
+      "groups": 4,
+      "inference_method": "contiguous-group estimator t inference; all factor coefficients refitted within each block",
+      "isolated_parameter_effect_claim": false,
+      "margin_upper_bound": 0.23335024220645736,
+      "margin_upper_bound_nominal_one_sided_confidence": 0.995,
+      "mde80_t_normal_approx_annualized": 0.22365693547602306,
+      "observations": 963,
+      "one_sided95_upper": 0.11662592382671544,
+      "original54_family_complete": false,
+      "original_primary_replaced": false,
+      "primary_ci_high": 0.23335024220645736,
+      "primary_ci_low": -0.15762735771394543,
+      "primary_confidence": 0.99,
+      "project_family_significance_claim": false,
+      "role": "opening_information_exploratory",
+      "rules_out_positive_margin_pointwise99": false,
+      "scope": "exploratory_quanta_paper_parameter_fixed_library_sensitivity",
+      "within_margin_pointwise99": false
+    }
+  ],
+  "copied_bytes": 4042654924,
+  "distinct_expressions": 142,
+  "equity_headline_unchanged": 3480,
+  "evidence": "artifacts/fidelity_completion_v2/quanta_parameter_economic_completion_20260920_2141/validation.json",
+  "evidence_sha256": "bb7673ac3442880cfd456c82c8f1afc5b8153d1945a3894424461a79ffa0f479",
+  "final_archive_claim": false,
+  "full_paper_reproduction_claim": false,
+  "full_project_publication_complete": false,
+  "full_replay_job": "26769832",
+  "full_universe_proof_raw_infinity_program_flags": 12,
+  "ledger_mutations": 0,
+  "library_job": "26836411",
+  "library_manifest_sha256": "625ea290f6c6dca0b3f11cf1cba87d957e93a17e6fe6a09b3b9148549b6c169b",
+  "library_programs": 142,
+  "matrix_rows": 801001,
+  "model_jobs": [
+    "26836412_0",
+    "26836412_1"
+  ],
+  "new_API_calls": 0,
+  "new_source_factor_model_account_execution_by_audit": 0,
+  "opening_jobs": [
+    "26836413_0",
+    "26836413_1"
+  ],
+  "performance": [
+    {
+      "annualized_arithmetic_return": 0.06152462540306799,
+      "annualized_volatility": 0.17471307273213402,
+      "baseline": "source4",
+      "cagr": 0.04740530363144676,
+      "end": "2025-12-26 00:00:00",
+      "ending_wealth": 1.1936229258158766,
+      "execution": "native",
+      "max_drawdown": -0.24040718021274932,
+      "observations": 963,
+      "role": "variant_augmented",
+      "run": "quantaalpha_paper_parameters_oos_source4_plus_library",
+      "sharpe_zero_cash_rate": 0.3521466621870712,
+      "start": "2022-01-07 00:00:00"
+    },
+    {
+      "annualized_arithmetic_return": 0.01908091088335554,
+      "annualized_volatility": 0.14974610982155698,
+      "baseline": "source4",
+      "cagr": 0.007898013783071355,
+      "end": "2025-12-26 00:00:00",
+      "ending_wealth": 1.0305195903274504,
+      "execution": "native",
+      "max_drawdown": -0.24188026715729083,
+      "observations": 963,
+      "role": "explicitly_reused_common_baseline",
+      "run": "quantaalpha_bounded_oos_source4",
+      "sharpe_zero_cash_rate": 0.12742174675584608,
+      "start": "2022-01-07 00:00:00"
+    },
+    {
+      "annualized_arithmetic_return": 0.07781396103878309,
+      "annualized_volatility": 0.1666446696956429,
+      "baseline": "alpha158",
+      "cagr": 0.06606128134549198,
+      "end": "2025-12-26 00:00:00",
+      "ending_wealth": 1.2769314383326298,
+      "execution": "native",
+      "max_drawdown": -0.23367521357034704,
+      "observations": 963,
+      "role": "variant_augmented",
+      "run": "quantaalpha_paper_parameters_oos_alpha158_plus_library",
+      "sharpe_zero_cash_rate": 0.46694539453857864,
+      "start": "2022-01-07 00:00:00"
+    },
+    {
+      "annualized_arithmetic_return": 0.039161528797233364,
+      "annualized_volatility": 0.16008400382120147,
+      "baseline": "alpha158",
+      "cagr": 0.02670166194747793,
+      "end": "2025-12-26 00:00:00",
+      "ending_wealth": 1.1059447754978031,
+      "execution": "native",
+      "max_drawdown": -0.23389663521663717,
+      "observations": 963,
+      "role": "explicitly_reused_common_baseline",
+      "run": "quantaalpha_bounded_oos_alpha158",
+      "sharpe_zero_cash_rate": 0.2446311178034568,
+      "start": "2022-01-07 00:00:00"
+    },
+    {
+      "annualized_arithmetic_return": 0.05564287349020021,
+      "annualized_volatility": 0.1747447824796307,
+      "baseline": "source4",
+      "cagr": 0.04125342328418613,
+      "end": "2025-12-26 00:00:00",
+      "ending_wealth": 1.1670532972211622,
+      "execution": "opening_information",
+      "max_drawdown": -0.24408970659359208,
+      "observations": 963,
+      "role": "variant_augmented",
+      "run": "quantaalpha_paper_parameters_oos_source4_plus_library_open_information",
+      "sharpe_zero_cash_rate": 0.3184236616431525,
+      "start": "2022-01-07 00:00:00"
+    },
+    {
+      "annualized_arithmetic_return": 0.01481654781710538,
+      "annualized_volatility": 0.15021295734642556,
+      "baseline": "source4",
+      "cagr": 0.0035409227920552466,
+      "end": "2025-12-26 00:00:00",
+      "ending_wealth": 1.0135991213235425,
+      "execution": "opening_information",
+      "max_drawdown": -0.24916098554406385,
+      "observations": 963,
+      "role": "explicitly_reused_common_baseline",
+      "run": "quantaalpha_bounded_oos_source4_open_information",
+      "sharpe_zero_cash_rate": 0.0986369490278726,
+      "start": "2022-01-07 00:00:00"
+    },
+    {
+      "annualized_arithmetic_return": 0.07893420672853488,
+      "annualized_volatility": 0.1646957466950423,
+      "baseline": "alpha158",
+      "cagr": 0.06758160173947764,
+      "end": "2025-12-26 00:00:00",
+      "ending_wealth": 1.2839044418208105,
+      "execution": "opening_information",
+      "max_drawdown": -0.23374437683084737,
+      "observations": 963,
+      "role": "variant_augmented",
+      "run": "quantaalpha_paper_parameters_oos_alpha158_plus_library_open_information",
+      "sharpe_zero_cash_rate": 0.4792728914529459,
+      "start": "2022-01-07 00:00:00"
+    },
+    {
+      "annualized_arithmetic_return": 0.04117526053103752,
+      "annualized_volatility": 0.15883182380771216,
+      "baseline": "alpha158",
+      "cagr": 0.028978344761798502,
+      "end": "2025-12-26 00:00:00",
+      "ending_wealth": 1.1153458116848776,
+      "execution": "opening_information",
+      "max_drawdown": -0.23222845642237155,
+      "observations": 963,
+      "role": "explicitly_reused_common_baseline",
+      "run": "quantaalpha_bounded_oos_alpha158_open_information",
+      "sharpe_zero_cash_rate": 0.2592381019365858,
+      "start": "2022-01-07 00:00:00"
+    }
+  ],
+  "primary_family_replaced": false,
+  "probe_job": "26835329",
+  "proof_array": "26836410",
+  "raw_infinity_scopes_differ": "Proof flags cover full universe and overlapping prefixes/native matrices; library cells cover the membership-filtered fixed matrix and are not summed with proof checks.",
+  "raw_library_infinite_cells": 32359,
+  "raw_library_infinite_columns": 7,
+  "raw_library_missing_cells": 1977960,
+  "recorded_at_utc": "2026-09-20T21:49:07.708587+00:00",
+  "report": "quanta_parameter_report/VISUAL_REPORT.md",
+  "report_completion_sha256": "c90ba230c9ad1842ab274535150f0f448348d1caf66a5960e106b789c6d2b635",
+  "report_preservation": "artifacts/fidelity_completion_v2/quanta_parameter_economic_completion_20260920_2141/report_preservation.json",
+  "script_sha256": "385fc48dbbe00339f422f007736b5e46fbccbcc1a17da2dd41faa1fbcf00ae31",
+  "source_gate": {
+    "account_gate_sha256": "80cf3cf0f6e97f364397d6e5702fbbd062c730418a91ac856d153838b0a92177",
+    "actual_trajectories": 50,
+    "continuation_lineage": {
+      "continuation_protocol_sha256": "4833fc5adca4c67fceded0c6941c769ddeac9b1dd7fd912ef11fdeec6c46fce5",
+      "continued_source": "quantaalpha_paper_parameters_walltime_continuation_v3",
+      "current_pool_entries": 50,
+      "full_replay_sha256": "bf464728707d5968f02cf4b63e52c1f9b87a3dea242f1ec49ea9f9e4492616b9",
+      "native_population_gate": {
+        "backtested_workspaces": 51,
+        "baseline_workspaces": 1,
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/native_model_population_validation.json",
+        "pool_workspaces": 50,
+        "sha256": "10780b8719e03e433cf8e83e3fce6f7b7951038f61ad727c1ed1f6f3a74003dd"
+      },
+      "original_loops_preserved": 34,
+      "original_native_artifact_lineage_sha256": "eeeb80ac423f665b3c7e539b33d61fa2057c36a54e0909b079ecb9f0e7b5695b",
+      "original_orphan_full_reservation_retained": 0.0556885,
+      "original_pool_entries_preserved": 33,
+      "original_run": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters",
+      "scope": "Source/replay ancestry and native artifact reuse only; no economic completion, strict-primary substitution or full-paper claim.",
+      "source_completion_sha256": "63b08dccc4ea2d788aa0e5643254985f5d67df30a1ad75e15c5b2f147e6b60b7",
+      "status": "pass",
+      "terminal_parameter_wiring": {
+        "completed_events": [
+          {
+            "phase_method": "_get_mutation_task",
+            "round": 5,
+            "round_limit": 5
+          }
+        ],
+        "completed_events_ignored": false,
+        "full_replay_must_match_entire_completed_wiring": true,
+        "interrupted_event_count": 0,
+        "original_partial_parameter_wiring_exact": true,
+        "status": "exact_static_parameters_and_single_terminal_round_event_pass"
+      }
+    },
+    "data_sha256": "a357dcc5f641161af9661d9b1605f2f66844de37f8e02b0bc881e87ed16f3e9b",
+    "program_count": 142,
+    "program_proofs": [
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/516277f502eebbd5d26f0aec99da6e27918bb5089c3ef280e224eeaa2a24b7be.json",
+        "sha256": "4952937b7ea2407761e63c83828f0d087a977c68952199a9c34bc9eb0ccff20c"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/107ad82100fb109a2f583b7444c9958eb9620e99bf51755da04692d307356b92.json",
+        "sha256": "ddb89ab2713d5ed78d026a52c8d71abc3de474c291e0d85c28ea82f3a1066f6d"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/11c3ad5e7e5d1a4818f4d908a4571d5d4c02d821c33e126b807f111fbd70d04d.json",
+        "sha256": "d5314fee9f13b1928ac97107393348d142e253f7f4f3039e0d4bb3e7709c53ae"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/066a05aeeefe44c39c30f75681bb26c50a72943a63d29a767fdfd024f9634110.json",
+        "sha256": "0d9f7cda5fd284b5a897b88f17d95f1f724d5c5efb058c299ab414eb68a29471"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/f548b0a399f9fd359409646b4ebd39da61fd00205dee696e1e0036a1df0da077.json",
+        "sha256": "369b29b63cea048d968ae232d5c150bef0d626c948334e0d7a9227a668b739e3"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/d6ba3e261459434ace64e32d4ce6a29e82be64b80263dd652120cfbb359ce274.json",
+        "sha256": "8971a07081e1edcbf84a6fab9432dde8c25719086984cd07a2328edf46ef33df"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/6698b76350bb18b3e4a52acdf00347c265de12c98b06e4ea093223a9fe0bf224.json",
+        "sha256": "f7eca21f0582b36acf6dfdfb8cccd2ebdee3a1e625e541ae4a706d528341f533"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/71b4344796343b320f33269d4d7a65a905bffe5ee3e4f4204a8965e13c4a401b.json",
+        "sha256": "8700976754421cd01708acd84ace8761e1b11e4a9b74a7991d04d0e27d0b22be"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/7a9d1dac4157edbc581730e9577d515468d16ce105558b81d5178a7467e91773.json",
+        "sha256": "5627a9bfa4fe10d2e752697f45e990c8e302299096443d32defaa7257e82ab1f"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/4bc2a0f36abcafc3faf4ebc77fe6169de7ff762e4d3cbe90227286197af10bbb.json",
+        "sha256": "4c572e5beff0b350c1be5e7543612d612f67d5d785e41af096fd546e15d89c48"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/aacc6ce051039bc6b09cd1dd1044d2ca67c2016b020e6663e7dd90c0df56da8e.json",
+        "sha256": "aa68478af2effa19fd916d25f01554c43276ba6ee1c553f2399251bf724f2f76"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/70f5d93e040b9d653018597c1ad6445e44d68a1e9c168d47189388c7d88593f7.json",
+        "sha256": "b3546a9f6eef631c9bab97e04e981761c929d3bd530fc32ba561f35f284e084e"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/cfe029292ef203f8ca7735f3252e948da409e18f381c1e2cdeb9b4f8ece1996f.json",
+        "sha256": "669b433f9980fa5d1fd57b9b4cf35c9c3e89d9e26fa7f7e0cf886fc2babbe6e7"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/7e1aa47ccf0bb2a86ea8e7fd1dfa7ceae514d96805d4fcecb228bc2d60ed0953.json",
+        "sha256": "253b61d854057cbf82f6849e71b8c4bdd2ea30ab7e3fd3dfc1922c07db182ea7"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/ecfa079b0d2eeea8956cb7ee38f94699a612ca34a633e716233a528003441114.json",
+        "sha256": "d533a876630708a720296bfa14e65b4dc32159cea32fb4bce521dbb9590e058f"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/3dd6c54320e6a21367f76fd9e8bed3a6f9a98dadf31d3945956ac19631d34144.json",
+        "sha256": "8a8d70d39a2d09ec4eadb80fe6e5d9e3994792c8fdc4d2fdde11af74dd658274"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/fa78f55913f68a6dc438c686b2c3029eeeef49022d751dd61e0c9155abfc14d6.json",
+        "sha256": "2deeab6c08c39b9a2feb9938aeeb8586444f5b423208d065ee9aae586a5facab"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/cf1b4e79d81c341f0339e2df6dc906412944f2853bd62ce6d57bfc0192317c45.json",
+        "sha256": "8d94f3a53485fd9566bd46030c930af92636936eae35c95c2a3f6f6a7e53d11f"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/8a41f208d88d8be0ff462ee5ca8c850382cbb15b5561dd64348bfb2532636d86.json",
+        "sha256": "494a4aaf0e6c8d374105e241ffa1cfacfc799fae9ec974d53caa58ddc7e49016"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/d867d9d6b70f41bf9bfdd52f72a741aa9651d3266bced3c42ea11632aee13882.json",
+        "sha256": "ab4412aad06ed99df869b000db727d3d4cc9c6f354d019dbf1e9ece3469c928c"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/94931c12f96bff22207f91e04a3eb2e50c25c473d841f93cad84f075e8f3fa2b.json",
+        "sha256": "387ca630fe0ae582bc7bf0935fbd4cb4565a61012eb7d5770204d981c65af708"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/e8fe744692d5f5702d354cdbd08a9fae01d3b60f8585558e7821a33ee230bd64.json",
+        "sha256": "f4ec98f1834fb36548b87661ee5d04ad28af24772eeb4ec5731dbfeee76b19bb"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/da2bb615fd4b3731f60a7bcfac0032b2fd330f4c383ade67f4359ffa28a02e12.json",
+        "sha256": "ac85e73231b538b8cc92ebb12bc894582495090527eebd3e26ac257cbb16b345"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/7ee5eac03864d0288686a6cac04808b47659a64d79936ef1c27c4948fbfdb2be.json",
+        "sha256": "f768b1f8fcd45d80ae88dcd2672451e3e93727e186c558f33f75b9b0eff28381"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/cffc820e9591f3a83154f7ac2154210edd1b668d498a19328a5086968108d6be.json",
+        "sha256": "b34a8a976d0dbcaa8cdc7a47ae67e09db0edadcb4f8a1f29ff605017e9b130d8"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/f0799b43976ff50f1bcc20a7d92141ed3620b521e54a56fa9e7d10fa22efdf94.json",
+        "sha256": "9e57fe456854ac05599bef44b00013e817cc66ba9f83f344bbe4eab5218d0a78"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/5cf9eff2ef54fbac892db3bef23cc0c025855ad452644b50e1a34f5c9d7b08f7.json",
+        "sha256": "c9a55709d35a990cab51f72484e04779ab0fdb1bdc6cf6974a880d9dbed7b38b"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/99006881567cb70bb32e975e044d710bef09c3fe055b79efd9e267829e0a6bb5.json",
+        "sha256": "9b0a97251e5d1ca0115e079d02ea37d98fb5e11e3f936180f6a898e9e78d4e10"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/d0c1164f5ea550c83c36b89711dd642582324e1ba5da5abbc281373f6bf8921e.json",
+        "sha256": "ff2396895c7d201abdf6382d72dd5ae166403c01e498800b99da8c7e9f579a58"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/50beef3d8622c2e077d2f687870e70f363e1750948c5e9ffde7192b9df401a81.json",
+        "sha256": "8ad2af9204f9f0eeb7ac788c4b55f56823e6216f5538d816e16062de7f4ef433"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/27010a11456d7f6139937e071cc13f3a284be2c7974c5b7a3b8cfd30a4ef1e99.json",
+        "sha256": "c16c7d06162b3896e8ca76bf41c29292ab5389832312441f5619a18014992cb4"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/edb6087a2f752ac357e005fe7900c54d3b999bf883ded1fd9e911a0427284fa2.json",
+        "sha256": "e653bd7b10d2fef4518b51bf1d357907332479adeb424e9812f6d58cc71e0a3f"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/906b0f4d8cf8c75088ab9d73adba8ca6db77a09355c852e718f7d5809020d1f9.json",
+        "sha256": "e1494c72425f6cf66ecb9ae0a71e5077fe695274a59a8d35e14244cf3104f9ee"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/bcebaa63162e5d586afd540de011fcccbc291a7db0f686d4de4af87caa7babd5.json",
+        "sha256": "bfe0b5f03db3b720c7f4b4fc8edbdaf4321524e2bb3637c42fc63ceb3b586a47"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/be90d798ef8c8c77bb73824299ac69bdbb75497d3398f874e281420f597aaf82.json",
+        "sha256": "55a8c96201ba8028c9b14e7dd1050914441428ae93e1999cfa34a4a820661335"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/0156907b9cbae78934a3ad85a48065ae5817f1d8693ee6d8ad43613ee93964ab.json",
+        "sha256": "adb76a545deee07579511535d0a8714d55a14045ca7f92946cad8e6979b6b832"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/543c62d14ae29be24031cb6bb04f6b5e7f72147fafe59b43c6dddfd8043dc6c1.json",
+        "sha256": "3fe39f69f9b93dd51666394b95bab419374cdd538ee0a63ee3b98ec34f00d086"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/2aab8b21bc5f0349785c0884bef7914f44bc5b0bc2c4120475e250d7562cd253.json",
+        "sha256": "3b5aaa1c4fc3fc75179e57f6cbfe3abf0402f6f26f29735c4a7c1c62c90c8a0a"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/25e89d916551ba57c2428025df7b43f250cbeadb56ea64f330de0aa983814e64.json",
+        "sha256": "0e3e7d391fb54e491202847aed5dc2f5caac61aabef2b82d1e3d912ee26bd2ae"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/86656305205de54b2898616bd4f1b23e157f211843b7926749d6af98c02d848c.json",
+        "sha256": "b65592adf6fa2b7e304fea5bf9b2e7f93aa61d6705959e8d821665048450e6c9"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/2c49a0a940c55c8c1ba95b5bb3f9074915d140da6346a170a4a4da49ec1c91ef.json",
+        "sha256": "911410375cb66231b52094f099f633059dcd85c5ff5651cf1fbad1a560d5fdb4"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/c02b9fb09b443fbb0afa3d1edb374f593ec24f8a32f256486e9c6d319c60afa5.json",
+        "sha256": "f92b261f2975dd5467a47a207889518fd3b95586b3d14ec2854bbefaebcdb689"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/0f261d4e303709a0ef64731573590f04a992bd92e0c1546e01eb440dfc7caed8.json",
+        "sha256": "9f86027ca8d72f85db635589ccf8161f731f51d1ec92e118e936f719d7ce70af"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/142f0e087901f57afd6f6b2f50d456f0a8fc16bac4d4cff5fb499c6e9a154a24.json",
+        "sha256": "810b8cfccf146d7a6554c51c674e7fa5b2074b27e0192b3f959e9782d9659d19"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/cc7f2ac8b9cd74f9cd395903e799c9547178c26ad906d3562bcfdf08051158e9.json",
+        "sha256": "7ab1ee74f9a4f9dd669f1c0a6fd67681e6f90313bc20f7291ec1aad97415130f"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/1026235e2e1652ec147989d28b1c89b646bc1b3f7cc15312c22a360c19a510f8.json",
+        "sha256": "8349e0030d0d45a78261b8789267089a17e6e836a373481d16c9654d470ae7f0"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/565fa171e8a568569681821b9627a492de3dc08d70865947d286dd5ec3302efb.json",
+        "sha256": "c3bf0e493eb7fcc702ba1d1c81b39e422ca98a7817de98a7a04aa0e059188648"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/5feea02d5a2c5d04b8bad2f34df2e43131f458c9df0e75ddd47d2d01ba3609c9.json",
+        "sha256": "e0c860e7bb81af3c4dc47df5be121f45abdf857190938276b279827023a4750b"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/5f39ce76abbc235df37aa23c37af735a3e0893d2bbe92ccfb5a6924c398ab47d.json",
+        "sha256": "798c5a4e2f40b79ad3efa1dc1856f0c34bea5ee144f07caed570a641a0e65897"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/a05f303d5261b5c8ab9acc397d5bb4658ed44bc38ac450bc6657c86c29bfb603.json",
+        "sha256": "5911afb634a8ef65f7b65798fdef6d0a0241b95ef361ea0604cd8b65b90e271e"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/6241f60421d8d05b986ac4a968d9574bb7252028f75c6685eeba33d174bd8cad.json",
+        "sha256": "3bc48edfc97836e5737d9defcec6d1779ed2208885d0ae1462af6716d4b0b6e9"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/27268e73dc024818d6631d500fa8612ad51db24aba67b6b2a97891ee65fc476c.json",
+        "sha256": "5689d46a5ed5a68aad5deb2e5827fa42f80f6494f8444c787b676cfaf1c05eda"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/aded6d4f22b4e4190426bc8cb3933cfdc3bf9bde73247df4aac32a3109ba451c.json",
+        "sha256": "26274c14116ec9ba51e1f3241ae403cd4b8275acc431e940750e464aac1cf214"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/5e37399ec06d4dab62d8ac19959e62f1af585fe869ca6649db33a6970bc8e243.json",
+        "sha256": "905bdd72d318e55a845281db7961fdfb573dc7087cf32cb6b99e464f389ea4ab"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/cbaed23d0468b6d72182dc0dbd7f18d0188350ca7ec0e607db435e1deee5bf13.json",
+        "sha256": "6d6f4c78caf7aa45d47778e3da4f7b13c3bec4588f8ae29061fb8e96d5fb7fe5"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/489834837d00810a6e2bc94783d5e422baf06954ddaab91209114a5ac68b0aa3.json",
+        "sha256": "18cbd8fb73170f74d46c59a8e0b15ffe78bd53b8e7c83097a31546e82500c2ff"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/49db72c7c8ea407715bbaad2a3e270ddd7a114113cd9dab6d150ec0ab6e2c360.json",
+        "sha256": "0580e0d05d03030ec4ccf532095ad40fabb930d569dba8f82a203b8068fbbe7d"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/86c6cd26f95fd497c74b41e502b101a2487e15ea691c5f768fb532ee08bfe95c.json",
+        "sha256": "b83a67677491aacbc5bffa87fc25e1aff99caaa3e7c9bfe71087ca34d1c1bcf7"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/b975616767e0457b48eeec37c0adffe7b9d0c288a5c851ca9766d8ac2b92c5c5.json",
+        "sha256": "8afd334641133fd46c62a71b59101dfaa0e7aa7f939bb7b1b8fc43f25c95492c"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/74044a400564255e5e504897a16879c361f4c3cbe80c67d06d815fb1e8edc186.json",
+        "sha256": "f7a929525baa7c7d98fb07c447d58ae60d6af24f8a8a2cc4d965eb9182a960c5"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/8072cbdfd51ab0c516861547f1acd1dfa4030086619863afb5149e5416afcb7a.json",
+        "sha256": "0833c515fde20818df97dcbb237f68216b0a11c4bf8c32bdafa63531e7345107"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/c99806f0359c3d4b580e7bea8b52ae1de9911e3c9f52c47d9f616e0a776a73c8.json",
+        "sha256": "709e1f4e38b29d8fbcd72a02f8ea40482ce45909a9f7213cd53f81c8a5ddb74f"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/81880dd40b40125e578e263c81a2a28f3811a4f61240ea143a285b875da9036b.json",
+        "sha256": "a41d66f71973943ac54ee2cb7ef0940b2d0b9cca3a06bb45f381031f02c130dc"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/9c1cae021dcda40e6b2bbbd81eda8476f8cbf903acf7cc0b43d006d4966ce545.json",
+        "sha256": "93da027f52dfada70e080f7c8b4038e5d5916d17fdf9468bc85fa5967b705b3d"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/6087874ab5b4cf35322b9fdff0aa76bd56ac4af0c7f3aeaa6b229f4f19901316.json",
+        "sha256": "f5f3c8272c1592c9004a4f84ec364c5464d828e1f71730096d0f6e3c8024fe3d"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/d1b69eedcccfc4f5123d0373fbd922e38197f546022373f3349a14135c34c86a.json",
+        "sha256": "a560ca94318dcc4e75ac1f22768a4bf5c96ae0af19e54d02f894c257f4209642"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/00a47a297f5d86b69dd7f46da9faf66a24292ba352ce8cc2a2f63e103e350865.json",
+        "sha256": "3a46efadb25ac4956670b809d325cdba47cf1e01fc7a5166ab3212f606d7e33a"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/c41deb7a03dfad83072d04866efb22531574e579a4a5ff2f70804217f36c34a5.json",
+        "sha256": "e562957c2a99b95da9946e3625ff0f6e2d37dd9744eb1687c92dff8f49568585"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/48f7569eb6a8890011fec580627116a7936548fdf7d3a4994ca87a476504daf4.json",
+        "sha256": "3ef0f3cf5917c6252494f31e71c4be6ee2b8749dfe6fc3ba06e53e126cd6a27a"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/163e247407e52b0f9b28b745f72bc3980a263acfc541a0713b045f52aa4b7674.json",
+        "sha256": "79868f2d30b0c834635b2ce8fc1740b16a9592ea349179c507400a007941bbd0"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/46bfce4f9a81654219ee018de2a41b153010f61db565d616d4eef1a1891dd2ed.json",
+        "sha256": "b6ed22f9315b4eaddbbb80fa75483f9b4b8672db6155e397e1abf6ec067a2869"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/fa70682a5f9e1b74a13ac5e325e233a2dc27638ed12fa670f36dc648928710b2.json",
+        "sha256": "887afb8a1410d5560da20c1cbbaeb1ce431abff69914b60007cd03b4dbc608b0"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/8008bd51add4916ab4ff28c38d83cc3d5ba55f886d86814d5e1a84c98918f304.json",
+        "sha256": "7272d7272f63c0aff91aeed38a91997bd6cb0ba983b382f925e5fdf3e8a27c33"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/2c3451909f06b35602d2f5fb7e9bbc3962b130fd24dfb8a2b9d78bef184f987f.json",
+        "sha256": "f0da9eab10b91cd086a9aa199e21ffe5c5ca2ce8c03331e35b9e3eb1d7dab6cf"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/13cb744e799402cfd43c253fd4d14a3e9202589f7c691407b4c7d581bf3b3c2e.json",
+        "sha256": "04b9620be1670d19a99116fec470911cd97c13c88c70ee1543f82e8ce631760a"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/3342dab8f491975f67bd691fb05fbfd4e8cf7b564d195c6517058f4493097c89.json",
+        "sha256": "810d9b679b51176bcab5f1e1099a37ee06f1205e3282e6b28e9953a06bbad224"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/a8f881499127e7bb57e19eeef9e60f213742a962e652e83b40d10f2c689ef0e6.json",
+        "sha256": "8fbf63a7110a0a06bfb2c46ac039a8988752902b11944c4905bc84ad344dcd35"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/b890120bc6b1e099102f770a06ed76f47adcdaea35f33b720295a62f12fba86b.json",
+        "sha256": "bef1bc0e8938a264863aa02da0f25b6a8aa29f21490584aa1059ea00db4e9937"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/8891e4fa4ff648dc1911fce67d24488d1d3b18c9a4913e495125fb320eb6ace4.json",
+        "sha256": "691402b7d7b96a3f885b11732eb825b703f21ae40b3b67d8d72592f5a6b2fbfd"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/e799c29bab42e03c8e5a9675c36d00e404a2e73313bf49ce5e5a22b14fe98ce5.json",
+        "sha256": "cc68c5f61d8229280813cdb0b35165860d2d0976ad5ff1b287d917c2a2e1dfaf"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/599d81b168bf8d8909e85d2a280c420c977d599dd299df3334c177470a549447.json",
+        "sha256": "cab4a20fcece4cd3160ac18992b4f56d5eb9e305ab340faa8a7764a7defa9ce0"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/9cbbbb6cefa726cbad3be2e570ede7cfd0f6dda92358e82b3b36771c5d9d025f.json",
+        "sha256": "4bb7014180c970ff51ed4284d12453d807ee3aeccc7161a9b90dbbd6bb809071"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/274cb8c6cac1ff31ee4b319cb192ecf100554e88decb38b920c76513143238f8.json",
+        "sha256": "b677bb1fbcdee98b2b30ba3209048b2c94177b446c0fed98029ac3e3a4759ab2"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/0c5d8f13fb28ec4db95a8ce1c024b56d4a73c56afaf5a1ad98d2caec5329c738.json",
+        "sha256": "296974bf3bfcb5da35e720ef0196ea0d710162349236b515b38b00add7893023"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/322d520385de3c2ad7828b2b6e49387a5d2e7dbe12c891e3a69ecfcdb4f68b7d.json",
+        "sha256": "394870798b4f78cb6254ad6aacbd1f133ebf3dae453a8ca18300c9b564a05e7c"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/8bf17cf427a8e7272016f9249e485312fc24935dde7282092a01c283c164b93a.json",
+        "sha256": "9f819e475336f618a377987b2c4c621d7c2dafb926198f9732f9820bb9c2cbf8"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/25733fe19171b4bc3a7435235dbb03efc0078885393284db416dfcb8cee5c2bc.json",
+        "sha256": "bc2f09686ccd11c24fc1bf06c9ab989e69e186781ef0e60c9031659749167eb1"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/5c355c7f4360714b0d243159c18e5783fae39f2bf0dfb7581961485e9a29236a.json",
+        "sha256": "058c1f83cf71f84063a45eab7338876b52ab2921d2128f8a3e177f7960c82c1d"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/3af1807896964c7dc725606f2c25886f08606034ae7664bc7b1aae5a2c1b1677.json",
+        "sha256": "6179fedde20077acf87a80d8e48a999fe9b934331eb7e126f6e729a07f77e67c"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/cf37069d28328a96eb61c393884812023cf0efa39432a9c5651bbd042bcf938c.json",
+        "sha256": "259af5cf9cb96fd15c1d25fc8811d836e333a07c32f2e76b4c0cd9cf642ccc98"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/bcbeeef76bb29c50aaeeef37793f08e456b8b86714cdd156a05062a8a0ea99d5.json",
+        "sha256": "3284c9308cd499a065c56cf0e70432cfe7c4f39be082231e579ade53a2791b78"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/e2af40bc794341a60f39357d3e52d55d9ae299416a67ac60caf98254f7def07a.json",
+        "sha256": "b4bb65aad149caf22ac71ab1baff012e185074e3e9499d00140d9efdd5bd3017"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/28c51e10cdbdfc4361e697c0adaa0d0b71e4514a436c5fdc5244b81174dc1382.json",
+        "sha256": "869f1d38b6d1b4d1433f333f20c40f62341fd55d50ccd7eed6b444ddcef62488"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/c684c0de19c3250be51e3d354eb7cd3afd140ddfe15e97c1dedccf59bcc79172.json",
+        "sha256": "d2ecd98c37c18e478c9f55a03f36921dd0fb2d50bf09f7476006416c214b032b"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/737638e3e114525c0004c564fa2a642caa8ebf9107ffa0238ca204b895385e67.json",
+        "sha256": "41e0e2f64db8788cdfbc6c2cb0844d80bbc52fa8f77ff715c4d2b9b8e83d0a61"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/790b50213cd2c42a49f441ab28081fe347fa8d3483814329c8fcd74e694253b4.json",
+        "sha256": "426cdfa6d9a63017381006985848b8824fa213a94a43ad8876fa5a0acc99c1a8"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/3aa1a013756cb46cc1709f4860bc869245d5fddcafbedfd8f9fd0e3e5e7b895f.json",
+        "sha256": "8cdd529e6f1d79db74872e6c197413ab1015c9d2c95a1945a20d9f9350fae565"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/9584c8e3c02e70c9e401e261ae6d829e4f43fe099e6306e4e9d51fccc1add72e.json",
+        "sha256": "ef2c6adff701a86d70236f2298fdccb10fe30201acdec68170cead7843e13d43"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/0550e4312478b0773580179084ccd3f483167b60197745d88e6c7929a61ba1f3.json",
+        "sha256": "918bfd16fde661a59e668f906a1e8093ff665b9f3d788e462ffee3b5f28e3d4f"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/d98ccc2b04e4ac47e8e68a9bdf13ea4f6cd2362ef057bc6d5b62b4e1957367ca.json",
+        "sha256": "87decc81c561210b693504e3577137d8109c628849f57600a611496ae92a533f"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/8348dffed4ddf5436651c1efdc98ec5fa969ae6c8f6bcd1f1ff6d28c2e0379dc.json",
+        "sha256": "d23b6ce4f88311d4ab72488997974805df0ed3f9525a7c41d1e38009ba2889ec"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/46a3840fa2f77d1c88177a89380e222fcaba56a7b7340b25500fa0eea7562952.json",
+        "sha256": "6ec9a9d20c4079cb68cda29d811b98409892c96600dcfb25e26255b4a3858e27"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/7bae4618dcb6422bf607ca29dfba7162121077988a7ec05f933f83d2175ef018.json",
+        "sha256": "051d01828eece063dfbcad40551af56fc7a1f89fe9d6a8ded7a84cd096d1b980"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/de744511d4e7df7e787a7dfa84b123d27a4fe12f8367f16aad3e836bf53d41f6.json",
+        "sha256": "d9a600a5981749821ffdfa9171be9103c51c3c50ad3559e398b4f8d67c0f811a"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/8d46101fe277d2653a703e062484da58be029756f66b9a05a6ecc5b1de754168.json",
+        "sha256": "19ec168d1986d29570275f9ba345964be49fb91811a0a9a068e4fb924a779d9f"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/988c160564dd865e41d7b21308fc9299a60383d80bbf3634be5e8bce451f8f4a.json",
+        "sha256": "609221058356a476ad8c41204d4ab83d4ba8c1792b2f69bf19de26e974804d48"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/b4a1ece80d028643b87f9d2d9d01cb00caa11379caefdba7f8a73f7c225c3e2e.json",
+        "sha256": "b4cda3bc97bb011732d6d5ba9eeff8321df4fe95c822cd0dd373e9dc1818fd60"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/22250ce8e02424f70c7d855fe4cffc26766d903e29bcccaff1aa0b692b9bd974.json",
+        "sha256": "d1d6f37d0c3233dcd36c65799d76e78fa08ab7359fed620c13fe43d5474209f7"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/6607870e82b494abd4623a5a83137d5a673296dc5f124384387dc61b79a8a791.json",
+        "sha256": "9f0581fbb022e31adf6c1072c5b9a19c9781faf7fc256bab1a02fdc2b3935952"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/1f54fdb219570192be994b43c73c8c3433142c1565544e8574615be993525a03.json",
+        "sha256": "ee2c19ff9563ce0c5b4ada59498aa7d2c323627e764da350a93655c4e4aa5acd"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/7dac3e4c661c728164ec5e1b0cbb4c046b2b97de6ec1251d00c52b366e351e0a.json",
+        "sha256": "20ed9d6e4bbf2238b247f9e3f05b9a53d9103d7cd0c600baa2ac59d0c4cccea8"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/63180b4b9f0060e09882dbce8c1d99cf15a449f36c4377d10cceacf760ca873d.json",
+        "sha256": "bde27df8ee78095c6665ad4a133ce5304c792ec0cf9e46a61741d899a87f359f"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/cac4bd5c4eb96e61d86bda7ef3e94d3d4719e2eaccf90226b9001e5bae758d5d.json",
+        "sha256": "b9480d5e184e53ab8c16713f00cff447f454f6756055e710a7780bc76423db76"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/ea1b96cb4f0a48092b6db09e22b2466ef9bed3a23a8e689e73020b23d0318508.json",
+        "sha256": "efadbd6ee1e0ec5929a6f3f79d4e3540d942589d32c533a4d7b9ed4bbd15bbff"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/b75ce44418b3e66d82b630080033bc38c09c2f414db431b47bca3d4b4f8f9a8e.json",
+        "sha256": "8828b3fb27d9348062d442c4076df5b3214f6394e1570fa4c31c3ee4b66cacf3"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/1529c47491b524e08f45b1c33244092805e143d42f7a28d2aee889f292081dc1.json",
+        "sha256": "6a6b38ec0814fad19eac2340dba1665a76c1dacdb037f454bd96b9161aaa7dda"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/a12831a2a1cd90efc5862c05ef09879d9ddd2d07e08ef6bf63f81006df3c45a3.json",
+        "sha256": "a7375f5d49c5a816fdde0d6c5e3388ea03a07e039bba00af33b02bbbee00f9ca"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/3bb615c94fb043e86f299e0cf948364934cdd05d1f8c7411487c9663dc415d4c.json",
+        "sha256": "a01421ec613ddef4d1c9d295e68398f1f361958864e4d7c42d9d64f3c402d8a0"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/829a47955538f48ff3282a821fd73c9c10a8f4f1bc9411063016333d99773845.json",
+        "sha256": "19cbd08cd1107fd6900bf31b0bc04789d9893356bf88b19073d254d62cbf223f"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/feb29ccc261d6ca62b53f9c2e69565dd664e85a0787f314df6e3739168378aae.json",
+        "sha256": "94e4912d1c161e1d218f3433abde03f2211bc0462ffe84ff5b918d3b94167e66"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/2a2ca3c437c49687d773bc48a8e3d83263e7af46fd7dce36813872a5192f233e.json",
+        "sha256": "d4c1bca0af6462c236e9dd0579e708c36d77c3a8ae539e845bee6effa5afe152"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/66526ce6ce5d108c21eb6eca3ee9c37c0405a8797ada9f2f5868fe6871e09ed4.json",
+        "sha256": "bab754697ba58c3d347beb7ad510a01b0c73644d2d404d1cb2c37bd4ebb17061"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/bdd255828125fa3c756933d176ae2278a42c247a54bb0b30d63bca4aa192daf3.json",
+        "sha256": "6142f3cc426b71d0bf6067ae9bbe9e5df9145f501695a1d70f65a7ff78c8fd44"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/eb7a727fc1ea0cd086e2d3901ed5394d5616adbcdc7975fd752345c6fc6a1568.json",
+        "sha256": "217619b1ae15b1e3f0b16eff2f3f4c19cf67bc59a58596a2e082607d302c6e91"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/9ff121942b88d97909ad97456444d552c6e6e2070cfaabe5d7ca6e4436cd75b3.json",
+        "sha256": "8cec818791a81a68fedf7b7071eeec0009e9dd738698c53a0506bf65e61cd52d"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/376f9264005eb41f73a25287baa1a1109e606796f12508d5327e7ed4fbb124a8.json",
+        "sha256": "f08df394b1b477953695d3b9f2695efb3400f280489a903239b7745b64e35481"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/6f2be6632c47dd679eb8d1fdfec19122336bd3df51d7377a51f72c462f4fd094.json",
+        "sha256": "23a627509a4945291545e40b70b456b7308346fb17f569a532817427bde0461b"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/2d73db60e8d3d90bb0e2689782041d8c7d181f24ffe6386680d4ef0416f14fe8.json",
+        "sha256": "0cb44b8e2c973493bf22943361dfdfab8c76a2e14a941245d534c1aad951e6cb"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/6427de9fcdf8c722e61143e8266a31d651c60e237e6bf31ce5947fd3ad25ed51.json",
+        "sha256": "bc20655d504c36ca277622ad1a6ff724a86591f6704e88b9d4a3840a52a53b70"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/3dfde79b2add029e8f8346fad671d5826aa00d53c5cbf94b53bffbe07122032c.json",
+        "sha256": "e46ee09c27612b52ccf5aeb3028e4d1ea721d33432aeadd3a6286c7529447294"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/fb727a8188790469f7ef667b659a13a7d9d22b367f114e1c06459e661ed849a0.json",
+        "sha256": "8268538dc9b1d6f9046e4cfd98a1057d413b2ab380748c5158a187b3260fea4d"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/6f56fc9e367a00e28cfcbe161e4a830a4343fbd9fcb385e43b5bdf5ae2d7f55c.json",
+        "sha256": "b9687acb3028fa1c276c8655d6a311069ab263d712fd674a65f724c2dc6e7070"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/da913482aa074ec9e9329caca883646cd32e86386672f65fb30478a40180634f.json",
+        "sha256": "0dfd18a8969e4541fb2a7777701a21a1f2b4b7df8105aade81a0a52b0b6a5f16"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/7cc052b24dfe068a980c946df153d80a8130d2812ede0e5d173c17b8398458a2.json",
+        "sha256": "e99e01916e0e6c24cd63013906a1c903d176dc807c0534f36f6ff93150e0d726"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/b5522bd6a8dc8b7742a45a29e5ba671f6f32d66ae9312f0393cb0b3b409e7ff0.json",
+        "sha256": "e59d2799858fe8dd48e6be42a0a9a8af6bc4b15c1e3ad992f0d2c49015b7d98c"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/b819e47b1970dbb7a31ce0c64c8233e69b332dc30cd325eef05a76cf4a06e62d.json",
+        "sha256": "8959e989432c7412885b79911cd9bd2ec48c49459b2e98e2919b73f897926f90"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/05928f1771373f66dea10a9556e7742c0b2bab600f44a02ad5afaab25d618459.json",
+        "sha256": "3ce50da8697f822a57bb7cefd6d6563e52737643068d1c8efa4c3dcddc9ba8d4"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/c54ccae69aa4c42c1eb01e7147050d204cf93157192c07c6b5c84afbd5bf089d.json",
+        "sha256": "53dfd7156b0dae9b6dfa79dc3d91197ef740d0a4039864cbdd1adfc89b309b12"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/7cdff16c377a75dee99424c8c034ad043a403fe055bd01a6df52ff6562fe5946.json",
+        "sha256": "abf843440a6f7d9dfc81646d8de1438898ac69f965686ca522de07099ec6a416"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/bf895d7e42363aef12e23a29a41cf6d42ff119a4c630e0b56627ed6edbbc1bf8.json",
+        "sha256": "f9ca810d6249bacc80c56897cf4079b5ddac3ded4a6f82b29158ca4971c5cf80"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/bc52a2722064376ed048968d7b20481f73292715f9860a66641ef538ad10d1d5.json",
+        "sha256": "76e4ba476b01c845e1f6e855541feb2a367f33ec38a8c8e0e0676347db69f802"
+      },
+      {
+        "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v3/causality_full_universe/a91ca2f7b9bf749caf3c44806af469674931fa7848fc53aad20504ddad3d6fee.json",
+        "sha256": "89354ded6bf195a50cd56183856834675d264a26b8b4f92c16563f38f2410019"
+      }
+    ],
+    "protocol_sha256": "a8e7087b201164aad90034ca899dfd6adef408b20ecea2f190587a24d68a5e88",
+    "run": "quantaalpha_paper_parameters_walltime_continuation_v3",
+    "scope": "exploratory_quanta_paper_parameter_fixed_library_sensitivity",
+    "source_exit_sha256": "6df9ac39c0d4d082891a006d71c29deae2c77af1c25465011b2b13af8a608a95",
+    "source_python_sha256": "54ce3296cbf941c24abddf6d076c7f706a84327f87a540c3e740d5df365a6e78",
+    "source_recipe_sha256": "09ee9bd2ba32b245feadbcbd3fcf181827f09207bee6cd0e2bedcb7f5cc5a0bc",
+    "source_replay_sha256": "bf464728707d5968f02cf4b63e52c1f9b87a3dea242f1ec49ea9f9e4492616b9",
+    "strict_primary_eligibility": false,
+    "used_manifest_sha256": "5802a07b03ba8262ba95fddc1492d166efb25bc6248419cf4f2a6cbef5dbd1e6"
+  },
+  "source_job": "26769831",
+  "status": "actual_quanta_parameter_library_four_accounts_and_exploratory_analysis_complete"
+}

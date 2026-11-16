@@ -1,0 +1,528 @@
+{
+  "AMZN_retry_authorized": false,
+  "bindings": [
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/frozen_sources/00_quanta_walltime_continuation_v3.py",
+      "path": "scripts/quanta_walltime_continuation_v3.py",
+      "sha256": "1f4ea0468b5f86ccef645016c184df4208fd95999e3a3e185b83cce0fa61ca1d"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/frozen_sources/01_run_quanta_walltime_continuation_v3.py",
+      "path": "scripts/run_quanta_walltime_continuation_v3.py",
+      "sha256": "b28dba76a3c9a2f6707af01468da12e3d4cfd0e4019df2e11a97edb40e8d3326"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/frozen_sources/02_test_quanta_walltime_continuation_v3.py",
+      "path": "tests/test_quanta_walltime_continuation_v3.py",
+      "sha256": "9311cdd2cf5676f25219f83559b9feed90e981b1a0fee350a8cd2c83a9f95ac6"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/frozen_sources/03_submit_once.py",
+      "path": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/submit_once.py",
+      "sha256": "a7076019751bfe1edd7c5b8ff8b0eb78f482d931409e1aff2fca79017c3e1ce9"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/frozen_sources/04_native_artifact_lineage.json",
+      "path": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/native_artifact_lineage.json",
+      "sha256": "eeeb80ac423f665b3c7e539b33d61fa2057c36a54e0909b079ecb9f0e7b5695b"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/frozen_sources/05_preservation_manifest.json",
+      "path": "artifacts/fidelity_completion_v2/quanta_continuation_stop_20260919_1850/preservation_manifest.json",
+      "sha256": "eb5620c9cefed8cfb17b4c597b556142033a8290b78dd98574bce334d1769ae0"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/frozen_sources/06_diagnosis.json",
+      "path": "artifacts/fidelity_completion_v2/quanta_continuation_stop_20260919_1850/diagnosis.json",
+      "sha256": "4b2862b151b929e9b100a4c49c76d00cb3ccde5ea1262ded09c06d63a13b35f6"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/frozen_sources/07_pending_model_identity.json",
+      "path": "artifacts/fidelity_completion_v2/quanta_continuation_stop_20260919_1850/pending_model_identity.json",
+      "sha256": "f849ffbbb11e7e1d21de65398d9d89668a2c7dd18a89e925ba82c8c66bac9463"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/frozen_sources/08_quanta_walltime_continuation_protocol_v2.json",
+      "path": "paper_runs/fidelity_completion_v2/quanta_walltime_continuation_protocol_v2.json",
+      "sha256": "c37694d2fe988c5ed71224009676202f6dc04ec1f19e6c9b226d53c6e1adfe4e"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/frozen_sources/09_quanta_walltime_continuation_v2.py",
+      "path": "scripts/quanta_walltime_continuation_v2.py",
+      "sha256": "d88f6306e2306b2114fde9e61554ffc6bbab4cf1e30b58b8ca437a797ee5a8be"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/frozen_sources/10_run_quanta_walltime_continuation_v2.py",
+      "path": "scripts/run_quanta_walltime_continuation_v2.py",
+      "sha256": "f72a76cb376af2eb296fffe6aece29133102526f5c54abb12971d0a75f586634"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/frozen_sources/11_quanta_walltime_reconstruction_protocol_v4.json",
+      "path": "paper_runs/fidelity_completion_v2/quanta_walltime_reconstruction_protocol_v4.json",
+      "sha256": "e96a2dd64766a2f2ed7c691f6204b5e971428965b24e379aee46052b1b49bd72"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/frozen_sources/12_reconstruction_validation.json",
+      "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_reconstruction_probe__v4/reconstruction_validation.json",
+      "sha256": "231658ca010ca8a327bf30e38dbd34400470125b4c3a9185b077ab6e071da0e7"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/frozen_sources/13_model_calls.json",
+      "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v2/model_calls.json",
+      "sha256": "f3f1f9c7e826d0fe2d3f6e8398338be3fefa59e3b7b1aa9a31e67da8784ca7b3"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/frozen_sources/14_embedding_calls.json",
+      "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v2/embedding_calls.json",
+      "sha256": "4ac1cc5a1e07bd473fe045e36f771d8f7705050456ec102689301fa647f90267"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/frozen_sources/15_quality_gate_events.json",
+      "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v2/quality_gate_events.json",
+      "sha256": "2659596b2b8ca855b1603475b49a80dd24c478f715e8736c6b86e0fbb846e8ae"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/frozen_sources/16_runtime.json",
+      "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v2/runtime.json",
+      "sha256": "3c164cbdf32b8fb66534f2aec3d24e13f0be8d7b029b638aff8dee07ee4b398b"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/frozen_sources/17_parameter_wiring.json",
+      "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v2/parameter_wiring.json",
+      "sha256": "e1ab9e50e9aa287f003282b7b1d8c1329d3f7155f38a2f375c3aaa9b2a964d6c"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/frozen_sources/18_recipe.json",
+      "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v2/recipe.json",
+      "sha256": "2f02efc490a28fb4d1c37c154a4319cba7749a18eb5ea8aff5923294f91cb8be"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/frozen_sources/19_trajectory_pool.json",
+      "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v2/log/trajectory_pool.json",
+      "sha256": "7bda7e576f0bad5ea88639bf4abf7721c2edcc8eb1a9c1fb3c0b99369998e8ae"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/frozen_sources/20_continuation_prefix_gate.json",
+      "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v2/continuation_prefix_gate.json",
+      "sha256": "e0b59166c61df499170fc5f2551b2f229f171876acd9606ca7e812a2c9d95faa"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/frozen_sources/21_2_factor_calculate",
+      "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v2/log/mutation_03_03/__session__/0/2_factor_calculate",
+      "sha256": "7f0e4f9456ecf865794d1e9d107b47c099b8fcbafddf8e92f4933b9fb6c34774"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/frozen_sources/22_alpha_fidelity_v2_quanta_walltime_live_v3.sbatch",
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_quanta_walltime_live_v3.sbatch",
+      "sha256": "79b739d8e3ee58dd15f3bf6f325502b40bf9dfef565bdf0f04cc4597e084f823"
+    },
+    {
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_setup_20260919_after_reset/v3/frozen_sources/23_alpha_fidelity_v2_quanta_walltime_replay_v3.sbatch",
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_quanta_walltime_replay_v3.sbatch",
+      "sha256": "91d5f6c46c3d78b7368775a7513ef3aff7374ae4a6fc043d36654b86688a6467"
+    }
+  ],
+  "boundary": {
+    "cache_key": "quantaalpha.factors.coder.factor.execute/aaace511efa760540c532a7d835af034.pkl",
+    "data_type": "Debug",
+    "path": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_reconstruction_probe__v4/results/workspace/f8af46fb78284292b79d69b1ee0056e3/factor.py",
+    "sha256": "737638e3e114525c0004c564fa2a642caa8ebf9107ffa0238ca204b895385e67"
+  },
+  "cache_policy": "Original cache keys always read preserved hash-bound results and exact factor code; cached models explicitly retain actual original experiment workspace. Only unseen keys after full gate can execute in new output workspaces. Unknown or mismatched identities stop.",
+  "completed_model_rerun_allowed": false,
+  "downstream_V4_failed_V2_namespace_must_not_be_reused_blindly": true,
+  "economic_launcher_submitted": false,
+  "final_archive_authorized_by_this_receipt": false,
+  "guard_correction": "Both factor root results and native model root git_ignore_folder/RD-Agent_workspace must remain strictly inside the new V3 output. Original/completed workspaces and cached computations remain forbidden from native execution.",
+  "interrupted_continuation_run": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v2",
+  "live_model_calls": "Only ordinary future requests after exact prefix/identity/RNG/native artifact gate through original CohortOpenRouter; no key/response replacement.",
+  "new_primary_substitution": false,
+  "original_run": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters",
+  "orphan_policy": "Only the exact journal-verified body at its original request ordinal. Preserve original RESERVED entry and full0.0556885USD commitment; no replacement or recovery mapping. Future canonical requests use unchanged study/project caps.",
+  "orphan_settlement_allowed": false,
+  "partial_cache_artifacts": {
+    "quantaalpha.factors.coder.factor.execute/aaace511efa760540c532a7d835af034.pkl": {
+      "bytes": 826367,
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_stop_20260919_1850/preserved/artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v2/results/pickle_cache/quantaalpha.factors.coder.factor.execute/aaace511efa760540c532a7d835af034.pkl",
+      "lineage": "already_computed_factor_from_preserved_failed_v2_continuation",
+      "sha256": "e38c7e13371164c7c42e3383f7045b08db225abb2648f05c26bda7ceaaf0dd9d"
+    },
+    "quantaalpha.factors.coder.factor.execute/be31993871c89ab0713f96adfddff3e6.pkl": {
+      "bytes": 826383,
+      "copy": "artifacts/fidelity_completion_v2/quanta_continuation_stop_20260919_1850/preserved/artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_continuation_v2/results/pickle_cache/quantaalpha.factors.coder.factor.execute/be31993871c89ab0713f96adfddff3e6.pkl",
+      "lineage": "already_computed_factor_from_preserved_failed_v2_continuation",
+      "sha256": "9da962fee3309cb885a2ae9d142c2084add65ac1971f7cfc6971add3024f79f9"
+    }
+  },
+  "partial_counts": {
+    "chat": 2264,
+    "embedding": 379,
+    "loops": 34,
+    "pool": 33,
+    "quality": 419
+  },
+  "partial_diagnosis": "artifacts/fidelity_completion_v2/quanta_continuation_stop_20260919_1850/diagnosis.json",
+  "partial_model": {
+    "checkpoint_sha256": "7f0e4f9456ecf865794d1e9d107b47c099b8fcbafddf8e92f4933b9fb6c34774",
+    "code_identity": {
+      "codes": [
+        "c684c0de19c3250be51e3d354eb7cd3afd140ddfe15e97c1dedccf59bcc79172",
+        "737638e3e114525c0004c564fa2a642caa8ebf9107ffa0238ca204b895385e67",
+        "790b50213cd2c42a49f441ab28081fe347fa8d3483814329c8fcd74e694253b4"
+      ],
+      "parents": [
+        []
+      ]
+    },
+    "model_cache_key": "quantaalpha.factors.runner.develop/a5f31f7d8aa4dd90be9d6595f5466355.pkl",
+    "model_not_yet_executed": true,
+    "native_workspace_class_source_sha256": "d61ada4a1c143a14558aa3a5cec7deb70f1707ac2aa840183775505a90e20ad1",
+    "native_workspace_root": "git_ignore_folder/RD-Agent_workspace"
+  },
+  "partial_request_entries": {
+    "1149e1102a5da99d2e85e5363049063a95131678ef4e277941853e64069b1eb7": {
+      "cost_source": "provider_usage",
+      "cost_usd": 4.76e-06,
+      "created_utc": "2026-09-19T18:44:14.149806+00:00",
+      "endpoint": "embeddings",
+      "model": "qwen/qwen3-embedding-8b",
+      "pid": 1001548,
+      "provider": "Nebius",
+      "reserved_usd": 2.373e-05,
+      "response_id": "gen-emb-1789843455-JqA3kdZGP5R6QLDmsgwz",
+      "response_journal_offset": 3302001511,
+      "response_journal_sha256": "95df7540013ab06c07e367369389cdd40285293f19b174d8949904594e727704",
+      "response_model": "Qwen/Qwen3-Embedding-8B",
+      "status": "complete",
+      "study": "fidelity_v2_quantaalpha_fresh_search",
+      "usage": {
+        "cost": 4.76e-06,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 4.76e-06,
+          "upstream_inference_prompt_cost": 4.76e-06
+        },
+        "is_byok": false,
+        "prompt_tokens": 476,
+        "total_tokens": 476
+      }
+    },
+    "12c30ee02863e5d748baf9d77563638fb2128fe6174ad617176f5cff0ea35618": {
+      "cost_source": "provider_usage",
+      "cost_usd": 1.95e-06,
+      "created_utc": "2026-09-19T18:44:48.244374+00:00",
+      "endpoint": "embeddings",
+      "model": "qwen/qwen3-embedding-8b",
+      "pid": 1001548,
+      "provider": "Nebius",
+      "reserved_usd": 8.31e-06,
+      "response_id": "gen-emb-1789843489-9GwWjBhooasPVwkVgJ4U",
+      "response_journal_offset": 3302300253,
+      "response_journal_sha256": "90af2141a4f5854ce234cc590a2ed9dfe344f6d3e346dca0f83a8c0fb21450ba",
+      "response_model": "Qwen/Qwen3-Embedding-8B",
+      "status": "complete",
+      "study": "fidelity_v2_quantaalpha_fresh_search",
+      "usage": {
+        "cost": 1.95e-06,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 1.95e-06,
+          "upstream_inference_prompt_cost": 1.95e-06
+        },
+        "is_byok": false,
+        "prompt_tokens": 195,
+        "total_tokens": 195
+      }
+    },
+    "26103fd36e7a0e1aeaf17b2cbb4ef0d37c234fcc429ac9354badfc533b8ede16": {
+      "cost_source": "provider_usage",
+      "cost_usd": 0.003808,
+      "created_utc": "2026-09-19T18:43:50.956960+00:00",
+      "endpoint": "chat/completions",
+      "model": "openai/gpt-5.2",
+      "pid": 1001548,
+      "provider": "OpenAI",
+      "reserved_usd": 0.05559225,
+      "response_id": "gen-1789843432-XgJzMJJ19jlcqvQH2WZs",
+      "response_journal_offset": 3301903926,
+      "response_journal_sha256": "3be81ec837346dedaa292b2e5d17a25000e7a44f238a93c5a3584ca05f969912",
+      "response_model": "openai/gpt-5.2",
+      "status": "complete",
+      "study": "fidelity_v2_quantaalpha_fresh_search",
+      "usage": {
+        "completion_tokens": 67,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.003808,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.000938,
+          "upstream_inference_cost": 0.003808,
+          "upstream_inference_prompt_cost": 0.00287
+        },
+        "is_byok": false,
+        "prompt_tokens": 1640,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 1707
+      }
+    },
+    "4dcfa30f2ea0d8ffd71ccf57ec98bb6572604d99c61ffc74e72bae4db45bd18f": {
+      "cost_source": "provider_usage",
+      "cost_usd": 2.31e-06,
+      "created_utc": "2026-09-19T18:44:00.930668+00:00",
+      "endpoint": "embeddings",
+      "model": "qwen/qwen3-embedding-8b",
+      "pid": 1001548,
+      "provider": "Nebius",
+      "reserved_usd": 8.86e-06,
+      "response_id": "gen-emb-1789843442-D5693w0dslZ4dLwUG6ry",
+      "response_journal_offset": 3301912982,
+      "response_journal_sha256": "ce33903b88160d8a9bb0551620091d2788f1b9691b80233906fcfa2da4569539",
+      "response_model": "Qwen/Qwen3-Embedding-8B",
+      "status": "complete",
+      "study": "fidelity_v2_quantaalpha_fresh_search",
+      "usage": {
+        "cost": 2.31e-06,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 2.31e-06,
+          "upstream_inference_prompt_cost": 2.31e-06
+        },
+        "is_byok": false,
+        "prompt_tokens": 231,
+        "total_tokens": 231
+      }
+    },
+    "5c0eb2e316d6b668b7e46eda34880280b8eb1d7430bfab15e015c36b0eb581ea": {
+      "cost_source": "provider_usage",
+      "cost_usd": 0.005418,
+      "created_utc": "2026-09-19T18:43:13.593862+00:00",
+      "endpoint": "chat/completions",
+      "model": "openai/gpt-5.2",
+      "pid": 1001548,
+      "provider": "OpenAI",
+      "reserved_usd": 0.063966,
+      "response_id": "gen-1789843395-A1S1bfgniyQ4cCmuK1Na",
+      "response_journal_offset": 3301638064,
+      "response_journal_sha256": "6b65eb603d14b22fe145f4bd32280b1f071c53018472034f54a053c74ec82166",
+      "response_model": "openai/gpt-5.2",
+      "status": "complete",
+      "study": "fidelity_v2_quantaalpha_fresh_search",
+      "usage": {
+        "completion_tokens": 7,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.005418,
+        "cost_details": {
+          "upstream_inference_completions_cost": 9.8e-05,
+          "upstream_inference_cost": 0.005418,
+          "upstream_inference_prompt_cost": 0.00532
+        },
+        "is_byok": false,
+        "prompt_tokens": 3040,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 3047
+      }
+    },
+    "72b1eb9268d6b1b200e236abd639e3835bed75745d3d3d1378f2eb338a919243": {
+      "cost_source": "provider_usage",
+      "cost_usd": 0.0018683,
+      "created_utc": "2026-09-19T18:43:37.556633+00:00",
+      "endpoint": "chat/completions",
+      "model": "openai/gpt-5.2",
+      "pid": 1001548,
+      "provider": "OpenAI",
+      "reserved_usd": 0.0636055,
+      "response_id": "gen-1789843419-lpVRwQXcBwih2Wm699FU",
+      "response_journal_offset": 3301789449,
+      "response_journal_sha256": "10f6fcd541a6f22e391a72aab44f5b6bf8b158663cc91264dc4cb09b9bdcefb9",
+      "response_model": "openai/gpt-5.2",
+      "status": "complete",
+      "study": "fidelity_v2_quantaalpha_fresh_search",
+      "usage": {
+        "completion_tokens": 7,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.0018683,
+        "cost_details": {
+          "upstream_inference_completions_cost": 9.8e-05,
+          "upstream_inference_cost": 0.0018683,
+          "upstream_inference_prompt_cost": 0.0017703
+        },
+        "is_byok": false,
+        "prompt_tokens": 2970,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 2176,
+          "video_tokens": 0
+        },
+        "total_tokens": 2977
+      }
+    },
+    "aaa6741ffffba544a2cf779668b68fae3a49a6e81a7ba9371eb65a6a339ceb4b": {
+      "cost_source": "provider_usage",
+      "cost_usd": 5.3e-06,
+      "created_utc": "2026-09-19T18:44:35.367823+00:00",
+      "endpoint": "embeddings",
+      "model": "qwen/qwen3-embedding-8b",
+      "pid": 1001548,
+      "provider": "Nebius",
+      "reserved_usd": 2.525e-05,
+      "response_id": "gen-emb-1789843477-PblSNOEhtzBHL3jQYTgW",
+      "response_journal_offset": 3302145274,
+      "response_journal_sha256": "99464bab33e83b91f7fadf42c673c77d933a74b33f61cddfc8cf50ada6edc820",
+      "response_model": "Qwen/Qwen3-Embedding-8B",
+      "status": "complete",
+      "study": "fidelity_v2_quantaalpha_fresh_search",
+      "usage": {
+        "cost": 5.3e-06,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 5.3e-06,
+          "upstream_inference_prompt_cost": 5.3e-06
+        },
+        "is_byok": false,
+        "prompt_tokens": 530,
+        "total_tokens": 530
+      }
+    },
+    "b63f035bee49a03cbd2121cf0ec89fc7506654c98829aab5f4a16c307678fa77": {
+      "cost_source": "provider_usage",
+      "cost_usd": 0.003899,
+      "created_utc": "2026-09-19T18:43:23.510953+00:00",
+      "endpoint": "chat/completions",
+      "model": "openai/gpt-5.2",
+      "pid": 1001548,
+      "provider": "OpenAI",
+      "reserved_usd": 0.05569725,
+      "response_id": "gen-1789843405-sNZHdjjAsNTaALh2Aami",
+      "response_journal_offset": 3301651613,
+      "response_journal_sha256": "8147a374cc708a8734791c770c823a37832b370fd591945810ba9c66030b38c0",
+      "response_model": "openai/gpt-5.2",
+      "status": "complete",
+      "study": "fidelity_v2_quantaalpha_fresh_search",
+      "usage": {
+        "completion_tokens": 73,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.003899,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.001022,
+          "upstream_inference_cost": 0.003899,
+          "upstream_inference_prompt_cost": 0.002877
+        },
+        "is_byok": false,
+        "prompt_tokens": 1644,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 1717
+      }
+    },
+    "d1da89afe219962c0352e5cde0f2bad571716046a72b373112ccca5e191dd1ec": {
+      "cost_source": "provider_usage",
+      "cost_usd": 1.96e-06,
+      "created_utc": "2026-09-19T18:44:25.466265+00:00",
+      "endpoint": "embeddings",
+      "model": "qwen/qwen3-embedding-8b",
+      "pid": 1001548,
+      "provider": "Nebius",
+      "reserved_usd": 8.91e-06,
+      "response_id": "gen-emb-1789843467-5DXcWJkcy2Iqk1lU4JNI",
+      "response_journal_offset": 3302092416,
+      "response_journal_sha256": "272eb6ebc3ea2718ffc585f095929ce6a394b0c7e8b966f3ca3ee72f9c6ce765",
+      "response_model": "Qwen/Qwen3-Embedding-8B",
+      "status": "complete",
+      "study": "fidelity_v2_quantaalpha_fresh_search",
+      "usage": {
+        "cost": 1.96e-06,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 1.96e-06,
+          "upstream_inference_prompt_cost": 1.96e-06
+        },
+        "is_byok": false,
+        "prompt_tokens": 196,
+        "total_tokens": 196
+      }
+    },
+    "ef425dbfdbee63bdad804c73e5b63b3c460598fcd9fb8567de65ef0bb1aa0153": {
+      "cost_source": "provider_usage",
+      "cost_usd": 4.62e-06,
+      "created_utc": "2026-09-19T18:44:58.333098+00:00",
+      "endpoint": "embeddings",
+      "model": "qwen/qwen3-embedding-8b",
+      "pid": 1001548,
+      "provider": "Nebius",
+      "reserved_usd": 2.362e-05,
+      "response_id": "gen-emb-1789843499-JTRJPGtvXWcvzsi0gjsm",
+      "response_journal_offset": 3302324278,
+      "response_journal_sha256": "373d7dd31ccf8d5d2d3bdb4d58bd32e52fb684ebaf3732faeab13e40848ec1f7",
+      "response_model": "Qwen/Qwen3-Embedding-8B",
+      "status": "complete",
+      "study": "fidelity_v2_quantaalpha_fresh_search",
+      "usage": {
+        "cost": 4.62e-06,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 4.62e-06,
+          "upstream_inference_prompt_cost": 4.62e-06
+        },
+        "is_byok": false,
+        "prompt_tokens": 462,
+        "total_tokens": 462
+      }
+    }
+  },
+  "prepared_at_utc": "2026-09-19T19:01:22.509720+00:00",
+  "reconstruction_protocol": "paper_runs/fidelity_completion_v2/quanta_walltime_reconstruction_protocol_v4.json",
+  "reconstruction_receipt": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_walltime_reconstruction_probe__v4/reconstruction_validation.json",
+  "replacement_response_allowed": false,
+  "required_prefix": {
+    "durable_orphan": 1,
+    "embeddings": 373,
+    "loop_ids": 34,
+    "pool_ids": 33,
+    "quality_events": 419,
+    "recorded_chats": 2259
+  },
+  "rng_policy": "Reconstruct original control flow and match successful probe boundary RNG bytes; never claim original RAM snapshot. Native future factor/model work must leave parent Python/NumPy RNG unchanged, or stop for diagnosis.",
+  "scope": "V3 exact continuation of the preserved V2 partial history. Correct the observed native model workspace-root guard, never relax old-result/code/identity protections. Both original and additional partial prefixes must pass before unexecuted work.",
+  "second_gate": "Replay all2264chat/379embedding/419quality/33pool/34loop records, reuse both computed factor results, bind exact a5f31f7d8aa4dd90be9d6595f5466355 pending model code/ancestors, reconstruct RNG. No unavailable original partial-boundary RAM snapshot claim.",
+  "source_completion": "Distinct continued output and receipt; preserve original TIMEOUT source. No source/economic credit until actual completion and full replay.",
+  "templates": {
+    "live": {
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_quanta_walltime_live_v3.sbatch",
+      "sha256": "79b739d8e3ee58dd15f3bf6f325502b40bf9dfef565bdf0f04cc4597e084f823"
+    },
+    "replay": {
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_quanta_walltime_replay_v3.sbatch",
+      "sha256": "91d5f6c46c3d78b7368775a7513ef3aff7374ae4a6fc043d36654b86688a6467"
+    }
+  }
+}

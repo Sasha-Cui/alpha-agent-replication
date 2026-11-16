@@ -1,0 +1,69 @@
+{
+  "actual_loop_ids": 50,
+  "actual_pool_entries": 50,
+  "actual_pool_ids": 50,
+  "admission": {
+    "continuation_protocol_sha256": "4833fc5adca4c67fceded0c6941c769ddeac9b1dd7fd912ef11fdeec6c46fce5",
+    "continued_source": "quantaalpha_paper_parameters_walltime_continuation_v3",
+    "current_pool_entries": 50,
+    "full_replay_sha256": "bf464728707d5968f02cf4b63e52c1f9b87a3dea242f1ec49ea9f9e4492616b9",
+    "original_loops_preserved": 34,
+    "original_native_artifact_lineage_sha256": "eeeb80ac423f665b3c7e539b33d61fa2057c36a54e0909b079ecb9f0e7b5695b",
+    "original_orphan_full_reservation_retained": 0.0556885,
+    "original_pool_entries_preserved": 33,
+    "original_run": "artifacts/fidelity_completion_v2/quantaalpha_paper_parameters",
+    "scope": "Source/replay ancestry and native artifact reuse only; no economic completion, strict-primary substitution or full-paper claim.",
+    "source_completion_sha256": "63b08dccc4ea2d788aa0e5643254985f5d67df30a1ad75e15c5b2f147e6b60b7",
+    "status": "pass",
+    "terminal_parameter_wiring": {
+      "completed_events": [
+        {
+          "phase_method": "_get_mutation_task",
+          "round": 5,
+          "round_limit": 5
+        }
+      ],
+      "completed_events_ignored": false,
+      "full_replay_must_match_entire_completed_wiring": true,
+      "interrupted_event_count": 0,
+      "original_partial_parameter_wiring_exact": true,
+      "status": "exact_static_parameters_and_single_terminal_round_event_pass"
+    }
+  },
+  "all_bound_cache_files": 442,
+  "closure_job": "26832188",
+  "closure_submitted_not_completed": true,
+  "copied_bytes": 97957939,
+  "current_evaluation_adapter": "quanta_continued_evaluation_adapter_v6.json",
+  "distinct_new_result_keys": 17,
+  "distinct_original_result_keys": 34,
+  "evidence": "artifacts/fidelity_completion_v2/quanta_v3_full_replay_20260920_0632/validation.json",
+  "evidence_sha256": "66bc5040fd4bf3b6ff99a731270c7b64b6836c61698b727de24aa9c1b8b18f50",
+  "final_archive_claim": false,
+  "full_replay_elapsed": "00:26:56",
+  "full_replay_job": "26769832",
+  "independent_full_source_accounts_complete": false,
+  "later_period_economics_complete": false,
+  "ledger_mutations": 0,
+  "new_equity_headline_credit": 0,
+  "new_source_model_factor_API_account_executions": 0,
+  "obsolete_closure": "26770179 cancelled unstarted",
+  "record_counts": {
+    "embedding_calls.json": 589,
+    "model_calls.json": 3644,
+    "quality_gate_events.json": 680
+  },
+  "recorded_at_utc": "2026-09-20T06:46:57.477459+00:00",
+  "result_lineage_event_counts_not_independent_fits_or_successes": {
+    "new_native_execution": 17,
+    "original_native_artifact_reused": 50
+  },
+  "source_elapsed": "08:24:10",
+  "source_job": "26769831",
+  "source_stage_copied_bytes": 22545028827,
+  "source_stage_evidence": "artifacts/fidelity_completion_v2/quanta_v3_source_completion_20260920_0632/v2/validation.json",
+  "source_stage_evidence_sha256": "2a42f1b5ef5466bc1b15a7fbfec887a093c39aaa95378449e9bb13f77092a7dd",
+  "source_symlinks_hash_bound_not_new_target_copies": 49,
+  "status": "complete_source_full_replay_and_current_v4_source_admission_pass",
+  "terminal_wiring_diagnosis": "artifacts/fidelity_completion_v2/quanta_v3_full_replay_20260920_0632/preserved_v3_admission_failure.json"
+}
