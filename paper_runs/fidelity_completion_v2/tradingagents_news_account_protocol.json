@@ -1,0 +1,36 @@
+{
+  "frozen_utc": "2026-09-17T21:13:32.797627+00:00",
+  "status": "fixed_before_reading_repaired_portfolio_returns",
+  "role": "Separate descriptive issuer-news sensitivity; no replacement of original cohort or causal treatment-effect claim across stochastic LLM realizations.",
+  "original": "tradingagents_GOOGL",
+  "repair": "tradingagents_GOOGL_single_news_source",
+  "other_assets_reused": [
+    "tradingagents_AAPL",
+    "tradingagents_AMZN"
+  ],
+  "period": [
+    "2024-01-02",
+    "2024-03-28"
+  ],
+  "required_records": 61,
+  "account": "Initial wealth1,cash0interest,fractionalshares,longonly,BUYinvestscash/SELLliquidates/HOLDdrifts. Mark prior positions before lagged close fills, no forced terminal liquidation.",
+  "clocks": {
+    "primary": "next_close",
+    "diagnostic": "same_close_infeasible_diagnostic"
+  },
+  "cost_bps": [
+    0,
+    10,
+    25,
+    50
+  ],
+  "primary_cost_bps": 10,
+  "contrasts": [
+    "RepairedGOOGL minus originalGOOGL",
+    "RepairedGOOGL minus same-clock buy-hold",
+    "Equal-initial-capital AAPL/AMZN/GOOGL sensitivity with only GOOGL changed versus original three-equity cohort"
+  ],
+  "checks": "Complete exact cached replay and all preserved transport prefixes, exact identical completepricecalendar, model/temperature/source/date/economicsettings, toolcutoffs, independent share/cash versus targetweight accounting. No performance-based filtering.",
+  "inference": "Descriptive realized comparisons for one issuer/quarter and one trajectory per policy. No significant-alpha, repeated-model-trial or JKP132 attribution claim; do not transfer N238/963 factor-model simulation coverage to61days.",
+  "news_policy": "Keep full single-source company corpus and missing independent feeds as disclosed in alphabet_single_source_repair.json; earlier failed5day duplicated-feed variant remains separate."
+}

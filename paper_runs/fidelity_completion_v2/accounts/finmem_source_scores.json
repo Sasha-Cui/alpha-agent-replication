@@ -1,0 +1,37 @@
+[
+  {
+    "case": "finmem",
+    "label": "Source score, not a self-financing portfolio return",
+    "scored_decisions": 126,
+    "signed_log_return_sum": 0.11150393561180631,
+    "symbol": "TSLA"
+  },
+  {
+    "case": "finmem",
+    "label": "Source score, not a self-financing portfolio return",
+    "scored_decisions": 126,
+    "signed_log_return_sum": 0.42882178531232085,
+    "symbol": "NFLX"
+  },
+  {
+    "case": "finmem",
+    "label": "Source score, not a self-financing portfolio return",
+    "scored_decisions": 126,
+    "signed_log_return_sum": -0.04025739734342737,
+    "symbol": "AMZN"
+  },
+  {
+    "case": "finmem",
+    "label": "Source score, not a self-financing portfolio return",
+    "scored_decisions": 126,
+    "signed_log_return_sum": -0.021321345368363425,
+    "symbol": "MSFT"
+  },
+  {
+    "case": "finmem",
+    "label": "Source score, not a self-financing portfolio return",
+    "scored_decisions": 126,
+    "signed_log_return_sum": 0.2498388605042472,
+    "symbol": "COIN"
+  }
+]

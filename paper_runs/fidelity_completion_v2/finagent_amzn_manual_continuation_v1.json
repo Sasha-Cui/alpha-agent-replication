@@ -1,0 +1,58 @@
+{
+  "AMZN_retry_authorized": true,
+  "actual_live_transition_evidence": "artifacts/fidelity_completion_v2/finagent_amzn_manual_retry_20260922/live_transition_20260922_0723/validation.json",
+  "actual_live_transition_evidence_sha256": "7773468dbd4decdc64baee5d67f7c207a083d525e37903a1cc221a9a9db550fb",
+  "actual_live_transition_observed": true,
+  "additional_retry_authorized": false,
+  "all_other_studies_unchanged": true,
+  "approval": "artifacts/fidelity_completion_v2/finagent_amzn_manual_retry_20260922/approval.json",
+  "approval_sha256": "a90ae29b17ed1f306da6c0e26824ada3894192fdddc9372d3e79685d611d81c0",
+  "final13_accounts_complete": true,
+  "final13_accounts_completion": "paper_runs/fidelity_completion_v2/final_equity_accounts_completion_v3.json",
+  "final13_accounts_completion_sha256": "7161b2b143610441565327d86a153736292e9e0442e4c80a6c73100b6a9e9fb0",
+  "final13_accounts_job": "27116634",
+  "final13_accounts_submitted": true,
+  "full_replay_complete": true,
+  "full_replay_completion_evidence": "artifacts/fidelity_completion_v2/finagent_amzn_full_replay_20260922_1627/validation.json",
+  "full_replay_completion_evidence_sha256": "30daedbce25d1408cde5cd6b71c1039fef3545172f0eff2a33573095c4373ed7",
+  "jobs": {
+    "live": "27062473",
+    "replay": "27062474"
+  },
+  "jobs_manifest": "artifacts/fidelity_completion_v2/finagent_amzn_manual_retry_20260922/jobs.json",
+  "jobs_manifest_sha256": "dc1e0379e14081e3b009bcba9f77330e00f79263802ce76cdf294dd4c84b6d27",
+  "live_transition_gate_sha256": "e9bd06f1de9635a4c091773a728f6e6fcd26dcef36c673b84aa7342b255e95fc",
+  "max_additional_retry_attempts": 1,
+  "observed_source_last_date": "2023-12-29",
+  "observed_source_records": 397,
+  "original_failed_request_charge_retained_usd": 0.00012324000000000002,
+  "original_request_status_after_authorized_recovery": "response_unavailable",
+  "prefix_counts_overlap_do_not_sum": true,
+  "preserved_prefixes": [
+    {
+      "kind": "http500_220",
+      "records": 220
+    },
+    {
+      "kind": "nfs",
+      "records": 49
+    },
+    {
+      "kind": "transport",
+      "records": 134
+    }
+  ],
+  "recorded_at_utc": "2026-09-22T17:01:12.549915+00:00",
+  "retry_complete_never_rerun": "fb6e18a9880dbc1d047ac580200c80aeae651cf9c6ce6341dcc7848a92e552f0",
+  "retry_receipt": "artifacts/fidelity_completion_v2/finagent_amzn_manual_retry_20260922/retry_receipt.json",
+  "retry_receipt_sha256": "576f36a42d653df12ab0fdeacbfe77cce34751f452efed4def23a324954dd278",
+  "scope": "The single approved retry,397-record source/full replay, manual+V3 admission and all13 final equity accounts are complete. No rerun or additional retry. Final manuscript/bundles/independent durable copies remain open.",
+  "single_retry_actual_cost_usd": 2.132e-05,
+  "source_complete": true,
+  "source_completion_evidence": "artifacts/fidelity_completion_v2/finagent_amzn_source_completion_20260922_1627/validation.json",
+  "source_completion_evidence_sha256": "b152e1ef183e13e301965ed269f3f83c84a09943023c74eb053cd263f4835792",
+  "source_protocol": "artifacts/fidelity_completion_v2/finagent_amzn_manual_retry_20260922/continuation_protocol.json",
+  "source_protocol_sha256": "35e03c8c02d0252a43fd2c498c488d30b793edfdd775c294f593cf9725924b01",
+  "status": "actual397source_full_replay_manual_and_currentV3_admission_complete",
+  "validated_new_equity_records": 3877
+}

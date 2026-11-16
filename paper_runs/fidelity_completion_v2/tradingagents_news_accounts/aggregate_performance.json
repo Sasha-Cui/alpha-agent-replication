@@ -1,0 +1,322 @@
+[
+  {
+    "annualized_arithmetic_return": 0.36204961984377715,
+    "annualized_volatility": 0.19403371547489,
+    "assets": [
+      "tradingagents_AAPL",
+      "tradingagents_AMZN",
+      "tradingagents_GOOGL"
+    ],
+    "cagr": 0.40952180938430033,
+    "clock": "next_close",
+    "cohort": "original_three_equity",
+    "cost_bps": 0,
+    "end": "2024-03-28 00:00:00",
+    "ending_wealth": 1.0866378802509904,
+    "max_drawdown": -0.06555096301332297,
+    "observations": 61,
+    "sharpe_zero_cash_rate": 1.8659108751160836,
+    "start": "2024-01-02 00:00:00",
+    "weighting": "Equal initial capital; no daily cross-account rebalancing"
+  },
+  {
+    "annualized_arithmetic_return": 0.36204961984377715,
+    "annualized_volatility": 0.19403371547489,
+    "assets": [
+      "tradingagents_AAPL",
+      "tradingagents_AMZN",
+      "tradingagents_GOOGL_single_news_source"
+    ],
+    "cagr": 0.40952180938430033,
+    "clock": "next_close",
+    "cohort": "repaired_news_three_equity",
+    "cost_bps": 0,
+    "end": "2024-03-28 00:00:00",
+    "ending_wealth": 1.0866378802509904,
+    "max_drawdown": -0.06555096301332297,
+    "observations": 61,
+    "sharpe_zero_cash_rate": 1.8659108751160836,
+    "start": "2024-01-02 00:00:00",
+    "weighting": "Equal initial capital; no daily cross-account rebalancing"
+  },
+  {
+    "annualized_arithmetic_return": 0.35480868016286027,
+    "annualized_volatility": 0.1942587184165547,
+    "assets": [
+      "tradingagents_AAPL",
+      "tradingagents_AMZN",
+      "tradingagents_GOOGL"
+    ],
+    "cagr": 0.39930622971596436,
+    "clock": "next_close",
+    "cohort": "original_three_equity",
+    "cost_bps": 10,
+    "end": "2024-03-28 00:00:00",
+    "ending_wealth": 1.0847262600053431,
+    "max_drawdown": -0.06627983720678798,
+    "observations": 61,
+    "sharpe_zero_cash_rate": 1.826474935359316,
+    "start": "2024-01-02 00:00:00",
+    "weighting": "Equal initial capital; no daily cross-account rebalancing"
+  },
+  {
+    "annualized_arithmetic_return": 0.35480868016286027,
+    "annualized_volatility": 0.1942587184165547,
+    "assets": [
+      "tradingagents_AAPL",
+      "tradingagents_AMZN",
+      "tradingagents_GOOGL_single_news_source"
+    ],
+    "cagr": 0.39930622971596436,
+    "clock": "next_close",
+    "cohort": "repaired_news_three_equity",
+    "cost_bps": 10,
+    "end": "2024-03-28 00:00:00",
+    "ending_wealth": 1.0847262600053431,
+    "max_drawdown": -0.06627983720678798,
+    "observations": 61,
+    "sharpe_zero_cash_rate": 1.826474935359316,
+    "start": "2024-01-02 00:00:00",
+    "weighting": "Equal initial capital; no daily cross-account rebalancing"
+  },
+  {
+    "annualized_arithmetic_return": 0.34397194059863306,
+    "annualized_volatility": 0.19464365114139737,
+    "assets": [
+      "tradingagents_AAPL",
+      "tradingagents_AMZN",
+      "tradingagents_GOOGL"
+    ],
+    "cagr": 0.38414229789451204,
+    "clock": "next_close",
+    "cohort": "original_three_equity",
+    "cost_bps": 25,
+    "end": "2024-03-28 00:00:00",
+    "ending_wealth": 1.0818690657421748,
+    "max_drawdown": -0.06737042203491594,
+    "observations": 61,
+    "sharpe_zero_cash_rate": 1.7671880823318373,
+    "start": "2024-01-02 00:00:00",
+    "weighting": "Equal initial capital; no daily cross-account rebalancing"
+  },
+  {
+    "annualized_arithmetic_return": 0.34397194059863306,
+    "annualized_volatility": 0.19464365114139737,
+    "assets": [
+      "tradingagents_AAPL",
+      "tradingagents_AMZN",
+      "tradingagents_GOOGL_single_news_source"
+    ],
+    "cagr": 0.38414229789451204,
+    "clock": "next_close",
+    "cohort": "repaired_news_three_equity",
+    "cost_bps": 25,
+    "end": "2024-03-28 00:00:00",
+    "ending_wealth": 1.0818690657421748,
+    "max_drawdown": -0.06737042203491594,
+    "observations": 61,
+    "sharpe_zero_cash_rate": 1.7671880823318373,
+    "start": "2024-01-02 00:00:00",
+    "weighting": "Equal initial capital; no daily cross-account rebalancing"
+  },
+  {
+    "annualized_arithmetic_return": 0.32597618549653545,
+    "annualized_volatility": 0.19540958963295996,
+    "assets": [
+      "tradingagents_AAPL",
+      "tradingagents_AMZN",
+      "tradingagents_GOOGL"
+    ],
+    "cagr": 0.3592876151934308,
+    "clock": "next_close",
+    "cohort": "original_three_equity",
+    "cost_bps": 50,
+    "end": "2024-03-28 00:00:00",
+    "ending_wealth": 1.0771341949497322,
+    "max_drawdown": -0.0691808290215753,
+    "observations": 61,
+    "sharpe_zero_cash_rate": 1.6681688248198068,
+    "start": "2024-01-02 00:00:00",
+    "weighting": "Equal initial capital; no daily cross-account rebalancing"
+  },
+  {
+    "annualized_arithmetic_return": 0.32597618549653545,
+    "annualized_volatility": 0.19540958963295996,
+    "assets": [
+      "tradingagents_AAPL",
+      "tradingagents_AMZN",
+      "tradingagents_GOOGL_single_news_source"
+    ],
+    "cagr": 0.3592876151934308,
+    "clock": "next_close",
+    "cohort": "repaired_news_three_equity",
+    "cost_bps": 50,
+    "end": "2024-03-28 00:00:00",
+    "ending_wealth": 1.0771341949497322,
+    "max_drawdown": -0.0691808290215753,
+    "observations": 61,
+    "sharpe_zero_cash_rate": 1.6681688248198068,
+    "start": "2024-01-02 00:00:00",
+    "weighting": "Equal initial capital; no daily cross-account rebalancing"
+  },
+  {
+    "annualized_arithmetic_return": 0.33079105951927573,
+    "annualized_volatility": 0.1959805109496287,
+    "assets": [
+      "tradingagents_AAPL",
+      "tradingagents_AMZN",
+      "tradingagents_GOOGL"
+    ],
+    "cagr": 0.36568412930400923,
+    "clock": "same_close_infeasible_diagnostic",
+    "cohort": "original_three_equity",
+    "cost_bps": 0,
+    "end": "2024-03-28 00:00:00",
+    "ending_wealth": 1.0783589748626365,
+    "max_drawdown": -0.0692826001300395,
+    "observations": 61,
+    "sharpe_zero_cash_rate": 1.6878773196192773,
+    "start": "2024-01-02 00:00:00",
+    "weighting": "Equal initial capital; no daily cross-account rebalancing"
+  },
+  {
+    "annualized_arithmetic_return": 0.33079105951927573,
+    "annualized_volatility": 0.1959805109496287,
+    "assets": [
+      "tradingagents_AAPL",
+      "tradingagents_AMZN",
+      "tradingagents_GOOGL_single_news_source"
+    ],
+    "cagr": 0.36568412930400923,
+    "clock": "same_close_infeasible_diagnostic",
+    "cohort": "repaired_news_three_equity",
+    "cost_bps": 0,
+    "end": "2024-03-28 00:00:00",
+    "ending_wealth": 1.0783589748626365,
+    "max_drawdown": -0.0692826001300395,
+    "observations": 61,
+    "sharpe_zero_cash_rate": 1.6878773196192773,
+    "start": "2024-01-02 00:00:00",
+    "weighting": "Equal initial capital; no daily cross-account rebalancing"
+  },
+  {
+    "annualized_arithmetic_return": 0.32354043670869487,
+    "annualized_volatility": 0.19595802164348394,
+    "assets": [
+      "tradingagents_AAPL",
+      "tradingagents_AMZN",
+      "tradingagents_GOOGL"
+    ],
+    "cagr": 0.35583576061221756,
+    "clock": "same_close_infeasible_diagnostic",
+    "cohort": "original_three_equity",
+    "cost_bps": 10,
+    "end": "2024-03-28 00:00:00",
+    "ending_wealth": 1.0764714314013812,
+    "max_drawdown": -0.06966844813747808,
+    "observations": 61,
+    "sharpe_zero_cash_rate": 1.6510701322415264,
+    "start": "2024-01-02 00:00:00",
+    "weighting": "Equal initial capital; no daily cross-account rebalancing"
+  },
+  {
+    "annualized_arithmetic_return": 0.32354043670869487,
+    "annualized_volatility": 0.19595802164348394,
+    "assets": [
+      "tradingagents_AAPL",
+      "tradingagents_AMZN",
+      "tradingagents_GOOGL_single_news_source"
+    ],
+    "cagr": 0.35583576061221756,
+    "clock": "same_close_infeasible_diagnostic",
+    "cohort": "repaired_news_three_equity",
+    "cost_bps": 10,
+    "end": "2024-03-28 00:00:00",
+    "ending_wealth": 1.0764714314013812,
+    "max_drawdown": -0.06966844813747808,
+    "observations": 61,
+    "sharpe_zero_cash_rate": 1.6510701322415264,
+    "start": "2024-01-02 00:00:00",
+    "weighting": "Equal initial capital; no daily cross-account rebalancing"
+  },
+  {
+    "annualized_arithmetic_return": 0.31268913781770935,
+    "annualized_volatility": 0.1959721971822299,
+    "assets": [
+      "tradingagents_AAPL",
+      "tradingagents_AMZN",
+      "tradingagents_GOOGL"
+    ],
+    "cagr": 0.341216304467991,
+    "clock": "same_close_infeasible_diagnostic",
+    "cohort": "original_three_equity",
+    "cost_bps": 25,
+    "end": "2024-03-28 00:00:00",
+    "ending_wealth": 1.0736502032152346,
+    "max_drawdown": -0.07024504935610543,
+    "observations": 61,
+    "sharpe_zero_cash_rate": 1.5955790786330122,
+    "start": "2024-01-02 00:00:00",
+    "weighting": "Equal initial capital; no daily cross-account rebalancing"
+  },
+  {
+    "annualized_arithmetic_return": 0.31268913781770935,
+    "annualized_volatility": 0.1959721971822299,
+    "assets": [
+      "tradingagents_AAPL",
+      "tradingagents_AMZN",
+      "tradingagents_GOOGL_single_news_source"
+    ],
+    "cagr": 0.341216304467991,
+    "clock": "same_close_infeasible_diagnostic",
+    "cohort": "repaired_news_three_equity",
+    "cost_bps": 25,
+    "end": "2024-03-28 00:00:00",
+    "ending_wealth": 1.0736502032152346,
+    "max_drawdown": -0.07024504935610543,
+    "observations": 61,
+    "sharpe_zero_cash_rate": 1.5955790786330122,
+    "start": "2024-01-02 00:00:00",
+    "weighting": "Equal initial capital; no daily cross-account rebalancing"
+  },
+  {
+    "annualized_arithmetic_return": 0.29466902514913884,
+    "annualized_volatility": 0.1961222941831928,
+    "assets": [
+      "tradingagents_AAPL",
+      "tradingagents_AMZN",
+      "tradingagents_GOOGL"
+    ],
+    "cagr": 0.3172524567524695,
+    "clock": "same_close_infeasible_diagnostic",
+    "cohort": "original_three_equity",
+    "cost_bps": 50,
+    "end": "2024-03-28 00:00:00",
+    "ending_wealth": 1.0689748810450497,
+    "max_drawdown": -0.07120028794801503,
+    "observations": 61,
+    "sharpe_zero_cash_rate": 1.5024759238941805,
+    "start": "2024-01-02 00:00:00",
+    "weighting": "Equal initial capital; no daily cross-account rebalancing"
+  },
+  {
+    "annualized_arithmetic_return": 0.29466902514913884,
+    "annualized_volatility": 0.1961222941831928,
+    "assets": [
+      "tradingagents_AAPL",
+      "tradingagents_AMZN",
+      "tradingagents_GOOGL_single_news_source"
+    ],
+    "cagr": 0.3172524567524695,
+    "clock": "same_close_infeasible_diagnostic",
+    "cohort": "repaired_news_three_equity",
+    "cost_bps": 50,
+    "end": "2024-03-28 00:00:00",
+    "ending_wealth": 1.0689748810450497,
+    "max_drawdown": -0.07120028794801503,
+    "observations": 61,
+    "sharpe_zero_cash_rate": 1.5024759238941805,
+    "start": "2024-01-02 00:00:00",
+    "weighting": "Equal initial capital; no daily cross-account rebalancing"
+  }
+]

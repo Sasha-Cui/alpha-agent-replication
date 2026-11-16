@@ -1,0 +1,38 @@
+{
+  "case": "FinMem TSLA paper-period native mechanism with alternative dated inputs",
+  "frozen_before_new_decisions": true,
+  "source_commit": "be814aa47970de9bf2fdd6a1d5a60ae5cf361b46",
+  "model": "openai/gpt-4-turbo",
+  "temperature": 0.7,
+  "top_k": 5,
+  "seed": 20260907,
+  "train_start": "2021-08-17",
+  "train_end": "2022-10-05",
+  "test_start": "2022-10-06",
+  "test_end": "2023-04-10",
+  "actor_budget_usd": 120,
+  "summary_budget_usd": 15,
+  "arms": [
+    "native",
+    "semantic_only"
+  ],
+  "ablation": "Shared exact trained state; in test only, semantic retrieval ranks the same source candidate memories and returns the same number of unique memories as the native query. Native aging, promotions, feedback, actor, and available external information are preserved.",
+  "source_input_differences": [
+    "FINSABER V2 dated text and prices replace unavailable paper snapshots",
+    "No TSLA news in this dataset before May 2022; absence is retained",
+    "Date-only text becomes available on the strictly next trading session",
+    "Texts already within 200 tokens are retained; longer texts use the source summarization prompt with current GPT-3.5-Turbo and full-coverage 6000-token map/reduce chunks",
+    "Current GPT-4-Turbo route cannot establish the original historical model version",
+    "One prespecified TSLA profile and random seed; not the source five-stock five-trial average or test-selected best profile"
+  ],
+  "native_feedback": "Original cumulative one-share buy/sell updates and 7-day feedback. Training labels never cross the last training close; test actor is never delivered a future label.",
+  "native_paper_metric": "Sum of direction times next-close log return; a score, not NAV",
+  "economic_adapter": "Long-only buy=100% stock, sell=100% cash, hold=retain target; start test flat; primary execution at next close, earn subsequent returns; 0/10/25/50bp per traded notional. Same-close is explicitly infeasible diagnostic.",
+  "guardrail_failure": "Record failures; source fallback hold retained. Transport/budget errors stop the outer driver instead of being concealed by source exception handler.",
+  "human_source_review": "pending",
+  "empty_news_adapter": "Empty embedding input returns a correctly shaped zero-row matrix; absent news creates no synthetic memory and no embedding API call.",
+  "technical_persistence_recovery": "On 2026-09-07, a shared SQLite write-lock failure led to an fsynced append-journal cache. Five unavailable responses retain $0.2640905 of reservations project-wide; each receives at most one explicit technical recovery under the same model/input recipe, with both attempts counted. No completed case outcome was used to select a recovery response.",
+  "terminal_date_convention": "Match released MarketEnvironment.simulation_length: the inclusive end date is a terminal price, not another actor step. Training decisions end before 2022-10-05 and their next-price labels end on 2022-10-05; test decisions end before 2023-04-10, which remains an evaluation close.",
+  "embedding_transport": "Execute the released puppy.embedding.OpenAILongerThanContextEmb wrapper and its LangChain tokenization, document batching and normalization; bind only the SDK create call to metered OpenRouter. Empty absent-news input remains a zero-row matrix and makes no API call.",
+  "embedding_audit_correction": "The earlier manual embedding adapter is archived as setup. The primary run delegates the complete embedding computation to the released wrapper, including its source-configured batch behavior."
+}

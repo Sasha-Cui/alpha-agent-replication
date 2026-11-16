@@ -1,0 +1,54 @@
+{
+  "admission": {
+    "case": "finagent",
+    "current_full_record_recomparison_maximum_difference": 0.0,
+    "frozen_original_evidence": false,
+    "full_replay_proof_sha256": "aa2d11e49dd5396dcc9675de8b4a26db3ec86522f9cb0d6f5cb968c15afb1fdc",
+    "input_sha256": "a2d0c1d5295423d5c3d670acba654f612748bf8642a7edbf521353fe6f8a793b",
+    "original_decisions_sha256": "0d7ac6ddd1a090fb765d54bb84f06e7acc44789aba684275a4a0eb884336112c",
+    "preserved_prefixes": [
+      {
+        "kind": "nfs_preserved",
+        "maximum_numeric_difference": 0.0,
+        "path": "artifacts/fidelity_completion_v2/nfs_resume_20260917/AAPL/decisions.jsonl",
+        "records": 16,
+        "sha256": "629a2c90909f01a40364dde9f5552494de36ee47c02fe855c8d99af3e5b98504"
+      }
+    ],
+    "recipe_sha256": "47553c3961ba1172faae59c4ca6b5a69d2f47b4f1d065161d84460fb108e824c",
+    "records": 397,
+    "replay_completion_sha256": "d94784a934676ee7bd0ba00087e42743a88167410e73f712aca02b20e49f5d17",
+    "replay_decisions_sha256": "c24f07d8eadce18b47a05d0c3e0aa5a1f26373f9dcf32a6fe3137aa58c4c1460",
+    "scope": "Read-only current byte/prefix/replay binding. No model rerun, account result, independent human review or full-paper fidelity claim.",
+    "source_completion_sha256": "c69bd1d31966c016ea32cf0cd69708b2fc65cd7a21557f38953d28afacf358b2",
+    "source_run": "artifacts/fidelity_completion_v2/finagent_AAPL_walltime_continuation_v2",
+    "status": "pass",
+    "validator_sha256": "5c25ecf56c903c7ee00e8d4b6a8e8110a417e59fadc63f4eac0644399da5eb50",
+    "validator_v3_sha256": "9ab18f9a9b8b1febf378a5c5d1c96ce01842a6aef342c89a99fe9838ab7744e0",
+    "walltime_continuation_admission": {
+      "all_preserved_prefixes_rechecked": true,
+      "protocol_sha256": "e7867b93d7fcff8b92fe2100d932d486768f04dd8a727efed1485ef7445b7687",
+      "records": 397,
+      "reserved_commitment_retained": true,
+      "source_run": "finagent_AAPL",
+      "status": "pass"
+    },
+    "xml_format_adaptation_admission": null
+  },
+  "copied_bytes": 414846785,
+  "evidence": "artifacts/fidelity_completion_v2/finagent_aapl_full_replay_20260920_0429/validation.json",
+  "evidence_sha256": "797b7e44325c2597a23cf9515ef40c41da80ef75e5cc210b93db30bc7ea25f47",
+  "final_archive_claim": false,
+  "final_thirteen_accounts_complete": false,
+  "full_original_paper_reproduction_claim": false,
+  "full_replay_elapsed": "00:05:57",
+  "full_replay_job": "26689919",
+  "ledger_mutations": 0,
+  "new_source_model_account_executions": 0,
+  "recorded_at_utc": "2026-09-20T04:31:05.883094+00:00",
+  "source_elapsed": "22:54:12",
+  "source_job": "26689918",
+  "status": "complete_source_full_replay_and_current_v3_admission_pass",
+  "symbol": "AAPL",
+  "validated_new_equity_headline": 3480
+}

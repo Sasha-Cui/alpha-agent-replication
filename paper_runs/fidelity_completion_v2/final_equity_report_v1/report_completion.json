@@ -1,0 +1,15 @@
+{
+  "account_metric_rows": 208,
+  "assistant_visual_review_sha256": "52a3b852513b77dfe55b4bef78ab062e9450a793718065afe86df0f5cda923b4",
+  "builder_sha256": "3c9a532245f848b4088e99d7f1fe0c45ade70233737b895235e9fb0844184a1c",
+  "cohorts": 13,
+  "figures": 2,
+  "final_archive": false,
+  "human_review": false,
+  "numeric_validation_sha256": "14ff958d9d30ac74811c48e405c63245da5581e2bae9212741ab280de47d8de5",
+  "recorded_at_utc": "2026-09-22T16:59:06.685441+00:00",
+  "scope": "Completed descriptive case report, not significance, independent human review, full-paper reproduction or final project publication/archive. Preserve this version; later edits require a new version.",
+  "status": "complete_numeric_and_actual_assistant_visual_QA",
+  "validated_new_equity_records": 3877,
+  "validator_sha256": "e7ca38408e35bec0a2975961dc32b15adbc144470f740de9f27d24f0f05f1152"
+}

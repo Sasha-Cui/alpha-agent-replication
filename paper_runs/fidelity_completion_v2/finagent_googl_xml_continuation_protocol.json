@@ -1,0 +1,455 @@
+{
+  "actual_offline_probe_job": "26674582",
+  "amzn_retry_authorized": false,
+  "ancestry_path": "artifacts/fidelity_completion_v2/finagent_googl_xml_20260918/prefix_ancestry_validation.json",
+  "bindings": [
+    {
+      "path": "artifacts/fidelity_completion_v2/finagent_GOOGL_company_news_xml_prefix_probe/xml_prefix_probe_validation.json",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/finagent_GOOGL_company_news_xml_prefix_probe/xml_prefix_probe_validation.json",
+      "sha256": "5f8ec29e5a64d8963e1facbc59703d5745152d76447ec394ba1c733d03cdb633"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/finagent_googl_xml_20260918/prefix_ancestry_validation.json",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/finagent_googl_xml_20260918/prefix_ancestry_validation.json",
+      "sha256": "bc267e439fb0a9125cbe75cd9f048c00d11a531e522a27c5f32ce6430cf4ff15"
+    },
+    {
+      "path": "paper_runs/fidelity_completion_v2/finagent_googl_xml_alias_protocol.json",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/paper_runs/fidelity_completion_v2/finagent_googl_xml_alias_protocol.json",
+      "sha256": "82f58216b69eefc85057e352a93f97d4f06abf16d023744fb940894324cb2d7e"
+    },
+    {
+      "path": "scripts/fidelity_equity_evidence_v2.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/fidelity_equity_evidence_v2.py",
+      "sha256": "5c25ecf56c903c7ee00e8d4b6a8e8110a417e59fadc63f4eac0644399da5eb50"
+    },
+    {
+      "path": "scripts/finagent_googl_xml_alias_v2.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/finagent_googl_xml_alias_v2.py",
+      "sha256": "62e34ad8bce0344ead792e4a24c1347c3189f0bfe392b74bb622443fd7e5fdec"
+    },
+    {
+      "path": "scripts/finagent_googl_xml_continuation_evidence_v2.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/finagent_googl_xml_continuation_evidence_v2.py",
+      "sha256": "cb621e400d66913acdd4ae3abd8f1cd5f663d6decc1f4c9146890315abafe1ea"
+    },
+    {
+      "path": "scripts/probe_finagent_googl_xml_v2.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/probe_finagent_googl_xml_v2.py",
+      "sha256": "6c4a810140a46ffea28e676a4be32bf01c9b4aa899f263211ea9b49ba1d4da39"
+    },
+    {
+      "path": "scripts/run_finagent_fidelity_v2.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/run_finagent_fidelity_v2.py",
+      "sha256": "26767019fc831be63558e3721764f934925dbfd1269199e76a7ea72ee7a41f9c"
+    },
+    {
+      "path": "scripts/run_finagent_googl_xml_continuation_v2.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/run_finagent_googl_xml_continuation_v2.py",
+      "sha256": "8f723dae7adcf51a7b45c135aa373472106958a5c02028b3ce729ce2747f6c18"
+    },
+    {
+      "path": "scripts/run_finagent_paper_python.sh",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/run_finagent_paper_python.sh",
+      "sha256": "561ee36cd5496bdde20d0f060385bda4fe0c84a5b8e7fa3d779244f52678c3cc"
+    },
+    {
+      "path": "scripts/run_finmem_fidelity_python.sh",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/run_finmem_fidelity_python.sh",
+      "sha256": "279571fcd57f9095a59222db87ad78d91112b97de5d3ae1c41aa2549afb9add2"
+    },
+    {
+      "path": "scripts/validate_publication_replay.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/validate_publication_replay.py",
+      "sha256": "d517c21c3d4bb2b6571ac74afa2e605f24e5b9816631918de6404ab9909e18a5"
+    },
+    {
+      "path": "src/alpha_evolve/fidelity_transport_v2.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/src/alpha_evolve/fidelity_transport_v2.py",
+      "sha256": "11d934cec7084710fa870e593f7ff125aa8b3207c4e748b9562485c477a64825"
+    },
+    {
+      "path": "src/alpha_evolve/openrouter_budget.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/src/alpha_evolve/openrouter_budget.py",
+      "sha256": "4ade3308849505eba65a10a6655e5ec90b6641a4f22d9584e7ee93953ccb5ad3"
+    },
+    {
+      "path": "src/alpha_evolve/publication_embeddings.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/src/alpha_evolve/publication_embeddings.py",
+      "sha256": "a97e364a3f024d747aeefd5e35a9db50e4e4c0ad9cfbea0db44b0bcf8553f140"
+    },
+    {
+      "path": "src/alpha_evolve/publication_llm.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/src/alpha_evolve/publication_llm.py",
+      "sha256": "90cd4da9040daf7f82f54451fea748b854a8030a1b44fdb7aabb605ce0d9786a"
+    },
+    {
+      "path": "src/alpha_evolve/publication_replay.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/src/alpha_evolve/publication_replay.py",
+      "sha256": "7f582e68bf8dcffeb0933be00e5e921e7f66d7761224ba2259cee0956d4c525a"
+    },
+    {
+      "path": "tests/test_fidelity_equity_evidence_v2.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/tests/test_fidelity_equity_evidence_v2.py",
+      "sha256": "00e451e45bad1721fb1f42b9cfbff4142af8e144b520f133af401ca991d24238"
+    },
+    {
+      "path": "tests/test_finagent_googl_xml_continuation_v2.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/tests/test_finagent_googl_xml_continuation_v2.py",
+      "sha256": "a4585360cf919903de5c904b64dba3199620ce3fa287a607b83f1b9f9b4c1ff0"
+    },
+    {
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_finagent_googl_xml_live.sbatch",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_finagent_googl_xml_live.sbatch",
+      "sha256": "4eca306fecae81f484fc546bec9659351ed434683d9232eda24a474deb698ea5"
+    },
+    {
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_finagent_googl_xml_replay.sbatch",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_finagent_googl_xml_replay.sbatch",
+      "sha256": "a0531cd97bb97d3f6efca4bc683da900e54a077de5cd2397d197a32ebe60ea50"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/asset/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/asset/__init__.py",
+      "sha256": "02bd3fff0ec953156a15c8e4489b959e660a59502fc602770de7fba65b8f1828"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/asset/base.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/asset/base.py",
+      "sha256": "c54671e5c0445e95107148faa5e61a328210a151a90c23384462afce81eb1095"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/data/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/data/__init__.py",
+      "sha256": "0f2a767ad7b1e6a23dff1baeb8a89aae1245102da6b6f50a8da6aace069480ce"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/data/base.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/data/base.py",
+      "sha256": "5f77eb6cec13fdd7ef86020cd7e1c79985bb968fa6d419ded8f88577be2d1436"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/data/dataset.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/data/dataset.py",
+      "sha256": "a69c683a07a42855aa8ba0e0f1e1c204a18b872ce9b1ba32054f19a53b098424"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/__init__.py",
+      "sha256": "bed990d6652146dab3f0f3823ca5c1471f2e50003e6c62b2ca0642732c934ef5"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/custom.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/custom.py",
+      "sha256": "587cb26edf9ee6971b2b076c125c7e86d05c9fd76c92d36dcfda9b58937bcfbf"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/news/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/news/__init__.py",
+      "sha256": "8ea1aa883d098dcb254f0e93a05e47d416a9df1e01bede4e338a1ea58fb7ca5f"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/news/fmp_downloader.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/news/fmp_downloader.py",
+      "sha256": "11b27b9dff07cfaa61876742093e3bc7bc7af729caa6d9baa24ce8b7cdb65918"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/news/polygon_downloader.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/news/polygon_downloader.py",
+      "sha256": "f5a9cf2917bb46c9a4d215a6692b10f362ed9d47df302a559f9414f82be66972"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/news/yahoofinance_downloader.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/news/yahoofinance_downloader.py",
+      "sha256": "700dd5e672e46e619879387033e77205ff66ea0be064cbbe1b2005e709f3a197"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/prices/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/prices/__init__.py",
+      "sha256": "c2cdb904da130f374919ac074579224dc97b964e254600fd1da63f3ab94e36d6"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/prices/fmp_day_downloader.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/prices/fmp_day_downloader.py",
+      "sha256": "b8fb19a230f274e0e273f1512c0f2d4ca5e9a6cd3eda77c8032c1bbfac925857"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/prices/polygon_day_downloader.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/prices/polygon_day_downloader.py",
+      "sha256": "e5c93911c829487ab6cb131a9d1bdeec51886105f6c8cd8a03fdfb184b296782"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/prices/yahoofinance_day_downloader.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/prices/yahoofinance_day_downloader.py",
+      "sha256": "74af9a6e5abea1655c37157b042b21f59accb85e41221c1c675b8888da7ed162"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/tools/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/tools/__init__.py",
+      "sha256": "f71fa5358a22d11ebc00de36ae72ac5c15a4989cbf2091c28aa4251f9e047a83"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/tools/fmp_economic_downloader.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/tools/fmp_economic_downloader.py",
+      "sha256": "883a5e0a085b3ad6dbf9101d20051d518c03f1e7912a8d6ac8c39569aaeb9ca6"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/tools/fmp_sentiment_downloader.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/tools/fmp_sentiment_downloader.py",
+      "sha256": "3f801db5d8409387b392bb0c30715507847a79d02bb3009c85e58de4a36adf5f"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/tools/rapidapi_downloader.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/tools/rapidapi_downloader.py",
+      "sha256": "8ba5785f2d4a498c9cc02b93a4e97fec5584205bcf6cfce21bb1cd5aa7dc3d33"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/environment/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/environment/__init__.py",
+      "sha256": "39ee9cb69c8681b98d313a790fe3b13980cb6aa3b97c6c6d821979b9a9706bf7"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/environment/trading.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/environment/trading.py",
+      "sha256": "10a47efc6d58b039e60d696cefcc34719b136dbc0c87969aa7ae9bb78afbcd8c"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/memory/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/memory/__init__.py",
+      "sha256": "5a08fe6176053446a08dbd2a6c313e24326415ba98c733d459ee1d1c5c6a027d"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/memory/base.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/memory/base.py",
+      "sha256": "4f10c2a06662364354cdf2f2ceb6b1d55be844e32438e8fe575bc598d32dc86f"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/memory/basic_memory.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/memory/basic_memory.py",
+      "sha256": "5bbf8b013b0c0ec761bc97db9ae5fdd1e89c5901aedd6702a59611b38f113567"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/memory/faiss.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/memory/faiss.py",
+      "sha256": "3fa1d1ca572804baf3afa22107f25b72200e0b57f602591d4bb2f8bf1d221c81"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/memory/interface.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/memory/interface.py",
+      "sha256": "7f6ddcd4b49cff6b243de224d8066fda9137ce6dc362da843fed97dd8d19136e"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/metrics/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/metrics/__init__.py",
+      "sha256": "4f433e936653dbbf11ca88abb0afc06dcf6bb9c4e450f9874f30a5eae1374c89"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/metrics/metrics.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/metrics/metrics.py",
+      "sha256": "6e8412f8063e585d80503bc9acf4d4906388e3ad0cdfd1ae169f6e3a2441c9a8"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/plots/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/plots/__init__.py",
+      "sha256": "b68c0267aa631c0230c9b1bb33e5089082884445659c2af3100921fc435f4482"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/plots/interface.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/plots/interface.py",
+      "sha256": "10dfdedfb395486dfa9add6827499ad579d26061233034cc789fe65471866676"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/plots/kline.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/plots/kline.py",
+      "sha256": "658a639fd35f8c0a554f34262eb4bd93458c0e9564228eeddc8da6df5de29660"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/plots/trading.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/plots/trading.py",
+      "sha256": "d8ae3c3c3fa88124787ceb58495020472abcd81494bc780f3dbbc3849a057e3d"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/processor/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/processor/__init__.py",
+      "sha256": "d23d14491e40f12dd2d5303a7fe28fa2d572191fbe5fe783fba4c73a5baaf880"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/processor/processor.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/processor/processor.py",
+      "sha256": "54e1a814edf7d6b1f1a0a8e23608b565198f62e90b8f448082b1661952c73837"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/__init__.py",
+      "sha256": "79e82dcefb719c8569770f5e858b7ed8bcdc74feb1be8e14e9a2f7ffa3f74059"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/custom.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/custom.py",
+      "sha256": "8f2aa47cae359a5875b8e27478cd9bd18fdd5a601cb3beacd75ed84960423650"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/helper.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/helper.py",
+      "sha256": "599b8c75ba39d661685601d1ba765f5eb5fd09750eb4b8ef9eaa50891f45668e"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/trading/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/trading/__init__.py",
+      "sha256": "47f7a9aa5bd0d9333f4a1ecf42584a159954f6e2574b2063018ede2ddb7447c4"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/trading/decision.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/trading/decision.py",
+      "sha256": "a6b71a6a996f1033d064b1483f82fada44442fb5bd3e9b08048e2dcf8ee97cda"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/trading/high_level_reflection.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/trading/high_level_reflection.py",
+      "sha256": "7d332880c22d46f6c12539634daad04f01d03db4a0eeea09e3a890f09fa20cc4"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/trading/latest_market_intelligence_summary.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/trading/latest_market_intelligence_summary.py",
+      "sha256": "9e5f925d87fc3b64f9fd4074b6771dd608af99d92b999caa438f0dbae62f728e"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/trading/low_level_reflection.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/trading/low_level_reflection.py",
+      "sha256": "217220cc96ec43d2ddff3bb2682163230691b39b1e6dc002b5fcf044f2217589"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/trading/past_market_intelligence_summary.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/trading/past_market_intelligence_summary.py",
+      "sha256": "b83cc5b76758e1988747d880428bd8b7fdec8ac8a1d6ecd3357c7cbd67f7fc98"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/provider/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/provider/__init__.py",
+      "sha256": "56a6dbc2b0878d93b49073a450ac0a4703f47c1ae8620b546c3d716ec7f2e1c4"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/provider/base_embedding.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/provider/base_embedding.py",
+      "sha256": "7ee71c9cc86e7aad6b0b18f5722d438d4b2a372df2eaf0007d66be9d95301b32"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/provider/base_llm.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/provider/base_llm.py",
+      "sha256": "b2df79edca40512ab4f4a2b640e4b96fde1d562e1591211d0d86c7b495cd6dee"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/provider/provider.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/provider/provider.py",
+      "sha256": "e685978d968831710866657b289a931cf056a298df3a4b9f4a5688689f4324bf"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/query/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/query/__init__.py",
+      "sha256": "6e43df1d60950821717e264f250ef8509fd56c71c6d66c07e3fc22f31859cc3b"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/query/diverse_query.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/query/diverse_query.py",
+      "sha256": "f7c6437fd63cef4d7db195be7cde2f50f2c31c71b8abfa81b7a1a64c6a9cfd0a"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/query/query_types.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/query/query_types.py",
+      "sha256": "fc1963906fe2822c1f42792501debd987f60bb9357e27710c1e806a30d2913c4"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/registry.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/registry.py",
+      "sha256": "bceaa6fe2bffe2c3b7324aac35cece8832b4c8b88280bf0aac018f4fa232bdfc"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/tools/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/tools/__init__.py",
+      "sha256": "7d178763480e544fad65c33e32b279ab5ddef9e4d3726653fca1b2a09b10b1d5"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/tools/rapid_apis.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/tools/rapid_apis.py",
+      "sha256": "cf00782caf3b61bff50618427707aaf6de93f9a6fa03ad532bc4e4b6d9b52449"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/tools/strategy_agents.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/tools/strategy_agents.py",
+      "sha256": "4c24be60456782c32a601b9c88ca3cc90c609b28c23801f2ce96ca6041c09bf3"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/trajectory/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/trajectory/__init__.py",
+      "sha256": "0b059912c1eb5fa0075c82f3c62025652a96680edca3f730bb746541fcf5f717"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/trajectory/dynamic_programming.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/trajectory/dynamic_programming.py",
+      "sha256": "651dd34d6b4e485c5fb79538c6ea3f3fd80c16ac49148db558c0d1d79190ec8c"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/trajectory/dynamic_programming_threshold.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/trajectory/dynamic_programming_threshold.py",
+      "sha256": "0bb890868887acedf1e270a38795a1191fc199c9e11497a3ec2dd1c7488b13a6"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/utils/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/utils/__init__.py",
+      "sha256": "15c51e2037dc48821dcc22198d9406992c2d5df296a0a61c0e63f843f269b00b"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/utils/file_utils.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/utils/file_utils.py",
+      "sha256": "4cb9bf37d2076523b49c74d3931f41fbd1d8dfd0ee27492f4fcc46f2ac1acc70"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/utils/get_proxy.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/utils/get_proxy.py",
+      "sha256": "35be49477386f4e2770a476ad479e80e66bf4b67ba44e569399350e75afb3e2c"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/utils/json_utils.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/utils/json_utils.py",
+      "sha256": "eaf206464aedbc6387b360a1e25c9dec5c9534e523157634c13220ab0cdb9850"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/utils/misc.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/utils/misc.py",
+      "sha256": "810a7fc5667c379fc8c644c18d914f541a9dec2ad76dbc7a7c893e18e4bc09d1"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/utils/singleton.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/utils/singleton.py",
+      "sha256": "299d470dde28f9b270f7a1838168c7840bd9c6e27ce040c8c253c58d7c8a00ba"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/utils/utils.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_googl_xml_continuation_20260919_0135/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/utils/utils.py",
+      "sha256": "43d8266261f45f8cf235ec3ed46be3aa15f0b7b96a50a949580074d2493baef7"
+    }
+  ],
+  "caps_unchanged": {
+    "FinAgent": 160,
+    "project_hard": 500,
+    "project_soft": 450
+  },
+  "expected_arm_counts": {
+    "native_causal": 147,
+    "shared_training": 250
+  },
+  "full_original_paper_reproduced": false,
+  "human_review": "not_performed",
+  "live_gate": "ReadOnlyReplay until all282 original records,76 ancestor records and exactly one alias match; first missing hash must equal actual probe stop and remain absent from fresh locked ledger. Existing requests cannot pass. Then ordinary future requests use unchanged WaitingMeter.",
+  "other_interrupted_sources_retry_authorized_by_this_protocol": false,
+  "primary_override_policy": "Switch only after actual completed repaired source AND complete matching replay admission, never on software readiness.",
+  "probe_path": "artifacts/fidelity_completion_v2/finagent_GOOGL_company_news_xml_prefix_probe/xml_prefix_probe_validation.json",
+  "recorded_at_utc": "2026-09-19T01:45:23.348499+00:00",
+  "replay_gate": "Separate full source execution with blocked sockets and ReadOnlyReplay; all397 records compared; intrinsic final-equity gate rechecks source/receipt/wrapper/protocol/ancestry bindings.",
+  "scope": "Disclosed single-witness lossless GOOGL response markup adaptation; unchanged source semantics, strategy, input and request bodies."
+}

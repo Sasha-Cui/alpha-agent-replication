@@ -1,0 +1,14 @@
+{
+  "recorded_at_utc": "2026-09-17T12:27:55.727147+00:00",
+  "failed_job": "26470761",
+  "date": "2022-07-27",
+  "completed_prefix_records": 38,
+  "response_request_hash": "4bd9475244f0600683b5574beeeb7f60479eb6e986aba5fd32cb5833354d2e79",
+  "root_cause": "Both released low-level reflection HTML templates request long_term_reasonig, but helper.py requires long_term_reasoning. The model followed the released typo; this is a source prompt/parser mismatch.",
+  "repair": "Canonicalize only the exact misspelled key when the parser key is absent, preserving every word and the raw cached response/HTML. No fresh response or imputed reasoning is used. Other cases continue without shared-source modifications.",
+  "original_output_retained": "artifacts/fidelity_completion_v2/finagent_TSLA",
+  "new_output": "artifacts/fidelity_completion_v2/finagent_TSLA_schema_repair",
+  "full_prefix_and_replay_required": true,
+  "cap_unchanged_usd": 160,
+  "helper_sha256": "adaf52fa39b5d324410c175c39c364fd9f9d850b360e181274639bc9cb48587f"
+}

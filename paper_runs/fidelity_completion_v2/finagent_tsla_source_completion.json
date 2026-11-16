@@ -1,0 +1,65 @@
+{
+  "arm_counts": {
+    "native_causal": 147,
+    "shared_training": 250
+  },
+  "budget_snapshot": {
+    "FinAgent": 102.944933880001,
+    "Quanta": 31.824441629999964,
+    "caps_changed": false,
+    "ledger_mutations_by_audit": 0,
+    "project": 309.8249223000044,
+    "recorded_at_utc": "2026-09-19T08:45:13.718149+00:00"
+  },
+  "final_account_admission_claim": false,
+  "full_replay_completion_claim": false,
+  "new_account_calculation": 0,
+  "paper_dispositions_unchanged": 69,
+  "prefix_counts_overlap_and_must_not_be_added": true,
+  "prefixes": [
+    {
+      "kind": "latest_interrupted_source",
+      "maximum_numeric_difference": 0.0,
+      "records": 250
+    },
+    {
+      "kind": "latest_interrupted_source",
+      "maximum_numeric_difference": 0.0,
+      "records": 88
+    },
+    {
+      "kind": "nfs",
+      "maximum_numeric_difference": 0.0,
+      "records": 20
+    },
+    {
+      "kind": "schema",
+      "maximum_numeric_difference": 0.0,
+      "records": 38
+    },
+    {
+      "kind": "transport",
+      "maximum_numeric_difference": 0.0,
+      "records": 84
+    }
+  ],
+  "preserved_regular_file_bytes": 412075840,
+  "primary_override_changed": false,
+  "private_audit_path": "artifacts/fidelity_completion_v2/finagent_tsla_source_completion_20260919_0840/validation.json",
+  "private_audit_sha256": "7821dd3bec4d39d987c39bfed869e2b491883163c662a551b1416795c21d2dd9",
+  "recorded_at_utc": "2026-09-19T08:49:37.554218+00:00",
+  "records": 397,
+  "replay_job": "26689923",
+  "replay_status_at_audit": "PENDING",
+  "scope": "Actual completed source stage with all preserved prefixes/recipe/input/method/settlement bindings revalidated. Full read-only replay and V3 admission remain mandatory; no full-paper or economic-result completion claim.",
+  "source_completion_sha256": "c7f0ca0c0d36832914cdaf9f4bcf2145ae79a52b6ded3a3b2fc45827e2b77803",
+  "source_elapsed": "04:05:37",
+  "source_job": "26689922",
+  "source_receipt_revalidated": true,
+  "source_receipt_sha256": "509362f016bb5112473c52849d62581587681eb9ca255acd10e42f46a588a176",
+  "source_rerun": false,
+  "source_run": "finagent_TSLA_schema_repair_walltime_continuation_v2",
+  "status": "TSLA_source_stage_complete_full_replay_pending",
+  "validated_equity_headline_unchanged": 1892,
+  "validation_future_chart_count": 0
+}

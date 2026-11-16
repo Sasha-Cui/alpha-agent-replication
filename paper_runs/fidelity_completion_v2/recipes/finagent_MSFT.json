@@ -1,0 +1,65 @@
+{
+  "case": "FinAgent released-source settings extension MSFT",
+  "source": "Pinned source tree in paper_runs/paper_replication_audits/finagent/manifest.json; source content hashes captured by runner",
+  "train_start": "2022-06-01",
+  "train_end": "2023-05-31",
+  "test_start": "2023-06-01",
+  "test_end": "2024-01-01",
+  "input_file": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/MSFT_2022-06-01_2023-12-29_inputs.json",
+  "model": "openai/gpt-4o",
+  "temperature": 1.0,
+  "max_completion_tokens": 2048,
+  "seed": 20260907,
+  "budget_usd": 160,
+  "arms": [
+    "native_causal"
+  ],
+  "primary_comparison": "Native causal validation versus the same pipeline with retrieved past-memory items withheld; current news, charts, native reflections, tools and own-account feedback retained",
+  "preserved": [
+    "Exact released run_step body",
+    "Five source prompt stages and train/valid HTML templates",
+    "Actual image inputs and vision calls",
+    "Source FAISS memory and diverse-query construction",
+    "Top K=5",
+    "Aggressive trader profile",
+    "Shared source-style training using within-training future supervision",
+    "Native whole-share cash/position accounting and 10bp transaction fees"
+  ],
+  "repairs": [
+    "Training dataset physically ends before validation, including forward-supervision data",
+    "Validation state look_forward_days=0, and every chart asserts latest price <= decision date",
+    "Validation decisions execute at next close via a pending-order queue",
+    "Second-resolution memory IDs replaced with deterministic collision-free IDs",
+    "Released rule strategies execute with source defaults; opaque result summaries replaced by explicitly labelled chronological training-only accounts",
+    "Prompt artifacts stored in SQLite, same content; charts use two reusable files with all dated images archived as SQLite BLOBs",
+    "Validation NAV is marked and prior orders filled at the current close before the actor reads its account. The released environment attaches previous-close NAV to the next date; training retains the literal source behavior, while validation uses native buy/sell quantity methods under the repaired clock.",
+    "Executed validation actions retain the corresponding prior decision reasoning in the reflection history; current decision reasoning is recorded separately. This corrects the one-session delay consistently."
+  ],
+  "adaptations": [
+    "Frozen alternative dated FINSABER prices/news",
+    "Date-only news lagged one trading session",
+    "Current GPT-4o replaces unavailable GPT-4 preview and GPT-4 vision preview snapshots",
+    "Matplotlib candlestick and executed-account charts replace ECharts browser rendering",
+    "Missing original guidance, sentiment, economic and historical memory snapshots remain unavailable",
+    "One ticker/seed, not all paper assets/trials"
+  ],
+  "source_native_end_convention": "The final trading date receives a terminal current-close valuation and any pending execution, but no new model decision.",
+  "full_original_paper_reproduced": false,
+  "human_source_review": "pending",
+  "frozen_before_new_decisions": true,
+  "technical_persistence_recovery": "On 2026-09-07, a shared SQLite write-lock failure led to an fsynced append-journal cache. Five unavailable responses retain $0.2640905 of reservations project-wide; each receives at most one explicit technical recovery under the same model/input recipe, with both attempts counted. No completed case outcome was used to select a recovery response.",
+  "template_variant": "trading_mi-w-low-w-high-w-tool-w-decision",
+  "template_setup_correction": "The first four generic trading-template training days are archived as a setup probe. Those templates omitted tool sections. Before any validation outcomes, the complete released template variant was selected so actual source strategy tools reach the model; all setup spend remains counted.",
+  "embedding_transport": "The released OpenAIProvider executes its original per-document token-ID chunking and normalized weighted embedding computation. Independent document calls are prefetched concurrently; documents are not merged into an embedding batch.",
+  "validation_execution": "Two independent validation processes after shared training; separate RNGs, accounts and artifact stores; identical in-flight embedding requests wait for a shared cached result.",
+  "embedding_model": "openai/text-embedding-3-large",
+  "embedding_dimensions": 3072,
+  "embedding_audit_corrections": [
+    "The initial Ada002 choice did not match the released emb_model configuration. It is retired as setup; the primary run uses the source text-embedding-3-large model and3072 dimensions.",
+    "A batching optimization was rejected:126/306 matched Ada input vectors differed, with maximum component difference0.002861643; the first changed retrieval was2022-06-17 and decisions later diverged. Three initial spot checks were insufficient. All setup responses/spend and the failed full-prefix check remain archived."
+  ],
+  "symbol": "MSFT",
+  "study": "fidelity_v2_finagent_source_settings",
+  "source_settings_change": "Restore released provider default temperature1.0; same current GPT4o model substitution disclosed, original historical preview snapshots unavailable.",
+  "scope": "All five source equity configs, one trajectory each; ETHUSD/data and multiple model trajectories remain separate gaps."
+}

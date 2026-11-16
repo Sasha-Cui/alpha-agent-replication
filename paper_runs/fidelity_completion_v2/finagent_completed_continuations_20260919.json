@@ -1,0 +1,162 @@
+{
+  "AAPL_private_audit": "artifacts/fidelity_completion_v2/finagent_aapl_full_replay_20260920_0429",
+  "AMZN_retry_authorized": false,
+  "MSFT_private_audit": "artifacts/fidelity_completion_v2/finagent_msft_full_replay_20260920_0246",
+  "cohorts": [
+    {
+      "admission": {
+        "case": "finagent",
+        "current_full_record_recomparison_maximum_difference": 0.0,
+        "frozen_original_evidence": false,
+        "full_replay_proof_sha256": "b7c2d3003ebc49b090fcceafafd29e2da38adfa7346c5726736abca148607d70",
+        "input_sha256": "c58e1ad195d6b3e24b6c6109128bcc8339f469e97a8643c7d7558dafd23602b3",
+        "original_decisions_sha256": "23c64b3f6c05ac8cbc727053c8c408385ec5535a61f3b1d357272d9a1bcd5917",
+        "preserved_prefixes": [],
+        "recipe_sha256": "4f91d48273f2208d08ba03d9f4ad8b8ea06109b00450c25851f8fa9f38d89a0d",
+        "records": 397,
+        "replay_completion_sha256": "040d98afbd36ac5b2696acfa00822b29ad2a63304ce0badc6a75c5313f26f9d6",
+        "replay_decisions_sha256": "a9753a41e05324be86056784a17514583d3586024bdc5c25d6bbb1d27141713a",
+        "scope": "Read-only current byte/prefix/replay binding. No model rerun, account result, independent human review or full-paper fidelity claim.",
+        "source_completion_sha256": "33638cc22d0e843127daa697141ee05ab38b266de695bd8fef4fd8d145e9f5f9",
+        "source_run": "artifacts/fidelity_completion_v2/finagent_GOOGL_company_news_xml_repair",
+        "status": "pass",
+        "validator_sha256": "5c25ecf56c903c7ee00e8d4b6a8e8110a417e59fadc63f4eac0644399da5eb50",
+        "validator_v3_sha256": "9ab18f9a9b8b1febf378a5c5d1c96ce01842a6aef342c89a99fe9838ab7744e0",
+        "xml_format_adaptation_admission": {
+          "all_282_and_76_prefixes_rechecked": true,
+          "format_adaptation": "exact_93820f59_lossless_analysis_summary_tags",
+          "protocol_sha256": "e8e8bcabc4345ce995ce9ab2ac5b94351993823d1a5c0807bc47bc31fa09b9a2",
+          "source_records": 397,
+          "status": "pass"
+        }
+      },
+      "symbol": "GOOGL"
+    },
+    {
+      "admission": {
+        "case": "finagent",
+        "current_full_record_recomparison_maximum_difference": 0.0,
+        "frozen_original_evidence": false,
+        "full_replay_proof_sha256": "7fb1077f6d4dc2e910fb9194873318a55ba35ea9a46a586617dff75e3ab2449d",
+        "input_sha256": "637ed9555d8f07ff83961f6f4a159f36eca876578fbdf474dafca700daa58d34",
+        "original_decisions_sha256": "b39651b8e3313d987c3090144b855ae7532df5fe92f1bca44e7fde31fc91b062",
+        "preserved_prefixes": [
+          {
+            "kind": "nfs_preserved",
+            "maximum_numeric_difference": 0.0,
+            "path": "artifacts/fidelity_completion_v2/nfs_resume_20260917/TSLA/decisions.jsonl",
+            "records": 20,
+            "sha256": "bf6244c25b2f0b4494ba1ea5ec2f768162dff74bf17e68ff54605232bdf1e0c8"
+          }
+        ],
+        "recipe_sha256": "cbfbe1d4515e63c6af2837edea66b84fdf9cd4ba9e9d2cefc4ce6d4d98c0aa00",
+        "records": 397,
+        "replay_completion_sha256": "dd6282f80b30793ebcabb1dbf17807496c2a996f8a21e7c454e8955d8aa262ad",
+        "replay_decisions_sha256": "8cb75559f6da8cc6b041cfce9c9d75a54b44db51a9bf14390208d2700c7ae94e",
+        "scope": "Read-only current byte/prefix/replay binding. No model rerun, account result, independent human review or full-paper fidelity claim.",
+        "source_completion_sha256": "c7f0ca0c0d36832914cdaf9f4bcf2145ae79a52b6ded3a3b2fc45827e2b77803",
+        "source_run": "artifacts/fidelity_completion_v2/finagent_TSLA_schema_repair_walltime_continuation_v2",
+        "status": "pass",
+        "validator_sha256": "5c25ecf56c903c7ee00e8d4b6a8e8110a417e59fadc63f4eac0644399da5eb50",
+        "validator_v3_sha256": "9ab18f9a9b8b1febf378a5c5d1c96ce01842a6aef342c89a99fe9838ab7744e0",
+        "walltime_continuation_admission": {
+          "all_preserved_prefixes_rechecked": true,
+          "protocol_sha256": "e7867b93d7fcff8b92fe2100d932d486768f04dd8a727efed1485ef7445b7687",
+          "records": 397,
+          "reserved_commitment_retained": true,
+          "source_run": "finagent_TSLA_schema_repair",
+          "status": "pass"
+        },
+        "xml_format_adaptation_admission": null
+      },
+      "symbol": "TSLA"
+    },
+    {
+      "admission": {
+        "case": "finagent",
+        "current_full_record_recomparison_maximum_difference": 0.0,
+        "frozen_original_evidence": false,
+        "full_replay_proof_sha256": "d488cc84ba11f9f248cb308ff895618d33e6ae1a66a6d9087755e5a186b184ac",
+        "input_sha256": "4173d0f3f817a87b6369c15c3a5962c69176775a52b86c9e32c389f10fc42765",
+        "original_decisions_sha256": "74eddecc15a77b1144916255ec51c59171a53fc8c184ff6f86d54aed15bd6939",
+        "preserved_prefixes": [
+          {
+            "kind": "nfs_preserved",
+            "maximum_numeric_difference": 0.0,
+            "path": "artifacts/fidelity_completion_v2/nfs_resume_20260917/MSFT/decisions.jsonl",
+            "records": 42,
+            "sha256": "f6908c70be307fd9e7d4622e2d8cc0a1ac82957ccf2e4696ee1137977341b06e"
+          }
+        ],
+        "recipe_sha256": "1d47ad99ef9a6f0b15f30b84cf54f496bddc8899d219047f10c5c56742fe484d",
+        "records": 397,
+        "replay_completion_sha256": "e7321fa548bf711ddaef16f3e3753e2f98c187b4ca1d0e1be48677d64854fe3d",
+        "replay_decisions_sha256": "c9f0b0aa5cf640b3a4d9f86587bd6ac165473048a21c0cb9195c054298e36f19",
+        "scope": "Read-only current byte/prefix/replay binding. No model rerun, account result, independent human review or full-paper fidelity claim.",
+        "source_completion_sha256": "79216a41e1dd4280c032c70e8b9ee91ee3ed3fe90f13800a3a438a8b0d0e471a",
+        "source_run": "artifacts/fidelity_completion_v2/finagent_MSFT_walltime_continuation_v2",
+        "status": "pass",
+        "validator_sha256": "5c25ecf56c903c7ee00e8d4b6a8e8110a417e59fadc63f4eac0644399da5eb50",
+        "validator_v3_sha256": "9ab18f9a9b8b1febf378a5c5d1c96ce01842a6aef342c89a99fe9838ab7744e0",
+        "walltime_continuation_admission": {
+          "all_preserved_prefixes_rechecked": true,
+          "protocol_sha256": "e7867b93d7fcff8b92fe2100d932d486768f04dd8a727efed1485ef7445b7687",
+          "records": 397,
+          "reserved_commitment_retained": true,
+          "source_run": "finagent_MSFT",
+          "status": "pass"
+        },
+        "xml_format_adaptation_admission": null
+      },
+      "symbol": "MSFT"
+    },
+    {
+      "admission": {
+        "case": "finagent",
+        "current_full_record_recomparison_maximum_difference": 0.0,
+        "frozen_original_evidence": false,
+        "full_replay_proof_sha256": "aa2d11e49dd5396dcc9675de8b4a26db3ec86522f9cb0d6f5cb968c15afb1fdc",
+        "input_sha256": "a2d0c1d5295423d5c3d670acba654f612748bf8642a7edbf521353fe6f8a793b",
+        "original_decisions_sha256": "0d7ac6ddd1a090fb765d54bb84f06e7acc44789aba684275a4a0eb884336112c",
+        "preserved_prefixes": [
+          {
+            "kind": "nfs_preserved",
+            "maximum_numeric_difference": 0.0,
+            "path": "artifacts/fidelity_completion_v2/nfs_resume_20260917/AAPL/decisions.jsonl",
+            "records": 16,
+            "sha256": "629a2c90909f01a40364dde9f5552494de36ee47c02fe855c8d99af3e5b98504"
+          }
+        ],
+        "recipe_sha256": "47553c3961ba1172faae59c4ca6b5a69d2f47b4f1d065161d84460fb108e824c",
+        "records": 397,
+        "replay_completion_sha256": "d94784a934676ee7bd0ba00087e42743a88167410e73f712aca02b20e49f5d17",
+        "replay_decisions_sha256": "c24f07d8eadce18b47a05d0c3e0aa5a1f26373f9dcf32a6fe3137aa58c4c1460",
+        "scope": "Read-only current byte/prefix/replay binding. No model rerun, account result, independent human review or full-paper fidelity claim.",
+        "source_completion_sha256": "c69bd1d31966c016ea32cf0cd69708b2fc65cd7a21557f38953d28afacf358b2",
+        "source_run": "artifacts/fidelity_completion_v2/finagent_AAPL_walltime_continuation_v2",
+        "status": "pass",
+        "validator_sha256": "5c25ecf56c903c7ee00e8d4b6a8e8110a417e59fadc63f4eac0644399da5eb50",
+        "validator_v3_sha256": "9ab18f9a9b8b1febf378a5c5d1c96ce01842a6aef342c89a99fe9838ab7744e0",
+        "walltime_continuation_admission": {
+          "all_preserved_prefixes_rechecked": true,
+          "protocol_sha256": "e7867b93d7fcff8b92fe2100d932d486768f04dd8a727efed1485ef7445b7687",
+          "records": 397,
+          "reserved_commitment_retained": true,
+          "source_run": "finagent_AAPL",
+          "status": "pass"
+        },
+        "xml_format_adaptation_admission": null
+      },
+      "symbol": "AAPL"
+    }
+  ],
+  "financial_accounts_complete": false,
+  "full_original_paper_replication_claim": false,
+  "independent_human_review": false,
+  "new_validated_records": 1588,
+  "private_audit": "artifacts/fidelity_completion_v2/completion_admission_20260919_after_reset",
+  "recorded_at_utc": "2026-09-19T18:13:46.185322+00:00",
+  "status": "complete_source_full_replay_and_v3_admission",
+  "updated_at_utc": "2026-09-20T04:32:47.149663+00:00",
+  "validated_equity_headline_including_prior1892": 3480
+}

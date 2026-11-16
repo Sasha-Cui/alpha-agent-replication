@@ -1,0 +1,12 @@
+{
+  "native": {
+    "label": "Source score, not cumulative portfolio return or self-financing NAV",
+    "scored_decisions": 126,
+    "signed_log_return_sum": 0.11150393561180631
+  },
+  "semantic_only": {
+    "label": "Source score, not cumulative portfolio return or self-financing NAV",
+    "scored_decisions": 126,
+    "signed_log_return_sum": -0.024917544097470885
+  }
+}

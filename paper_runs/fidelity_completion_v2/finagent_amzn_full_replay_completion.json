@@ -1,0 +1,22 @@
+{
+  "FinAgent_committed_usd": 145.10718514000212,
+  "actual_full_replay_proof_sha256": "92458142853bdd8c7111da9a2364d851d408176224bd187ec6766de98b759814",
+  "all_three_preserved_prefixes_exact": true,
+  "audit_ledger_mutations": 0,
+  "audit_network_calls": 0,
+  "copied_bytes": 369693240,
+  "copied_file_count": 24,
+  "evidence": "artifacts/fidelity_completion_v2/finagent_amzn_full_replay_20260922_1627/validation.json",
+  "evidence_sha256": "30daedbce25d1408cde5cd6b71c1039fef3545172f0eff2a33573095c4373ed7",
+  "final_equity_accounts_complete": false,
+  "final_publication_or_archive": false,
+  "full_replay_job": "27062474",
+  "human_review": false,
+  "project_committed_usd": 371.0659255700031,
+  "recorded_at_utc": "2026-09-22T16:37:38.317963+00:00",
+  "records": 397,
+  "source_job": "27062473",
+  "source_replay_account_calculations_rerun": 0,
+  "status": "pass_actual_AMZN397_source_full_replay_manual_and_V3_admission",
+  "validated_new_equity_records": 3877
+}

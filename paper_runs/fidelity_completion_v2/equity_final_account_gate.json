@@ -1,0 +1,29 @@
+{
+  "actual_existing_cohort_proof_sha256": "87cc76c317c9adb6f90ea57804e0c23f6d528a3239e918b824acf2ab1eaab1df",
+  "actual_final_preflight": "Refuses missing FinAgent sources/replays before any final output directory is created",
+  "builder_sha256": "2640e45462f425cdc41f3f0a6995d05087a1727fab8793a43ef8d558c8facb93",
+  "final_account_job": {
+    "job": "26589541",
+    "new_model_calls": 0,
+    "recorded_at_utc": "2026-09-18T05:12:53.084519+00:00",
+    "role": "Final complete thirteen-account FinMem5/TradingAgents3/FinAgent5 audit, with all full replay identities and preserved prefixes gated before economic outputs. TA news sensitivity remains separate.",
+    "source_full_replay_dependencies": [
+      "26502918",
+      "26502919",
+      "26502920",
+      "26502921",
+      "26502922"
+    ],
+    "status": "submitted_not_completed"
+  },
+  "financial_statement_blocks_unchanged": [
+    "price_clock_and_independent_account_equations",
+    "equal_initial_capital_cohort_aggregation"
+  ],
+  "full_final_accounts_run": false,
+  "guard_checks": "Seven new source-replay/final-output guards pass on Python3.12 and3.9. Eight actual completed equity source histories also pass full record/prefix re-comparison and both completion/recipe/input/decision hash chains; final13-account dataset remains incomplete.",
+  "new_model_calls": 0,
+  "source_gate_sha256": "880cd35b44e4d82e549d976bfc9df52717183502ca27b1c77735abcd8ef7c70a",
+  "source_manifest_sha256": "a0f3d2d233a75acacb9bbe61faf9f19f0b123ca28a6fee676838315f6b0c0fc9",
+  "status": "gated_final_builder_implemented_not_final_account_completion"
+}

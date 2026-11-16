@@ -1,0 +1,15 @@
+{
+  "assistant_visual_review": "paper_runs/fidelity_completion_v2/final_equity_report_v1/visual_review.json",
+  "assistant_visual_review_sha256": "52a3b852513b77dfe55b4bef78ab062e9450a793718065afe86df0f5cda923b4",
+  "final_publication_or_archive": false,
+  "independent_human_review": false,
+  "numeric_validation": "paper_runs/fidelity_completion_v2/final_equity_report_v1/report_validation.json",
+  "numeric_validation_sha256": "14ff958d9d30ac74811c48e405c63245da5581e2bae9212741ab280de47d8de5",
+  "preservation": "artifacts/fidelity_completion_v2/final_equity_completion_20260922_1627/report_preservation.json",
+  "preservation_sha256": "263627b07ecd10325a0f9f3ec09deddc611ac47fce60942b0ee34080f008d70e",
+  "report": "paper_runs/fidelity_completion_v2/final_equity_report_v1/VISUAL_REPORT.md",
+  "report_sha256": "1ad011e469577f5d55e39e7e0402b65a82b2b9dc3e0435a5cd85b521d91d8c7c",
+  "source_count": 13,
+  "status": "complete_numeric_and_actual_assistant_visual_QA",
+  "validated_new_equity_records": 3877
+}

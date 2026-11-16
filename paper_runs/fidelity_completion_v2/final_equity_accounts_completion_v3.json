@@ -1,0 +1,278 @@
+{
+  "FinAgent_committed_usd": 145.10718514000212,
+  "aggregate_performance": [
+    {
+      "annualized_arithmetic_return": 0.23162837931293562,
+      "annualized_volatility": 0.28550415584741295,
+      "arm": "native",
+      "assets": [
+        "TSLA",
+        "NFLX",
+        "AMZN",
+        "MSFT",
+        "COIN"
+      ],
+      "cagr": 0.21101564393608474,
+      "case": "finmem",
+      "clock": "next_close",
+      "cost_bps": 10,
+      "end": "2023-04-10 00:00:00",
+      "ending_wealth": 1.1012979632669073,
+      "max_drawdown": -0.17732122085896163,
+      "observations": 127,
+      "sharpe_zero_cash_rate": 0.811295998916138,
+      "start": "2022-10-06 00:00:00",
+      "weight_rule": "Equal initial capital in independent accounts; no daily cross-account rebalancing"
+    },
+    {
+      "annualized_arithmetic_return": 0.2658206152497636,
+      "annualized_volatility": 0.4387468066424071,
+      "arm": "buy_hold_matched_clock",
+      "assets": [
+        "TSLA",
+        "NFLX",
+        "AMZN",
+        "MSFT",
+        "COIN"
+      ],
+      "cagr": 0.1868669967944423,
+      "case": "finmem",
+      "clock": "next_close",
+      "cost_bps": 10,
+      "end": "2023-04-10 00:00:00",
+      "ending_wealth": 1.0901751368428467,
+      "max_drawdown": -0.28797385714695556,
+      "observations": 127,
+      "sharpe_zero_cash_rate": 0.6058633617963083,
+      "start": "2022-10-06 00:00:00",
+      "weight_rule": "Equal initial capital in independent accounts; no daily cross-account rebalancing"
+    },
+    {
+      "annualized_arithmetic_return": 0.3548086801628383,
+      "annualized_volatility": 0.19425871841655554,
+      "arm": "native",
+      "assets": [
+        "AAPL",
+        "GOOGL",
+        "AMZN"
+      ],
+      "cagr": 0.3993062297159333,
+      "case": "tradingagents",
+      "clock": "next_close",
+      "cost_bps": 10,
+      "end": "2024-03-28 00:00:00",
+      "ending_wealth": 1.0847262600053376,
+      "max_drawdown": -0.0662798372067892,
+      "observations": 61,
+      "sharpe_zero_cash_rate": 1.826474935359195,
+      "start": "2024-01-02 00:00:00",
+      "weight_rule": "Equal initial capital in independent accounts; no daily cross-account rebalancing"
+    },
+    {
+      "annualized_arithmetic_return": 0.3244316419360192,
+      "annualized_volatility": 0.19650692465721653,
+      "arm": "buy_hold_matched_clock",
+      "assets": [
+        "AAPL",
+        "GOOGL",
+        "AMZN"
+      ],
+      "cagr": 0.3569003103234541,
+      "case": "tradingagents",
+      "clock": "next_close",
+      "cost_bps": 10,
+      "end": "2024-03-28 00:00:00",
+      "ending_wealth": 1.0766759635026975,
+      "max_drawdown": -0.07338294972891235,
+      "observations": 61,
+      "sharpe_zero_cash_rate": 1.650993431920796,
+      "start": "2024-01-02 00:00:00",
+      "weight_rule": "Equal initial capital in independent accounts; no daily cross-account rebalancing"
+    },
+    {
+      "annualized_arithmetic_return": 0.03109269613936475,
+      "annualized_volatility": 0.17237341935774278,
+      "arm": "native",
+      "assets": [
+        "TSLA",
+        "AAPL",
+        "AMZN",
+        "GOOGL",
+        "MSFT"
+      ],
+      "cagr": 0.016424458240749326,
+      "case": "finagent",
+      "clock": "next_close",
+      "cost_bps": 10,
+      "end": "2023-12-29 00:00:00",
+      "ending_wealth": 1.0095484020715335,
+      "max_drawdown": -0.13813525920380787,
+      "observations": 147,
+      "sharpe_zero_cash_rate": 0.18037987675370734,
+      "start": "2023-06-01 00:00:00",
+      "weight_rule": "Equal initial capital in independent accounts; no daily cross-account rebalancing"
+    },
+    {
+      "annualized_arithmetic_return": 0.24304307633757663,
+      "annualized_volatility": 0.21488771041822155,
+      "arm": "buy_hold_matched_clock",
+      "assets": [
+        "TSLA",
+        "AAPL",
+        "AMZN",
+        "GOOGL",
+        "MSFT"
+      ],
+      "cagr": 0.24602904382493154,
+      "case": "finagent",
+      "clock": "next_close",
+      "cost_bps": 10,
+      "end": "2023-12-29 00:00:00",
+      "ending_wealth": 1.1369065359030146,
+      "max_drawdown": -0.1359780898907994,
+      "observations": 147,
+      "sharpe_zero_cash_rate": 1.1310236209625866,
+      "start": "2023-06-01 00:00:00",
+      "weight_rule": "Equal initial capital in independent accounts; no daily cross-account rebalancing"
+    }
+  ],
+  "audit_financial_recalculations": 0,
+  "audit_ledger_mutations": 0,
+  "audit_new_model_calls": 0,
+  "closure_artifacts": [
+    {
+      "pass": true,
+      "path": "paper_runs/fidelity_completion_v2/accounts/validation.json",
+      "sha256": "2465ad36c24293d214d3ce3f1a61e766a4dec9743d5f6f39e0b3a28e022be6a3",
+      "status": "pass"
+    },
+    {
+      "pass": true,
+      "path": "paper_runs/fidelity_completion_v2/quanta_paper_parameter_sensitivity/completion.json",
+      "sha256": "8394e0f8d5f47825425a94d83f5e789e69fd3438614aa8c81c93cce6c4625fd7",
+      "status": "separate_exploratory_parameter_sensitivity_complete_not_primary"
+    }
+  ],
+  "completed_runs": [
+    {
+      "case": "finmem",
+      "completed_training_and_test_records": 538,
+      "decisions": 126,
+      "maximum_independent_account_error": 4.440892098500626e-16,
+      "symbol": "TSLA",
+      "valuation_days": 127
+    },
+    {
+      "case": "finmem",
+      "completed_training_and_test_records": 412,
+      "decisions": 126,
+      "maximum_independent_account_error": 4.440892098500626e-16,
+      "symbol": "NFLX",
+      "valuation_days": 127
+    },
+    {
+      "case": "finmem",
+      "completed_training_and_test_records": 412,
+      "decisions": 126,
+      "maximum_independent_account_error": 4.440892098500626e-16,
+      "symbol": "AMZN",
+      "valuation_days": 127
+    },
+    {
+      "case": "finmem",
+      "completed_training_and_test_records": 412,
+      "decisions": 126,
+      "maximum_independent_account_error": 5.551115123125783e-16,
+      "symbol": "MSFT",
+      "valuation_days": 127
+    },
+    {
+      "case": "finmem",
+      "completed_training_and_test_records": 412,
+      "decisions": 126,
+      "maximum_independent_account_error": 5.551115123125783e-16,
+      "symbol": "COIN",
+      "valuation_days": 127
+    },
+    {
+      "case": "tradingagents",
+      "completed_training_and_test_records": 61,
+      "decisions": 61,
+      "maximum_independent_account_error": 4.440892098500626e-16,
+      "symbol": "AAPL",
+      "valuation_days": 61
+    },
+    {
+      "case": "tradingagents",
+      "completed_training_and_test_records": 61,
+      "decisions": 61,
+      "maximum_independent_account_error": 5.551115123125783e-16,
+      "symbol": "GOOGL",
+      "valuation_days": 61
+    },
+    {
+      "case": "tradingagents",
+      "completed_training_and_test_records": 61,
+      "decisions": 61,
+      "maximum_independent_account_error": 4.440892098500626e-16,
+      "symbol": "AMZN",
+      "valuation_days": 61
+    },
+    {
+      "case": "finagent",
+      "completed_training_and_test_records": 397,
+      "decisions": 147,
+      "maximum_independent_account_error": 0.0,
+      "symbol": "TSLA",
+      "valuation_days": 147
+    },
+    {
+      "case": "finagent",
+      "completed_training_and_test_records": 397,
+      "decisions": 147,
+      "maximum_independent_account_error": 0.0,
+      "symbol": "AAPL",
+      "valuation_days": 147
+    },
+    {
+      "case": "finagent",
+      "completed_training_and_test_records": 397,
+      "decisions": 147,
+      "maximum_independent_account_error": 0.0,
+      "symbol": "AMZN",
+      "valuation_days": 147
+    },
+    {
+      "case": "finagent",
+      "completed_training_and_test_records": 397,
+      "decisions": 147,
+      "maximum_independent_account_error": 0.0,
+      "symbol": "GOOGL",
+      "valuation_days": 147
+    },
+    {
+      "case": "finagent",
+      "completed_training_and_test_records": 397,
+      "decisions": 147,
+      "maximum_independent_account_error": 0.0,
+      "symbol": "MSFT",
+      "valuation_days": 147
+    }
+  ],
+  "copied_bytes": 521400,
+  "copied_file_count": 46,
+  "elapsed": "00:01:25",
+  "evidence": "artifacts/fidelity_completion_v2/final_equity_completion_20260922_1627/validation.json",
+  "evidence_sha256": "992ae1cb3ee35ecf25c04384b047a9d202373a73d457c63781aa287ee5f1bbd1",
+  "final_publication_or_archive": false,
+  "human_review": false,
+  "job": "27116634",
+  "maximum_independent_account_error": 5.551115123125783e-16,
+  "prior_completed_studies_rerun": false,
+  "project_committed_usd": 371.0659255700031,
+  "recorded_at_utc": "2026-09-22T16:44:07.348465+00:00",
+  "source_count": 13,
+  "status": "pass_all13_actual_final_V3_accounts_and_fresh_source_admissions",
+  "validated_new_equity_records": 3877,
+  "validation_sha256": "2465ad36c24293d214d3ce3f1a61e766a4dec9743d5f6f39e0b3a28e022be6a3"
+}

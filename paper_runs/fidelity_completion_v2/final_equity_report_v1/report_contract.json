@@ -1,0 +1,147 @@
+{
+  "account_metric_rows": 208,
+  "cohorts": 13,
+  "common_aggregate_wealth_limits": [
+    0.768736278087401,
+    1.1796453332777048
+  ],
+  "comparison_direction": "within-row terminal wealth, higher is better; bold every maximum including ties",
+  "cross_study_ranking": false,
+  "default_clock": "next_close",
+  "default_cost_bps": 10,
+  "final_archive": false,
+  "independent_human_review": false,
+  "main_cohort_workflow_records": 4354,
+  "new_financial_account_calculations": 0,
+  "new_model_calls": 0,
+  "new_record_headline": 3877,
+  "palette": {
+    "background": "#ffffff",
+    "blue": "#075985",
+    "grey": "#475569",
+    "ink": "#172b4d",
+    "orange": "#9a3412"
+  },
+  "plot_rows": [
+    {
+      "arm": "native",
+      "case": "finmem",
+      "last_wealth": 1.1012979632669073,
+      "rows": 127,
+      "sha256": "f7846382dae62c4c1b51c1cc2810509dfecb8a7852521c788af8c70aa1b88f6d",
+      "source": "artifacts/fidelity_completion_v2/accounts/finmem_native_aggregate.parquet"
+    },
+    {
+      "arm": "buy_hold_matched_clock",
+      "case": "finmem",
+      "last_wealth": 1.0901751368428467,
+      "rows": 127,
+      "sha256": "0637b9c3bde0bc58ed5f27495e53bb048afaaa564366ba613e74ee5e5406b39a",
+      "source": "artifacts/fidelity_completion_v2/accounts/finmem_buy_hold_matched_clock_aggregate.parquet"
+    },
+    {
+      "arm": "native",
+      "case": "tradingagents",
+      "last_wealth": 1.0847262600053376,
+      "rows": 61,
+      "sha256": "f3c5d79b6a8fafccdbe17216944d3f6aceada76d27e42fe2907b9607fd5a7f41",
+      "source": "artifacts/fidelity_completion_v2/accounts/tradingagents_native_aggregate.parquet"
+    },
+    {
+      "arm": "buy_hold_matched_clock",
+      "case": "tradingagents",
+      "last_wealth": 1.0766759635026975,
+      "rows": 61,
+      "sha256": "e5c89ee1f5d8889200292609c7ca7d3a37202ab0e7bd10457fc0c38fbe9283ca",
+      "source": "artifacts/fidelity_completion_v2/accounts/tradingagents_buy_hold_matched_clock_aggregate.parquet"
+    },
+    {
+      "arm": "native",
+      "case": "finagent",
+      "last_wealth": 1.0095484020715335,
+      "rows": 147,
+      "sha256": "3626e7da51c99b76069a0acf7ba09b68c5f84b0877bc0b6b0acbe291a83679b6",
+      "source": "artifacts/fidelity_completion_v2/accounts/finagent_native_aggregate.parquet"
+    },
+    {
+      "arm": "buy_hold_matched_clock",
+      "case": "finagent",
+      "last_wealth": 1.1369065359030146,
+      "rows": 147,
+      "sha256": "06a9391d5145f904f3df70cc7af529a961330407f0bbb7c78f451574944b2ef9",
+      "source": "artifacts/fidelity_completion_v2/accounts/finagent_buy_hold_matched_clock_aggregate.parquet"
+    }
+  ],
+  "source_bindings": [
+    {
+      "path": "paper_runs/fidelity_completion_v2/accounts/validation.json",
+      "sha256": "2465ad36c24293d214d3ce3f1a61e766a4dec9743d5f6f39e0b3a28e022be6a3"
+    },
+    {
+      "path": "paper_runs/fidelity_completion_v2/accounts/aggregate_performance.json",
+      "sha256": "1d28abd06e18978b1df512897287607f44f8c1fbd51a71c60d9512033eed6fc5"
+    },
+    {
+      "path": "paper_runs/fidelity_completion_v2/accounts/performance.json",
+      "sha256": "e7a3ff01739d83a98c4ad5f7c5965fd93833294f240c0968fbe074f09f69e702"
+    },
+    {
+      "path": "paper_runs/fidelity_completion_v2/final_equity_accounts_completion_v3.json",
+      "sha256": "7161b2b143610441565327d86a153736292e9e0442e4c80a6c73100b6a9e9fb0"
+    },
+    {
+      "path": "paper_runs/fidelity_completion_v2/finagent_amzn_full_replay_completion.json",
+      "sha256": "cd6240fafc354a7f2155e6bd5e9a27e4a013725758b22063678d34d617312b4a"
+    },
+    {
+      "arm": "native",
+      "case": "finmem",
+      "last_wealth": 1.1012979632669073,
+      "rows": 127,
+      "sha256": "f7846382dae62c4c1b51c1cc2810509dfecb8a7852521c788af8c70aa1b88f6d",
+      "source": "artifacts/fidelity_completion_v2/accounts/finmem_native_aggregate.parquet"
+    },
+    {
+      "arm": "buy_hold_matched_clock",
+      "case": "finmem",
+      "last_wealth": 1.0901751368428467,
+      "rows": 127,
+      "sha256": "0637b9c3bde0bc58ed5f27495e53bb048afaaa564366ba613e74ee5e5406b39a",
+      "source": "artifacts/fidelity_completion_v2/accounts/finmem_buy_hold_matched_clock_aggregate.parquet"
+    },
+    {
+      "arm": "native",
+      "case": "tradingagents",
+      "last_wealth": 1.0847262600053376,
+      "rows": 61,
+      "sha256": "f3c5d79b6a8fafccdbe17216944d3f6aceada76d27e42fe2907b9607fd5a7f41",
+      "source": "artifacts/fidelity_completion_v2/accounts/tradingagents_native_aggregate.parquet"
+    },
+    {
+      "arm": "buy_hold_matched_clock",
+      "case": "tradingagents",
+      "last_wealth": 1.0766759635026975,
+      "rows": 61,
+      "sha256": "e5c89ee1f5d8889200292609c7ca7d3a37202ab0e7bd10457fc0c38fbe9283ca",
+      "source": "artifacts/fidelity_completion_v2/accounts/tradingagents_buy_hold_matched_clock_aggregate.parquet"
+    },
+    {
+      "arm": "native",
+      "case": "finagent",
+      "last_wealth": 1.0095484020715335,
+      "rows": 147,
+      "sha256": "3626e7da51c99b76069a0acf7ba09b68c5f84b0877bc0b6b0acbe291a83679b6",
+      "source": "artifacts/fidelity_completion_v2/accounts/finagent_native_aggregate.parquet"
+    },
+    {
+      "arm": "buy_hold_matched_clock",
+      "case": "finagent",
+      "last_wealth": 1.1369065359030146,
+      "rows": 147,
+      "sha256": "06a9391d5145f904f3df70cc7af529a961330407f0bbb7c78f451574944b2ef9",
+      "source": "artifacts/fidelity_completion_v2/accounts/finagent_buy_hold_matched_clock_aggregate.parquet"
+    }
+  ],
+  "status": "completed_accounts_descriptive_presentation_not_significance",
+  "studies": 3
+}

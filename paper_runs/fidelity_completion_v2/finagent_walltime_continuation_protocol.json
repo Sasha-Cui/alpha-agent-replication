@@ -1,0 +1,1153 @@
+{
+  "AMZN_retry_authorized": false,
+  "Quanta_settlement_or_continuation_authorized_by_this_protocol": false,
+  "bindings": [
+    {
+      "path": "paper_runs/fidelity_completion_v2/recipes/finagent_AAPL.json",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/paper_runs/fidelity_completion_v2/recipes/finagent_AAPL.json",
+      "sha256": "47553c3961ba1172faae59c4ca6b5a69d2f47b4f1d065161d84460fb108e824c"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/AAPL_2022-06-01_2023-12-29_inputs.json",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/AAPL_2022-06-01_2023-12-29_inputs.json",
+      "sha256": "a2d0c1d5295423d5c3d670acba654f612748bf8642a7edbf521353fe6f8a793b"
+    },
+    {
+      "path": "paper_runs/fidelity_completion_v2/recipes/finagent_MSFT.json",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/paper_runs/fidelity_completion_v2/recipes/finagent_MSFT.json",
+      "sha256": "1d47ad99ef9a6f0b15f30b84cf54f496bddc8899d219047f10c5c56742fe484d"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/MSFT_2022-06-01_2023-12-29_inputs.json",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/MSFT_2022-06-01_2023-12-29_inputs.json",
+      "sha256": "4173d0f3f817a87b6369c15c3a5962c69176775a52b86c9e32c389f10fc42765"
+    },
+    {
+      "path": "paper_runs/fidelity_completion_v2/recipes/finagent_TSLA.json",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/paper_runs/fidelity_completion_v2/recipes/finagent_TSLA.json",
+      "sha256": "cbfbe1d4515e63c6af2837edea66b84fdf9cd4ba9e9d2cefc4ce6d4d98c0aa00"
+    },
+    {
+      "path": "artifacts/publication_upgrade_v1/TSLA_2022-06-01_2023-12-29_inputs.json",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/publication_upgrade_v1/TSLA_2022-06-01_2023-12-29_inputs.json",
+      "sha256": "637ed9555d8f07ff83961f6f4a159f36eca876578fbdf474dafca700daa58d34"
+    },
+    {
+      "path": "scripts/probe_finagent_walltime_prefix_v2.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/probe_finagent_walltime_prefix_v2.py",
+      "sha256": "5b7c9ad816fb2025d6076a1cc5c1f36d42d0e264a63e875ca15e32ed02170c6a"
+    },
+    {
+      "path": "scripts/run_finagent_fidelity_v2.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/run_finagent_fidelity_v2.py",
+      "sha256": "26767019fc831be63558e3721764f934925dbfd1269199e76a7ea72ee7a41f9c"
+    },
+    {
+      "path": "src/alpha_evolve/publication_replay.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/src/alpha_evolve/publication_replay.py",
+      "sha256": "7f582e68bf8dcffeb0933be00e5e921e7f66d7761224ba2259cee0956d4c525a"
+    },
+    {
+      "path": "src/alpha_evolve/finagent_schema_repair_v2.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/src/alpha_evolve/finagent_schema_repair_v2.py",
+      "sha256": "adaf52fa39b5d324410c175c39c364fd9f9d850b360e181274639bc9cb48587f"
+    },
+    {
+      "path": "scripts/validate_publication_replay.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/validate_publication_replay.py",
+      "sha256": "d517c21c3d4bb2b6571ac74afa2e605f24e5b9816631918de6404ab9909e18a5"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/walltime_interruptions_20260919_0135/orphan_response_diagnosis.json",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/walltime_interruptions_20260919_0135/orphan_response_diagnosis.json",
+      "sha256": "1bed3e7f440f71f83b15b5daa52df6f67e7ac0b2d692ffd71742ffb443eb2e1d"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/finagent_AAPL_walltime_prefix_probe_20260919/prefix_probe_validation.json",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/finagent_AAPL_walltime_prefix_probe_20260919/prefix_probe_validation.json",
+      "sha256": "8426cc28ff35f53430a674338736b47e9e2e8e67a083813c11376127fb826771"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/finagent_MSFT_walltime_prefix_probe_20260919/prefix_probe_validation.json",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/finagent_MSFT_walltime_prefix_probe_20260919/prefix_probe_validation.json",
+      "sha256": "ed04891a793fa9f8d5788e4a8e0516cc58351435ebd25996c5b32c716bd70381"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/finagent_TSLA_schema_repair_walltime_prefix_probe_20260919/prefix_probe_validation.json",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/finagent_TSLA_schema_repair_walltime_prefix_probe_20260919/prefix_probe_validation.json",
+      "sha256": "90e983e28eed30ede06c0ff6500248f45e3a63a43f4c062c34fb86486feab997"
+    },
+    {
+      "path": "scripts/finagent_walltime_evidence_v2.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/finagent_walltime_evidence_v2.py",
+      "sha256": "5ca62c1a8d4335e245e3cd19f4b892d1f2148a703012310f4de392458a4fa127"
+    },
+    {
+      "path": "scripts/run_finagent_walltime_continuation_v2.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/run_finagent_walltime_continuation_v2.py",
+      "sha256": "25eb412fc5278cc51c8a8cf80672f6df32457dd087cc216790f727ad9eee4919"
+    },
+    {
+      "path": "scripts/settle_finagent_walltime_responses_v2.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/settle_finagent_walltime_responses_v2.py",
+      "sha256": "1f8c76e5a7a3d3d2f4830dde5e3a5b8d90fced6f8e2c644084ee163d7a36b80a"
+    },
+    {
+      "path": "scripts/fidelity_equity_evidence_v3.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/fidelity_equity_evidence_v3.py",
+      "sha256": "9ab18f9a9b8b1febf378a5c5d1c96ce01842a6aef342c89a99fe9838ab7744e0"
+    },
+    {
+      "path": "scripts/build_fidelity_accounts_v3.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/build_fidelity_accounts_v3.py",
+      "sha256": "c4435b3bf29d7c3ae7eb941f235994aebb037f8482111fca2b78d581368c623a"
+    },
+    {
+      "path": "scripts/fidelity_equity_evidence_v2.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/fidelity_equity_evidence_v2.py",
+      "sha256": "5c25ecf56c903c7ee00e8d4b6a8e8110a417e59fadc63f4eac0644399da5eb50"
+    },
+    {
+      "path": "scripts/build_fidelity_accounts_v2.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/build_fidelity_accounts_v2.py",
+      "sha256": "2640e45462f425cdc41f3f0a6995d05087a1727fab8793a43ef8d558c8facb93"
+    },
+    {
+      "path": "tests/test_finagent_walltime_continuation_v2.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/tests/test_finagent_walltime_continuation_v2.py",
+      "sha256": "88784d317364d08c580378af80054a31ccc351f2145b9c483a7cb1664b8a4442"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/existing_eight_admission_and_financial_conformance.json",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/existing_eight_admission_and_financial_conformance.json",
+      "sha256": "7b13313b1eec2ef087423bf764864ac0a6cfce486c1c3c9499f809515ec5bf43"
+    },
+    {
+      "path": "src/alpha_evolve/publication_llm.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/src/alpha_evolve/publication_llm.py",
+      "sha256": "90cd4da9040daf7f82f54451fea748b854a8030a1b44fdb7aabb605ce0d9786a"
+    },
+    {
+      "path": "src/alpha_evolve/fidelity_transport_v2.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/src/alpha_evolve/fidelity_transport_v2.py",
+      "sha256": "11d934cec7084710fa870e593f7ff125aa8b3207c4e748b9562485c477a64825"
+    },
+    {
+      "path": "src/alpha_evolve/publication_embeddings.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/src/alpha_evolve/publication_embeddings.py",
+      "sha256": "a97e364a3f024d747aeefd5e35a9db50e4e4c0ad9cfbea0db44b0bcf8553f140"
+    },
+    {
+      "path": "src/alpha_evolve/openrouter_budget.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/src/alpha_evolve/openrouter_budget.py",
+      "sha256": "4ade3308849505eba65a10a6655e5ec90b6641a4f22d9584e7ee93953ccb5ad3"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/registry.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/registry.py",
+      "sha256": "bceaa6fe2bffe2c3b7324aac35cece8832b4c8b88280bf0aac018f4fa232bdfc"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/asset/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/asset/__init__.py",
+      "sha256": "02bd3fff0ec953156a15c8e4489b959e660a59502fc602770de7fba65b8f1828"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/asset/base.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/asset/base.py",
+      "sha256": "c54671e5c0445e95107148faa5e61a328210a151a90c23384462afce81eb1095"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/data/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/data/__init__.py",
+      "sha256": "0f2a767ad7b1e6a23dff1baeb8a89aae1245102da6b6f50a8da6aace069480ce"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/data/base.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/data/base.py",
+      "sha256": "5f77eb6cec13fdd7ef86020cd7e1c79985bb968fa6d419ded8f88577be2d1436"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/data/dataset.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/data/dataset.py",
+      "sha256": "a69c683a07a42855aa8ba0e0f1e1c204a18b872ce9b1ba32054f19a53b098424"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/__init__.py",
+      "sha256": "bed990d6652146dab3f0f3823ca5c1471f2e50003e6c62b2ca0642732c934ef5"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/custom.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/custom.py",
+      "sha256": "587cb26edf9ee6971b2b076c125c7e86d05c9fd76c92d36dcfda9b58937bcfbf"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/news/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/news/__init__.py",
+      "sha256": "8ea1aa883d098dcb254f0e93a05e47d416a9df1e01bede4e338a1ea58fb7ca5f"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/news/fmp_downloader.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/news/fmp_downloader.py",
+      "sha256": "11b27b9dff07cfaa61876742093e3bc7bc7af729caa6d9baa24ce8b7cdb65918"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/news/polygon_downloader.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/news/polygon_downloader.py",
+      "sha256": "f5a9cf2917bb46c9a4d215a6692b10f362ed9d47df302a559f9414f82be66972"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/news/yahoofinance_downloader.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/news/yahoofinance_downloader.py",
+      "sha256": "700dd5e672e46e619879387033e77205ff66ea0be064cbbe1b2005e709f3a197"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/prices/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/prices/__init__.py",
+      "sha256": "c2cdb904da130f374919ac074579224dc97b964e254600fd1da63f3ab94e36d6"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/prices/fmp_day_downloader.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/prices/fmp_day_downloader.py",
+      "sha256": "b8fb19a230f274e0e273f1512c0f2d4ca5e9a6cd3eda77c8032c1bbfac925857"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/prices/polygon_day_downloader.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/prices/polygon_day_downloader.py",
+      "sha256": "e5c93911c829487ab6cb131a9d1bdeec51886105f6c8cd8a03fdfb184b296782"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/prices/yahoofinance_day_downloader.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/prices/yahoofinance_day_downloader.py",
+      "sha256": "74af9a6e5abea1655c37157b042b21f59accb85e41221c1c675b8888da7ed162"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/tools/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/tools/__init__.py",
+      "sha256": "f71fa5358a22d11ebc00de36ae72ac5c15a4989cbf2091c28aa4251f9e047a83"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/tools/fmp_economic_downloader.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/tools/fmp_economic_downloader.py",
+      "sha256": "883a5e0a085b3ad6dbf9101d20051d518c03f1e7912a8d6ac8c39569aaeb9ca6"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/tools/fmp_sentiment_downloader.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/tools/fmp_sentiment_downloader.py",
+      "sha256": "3f801db5d8409387b392bb0c30715507847a79d02bb3009c85e58de4a36adf5f"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/tools/rapidapi_downloader.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/downloader/tools/rapidapi_downloader.py",
+      "sha256": "8ba5785f2d4a498c9cc02b93a4e97fec5584205bcf6cfce21bb1cd5aa7dc3d33"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/environment/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/environment/__init__.py",
+      "sha256": "39ee9cb69c8681b98d313a790fe3b13980cb6aa3b97c6c6d821979b9a9706bf7"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/environment/trading.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/environment/trading.py",
+      "sha256": "10a47efc6d58b039e60d696cefcc34719b136dbc0c87969aa7ae9bb78afbcd8c"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/memory/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/memory/__init__.py",
+      "sha256": "5a08fe6176053446a08dbd2a6c313e24326415ba98c733d459ee1d1c5c6a027d"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/memory/base.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/memory/base.py",
+      "sha256": "4f10c2a06662364354cdf2f2ceb6b1d55be844e32438e8fe575bc598d32dc86f"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/memory/basic_memory.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/memory/basic_memory.py",
+      "sha256": "5bbf8b013b0c0ec761bc97db9ae5fdd1e89c5901aedd6702a59611b38f113567"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/memory/faiss.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/memory/faiss.py",
+      "sha256": "3fa1d1ca572804baf3afa22107f25b72200e0b57f602591d4bb2f8bf1d221c81"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/memory/interface.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/memory/interface.py",
+      "sha256": "7f6ddcd4b49cff6b243de224d8066fda9137ce6dc362da843fed97dd8d19136e"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/metrics/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/metrics/__init__.py",
+      "sha256": "4f433e936653dbbf11ca88abb0afc06dcf6bb9c4e450f9874f30a5eae1374c89"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/metrics/metrics.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/metrics/metrics.py",
+      "sha256": "6e8412f8063e585d80503bc9acf4d4906388e3ad0cdfd1ae169f6e3a2441c9a8"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/plots/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/plots/__init__.py",
+      "sha256": "b68c0267aa631c0230c9b1bb33e5089082884445659c2af3100921fc435f4482"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/plots/interface.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/plots/interface.py",
+      "sha256": "10dfdedfb395486dfa9add6827499ad579d26061233034cc789fe65471866676"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/plots/kline.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/plots/kline.py",
+      "sha256": "658a639fd35f8c0a554f34262eb4bd93458c0e9564228eeddc8da6df5de29660"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/plots/trading.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/plots/trading.py",
+      "sha256": "d8ae3c3c3fa88124787ceb58495020472abcd81494bc780f3dbbc3849a057e3d"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/processor/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/processor/__init__.py",
+      "sha256": "d23d14491e40f12dd2d5303a7fe28fa2d572191fbe5fe783fba4c73a5baaf880"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/processor/processor.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/processor/processor.py",
+      "sha256": "54e1a814edf7d6b1f1a0a8e23608b565198f62e90b8f448082b1661952c73837"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/__init__.py",
+      "sha256": "79e82dcefb719c8569770f5e858b7ed8bcdc74feb1be8e14e9a2f7ffa3f74059"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/custom.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/custom.py",
+      "sha256": "8f2aa47cae359a5875b8e27478cd9bd18fdd5a601cb3beacd75ed84960423650"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/helper.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/helper.py",
+      "sha256": "599b8c75ba39d661685601d1ba765f5eb5fd09750eb4b8ef9eaa50891f45668e"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/trading/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/trading/__init__.py",
+      "sha256": "47f7a9aa5bd0d9333f4a1ecf42584a159954f6e2574b2063018ede2ddb7447c4"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/trading/decision.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/trading/decision.py",
+      "sha256": "a6b71a6a996f1033d064b1483f82fada44442fb5bd3e9b08048e2dcf8ee97cda"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/trading/high_level_reflection.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/trading/high_level_reflection.py",
+      "sha256": "7d332880c22d46f6c12539634daad04f01d03db4a0eeea09e3a890f09fa20cc4"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/trading/latest_market_intelligence_summary.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/trading/latest_market_intelligence_summary.py",
+      "sha256": "9e5f925d87fc3b64f9fd4074b6771dd608af99d92b999caa438f0dbae62f728e"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/trading/low_level_reflection.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/trading/low_level_reflection.py",
+      "sha256": "217220cc96ec43d2ddff3bb2682163230691b39b1e6dc002b5fcf044f2217589"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/trading/past_market_intelligence_summary.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/prompt/trading/past_market_intelligence_summary.py",
+      "sha256": "b83cc5b76758e1988747d880428bd8b7fdec8ac8a1d6ecd3357c7cbd67f7fc98"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/provider/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/provider/__init__.py",
+      "sha256": "56a6dbc2b0878d93b49073a450ac0a4703f47c1ae8620b546c3d716ec7f2e1c4"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/provider/base_embedding.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/provider/base_embedding.py",
+      "sha256": "7ee71c9cc86e7aad6b0b18f5722d438d4b2a372df2eaf0007d66be9d95301b32"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/provider/base_llm.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/provider/base_llm.py",
+      "sha256": "b2df79edca40512ab4f4a2b640e4b96fde1d562e1591211d0d86c7b495cd6dee"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/provider/provider.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/provider/provider.py",
+      "sha256": "e685978d968831710866657b289a931cf056a298df3a4b9f4a5688689f4324bf"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/query/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/query/__init__.py",
+      "sha256": "6e43df1d60950821717e264f250ef8509fd56c71c6d66c07e3fc22f31859cc3b"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/query/diverse_query.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/query/diverse_query.py",
+      "sha256": "f7c6437fd63cef4d7db195be7cde2f50f2c31c71b8abfa81b7a1a64c6a9cfd0a"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/query/query_types.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/query/query_types.py",
+      "sha256": "fc1963906fe2822c1f42792501debd987f60bb9357e27710c1e806a30d2913c4"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/tools/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/tools/__init__.py",
+      "sha256": "7d178763480e544fad65c33e32b279ab5ddef9e4d3726653fca1b2a09b10b1d5"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/tools/rapid_apis.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/tools/rapid_apis.py",
+      "sha256": "cf00782caf3b61bff50618427707aaf6de93f9a6fa03ad532bc4e4b6d9b52449"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/tools/strategy_agents.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/tools/strategy_agents.py",
+      "sha256": "4c24be60456782c32a601b9c88ca3cc90c609b28c23801f2ce96ca6041c09bf3"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/trajectory/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/trajectory/__init__.py",
+      "sha256": "0b059912c1eb5fa0075c82f3c62025652a96680edca3f730bb746541fcf5f717"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/trajectory/dynamic_programming.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/trajectory/dynamic_programming.py",
+      "sha256": "651dd34d6b4e485c5fb79538c6ea3f3fd80c16ac49148db558c0d1d79190ec8c"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/trajectory/dynamic_programming_threshold.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/trajectory/dynamic_programming_threshold.py",
+      "sha256": "0bb890868887acedf1e270a38795a1191fc199c9e11497a3ec2dd1c7488b13a6"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/utils/__init__.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/utils/__init__.py",
+      "sha256": "15c51e2037dc48821dcc22198d9406992c2d5df296a0a61c0e63f843f269b00b"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/utils/file_utils.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/utils/file_utils.py",
+      "sha256": "4cb9bf37d2076523b49c74d3931f41fbd1d8dfd0ee27492f4fcc46f2ac1acc70"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/utils/get_proxy.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/utils/get_proxy.py",
+      "sha256": "35be49477386f4e2770a476ad479e80e66bf4b67ba44e569399350e75afb3e2c"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/utils/json_utils.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/utils/json_utils.py",
+      "sha256": "eaf206464aedbc6387b360a1e25c9dec5c9534e523157634c13220ab0cdb9850"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/utils/misc.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/utils/misc.py",
+      "sha256": "810a7fc5667c379fc8c644c18d914f541a9dec2ad76dbc7a7c893e18e4bc09d1"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/utils/singleton.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/utils/singleton.py",
+      "sha256": "299d470dde28f9b270f7a1838168c7840bd9c6e27ce040c8c253c58d7c8a00ba"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/utils/utils.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/finagent/utils/utils.py",
+      "sha256": "43d8266261f45f8cf235ec3ed46be3aa15f0b7b96a50a949580074d2493baef7"
+    },
+    {
+      "path": "/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/tools/main.py",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/tools/main.py",
+      "sha256": "dacad02a241ad7c5a45bed4768c86d927e2a156f9846430bd7176bceb08f2b76"
+    },
+    {
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_finagent_walltime_live.sbatch",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_finagent_walltime_live.sbatch",
+      "sha256": "5679143577ff42784984b098b195af535ac93beba1ec153000f84b202d80fae2"
+    },
+    {
+      "path": "/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_finagent_walltime_replay.sbatch",
+      "preserved_copy": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/frozen_sources/nfs/roberts/project/pi_btk22/zc362/slurm/slurm_scripts/alpha_fidelity_v2_finagent_walltime_replay.sbatch",
+      "sha256": "47f87f8dff562648aff3946381c6153ba3bd69de83a4a0526a577d7e33e4d58f"
+    }
+  ],
+  "caps": {
+    "FinAgent": 160,
+    "project_hard": 500,
+    "project_soft": 450
+  },
+  "cases": {
+    "AAPL": {
+      "continuation_name": "finagent_AAPL_walltime_continuation_v2",
+      "future_envelopes": [
+        {
+          "key": "022e887ce6d0c9f976644a06d0d5205196608c0ac8ef8a485e932ae8beb28738",
+          "path": "artifacts/fidelity_completion_v2/finagent_AAPL_walltime_prefix_probe_20260919/unattempted_future_envelopes/022e887ce6d0c9f976644a06d0d5205196608c0ac8ef8a485e932ae8beb28738.json",
+          "sha256": "43b8c8d4f4677a371f035ad3d82f5392e96657c9c2a0bd0d826de556d0ce0bf6"
+        },
+        {
+          "key": "0f73d75b3a1845f188dd9dfea9ac82197170afb32124f72a5e538ac03b30107b",
+          "path": "artifacts/fidelity_completion_v2/finagent_AAPL_walltime_prefix_probe_20260919/unattempted_future_envelopes/0f73d75b3a1845f188dd9dfea9ac82197170afb32124f72a5e538ac03b30107b.json",
+          "sha256": "3b9ade46ee4a6a12ab2278c8b83b11e8dd4d7c49aaac7fbbc0ed0fc93cdc1331"
+        },
+        {
+          "key": "27557f51bc82f2e1a6c99bf280c79aae05f9521509775838aba24cad2432fdff",
+          "path": "artifacts/fidelity_completion_v2/finagent_AAPL_walltime_prefix_probe_20260919/unattempted_future_envelopes/27557f51bc82f2e1a6c99bf280c79aae05f9521509775838aba24cad2432fdff.json",
+          "sha256": "61aa759b92cb0ea81028af732cbb92115aba3c8d32309b9f06b5fb6dad0287d0"
+        },
+        {
+          "key": "3efdd3d0e760932758ae31e92e1483ca86a9d898aff97800743311e2c7ce7263",
+          "path": "artifacts/fidelity_completion_v2/finagent_AAPL_walltime_prefix_probe_20260919/unattempted_future_envelopes/3efdd3d0e760932758ae31e92e1483ca86a9d898aff97800743311e2c7ce7263.json",
+          "sha256": "6067e2926b2e09dd09c411f13e6fe8c613dfcb32d7e207b8a3a574a42a595c85"
+        },
+        {
+          "key": "6c0ed27bbe7babf987b18e1db728886791c47777df99c752b9eba8a57587af85",
+          "path": "artifacts/fidelity_completion_v2/finagent_AAPL_walltime_prefix_probe_20260919/unattempted_future_envelopes/6c0ed27bbe7babf987b18e1db728886791c47777df99c752b9eba8a57587af85.json",
+          "sha256": "2120c2a1d21152b91b274b9595b56aceb81371d5fb31bc358d0d3a3a75a98ba4"
+        },
+        {
+          "key": "acdb355d0ce071a767a5e7f96c9b2a436ec22c2d945aaaca1ecdd2574203ad12",
+          "path": "artifacts/fidelity_completion_v2/finagent_AAPL_walltime_prefix_probe_20260919/unattempted_future_envelopes/acdb355d0ce071a767a5e7f96c9b2a436ec22c2d945aaaca1ecdd2574203ad12.json",
+          "sha256": "97296faad71bfc4edf33450399fbf0f67d9b0ae6a59cc42d08490978dc89c350"
+        },
+        {
+          "key": "d8feda64ab16871a3ba177a0e19d86e5f6b892783a3b3d1d78adba676133dda2",
+          "path": "artifacts/fidelity_completion_v2/finagent_AAPL_walltime_prefix_probe_20260919/unattempted_future_envelopes/d8feda64ab16871a3ba177a0e19d86e5f6b892783a3b3d1d78adba676133dda2.json",
+          "sha256": "62cb44b90260c07050aab8e20ed36db238a4823b97e7e2c0c6263a6521962357"
+        },
+        {
+          "key": "e447a0278f4877cd872dfdc901398a6554db36294ca02cb8b38b464ed43f39e4",
+          "path": "artifacts/fidelity_completion_v2/finagent_AAPL_walltime_prefix_probe_20260919/unattempted_future_envelopes/e447a0278f4877cd872dfdc901398a6554db36294ca02cb8b38b464ed43f39e4.json",
+          "sha256": "5527fc4662b2256f95d57acf1ef5648f1b384cc224dc00e8fe288a4239fdddfb"
+        }
+      ],
+      "input_sha256": "a2d0c1d5295423d5c3d670acba654f612748bf8642a7edbf521353fe6f8a793b",
+      "orphan_count": 2,
+      "orphan_keys": [
+        "a0064d09cad83cc294b18af1a1cc2eedcdb9b4bbaaefaf37078dc76791905b5f",
+        "ed57f020c79a1a653a6d481b6484036091011d08bad22db880c04439a3892911"
+      ],
+      "prefixes": [
+        {
+          "kind": "latest_interrupted_source",
+          "path": "artifacts/fidelity_completion_v2/walltime_interruptions_20260919_0135/preserved/alpha_evolve/artifacts/fidelity_completion_v2/finagent_AAPL/decisions.jsonl",
+          "records": 209,
+          "sha256": "2453e016b69cba16a584d8ab664a90d8b7f3116d97e5da30df319bdf7a0d228a",
+          "target": "decisions.jsonl"
+        },
+        {
+          "kind": "nfs",
+          "path": "artifacts/fidelity_completion_v2/nfs_resume_20260917/AAPL/decisions.jsonl",
+          "records": 16,
+          "sha256": "629a2c90909f01a40364dde9f5552494de36ee47c02fe855c8d99af3e5b98504",
+          "target": "decisions.jsonl"
+        },
+        {
+          "kind": "transport",
+          "path": "artifacts/fidelity_completion_v2/transport_recovery_recorded_20260917/finagent_AAPL/artifacts/fidelity_completion_v2/finagent_AAPL/decisions.jsonl",
+          "records": 68,
+          "sha256": "68bf95d02ffc3bb667551ec11162c9899c10df97d365e878535136d0ce131826",
+          "target": "decisions.jsonl"
+        }
+      ],
+      "probe_name": "finagent_AAPL_walltime_prefix_probe_20260919",
+      "probe_path": "artifacts/fidelity_completion_v2/finagent_AAPL_walltime_prefix_probe_20260919/prefix_probe_validation.json",
+      "recipe_path": "paper_runs/fidelity_completion_v2/recipes/finagent_AAPL.json",
+      "recipe_sha256": "47553c3961ba1172faae59c4ca6b5a69d2f47b4f1d065161d84460fb108e824c",
+      "replay_name": "finagent_AAPL_walltime_continuation_v2_offline_replay",
+      "source_run": "finagent_AAPL",
+      "symbol": "AAPL"
+    },
+    "MSFT": {
+      "continuation_name": "finagent_MSFT_walltime_continuation_v2",
+      "future_envelopes": [
+        {
+          "key": "710022cfda54af25c410c7d5396cbd7854c80c157a4501a5af8ec764e4e80308",
+          "path": "artifacts/fidelity_completion_v2/finagent_MSFT_walltime_prefix_probe_20260919/unattempted_future_envelopes/710022cfda54af25c410c7d5396cbd7854c80c157a4501a5af8ec764e4e80308.json",
+          "sha256": "4937a92712f6098fa3a5d1149305b070cf43fa1ae438de3e10a38d802dc0f99d"
+        },
+        {
+          "key": "8a2c89a1e026c173e87537ee2ce8715954d2b02ce382e36bde3f4d2db33c92df",
+          "path": "artifacts/fidelity_completion_v2/finagent_MSFT_walltime_prefix_probe_20260919/unattempted_future_envelopes/8a2c89a1e026c173e87537ee2ce8715954d2b02ce382e36bde3f4d2db33c92df.json",
+          "sha256": "ac0d2aef92b1420524f3ad69c0fc2730798d3615cab44a768bbc4dae84228cf8"
+        },
+        {
+          "key": "aac3bed24084492dca1afe04ee9d8ba8284cb601318990a9a12fe3700023066b",
+          "path": "artifacts/fidelity_completion_v2/finagent_MSFT_walltime_prefix_probe_20260919/unattempted_future_envelopes/aac3bed24084492dca1afe04ee9d8ba8284cb601318990a9a12fe3700023066b.json",
+          "sha256": "228c192c4a9ad48a87319f4f6d651698cee59841b3fe6ada6961e6c9dbbf6477"
+        },
+        {
+          "key": "c21b585752803444def3323c308522a5c4cab12fe364f89fd287f65beb3724cf",
+          "path": "artifacts/fidelity_completion_v2/finagent_MSFT_walltime_prefix_probe_20260919/unattempted_future_envelopes/c21b585752803444def3323c308522a5c4cab12fe364f89fd287f65beb3724cf.json",
+          "sha256": "67fe26c3f2a747ba027f6cf51468e379d4a088a720a423deacc76a0d714fe12e"
+        },
+        {
+          "key": "c66d9541ec7f954cbd84524db8f8fb8e8015ed36c141f792532c32a3b6315477",
+          "path": "artifacts/fidelity_completion_v2/finagent_MSFT_walltime_prefix_probe_20260919/unattempted_future_envelopes/c66d9541ec7f954cbd84524db8f8fb8e8015ed36c141f792532c32a3b6315477.json",
+          "sha256": "e4860faf35c2d3290a8ff38d4c6622e6e968a2259481e48dd8c2518117fea56e"
+        },
+        {
+          "key": "d97ba4e710fb0c53b6908dc226685418e533971d802a9103f6385c76af81f4c1",
+          "path": "artifacts/fidelity_completion_v2/finagent_MSFT_walltime_prefix_probe_20260919/unattempted_future_envelopes/d97ba4e710fb0c53b6908dc226685418e533971d802a9103f6385c76af81f4c1.json",
+          "sha256": "3f3121927656ed285a15d95f35076a383d2e00b799a94f45ded1d785e7ad8677"
+        },
+        {
+          "key": "e76d6d3bf5d35362bb0d782dad89552c72e626d857244911e7fb82a0d94a6233",
+          "path": "artifacts/fidelity_completion_v2/finagent_MSFT_walltime_prefix_probe_20260919/unattempted_future_envelopes/e76d6d3bf5d35362bb0d782dad89552c72e626d857244911e7fb82a0d94a6233.json",
+          "sha256": "815a276e24e3f530ad2164dd6cf78fba1f4f5ce29d6a33e77663f0251ec0063f"
+        }
+      ],
+      "input_sha256": "4173d0f3f817a87b6369c15c3a5962c69176775a52b86c9e32c389f10fc42765",
+      "orphan_count": 4,
+      "orphan_keys": [
+        "1ba96e00bcb1cc7d52f85b64599d3ed2f38bdbe4857d83951d7348ddfacc5abb",
+        "9678b5c8533bb252ccfe30fea8dbbe34a85f37688eba40d610ad0d9cb820d2b2",
+        "c1e4accc5e46a6439bcd51d36e15a38788c08ba921999e40b883a7d5cbb85e77",
+        "f8a646bbb5f62ec879b428f2a50c8d1d2ae86d506a221ee739141c1c3043e142"
+      ],
+      "prefixes": [
+        {
+          "kind": "latest_interrupted_source",
+          "path": "artifacts/fidelity_completion_v2/walltime_interruptions_20260919_0135/preserved/alpha_evolve/artifacts/fidelity_completion_v2/finagent_MSFT/decisions.jsonl",
+          "records": 229,
+          "sha256": "d999681b5b5f54e65bd5a7fb190525f593f5a9748116d978038ec5d55145a9e0",
+          "target": "decisions.jsonl"
+        },
+        {
+          "kind": "nfs",
+          "path": "artifacts/fidelity_completion_v2/nfs_resume_20260917/MSFT/decisions.jsonl",
+          "records": 42,
+          "sha256": "f6908c70be307fd9e7d4622e2d8cc0a1ac82957ccf2e4696ee1137977341b06e",
+          "target": "decisions.jsonl"
+        },
+        {
+          "kind": "transport",
+          "path": "artifacts/fidelity_completion_v2/transport_recovery_recorded_20260917/finagent_MSFT/artifacts/fidelity_completion_v2/finagent_MSFT/decisions.jsonl",
+          "records": 83,
+          "sha256": "0ff68b98110e0b610a59242e9342fdb944f1643fda563f751f79527e75135f87",
+          "target": "decisions.jsonl"
+        }
+      ],
+      "probe_name": "finagent_MSFT_walltime_prefix_probe_20260919",
+      "probe_path": "artifacts/fidelity_completion_v2/finagent_MSFT_walltime_prefix_probe_20260919/prefix_probe_validation.json",
+      "recipe_path": "paper_runs/fidelity_completion_v2/recipes/finagent_MSFT.json",
+      "recipe_sha256": "1d47ad99ef9a6f0b15f30b84cf54f496bddc8899d219047f10c5c56742fe484d",
+      "replay_name": "finagent_MSFT_walltime_continuation_v2_offline_replay",
+      "source_run": "finagent_MSFT",
+      "symbol": "MSFT"
+    },
+    "TSLA": {
+      "continuation_name": "finagent_TSLA_schema_repair_walltime_continuation_v2",
+      "future_envelopes": [
+        {
+          "key": "7e694237dda662eccd39be09406a89472d95ad752e6f9d12e1110224b09daa91",
+          "path": "artifacts/fidelity_completion_v2/finagent_TSLA_schema_repair_walltime_prefix_probe_20260919/unattempted_future_envelopes/7e694237dda662eccd39be09406a89472d95ad752e6f9d12e1110224b09daa91.json",
+          "sha256": "0fdbd28b68d6f67f4b4b132d5557909d3f871afa6dd74adfd35a66b25b812683"
+        }
+      ],
+      "input_sha256": "637ed9555d8f07ff83961f6f4a159f36eca876578fbdf474dafca700daa58d34",
+      "orphan_count": 1,
+      "orphan_keys": [
+        "38a317905a6953fb1655492f1540da9eed8bb7a2af44f1e57f0782a05543d432"
+      ],
+      "prefixes": [
+        {
+          "kind": "latest_interrupted_source",
+          "path": "artifacts/fidelity_completion_v2/walltime_interruptions_20260919_0135/preserved/alpha_evolve/artifacts/fidelity_completion_v2/finagent_TSLA_schema_repair/decisions.jsonl",
+          "records": 250,
+          "sha256": "14de8bbb69e498306059a6950183597c62eafec04616dd81ab189efdd4608530",
+          "target": "decisions.jsonl"
+        },
+        {
+          "kind": "latest_interrupted_source",
+          "path": "artifacts/fidelity_completion_v2/walltime_interruptions_20260919_0135/preserved/alpha_evolve/artifacts/fidelity_completion_v2/finagent_TSLA_schema_repair/validation_arms/native_causal/decisions.jsonl",
+          "records": 88,
+          "sha256": "f0ae8315798fdc17035744127e909dfc8212aebc6c2e11d88c55af4825659a07",
+          "target": "validation_arms/native_causal/decisions.jsonl"
+        },
+        {
+          "kind": "nfs",
+          "path": "artifacts/fidelity_completion_v2/nfs_resume_20260917/TSLA/decisions.jsonl",
+          "records": 20,
+          "sha256": "bf6244c25b2f0b4494ba1ea5ec2f768162dff74bf17e68ff54605232bdf1e0c8",
+          "target": "decisions.jsonl"
+        },
+        {
+          "kind": "schema",
+          "path": "artifacts/fidelity_completion_v2/finagent_TSLA/decisions.jsonl",
+          "records": 38,
+          "sha256": "5161facf3ad1f3272a7711b47d0c393ff58bd028b7dc21f5ac77844baa1bf533",
+          "target": "decisions.jsonl"
+        },
+        {
+          "kind": "transport",
+          "path": "artifacts/fidelity_completion_v2/transport_recovery_recorded_20260917/finagent_TSLA_schema_repair/artifacts/fidelity_completion_v2/finagent_TSLA_schema_repair/decisions.jsonl",
+          "records": 84,
+          "sha256": "c7aa9539ceed34a6cccd758ca2b4ee78ef824715fcf53302296248f67fdd7176",
+          "target": "decisions.jsonl"
+        }
+      ],
+      "probe_name": "finagent_TSLA_schema_repair_walltime_prefix_probe_20260919",
+      "probe_path": "artifacts/fidelity_completion_v2/finagent_TSLA_schema_repair_walltime_prefix_probe_20260919/prefix_probe_validation.json",
+      "recipe_path": "paper_runs/fidelity_completion_v2/recipes/finagent_TSLA.json",
+      "recipe_sha256": "cbfbe1d4515e63c6af2837edea66b84fdf9cd4ba9e9d2cefc4ce6d4d98c0aa00",
+      "replay_name": "finagent_TSLA_schema_repair_walltime_continuation_v2_offline_replay",
+      "source_run": "finagent_TSLA_schema_repair",
+      "symbol": "TSLA"
+    }
+  },
+  "driver_sha256": "26767019fc831be63558e3721764f934925dbfd1269199e76a7ea72ee7a41f9c",
+  "expected_arm_counts": {
+    "native_causal": 147,
+    "shared_training": 250
+  },
+  "final_accounts_submitted": false,
+  "final_admission": "Versioned fidelity_equity_evidence_v3/build_fidelity_accounts_v3 add receipt/prefix/settlement binding; original v2 files and queued GOOGL bindings unchanged. All financial text identical except validator import and gate-hash metadata.",
+  "full_original_paper_reproduced": false,
+  "prefix_gate": "Canonical ReadOnlyReplay until every latest/NFS/transport/schema prefix reverified. First new key must belong to the actual network-disabled concurrent stop envelope set and remain absent in fresh locked ledger/mapping; thereafter unchanged WaitingMeter/caps.",
+  "prepared_at_utc": "2026-09-19T02:48:06.334963+00:00",
+  "primary_overrides_change_only_after_complete_source_and_full_replay": true,
+  "scope": "Three exact-state FinAgent continuations after walltime, preserving seven returned-response charges and every older prefix. No replacement response, new strategy, input, model, prompt, fee, or date change.",
+  "settlement_policy": "Only seven already returned FinAgent journal responses become complete in the canonical ledger index. Preserve full reserved_usd as cost_usd and label it conservative; retain provider-reported cost separately. Project and study commitments must be exactly unchanged. No mapping/journal/SQLite write. Quanta, AMZN and Alpha untouched.",
+  "settlements": {
+    "1ba96e00bcb1cc7d52f85b64599d3ed2f38bdbe4857d83951d7348ddfacc5abb": {
+      "copy": "artifacts/fidelity_completion_v2/walltime_interruptions_20260919_0135/durable_orphan_responses/1ba96e00bcb1cc7d52f85b64599d3ed2f38bdbe4857d83951d7348ddfacc5abb.json",
+      "copy_sha256": "d933e4f0f3958e5f95776cd88a89429ef7444c327844e5a50938bd86d181f61b",
+      "entry": {
+        "created_utc": "2026-09-19T00:50:17.304275+00:00",
+        "endpoint": "embeddings",
+        "model": "openai/text-embedding-3-large",
+        "pid": 1085580,
+        "reserved_usd": 9.828e-05,
+        "status": "reserved",
+        "study": "fidelity_v2_finagent_source_settings"
+      },
+      "envelope_identity_verified": true,
+      "envelope_sha256": "1ba96e00bcb1cc7d52f85b64599d3ed2f38bdbe4857d83951d7348ddfacc5abb",
+      "journal_matches": [
+        {
+          "offset": 2770947861,
+          "sha256": "d933e4f0f3958e5f95776cd88a89429ef7444c327844e5a50938bd86d181f61b"
+        }
+      ],
+      "owner_evidence": [
+        {
+          "date": "2023-04-28",
+          "decision_path": "artifacts/fidelity_completion_v2/finagent_MSFT/decisions.jsonl",
+          "decision_sha256": "d999681b5b5f54e65bd5a7fb190525f593f5a9748116d978038ec5d55145a9e0",
+          "pid": 1085580,
+          "request_hash": "b19afba9a26e70754fc72eceecf58dd1eab1c59d30c5bfd30af71acdcaea8c41"
+        },
+        {
+          "date": "2023-04-28",
+          "decision_path": "artifacts/fidelity_completion_v2/finagent_MSFT/decisions.jsonl",
+          "decision_sha256": "d999681b5b5f54e65bd5a7fb190525f593f5a9748116d978038ec5d55145a9e0",
+          "pid": 1085580,
+          "request_hash": "c80cb3051cb9d2852148b7129ca0b22d29668564f3a4b6671c58faeeecb3eee0"
+        },
+        {
+          "date": "2023-04-28",
+          "decision_path": "artifacts/fidelity_completion_v2/finagent_MSFT/decisions.jsonl",
+          "decision_sha256": "d999681b5b5f54e65bd5a7fb190525f593f5a9748116d978038ec5d55145a9e0",
+          "pid": 1085580,
+          "request_hash": "de87169c4aa595742285ed52467caeec985c954d0935547b28f04e3b6461a11d"
+        }
+      ],
+      "owner_run_from_recent_noncached_requests": "finagent_MSFT",
+      "request_hash": "1ba96e00bcb1cc7d52f85b64599d3ed2f38bdbe4857d83951d7348ddfacc5abb",
+      "response_id": "gen-emb-1789779019-ZNkIPwA3AnrnAljYQKBe",
+      "response_structure_validated": true,
+      "response_usage": {
+        "cost": 1.599e-05,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 1.599e-05,
+          "upstream_inference_prompt_cost": 1.599e-05
+        },
+        "is_byok": false,
+        "prompt_tokens": 123,
+        "total_tokens": 123
+      },
+      "sqlite_present": false,
+      "technical_recovery_mapping_present": false
+    },
+    "38a317905a6953fb1655492f1540da9eed8bb7a2af44f1e57f0782a05543d432": {
+      "copy": "artifacts/fidelity_completion_v2/walltime_interruptions_20260919_0135/durable_orphan_responses/38a317905a6953fb1655492f1540da9eed8bb7a2af44f1e57f0782a05543d432.json",
+      "copy_sha256": "eb5bb57877a03e29ab01642ba3cd530e1d110045a2bdb4950cfb7171fbb4032a",
+      "entry": {
+        "created_utc": "2026-09-19T00:50:20.086316+00:00",
+        "endpoint": "embeddings",
+        "model": "openai/text-embedding-3-large",
+        "pid": 3169417,
+        "reserved_usd": 3.7829999999999995e-05,
+        "status": "reserved",
+        "study": "fidelity_v2_finagent_source_settings"
+      },
+      "envelope_identity_verified": true,
+      "envelope_sha256": "38a317905a6953fb1655492f1540da9eed8bb7a2af44f1e57f0782a05543d432",
+      "journal_matches": [
+        {
+          "offset": 2771012928,
+          "sha256": "eb5bb57877a03e29ab01642ba3cd530e1d110045a2bdb4950cfb7171fbb4032a"
+        }
+      ],
+      "owner_evidence": [
+        {
+          "date": "2023-10-05",
+          "decision_path": "artifacts/fidelity_completion_v2/finagent_TSLA_schema_repair/validation_arms/native_causal/decisions.jsonl",
+          "decision_sha256": "f0ae8315798fdc17035744127e909dfc8212aebc6c2e11d88c55af4825659a07",
+          "pid": 3169417,
+          "request_hash": "2f6c0cf3da2c2fd0fa333a72fc3dc6dfcfebdf4b6daccba609e27f983ac87f5b"
+        },
+        {
+          "date": "2023-10-05",
+          "decision_path": "artifacts/fidelity_completion_v2/finagent_TSLA_schema_repair/validation_arms/native_causal/decisions.jsonl",
+          "decision_sha256": "f0ae8315798fdc17035744127e909dfc8212aebc6c2e11d88c55af4825659a07",
+          "pid": 3169417,
+          "request_hash": "f4ba46a0555e4f7a0e58207e3c6bc11e7f96ed2ffd3a78c7d3c7d38a1836bc00"
+        },
+        {
+          "date": "2023-10-05",
+          "decision_path": "artifacts/fidelity_completion_v2/finagent_TSLA_schema_repair/validation_arms/native_causal/decisions.jsonl",
+          "decision_sha256": "f0ae8315798fdc17035744127e909dfc8212aebc6c2e11d88c55af4825659a07",
+          "pid": 3169417,
+          "request_hash": "d024c5131171e07f718c0f916daa26c93929e55a847c0227374b2035a1251206"
+        }
+      ],
+      "owner_run_from_recent_noncached_requests": "finagent_TSLA_schema_repair",
+      "request_hash": "38a317905a6953fb1655492f1540da9eed8bb7a2af44f1e57f0782a05543d432",
+      "response_id": "gen-emb-1789779022-qgQ1vUsW7FyQmHuQcGOP",
+      "response_structure_validated": true,
+      "response_usage": {
+        "cost": 3.25e-06,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 3.25e-06,
+          "upstream_inference_prompt_cost": 3.25e-06
+        },
+        "is_byok": false,
+        "prompt_tokens": 25,
+        "total_tokens": 25
+      },
+      "sqlite_present": false,
+      "technical_recovery_mapping_present": false
+    },
+    "9678b5c8533bb252ccfe30fea8dbbe34a85f37688eba40d610ad0d9cb820d2b2": {
+      "copy": "artifacts/fidelity_completion_v2/walltime_interruptions_20260919_0135/durable_orphan_responses/9678b5c8533bb252ccfe30fea8dbbe34a85f37688eba40d610ad0d9cb820d2b2.json",
+      "copy_sha256": "d51fc6a8b20f6e42fb7e0dcd0994a16e7d55e85ce2048ecd5ca80ea6d1544eb6",
+      "entry": {
+        "created_utc": "2026-09-19T00:50:08.562811+00:00",
+        "endpoint": "embeddings",
+        "model": "openai/text-embedding-3-large",
+        "pid": 1085580,
+        "reserved_usd": 0.00014144,
+        "status": "reserved",
+        "study": "fidelity_v2_finagent_source_settings"
+      },
+      "envelope_identity_verified": true,
+      "envelope_sha256": "9678b5c8533bb252ccfe30fea8dbbe34a85f37688eba40d610ad0d9cb820d2b2",
+      "journal_matches": [
+        {
+          "offset": 2770817670,
+          "sha256": "d51fc6a8b20f6e42fb7e0dcd0994a16e7d55e85ce2048ecd5ca80ea6d1544eb6"
+        }
+      ],
+      "owner_evidence": [
+        {
+          "date": "2023-04-28",
+          "decision_path": "artifacts/fidelity_completion_v2/finagent_MSFT/decisions.jsonl",
+          "decision_sha256": "d999681b5b5f54e65bd5a7fb190525f593f5a9748116d978038ec5d55145a9e0",
+          "pid": 1085580,
+          "request_hash": "b19afba9a26e70754fc72eceecf58dd1eab1c59d30c5bfd30af71acdcaea8c41"
+        },
+        {
+          "date": "2023-04-28",
+          "decision_path": "artifacts/fidelity_completion_v2/finagent_MSFT/decisions.jsonl",
+          "decision_sha256": "d999681b5b5f54e65bd5a7fb190525f593f5a9748116d978038ec5d55145a9e0",
+          "pid": 1085580,
+          "request_hash": "c80cb3051cb9d2852148b7129ca0b22d29668564f3a4b6671c58faeeecb3eee0"
+        },
+        {
+          "date": "2023-04-28",
+          "decision_path": "artifacts/fidelity_completion_v2/finagent_MSFT/decisions.jsonl",
+          "decision_sha256": "d999681b5b5f54e65bd5a7fb190525f593f5a9748116d978038ec5d55145a9e0",
+          "pid": 1085580,
+          "request_hash": "de87169c4aa595742285ed52467caeec985c954d0935547b28f04e3b6461a11d"
+        }
+      ],
+      "owner_run_from_recent_noncached_requests": "finagent_MSFT",
+      "request_hash": "9678b5c8533bb252ccfe30fea8dbbe34a85f37688eba40d610ad0d9cb820d2b2",
+      "response_id": "gen-emb-1789779010-bvQa0MZhidzxmdbb5nlK",
+      "response_structure_validated": true,
+      "response_usage": {
+        "cost": 2.574e-05,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 2.574e-05,
+          "upstream_inference_prompt_cost": 2.574e-05
+        },
+        "is_byok": false,
+        "prompt_tokens": 198,
+        "total_tokens": 198
+      },
+      "sqlite_present": false,
+      "technical_recovery_mapping_present": false
+    },
+    "a0064d09cad83cc294b18af1a1cc2eedcdb9b4bbaaefaf37078dc76791905b5f": {
+      "copy": "artifacts/fidelity_completion_v2/walltime_interruptions_20260919_0135/durable_orphan_responses/a0064d09cad83cc294b18af1a1cc2eedcdb9b4bbaaefaf37078dc76791905b5f.json",
+      "copy_sha256": "c45c50f4c2ad43ccf9f1a26cfdb4edb87459ca90612c9823c2d4256e20754e6b",
+      "entry": {
+        "created_utc": "2026-09-19T00:50:14.576318+00:00",
+        "endpoint": "embeddings",
+        "model": "openai/text-embedding-3-large",
+        "pid": 2557042,
+        "reserved_usd": 0.00010647,
+        "status": "reserved",
+        "study": "fidelity_v2_finagent_source_settings"
+      },
+      "envelope_identity_verified": true,
+      "envelope_sha256": "a0064d09cad83cc294b18af1a1cc2eedcdb9b4bbaaefaf37078dc76791905b5f",
+      "journal_matches": [
+        {
+          "offset": 2770882856,
+          "sha256": "c45c50f4c2ad43ccf9f1a26cfdb4edb87459ca90612c9823c2d4256e20754e6b"
+        }
+      ],
+      "owner_evidence": [
+        {
+          "date": "2023-03-30",
+          "decision_path": "artifacts/fidelity_completion_v2/finagent_AAPL/decisions.jsonl",
+          "decision_sha256": "2453e016b69cba16a584d8ab664a90d8b7f3116d97e5da30df319bdf7a0d228a",
+          "pid": 2557042,
+          "request_hash": "647faaa5412ee71dda3473bb2f7c8779337937f1925268a85559db50ba913086"
+        },
+        {
+          "date": "2023-03-30",
+          "decision_path": "artifacts/fidelity_completion_v2/finagent_AAPL/decisions.jsonl",
+          "decision_sha256": "2453e016b69cba16a584d8ab664a90d8b7f3116d97e5da30df319bdf7a0d228a",
+          "pid": 2557042,
+          "request_hash": "5c612625b30bd048733ac19fce6711993ff48f34950db7559e0971eb59ba180e"
+        },
+        {
+          "date": "2023-03-30",
+          "decision_path": "artifacts/fidelity_completion_v2/finagent_AAPL/decisions.jsonl",
+          "decision_sha256": "2453e016b69cba16a584d8ab664a90d8b7f3116d97e5da30df319bdf7a0d228a",
+          "pid": 2557042,
+          "request_hash": "cb5fb68c1cf77f51c92f720fee1743f63413b21db745501b3362902f06ecf4cb"
+        }
+      ],
+      "owner_run_from_recent_noncached_requests": "finagent_AAPL",
+      "request_hash": "a0064d09cad83cc294b18af1a1cc2eedcdb9b4bbaaefaf37078dc76791905b5f",
+      "response_id": "gen-emb-1789779016-DgZsaAyVnhqmxVqKzd3j",
+      "response_structure_validated": true,
+      "response_usage": {
+        "cost": 1.859e-05,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 1.859e-05,
+          "upstream_inference_prompt_cost": 1.859e-05
+        },
+        "is_byok": false,
+        "prompt_tokens": 143,
+        "total_tokens": 143
+      },
+      "sqlite_present": false,
+      "technical_recovery_mapping_present": false
+    },
+    "c1e4accc5e46a6439bcd51d36e15a38788c08ba921999e40b883a7d5cbb85e77": {
+      "copy": "artifacts/fidelity_completion_v2/walltime_interruptions_20260919_0135/durable_orphan_responses/c1e4accc5e46a6439bcd51d36e15a38788c08ba921999e40b883a7d5cbb85e77.json",
+      "copy_sha256": "940ff0e0492ec9da50b6d595c64458230317c23219a6085ce7f56d9897300b5e",
+      "entry": {
+        "created_utc": "2026-09-19T00:49:42.857371+00:00",
+        "endpoint": "embeddings",
+        "model": "openai/text-embedding-3-large",
+        "pid": 1085580,
+        "reserved_usd": 0.00012636,
+        "status": "reserved",
+        "study": "fidelity_v2_finagent_source_settings"
+      },
+      "envelope_identity_verified": true,
+      "envelope_sha256": "c1e4accc5e46a6439bcd51d36e15a38788c08ba921999e40b883a7d5cbb85e77",
+      "journal_matches": [
+        {
+          "offset": 2770479958,
+          "sha256": "940ff0e0492ec9da50b6d595c64458230317c23219a6085ce7f56d9897300b5e"
+        }
+      ],
+      "owner_evidence": [
+        {
+          "date": "2023-04-28",
+          "decision_path": "artifacts/fidelity_completion_v2/finagent_MSFT/decisions.jsonl",
+          "decision_sha256": "d999681b5b5f54e65bd5a7fb190525f593f5a9748116d978038ec5d55145a9e0",
+          "pid": 1085580,
+          "request_hash": "b19afba9a26e70754fc72eceecf58dd1eab1c59d30c5bfd30af71acdcaea8c41"
+        },
+        {
+          "date": "2023-04-28",
+          "decision_path": "artifacts/fidelity_completion_v2/finagent_MSFT/decisions.jsonl",
+          "decision_sha256": "d999681b5b5f54e65bd5a7fb190525f593f5a9748116d978038ec5d55145a9e0",
+          "pid": 1085580,
+          "request_hash": "c80cb3051cb9d2852148b7129ca0b22d29668564f3a4b6671c58faeeecb3eee0"
+        },
+        {
+          "date": "2023-04-28",
+          "decision_path": "artifacts/fidelity_completion_v2/finagent_MSFT/decisions.jsonl",
+          "decision_sha256": "d999681b5b5f54e65bd5a7fb190525f593f5a9748116d978038ec5d55145a9e0",
+          "pid": 1085580,
+          "request_hash": "de87169c4aa595742285ed52467caeec985c954d0935547b28f04e3b6461a11d"
+        }
+      ],
+      "owner_run_from_recent_noncached_requests": "finagent_MSFT",
+      "request_hash": "c1e4accc5e46a6439bcd51d36e15a38788c08ba921999e40b883a7d5cbb85e77",
+      "response_id": "gen-emb-1789778984-3KE0Yx5otgPtY1RlIOLL",
+      "response_structure_validated": true,
+      "response_usage": {
+        "cost": 2.158e-05,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 2.158e-05,
+          "upstream_inference_prompt_cost": 2.158e-05
+        },
+        "is_byok": false,
+        "prompt_tokens": 166,
+        "total_tokens": 166
+      },
+      "sqlite_present": false,
+      "technical_recovery_mapping_present": false
+    },
+    "ed57f020c79a1a653a6d481b6484036091011d08bad22db880c04439a3892911": {
+      "copy": "artifacts/fidelity_completion_v2/walltime_interruptions_20260919_0135/durable_orphan_responses/ed57f020c79a1a653a6d481b6484036091011d08bad22db880c04439a3892911.json",
+      "copy_sha256": "47467b84ca1894a02c0ae71aa6fff385a30a41e6467d4f856c57d8c769a25d63",
+      "entry": {
+        "created_utc": "2026-09-19T00:49:54.577918+00:00",
+        "endpoint": "embeddings",
+        "model": "openai/text-embedding-3-large",
+        "pid": 2557042,
+        "reserved_usd": 0.00010088000000000001,
+        "status": "reserved",
+        "study": "fidelity_v2_finagent_source_settings"
+      },
+      "envelope_identity_verified": true,
+      "envelope_sha256": "ed57f020c79a1a653a6d481b6484036091011d08bad22db880c04439a3892911",
+      "journal_matches": [
+        {
+          "offset": 2770623162,
+          "sha256": "47467b84ca1894a02c0ae71aa6fff385a30a41e6467d4f856c57d8c769a25d63"
+        }
+      ],
+      "owner_evidence": [
+        {
+          "date": "2023-03-30",
+          "decision_path": "artifacts/fidelity_completion_v2/finagent_AAPL/decisions.jsonl",
+          "decision_sha256": "2453e016b69cba16a584d8ab664a90d8b7f3116d97e5da30df319bdf7a0d228a",
+          "pid": 2557042,
+          "request_hash": "647faaa5412ee71dda3473bb2f7c8779337937f1925268a85559db50ba913086"
+        },
+        {
+          "date": "2023-03-30",
+          "decision_path": "artifacts/fidelity_completion_v2/finagent_AAPL/decisions.jsonl",
+          "decision_sha256": "2453e016b69cba16a584d8ab664a90d8b7f3116d97e5da30df319bdf7a0d228a",
+          "pid": 2557042,
+          "request_hash": "5c612625b30bd048733ac19fce6711993ff48f34950db7559e0971eb59ba180e"
+        },
+        {
+          "date": "2023-03-30",
+          "decision_path": "artifacts/fidelity_completion_v2/finagent_AAPL/decisions.jsonl",
+          "decision_sha256": "2453e016b69cba16a584d8ab664a90d8b7f3116d97e5da30df319bdf7a0d228a",
+          "pid": 2557042,
+          "request_hash": "cb5fb68c1cf77f51c92f720fee1743f63413b21db745501b3362902f06ecf4cb"
+        }
+      ],
+      "owner_run_from_recent_noncached_requests": "finagent_AAPL",
+      "request_hash": "ed57f020c79a1a653a6d481b6484036091011d08bad22db880c04439a3892911",
+      "response_id": "gen-emb-1789778996-MZ4XOe7nDHIMogcHQDbU",
+      "response_structure_validated": true,
+      "response_usage": {
+        "cost": 1.755e-05,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 1.755e-05,
+          "upstream_inference_prompt_cost": 1.755e-05
+        },
+        "is_byok": false,
+        "prompt_tokens": 135,
+        "total_tokens": 135
+      },
+      "sqlite_present": false,
+      "technical_recovery_mapping_present": false
+    },
+    "f8a646bbb5f62ec879b428f2a50c8d1d2ae86d506a221ee739141c1c3043e142": {
+      "copy": "artifacts/fidelity_completion_v2/walltime_interruptions_20260919_0135/durable_orphan_responses/f8a646bbb5f62ec879b428f2a50c8d1d2ae86d506a221ee739141c1c3043e142.json",
+      "copy_sha256": "ab83f151900087653a5414c45e290fc0f2f4da56480de5cb810410fb9393f923",
+      "entry": {
+        "created_utc": "2026-09-19T00:49:57.327014+00:00",
+        "endpoint": "embeddings",
+        "model": "openai/text-embedding-3-large",
+        "pid": 1085580,
+        "reserved_usd": 0.00012012000000000001,
+        "status": "reserved",
+        "study": "fidelity_v2_finagent_source_settings"
+      },
+      "envelope_identity_verified": true,
+      "envelope_sha256": "f8a646bbb5f62ec879b428f2a50c8d1d2ae86d506a221ee739141c1c3043e142",
+      "journal_matches": [
+        {
+          "offset": 2770688078,
+          "sha256": "ab83f151900087653a5414c45e290fc0f2f4da56480de5cb810410fb9393f923"
+        }
+      ],
+      "owner_evidence": [
+        {
+          "date": "2023-04-28",
+          "decision_path": "artifacts/fidelity_completion_v2/finagent_MSFT/decisions.jsonl",
+          "decision_sha256": "d999681b5b5f54e65bd5a7fb190525f593f5a9748116d978038ec5d55145a9e0",
+          "pid": 1085580,
+          "request_hash": "b19afba9a26e70754fc72eceecf58dd1eab1c59d30c5bfd30af71acdcaea8c41"
+        },
+        {
+          "date": "2023-04-28",
+          "decision_path": "artifacts/fidelity_completion_v2/finagent_MSFT/decisions.jsonl",
+          "decision_sha256": "d999681b5b5f54e65bd5a7fb190525f593f5a9748116d978038ec5d55145a9e0",
+          "pid": 1085580,
+          "request_hash": "c80cb3051cb9d2852148b7129ca0b22d29668564f3a4b6671c58faeeecb3eee0"
+        },
+        {
+          "date": "2023-04-28",
+          "decision_path": "artifacts/fidelity_completion_v2/finagent_MSFT/decisions.jsonl",
+          "decision_sha256": "d999681b5b5f54e65bd5a7fb190525f593f5a9748116d978038ec5d55145a9e0",
+          "pid": 1085580,
+          "request_hash": "de87169c4aa595742285ed52467caeec985c954d0935547b28f04e3b6461a11d"
+        }
+      ],
+      "owner_run_from_recent_noncached_requests": "finagent_MSFT",
+      "request_hash": "f8a646bbb5f62ec879b428f2a50c8d1d2ae86d506a221ee739141c1c3043e142",
+      "response_id": "gen-emb-1789778999-TPTlzxQMMgdu4PAu07xb",
+      "response_structure_validated": true,
+      "response_usage": {
+        "cost": 2.132e-05,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0,
+          "upstream_inference_cost": 2.132e-05,
+          "upstream_inference_prompt_cost": 2.132e-05
+        },
+        "is_byok": false,
+        "prompt_tokens": 164,
+        "total_tokens": 164
+      },
+      "sqlite_present": false,
+      "technical_recovery_mapping_present": false
+    }
+  }
+}

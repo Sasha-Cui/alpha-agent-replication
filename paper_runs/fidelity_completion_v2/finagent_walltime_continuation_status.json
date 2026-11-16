@@ -1,0 +1,140 @@
+{
+  "AAPL_MSFT_continuations_still_running": false,
+  "AAPL_continuation_running": false,
+  "AAPL_full_replay_complete": true,
+  "AAPL_full_replay_evidence": "finagent_aapl_full_replay_completion.json",
+  "AAPL_source_completed": true,
+  "AAPL_source_stage_evidence": "finagent_aapl_source_completion.json",
+  "AMZN_retry_authorized": false,
+  "Alpha_entries_changed": false,
+  "MSFT_full_replay_complete": true,
+  "MSFT_full_replay_evidence": "finagent_msft_full_replay_completion.json",
+  "MSFT_source_completed": true,
+  "MSFT_source_stage_evidence": "finagent_msft_source_completion.json",
+  "Quanta_entry_changed": false,
+  "TSLA_source_stage_evidence": "finagent_tsla_source_completion.json",
+  "aggregate_completion_scope": "AAPL/MSFT/TSLA walltime sources, full replays and current V3admissions complete. GOOGL separately complete/admitted. AMZN approval and final13 accounts remain open.",
+  "cache_journal_recovery_map_mutations": 0,
+  "canonical_reader_validation_sha256": "5d429e1eb4d00cb5b9558979e79b54c1eb132f9fcfcd134dc40116fae3021a3c",
+  "completed_prefix_probes": {
+    "AAPL": {
+      "elapsed": "00:18:23",
+      "job": "26687106_0",
+      "prior_prefix_counts": [
+        16,
+        68
+      ],
+      "records": 209
+    },
+    "MSFT": {
+      "elapsed": "00:07:13",
+      "job": "26687106_1",
+      "prior_prefix_counts": [
+        42,
+        83
+      ],
+      "records": 229
+    },
+    "TSLA": {
+      "elapsed": "00:11:17",
+      "job": "26687106_2",
+      "prior_prefix_counts": [
+        20,
+        38,
+        84
+      ],
+      "records": 338
+    }
+  },
+  "completed_walltime_source_and_replay_symbols": [
+    "AAPL",
+    "MSFT",
+    "TSLA"
+  ],
+  "continuation_and_replay_jobs": {
+    "AAPL": {
+      "live": "26689918",
+      "replay": "26689919"
+    },
+    "MSFT": {
+      "live": "26689920",
+      "replay": "26689921"
+    },
+    "TSLA": {
+      "live": "26689922",
+      "replay": "26689923"
+    }
+  },
+  "continuation_protocol_sha256": "e7867b93d7fcff8b92fe2100d932d486768f04dd8a727efed1485ef7445b7687",
+  "cost_source": "conservative_original_reservation_retained_durable_response_reconciliation",
+  "current_completed_symbols": [
+    "GOOGL",
+    "TSLA",
+    "MSFT",
+    "AAPL"
+  ],
+  "existing_eight_admission_and_financial_conformance_sha256": "7b13313b1eec2ef087423bf764864ac0a6cfce486c1c3c9499f809515ec5bf43",
+  "final_equity_job_submitted": false,
+  "final_thirteen_accounts_complete": false,
+  "full_replay_completion_claim": true,
+  "full_source_completion_claim": true,
+  "guard_log_hashes": {
+    "guards_alpha-agent-replication-py312-20260813.log": "9c511475dbf6bbb82ad1a58e3462558c20521d8494c6aaf462c78769305a945e",
+    "guards_alpha-agent-replication-py39-20260809.log": "75dd5011aaf0cfb47371b28ef247febe5563634e5776266aa1e79884fe1b0a0a"
+  },
+  "guard_scope": "Focused settlement/identity/cost/boundary tests; no cumulative suite claim.",
+  "guards_each_Py312_Py39": 19,
+  "job_states_at_last_check": {
+    "AAPL_replay": "COMPLETED",
+    "AAPL_source": "COMPLETED",
+    "MSFT_replay": "COMPLETED",
+    "MSFT_source": "COMPLETED",
+    "TSLA_replay": "COMPLETED",
+    "TSLA_source": "COMPLETED"
+  },
+  "latest_completed_full_source_replay_v3_admission": "finagent_completed_continuations_20260919.json",
+  "latest_update_utc": "2026-09-20T04:32:47.154132+00:00",
+  "live_prefix_gate_states": {
+    "AAPL": "pass_before_first_new_request_and_rechecked_at_v3_admission",
+    "MSFT": "pass_before_first_new_request_and_rechecked_at_v3_admission",
+    "TSLA": "pass_before_first_new_request_and_rechecked_at_v3_admission"
+  },
+  "live_time_limit_hours": 72,
+  "native_import_and_actual_scope_check_pass": true,
+  "new_economic_analysis_claim": false,
+  "original_timed_out_source_jobs": [
+    "26502484",
+    "26502486",
+    "26502488"
+  ],
+  "original_v2_gate_builder_and_queued_GOOGL_bindings_unchanged": true,
+  "other_entries_changed": 0,
+  "primary_overrides_changed": true,
+  "project_commitment_unchanged": true,
+  "provider_reported_cost_kept_separately": true,
+  "recorded_at_utc": "2026-09-19T03:01:03.111099+00:00",
+  "replacement_model_responses": 0,
+  "replay_time_limit_hours": 4,
+  "required_final_accounts_builder": "scripts/build_fidelity_accounts_v3.py",
+  "required_final_source_gate": "scripts/fidelity_equity_evidence_v3.py",
+  "retained_seven_commitment_usd": 0.00073138,
+  "scope": "Resume the exact existing trajectories only after cached-prefix gates; no source/model/prompt/fee/calendar replacement or full-paper reproduction claim.",
+  "selected_ledger_entries_changed": 7,
+  "selected_response_status": "complete_with_exact_existing_journal_index",
+  "settlement_receipt_path": "artifacts/fidelity_completion_v2/finagent_walltime_continuation_20260919_0237/settlement_receipt.json",
+  "settlement_receipt_sha256": "c96915437cf0509e167d0216beaeb88057c60acfff12078a039bfab863e0e318",
+  "source_complete_walltime_symbols": [
+    "AAPL",
+    "MSFT",
+    "TSLA"
+  ],
+  "source_manifest_sha256": "e227530ddff7d25a595c38afcd713977369db177ffb8a571b0b82343620e3a3d",
+  "source_prefix_population_is_not_new_full_source_credit": true,
+  "source_stage_completed": [
+    "AAPL",
+    "MSFT",
+    "TSLA"
+  ],
+  "status": "all_three_walltime_sources_full_replays_and_v3_admissions_complete",
+  "study_commitment_unchanged": true
+}

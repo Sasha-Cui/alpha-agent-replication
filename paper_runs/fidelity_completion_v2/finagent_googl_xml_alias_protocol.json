@@ -1,0 +1,40 @@
+{
+  "diagnosis_path": "artifacts/fidelity_completion_v2/finagent_googl_xml_20260918/diagnosis.json",
+  "diagnosis_sha256": "ef31bdada733fec6334c7385d7bdb32ccdf12f42aaa21de08e938daced67b853",
+  "failed_source_job": "26502487",
+  "full_original_paper_reproduced": false,
+  "input_path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/GOOGL_2022-06-01_2023-12-29_company_news_inputs.json",
+  "input_sha256": "c58e1ad195d6b3e24b6c6109128bcc8339f469e97a8643c7d7558dafd23602b3",
+  "no_new_response_for_failed_parse": true,
+  "no_policy_model_prompt_price_memory_or_date_change": true,
+  "no_shared_live_source_edits": true,
+  "normalized_response_sha256": "483da82e1dd3dfaac7e124708ffdf060911db4b3b8f492e2bfb739c3982da24b",
+  "original_driver_sha256": "26767019fc831be63558e3721764f934925dbfd1269199e76a7ea72ee7a41f9c",
+  "original_failure_preserved": true,
+  "prefixes": [
+    {
+      "arm": "shared_training",
+      "path": "artifacts/fidelity_completion_v2/finagent_googl_xml_20260918/preserved/artifacts/fidelity_completion_v2/finagent_GOOGL_company_news/decisions.jsonl",
+      "records": 250,
+      "sha256": "eb562c54281350a80f278f690a91c81a8de2b7fd38c8a29b2c3b13cdbd0cdf97"
+    },
+    {
+      "arm": "native_causal",
+      "path": "artifacts/fidelity_completion_v2/finagent_googl_xml_20260918/preserved/artifacts/fidelity_completion_v2/finagent_GOOGL_company_news/validation_arms/native_causal/decisions.jsonl",
+      "records": 32,
+      "sha256": "94f82bafd373eec2d1a12892dd31aafa03453a79e867604c1312af12b3b7304f"
+    }
+  ],
+  "preservation_manifest_path": "artifacts/fidelity_completion_v2/finagent_googl_xml_20260918/preservation_manifest.json",
+  "preservation_manifest_sha256": "0af4144d7f5e711e03611e3f968bec810ac2b5a9c915e901f331e1941a37795c",
+  "probe_run": "finagent_GOOGL_company_news_xml_prefix_probe",
+  "recipe_path": "paper_runs/fidelity_completion_v2/recipes/finagent_GOOGL_company_news.json",
+  "recipe_sha256": "4f91d48273f2208d08ba03d9f4ad8b8ea06109b00450c25851f8fa9f38d89a0d",
+  "repair_run": "finagent_GOOGL_company_news_xml_repair",
+  "request_hash": "93820f59d3decbb8ae6e8b27856e213a97feb12b85bdaac72e8953d35512b003",
+  "required_before_live_continuation": "Actual network-disabled prefix replay must match all250training+32validation records and consume the exact repaired response before reaching the first genuinely absent future request. No request that was already reserved or failed can be retried by this mechanism.",
+  "response_sha256": "8b2878c785f108ed9c2255b6b255a544f83078c7c8f5f34da9d8d353cc985420",
+  "scope": "single_witnessed_GOOGLE_response_markup_alias_no_text_change",
+  "source_run": "finagent_GOOGL_company_news",
+  "transformation": "Only replace the four literal analysis/summary opening/closing tags with named string tags for this exact cached request and response; preserve every content character and use the unchanged native parser afterward."
+}

@@ -1,0 +1,25 @@
+{
+  "arm_counts": {
+    "native_causal": 147,
+    "shared_training": 250
+  },
+  "copied_bytes": 414605426,
+  "evidence": "artifacts/fidelity_completion_v2/finagent_aapl_source_completion_20260920_0303/validation.json",
+  "evidence_sha256": "a96d8e13cff9e1dd8b4368798b6ea1e0091fe02b40422f63e8aca5b7e5f26ee0",
+  "final_account_admission_claim": false,
+  "full_original_paper_reproduced": false,
+  "full_replay_job": "26689919",
+  "full_replay_state_at_audit": "PENDING",
+  "new_validated_equity_headline_credit": 0,
+  "primary_override_changed": false,
+  "recorded_at_utc": "2026-09-20T03:04:39.059932+00:00",
+  "records": 397,
+  "scope": "Source stage only. Actual full read-only replay and V3 admission remain required; no new validated-cohort headline/economic result.",
+  "source_completion_sha256": "c69bd1d31966c016ea32cf0cd69708b2fc65cd7a21557f38953d28afacf358b2",
+  "source_elapsed": "22:54:12",
+  "source_job": "26689918",
+  "source_receipt_sha256": "db5b6465758268a9cab4f1cd9a8ef329db5e05e30b951684a92355728cd1cbcd",
+  "source_run": "finagent_AAPL_walltime_continuation_v2",
+  "status": "complete_source_receipt_and_all_preserved_prefixes_revalidated",
+  "validation_future_chart_count": 0
+}

@@ -1,0 +1,82 @@
+{
+  "JKP132_attribution": false,
+  "accounts_sha256": "29757d241c55d7a3f85e92322315224ccdd25a76e2501050c6de1db8a2f0aca8",
+  "full_original_paper_reproduced": false,
+  "full_replay_and_prefixes_required": true,
+  "maximum_independent_account_difference": 5.551115123125783e-16,
+  "model_trajectories_per_policy": 1,
+  "new_model_calls": 0,
+  "original_three_equity_baseline_matches_previous_export": true,
+  "outputs": {
+    "aggregate_performance.json": "7bfb82bbd6b5c682afe7dc269bb0564d0cd8aa27c30707790f5155c542d86a01",
+    "comparisons.json": "51c94933c2ee9ae91e7101c7085cc60780cdd49bf606a9f0b112b7f30d1ea89c",
+    "performance.json": "6f5f32d51788b08ee5467521fef428ebc7ce3fb8f247e88e56790642a4ac4ed7"
+  },
+  "paired_input_price_series_identical": true,
+  "protocol_sha256": "15b04cab8ce6363a8033d5d001db7c5faf65ed392bdadcd391dcd9a7ab5dce67",
+  "records_per_source": 61,
+  "scope": "Separate descriptive issuer-news sensitivity; no replacement of original cohort or causal treatment-effect claim across stochastic LLM realizations.",
+  "script_sha256": "5b1b10d686270c8f0678504cc8a33bfa08742621d48a3cf5ce5ade6611e8c31f",
+  "significant_alpha_established": false,
+  "source_evidence": [
+    {
+      "completion_sha256": "33bc5d6c39b7c638bc0d75dc68195d038fc5ff4ff1036ec0bc9a76f0c31acd58",
+      "decisions_sha256": "f1cecd9cc64d92d69c0ed607c416c7b9d320d1da9f9fa8844ae7a6f6311f6ba8",
+      "full_replay_sha256": "a3fa9eab2bbc13b309c4411956a455d5754940028d8738287f3a2bb8b98f6e69",
+      "input_sha256": "b5e12e0c8e87bb06bdf2b589b7cedf9a6ab1d7216c1b67db18be7256616ce3b6",
+      "preserved_prefixes": [],
+      "recipe_sha256": "04889d580c7b7d129c116b9a313fd81c15621d7515ac6a40bf172cc0460e9ce8",
+      "records": 61,
+      "run": "tradingagents_GOOGL"
+    },
+    {
+      "completion_sha256": "42ae5577d95df794d73dbee4125ad9e04f7edf1784370accda160682c8f1f4eb",
+      "decisions_sha256": "1fe1adfde6a5e97423582ef96b9a32b7c628dc29871e1e742281023e6df3a3ba",
+      "full_replay_sha256": "87df23b63dca311282a22838d97991c2da674a9ab35751dc4da781618ca33cbd",
+      "input_sha256": "ac5b8a92ce587b238964563ff8ce08d3f1b98784d7bf3c07c900c0881f4d7c26",
+      "news_wrapper_sha256": "cf3268a8ba7d58074761b2f81ef5cc49e9229a5520be5048fcfff60f9d96158c",
+      "preserved_prefixes": [
+        {
+          "differences": [],
+          "maximum_numeric_difference": 0.0,
+          "prefix_sha256": "b959e54a311fa5e3a793b6d64983c44f67fe65a17a21c58411508ece26d78942",
+          "records": 27,
+          "recovery": "artifacts/fidelity_completion_v2/transport_recovery_1756_recorded/recovery.json",
+          "status": "pass"
+        },
+        {
+          "differences": [],
+          "maximum_numeric_difference": 0.0,
+          "prefix_sha256": "cb87e9bd91fa8b5ad56534a14eac2170c737f22eacdcb59b309327afdf07a65e",
+          "records": 23,
+          "recovery": "artifacts/fidelity_completion_v2/transport_recovery_recorded_20260917/recovery.json",
+          "status": "pass"
+        }
+      ],
+      "recipe_sha256": "1afc4a3ee111155d2a75c9af2e05c973e7e04ed611d7074d4da5e8c8bdf0e344",
+      "records": 61,
+      "run": "tradingagents_GOOGL_single_news_source"
+    },
+    {
+      "completion_sha256": "0ec5c043fa98532e80b47d96c659f7a5d7504d347f33e696364ce8953166b5b2",
+      "decisions_sha256": "b977a507d4fe15ebbf65e42f9ee396049ba338c6cf9dc7dc57144882af96e77e",
+      "full_replay_sha256": "7463cab581d077220301f3e483490fce40463a845fc9228e9ac8048ac03c5708",
+      "input_sha256": "ca25676022d7da02b1457a6098332be7d2f91bc9603bb9548db38e2ed97554e3",
+      "preserved_prefixes": [],
+      "recipe_sha256": "33ad2d01bec3ffbbdb414040c1b398c07f46d10acb0f255166bc9d5a911a97c9",
+      "records": 61,
+      "run": "tradingagents_AAPL"
+    },
+    {
+      "completion_sha256": "4c38dcfab7d93dfaea7387274b0e54d1dd99ad4724e6effeca3b84a2f087cdf6",
+      "decisions_sha256": "a0a212fdc5e67ff6ca314127ed55b99ecc8b6ef4410aa1c2b71d79ae4699c60a",
+      "full_replay_sha256": "f6508ea69981ed2a49c6bf22ec136598846ebe46d406ab98e72d688041153c33",
+      "input_sha256": "71a600800db6b208b33f5e9aa016f8fd5ca97fdee4e9289f7c30d1c7644dc868",
+      "preserved_prefixes": [],
+      "recipe_sha256": "e4e9120d333fb7135d83e088cf7cc60c42731f700f8f8af540a5cd377a24bb42",
+      "records": 61,
+      "run": "tradingagents_AMZN"
+    }
+  ],
+  "status": "complete_separate_descriptive_sensitivity"
+}

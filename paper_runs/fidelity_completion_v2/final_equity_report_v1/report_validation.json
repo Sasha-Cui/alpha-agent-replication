@@ -1,0 +1,30 @@
+{
+  "aggregate_rows": 3,
+  "all_account_metric_rows_exact": 208,
+  "assets": 13,
+  "builder_sha256": "3c9a532245f848b4088e99d7f1fe0c45ade70233737b895235e9fb0844184a1c",
+  "contrast_ratios": {
+    "blue": 7.562998081458594,
+    "grey": 7.577663953533317,
+    "ink": 14.102034448456891,
+    "orange": 7.3070519776298735
+  },
+  "figures": [
+    {
+      "path": "paper_runs/fidelity_completion_v2/final_equity_report_v1/visual_figures/aggregate_wealth.png",
+      "sha256": "c1f952d32fbfe1daea237ac6f7ef4cb278e6847511276c92292f3a88d7ae2005"
+    },
+    {
+      "path": "paper_runs/fidelity_completion_v2/final_equity_report_v1/visual_figures/asset_wealth_gaps.png",
+      "sha256": "67fee50a0b98ae4d6adf844421c4b6a9cf2454ed6d65488a3d2ef58fe3363470"
+    }
+  ],
+  "higher_wealth_winners_including_ties_bold": true,
+  "independent_human_review": false,
+  "model_calls": 0,
+  "recorded_at_utc": "2026-09-22T16:51:09.202962+00:00",
+  "source_bindings_unchanged": true,
+  "source_or_account_engine_reruns": 0,
+  "status": "pass_numeric_links_images_contrast_and_winner_markup_pending_visual_review",
+  "validator_sha256": "e7ca38408e35bec0a2975961dc32b15adbc144470f740de9f27d24f0f05f1152"
+}

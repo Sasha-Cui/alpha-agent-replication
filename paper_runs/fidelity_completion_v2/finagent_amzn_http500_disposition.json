@@ -1,0 +1,25 @@
+{
+  "automatic_transport_recovery_eligible": false,
+  "cancelled_unstarted_descendants": [
+    "26502919",
+    "26589541"
+  ],
+  "completed_records": 220,
+  "failed_request_hash": "c44d8e40b36db83ac14845cec8f78a20c0ca7fa7fbc9cf32ae93382489055604",
+  "job": "26502485",
+  "last_completed_date": "2023-04-17",
+  "ledger_mutations": 0,
+  "network_calls": 0,
+  "next_step": "HTTP500 is outside the current allowed automatic transport recovery. Preserve this failure and exact prefix; no retry or descendant replacement is authorized by this audit.",
+  "paid_retry_submitted": false,
+  "private_diagnosis_path": "artifacts/fidelity_completion_v2/finagent_amzn_http500_20260918/diagnosis.json",
+  "private_diagnosis_sha256": "d96d34a69c244a6d18bece4d14432050a322b83602063061377d64439a5f7238",
+  "recorded_at_utc": "2026-09-18T12:01:14.333521+00:00",
+  "retained_reservation_usd": 0.00012324000000000002,
+  "run": "finagent_AMZN",
+  "selected_request_unchanged": true,
+  "sqlite_response_absent": true,
+  "stage": "shared_training news embedding prefetch on2023-04-18",
+  "status": "exact_embedding_http500_diagnosed_preserved_no_retry",
+  "terminal_error": "urllib.error.HTTPError: HTTP Error 500: Internal Server Error"
+}

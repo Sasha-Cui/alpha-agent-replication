@@ -1,0 +1,54 @@
+{
+  "admission": {
+    "case": "finagent",
+    "current_full_record_recomparison_maximum_difference": 0.0,
+    "frozen_original_evidence": false,
+    "full_replay_proof_sha256": "d488cc84ba11f9f248cb308ff895618d33e6ae1a66a6d9087755e5a186b184ac",
+    "input_sha256": "4173d0f3f817a87b6369c15c3a5962c69176775a52b86c9e32c389f10fc42765",
+    "original_decisions_sha256": "74eddecc15a77b1144916255ec51c59171a53fc8c184ff6f86d54aed15bd6939",
+    "preserved_prefixes": [
+      {
+        "kind": "nfs_preserved",
+        "maximum_numeric_difference": 0.0,
+        "path": "artifacts/fidelity_completion_v2/nfs_resume_20260917/MSFT/decisions.jsonl",
+        "records": 42,
+        "sha256": "f6908c70be307fd9e7d4622e2d8cc0a1ac82957ccf2e4696ee1137977341b06e"
+      }
+    ],
+    "recipe_sha256": "1d47ad99ef9a6f0b15f30b84cf54f496bddc8899d219047f10c5c56742fe484d",
+    "records": 397,
+    "replay_completion_sha256": "e7321fa548bf711ddaef16f3e3753e2f98c187b4ca1d0e1be48677d64854fe3d",
+    "replay_decisions_sha256": "c9f0b0aa5cf640b3a4d9f86587bd6ac165473048a21c0cb9195c054298e36f19",
+    "scope": "Read-only current byte/prefix/replay binding. No model rerun, account result, independent human review or full-paper fidelity claim.",
+    "source_completion_sha256": "79216a41e1dd4280c032c70e8b9ee91ee3ed3fe90f13800a3a438a8b0d0e471a",
+    "source_run": "artifacts/fidelity_completion_v2/finagent_MSFT_walltime_continuation_v2",
+    "status": "pass",
+    "validator_sha256": "5c25ecf56c903c7ee00e8d4b6a8e8110a417e59fadc63f4eac0644399da5eb50",
+    "validator_v3_sha256": "9ab18f9a9b8b1febf378a5c5d1c96ce01842a6aef342c89a99fe9838ab7744e0",
+    "walltime_continuation_admission": {
+      "all_preserved_prefixes_rechecked": true,
+      "protocol_sha256": "e7867b93d7fcff8b92fe2100d932d486768f04dd8a727efed1485ef7445b7687",
+      "records": 397,
+      "reserved_commitment_retained": true,
+      "source_run": "finagent_MSFT",
+      "status": "pass"
+    },
+    "xml_format_adaptation_admission": null
+  },
+  "copied_bytes": 415341731,
+  "evidence": "artifacts/fidelity_completion_v2/finagent_msft_full_replay_20260920_0246/validation.json",
+  "evidence_sha256": "1e734c4cf4cc44d2d1595dd765f7f55baac869236fa00c8dd6f60bf885fcc9e6",
+  "final_archive_claim": false,
+  "final_thirteen_accounts_complete": false,
+  "full_original_paper_reproduction_claim": false,
+  "full_replay_elapsed": "00:06:58",
+  "full_replay_job": "26689921",
+  "ledger_mutations": 0,
+  "new_source_model_account_executions": 0,
+  "recorded_at_utc": "2026-09-20T02:49:42.623875+00:00",
+  "source_elapsed": "22:11:20",
+  "source_job": "26689920",
+  "status": "complete_source_full_replay_and_current_v3_admission_pass",
+  "symbol": "MSFT",
+  "validated_new_equity_headline": 3083
+}

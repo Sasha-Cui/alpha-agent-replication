@@ -1,0 +1,34 @@
+{
+  "AMZN_source_records": 397,
+  "account_completion_claim": false,
+  "all13_preflight": "artifacts/fidelity_completion_v2/final_equity_launch_20260922/pre_submission_admission.json",
+  "all13_preflight_sha256": "f4bcb24246187d7cd39d7a46061aacbc78460a01681894c1052a11491b0538bc",
+  "archive_or_publication_completion": false,
+  "human_review": false,
+  "jobs": {
+    "builder": "scripts/build_fidelity_accounts_v3.py",
+    "final_output_overwrite_allowed": false,
+    "job": "27116634",
+    "launch_protocol_sha256": "bb2578472f08d7661972c3255763906acda3dc24355589e004a32eeb0e15dc12",
+    "manual_AMZN_gate": "scripts/admit_finagent_amzn_manual_v1.py",
+    "new_model_calls": 0,
+    "original_cancelled_job_preserved": "26589541",
+    "partial_allowed": false,
+    "pre_submission_admission_sha256": "f4bcb24246187d7cd39d7a46061aacbc78460a01681894c1052a11491b0538bc",
+    "recorded_at_utc": "2026-09-22T16:37:46.771946+00:00",
+    "source_gate": "scripts/fidelity_equity_evidence_v3.py",
+    "source_replay_jobs": [
+      "27062473",
+      "27062474"
+    ],
+    "status": "all13_admissions_passed_final_V3_account_job_submitted_once",
+    "submission_intent": "artifacts/fidelity_completion_v2/final_equity_launch_20260922/submission_intent.json",
+    "submitter_sha256": "1d093258c94219224eae2bea4815858d243166041709386b6577ecc1303b3e7b"
+  },
+  "new_model_calls": 0,
+  "original_failed_AMZN_charge_retained": 0.00012324,
+  "recorded_at_utc": "2026-09-22T16:39:18.175011+00:00",
+  "source_or_replay_reruns": 0,
+  "status": "all13_actual_sources_and_full_replays_admitted_final_accounts_submitted",
+  "validated_new_equity_records": 3877
+}

@@ -1,0 +1,49 @@
+{
+  "additional_control": "single LLM decision using the exact same analyst reports",
+  "budget_usd": 5,
+  "case": "TradingAgents released model roles on published table asset GOOGL; issuer-news repair with original security prices",
+  "controls": "Native graph only in extension; matched buy-and-hold requires no extra LLM calls. Prior declared ablations remain in frozen v1.",
+  "economic_adapter": "Buy=100% stock, sell=100% cash, hold=retain; start flat; primary next-close execution; 0/10/25/50bp; same-close diagnostic separately. Release supplies no portfolio sizing or fill model.",
+  "end": "2024-03-28",
+  "frozen_before_new_decisions": true,
+  "human_source_review": "pending",
+  "input_differences": [
+    "Frozen alternative OHLCV and company news",
+    "SEC summaries replace unavailable SimFin tables",
+    "Reddit, insider and global-news coverage are unavailable and reported as such",
+    "Tool dates are clamped to the driver cutoff, and date-only text is lagged one trading session"
+  ],
+  "input_file": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/GOOGL_2024-01-02_2024-03-28_company_news_inputs.json",
+  "issuer_news_repair_protocol_sha256": "502f4c6b64cfbae721e623171eb2190d89b004efe682c333c86e826e23a5ac25",
+  "limitations": [
+    "One source-table ticker and quarter, not three-asset aggregate",
+    "Historical current-model contamination remains possible",
+    "Alternative data and categorical portfolio mapping are adaptations",
+    "Frozen graph's experience-memory banks start empty and remain empty, matching propagate without externally supplied reflect_and_remember calls"
+  ],
+  "max_completion_tokens": 16384,
+  "model": {
+    "deep": "openai/o4-mini",
+    "quick": "openai/gpt-4o-mini"
+  },
+  "model_difference": "Restored release defaults; paper historical model/data snapshots remain unavailable.",
+  "original_recipe_sha256": "04889d580c7b7d129c116b9a313fd81c15621d7515ac6a40bf172cc0460e9ce8",
+  "preserved": [
+    "All four original analyst factories",
+    "Native tool schemas and LangGraph routing",
+    "Bull/bear debate, research manager, trader, three risk viewpoints and final judge",
+    "Source categorical signal extractor",
+    "Native graph propagation without external memory training"
+  ],
+  "primary_comparison": "Native graph versus the same source investment_plan with risk debate removed at the final source judge",
+  "source_commit": "cc97cb6d5deb10eac370db0c6678e2796a62eba8",
+  "source_wiring_caveat": "The released risk judge calls investment_plan the trader plan, but this field is the research-manager plan; the separately stored trader_investment_plan is not substituted in the preserved-source primary comparison.",
+  "start": "2024-01-02",
+  "study": "fidelity_v2_tradingagents_alphabet_news_repair",
+  "symbol": "GOOGL",
+  "technical_persistence_recovery": "On 2026-09-07, a shared SQLite write-lock failure led to an fsynced append-journal cache. Five unavailable responses retain $0.2640905 of reservations project-wide; each receives at most one explicit technical recovery under the same model/input recipe, with both attempts counted. No completed case outcome was used to select a recovery response.",
+  "temperature": {
+    "deep": "omitted, as in released graph",
+    "quick": 0.1
+  }
+}

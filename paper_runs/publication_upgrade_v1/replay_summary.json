@@ -1,0 +1,46 @@
+{
+  "finagent": {
+    "case": "finagent",
+    "difference_count": 0,
+    "differences": [],
+    "ignored": "Only cached-status flags and ordering of independent transport request events; request hashes/response IDs and all economic, timing, reasoning and memory fields remain compared.",
+    "maximum_numeric_difference": 0.0,
+    "records": 544,
+    "replay_records": 544,
+    "replay_sha256": "a9465275ed848f084310da7221e7e60aa72f39f4f1dcace7d1e8ffcd08c7e222",
+    "source_sha256": {
+      "artifacts/publication_upgrade_v1/finagent_native/decisions.jsonl": "17f3b55b903fb9bf17fb406ccb02485baf5f3aca8d62682fd96d641a10b60933"
+    },
+    "status": "pass"
+  },
+  "finmem": {
+    "case": "finmem",
+    "difference_count": 0,
+    "differences": [],
+    "ignored": "Only cached-status flags and ordering of independent transport request events; request hashes/response IDs and all economic, timing, reasoning and memory fields remain compared.",
+    "maximum_numeric_difference": 0.0,
+    "records": 538,
+    "replay_records": 538,
+    "replay_sha256": "f069471f156b8aa742511d08cb85fc3e409eff08e21ecce9586426b0609857db",
+    "source_sha256": {
+      "artifacts/publication_upgrade_v1/finmem_native/decisions.jsonl": "9b002201d380fd2317d0ed84cd0421d6a4eb302257c102edf8c04db8c6972c55"
+    },
+    "status": "pass"
+  },
+  "tradingagents": {
+    "case": "tradingagents",
+    "difference_count": 0,
+    "differences": [],
+    "ignored": "Only cached-status flags and ordering of independent transport request events; request hashes/response IDs and all economic, timing, reasoning and memory fields remain compared.",
+    "maximum_numeric_difference": 0.0,
+    "records": 61,
+    "replay_records": 61,
+    "replay_sha256": "eaa58d2f84da11169c6778468fba809aeefbc9736cac28f555229af1efc5f491",
+    "source_sha256": {
+      "artifacts/publication_upgrade_v1/tradingagents_shard_0_15/decisions.json": "b6155a700a862f1cf608e312a5fbee74f70fc3ae01cfa75b1bca53de644531ab",
+      "artifacts/publication_upgrade_v1/tradingagents_shard_15_31/decisions.json": "7cc9601d2142a65c5536dc70febc3981284bbc388c0890eeb3f9ee1743f0a550",
+      "artifacts/publication_upgrade_v1/tradingagents_shard_31_61/decisions.json": "d2407e90bd71a31de82483e1ab6777a5edf02c677d786849d83b10be2217ed05"
+    },
+    "status": "pass"
+  }
+}
