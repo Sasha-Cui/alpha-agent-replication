@@ -1,0 +1,15 @@
+{
+  "arms": [
+    "llm",
+    "grammar",
+    "initial_seed_library",
+    "equal_weight"
+  ],
+  "eligible_assets": 50,
+  "evaluation_at_utc": "2026-09-09T20:00:00+00:00",
+  "execution_at_utc": "2026-09-08T20:00:00+00:00",
+  "forecast_sha256": "34b9c4fcbf349c1f04fff4ff6b81a64bdb2a1aa0f4a1e9a2531887241db77c53",
+  "no_real_orders": true,
+  "recorded_at_utc": "2026-09-07T08:37:47.303509+00:00",
+  "seal_sha256": "bca17550a990fb9b9b636d8fa14927c229026d617041972c21449f76477b020d"
+}

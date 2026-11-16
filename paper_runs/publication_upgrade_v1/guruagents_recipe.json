@@ -1,0 +1,17 @@
+{
+  "case": "GuruAgents existing 190 real GPT-4o prompt replays with repaired economic accounts",
+  "source_commit": "74ad2e6ce2e604c73a6fc2829d48ab58fe6be050",
+  "model": "openai/gpt-4o",
+  "temperature": 0,
+  "primary_pair": "Tool-routing versus archived-final single-call mode using the same archived financial tool outputs; equal-allocation research ensemble of all five gurus, with every guru reported separately",
+  "primary_archive": "results_22_24",
+  "evaluation_period": ["2022-04-01", "2025-03-31"],
+  "primary_cost_bps": 1,
+  "cost_stress_bps": [0,10,25,50],
+  "source_normalization": "The released notebook explicitly normalizes percentage totals to 100; preserved rather than interpreting imperfect totals as intentional leverage or cash",
+  "execution": "First trading close strictly after formation-quarter end; buy and hold until next rebalance",
+  "repairs": ["Solve self-financing transaction fees exactly", "No backward fill; fail held returns after more than five missing trading-session quotes", "Keep source outputs, actual LLM replays, and generic JKP proxies distinct"],
+  "controlled_adapter": "Repeat all paths with a fixed additional 90-calendar-day information lag. This is a latency stress, not proof of point-in-time fundamentals.",
+  "limitations": ["Previously inspected historical outcomes; exploratory mechanism comparison", "Archived quarterly fundamentals do not establish exact publication timestamps or vintage values", "Source ticker corrections are retained from the existing audit", "Research ensemble is an aggregation across paper roles, not a claimed paper headline portfolio", "Current model historical replay can contain pretraining information"],
+  "human_source_review": "pending"
+}

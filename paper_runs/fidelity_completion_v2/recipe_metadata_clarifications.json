@@ -1,0 +1,74 @@
+{
+  "recorded_at_utc": "2026-09-17T08:40:10.463679+00:00",
+  "scope": "Clarifications of inherited narrative fields only. Original frozen recipe bytes, inputs, model choices and outputs remain unchanged.",
+  "finmem": {
+    "actual_arms": [
+      "native"
+    ],
+    "actual_extended_assets": [
+      "NFLX",
+      "AMZN",
+      "MSFT",
+      "COIN"
+    ],
+    "frozen_v1_asset": "TSLA",
+    "trajectory_count_per_asset": 1,
+    "profile": "Each new asset uses its explicit minimal company-expert character_string; original non-TSLA profiles unavailable.",
+    "inherited_fields_superseded": [
+      "ablation describes v1 semantic-only comparison, not a new v2 arm",
+      "source_input_differences contains TSLA-specific prose inherited from v1; each v2 input manifest governs actual per-asset coverage",
+      "summary_budget_usd=15 is an inherited v1 value; all new input summaries share the enforced5USD v2 study cap",
+      "technical_persistence_recovery describes a prior v1 event; current new calls use the canonical ledger including those older liabilities"
+    ],
+    "source_fallbacks": "Read-only Guard instrumentation found259 training validation failures and1test failure across four new assets. Native fallback behavior is preserved; nonempty reflection dictionaries are not evidence of successful validation."
+  },
+  "tradingagents": {
+    "actual_arms": [
+      "native"
+    ],
+    "assets": [
+      "AAPL",
+      "GOOGL",
+      "AMZN"
+    ],
+    "inherited_fields_superseded": [
+      "primary_comparison and additional_control describe frozen v1 ablations, which are not re-executed in v2",
+      "limitations one-source-table-ticker applies per recipe, not the combined three-asset extension"
+    ],
+    "actual_primary_account_control": "Matched-clock buy-and-hold, calculated without extra model calls",
+    "remaining_limitations": [
+      "one current-model trajectory per asset",
+      "alternative dated prices/news/filing summaries",
+      "missing original social/insider/fundamental snapshots",
+      "researcher-defined sizing and fills remain"
+    ]
+  },
+  "finagent": {
+    "actual_arms": [
+      "native_causal"
+    ],
+    "assets": [
+      "TSLA",
+      "AAPL",
+      "AMZN",
+      "GOOGL",
+      "MSFT"
+    ],
+    "inherited_fields_superseded": [
+      "primary_comparison describes frozen v1 no-retrieval ablation, not a new v2 arm",
+      "validation_execution mentions two processes from v1; v2 executes the single declared native_causal arm",
+      "one ticker/seed is per recipe; the full extension includes five source equities"
+    ],
+    "remaining_limitations": [
+      "current GPT4o replaces unavailable original preview snapshots",
+      "ETHUSD not included",
+      "one trajectory per equity",
+      "alternative data/chart rendering and causal execution repairs remain"
+    ]
+  },
+  "efs": {
+    "inherited_v1_narratives": "Old setup/import/storage notes and one-trajectory limitations remain historical provenance inside copied recipes. V2 fields trial/api_seed/provider_name/source_extension/pooling_protocol and the new pooling protocol govern the extension.",
+    "historical_model_snapshots": "Not recovered by current model endpoints",
+    "fidelity_claim": "Paper-guided implementation, not author code or full original-market/ablation reproduction."
+  }
+}
