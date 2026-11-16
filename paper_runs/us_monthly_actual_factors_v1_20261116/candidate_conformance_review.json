@@ -1,0 +1,78 @@
+{
+  "status": "dated_input_and_mechanism_review_not_final_study_result",
+  "findings": {
+    "M033": {
+      "status": "not_admitted_to_long_common_monthly_alpha_test_with_current_inputs",
+      "reason": "Five source LLM/tool agents are released. The old Warren-Buffett formula is a component and cannot replace the central LLM decisions. Current long monthly JKP table lacks the source quarterly statement field schema and verified filing timestamps; released short quarterly files do not establish a >138-month point-in-time panel. No zero-return or no-alpha conclusion follows.",
+      "feasible_but_different": "A restricted-agent/missing-metric prompt reconstruction or short native source collection can be evaluated separately; neither currently supplies the specified long monthly whole-method factor-alpha test.",
+      "all_original_table_match_required": false,
+      "released_code_missing": false,
+      "files": [
+        {
+          "method": "M033",
+          "source_file": "artifacts/us_monthly_actual_factors_v1_20261116/dependencies/guruagents/agents/BenjaminGraham_agent.py",
+          "source_sha256": "29d4b34e28e4fd586934fcc07f76990054f791744930d0425b44c31b82ed6eab",
+          "directly_same_named_in_JKP": [],
+          "model_tool_loop_present": true,
+          "source_prompt_scoring_is_executed_by_LLM": true
+        },
+        {
+          "method": "M033",
+          "source_file": "artifacts/us_monthly_actual_factors_v1_20261116/dependencies/guruagents/agents/EdwardAltman_agent.py",
+          "source_sha256": "852f1e795ce803ca65a7522518d9cdc25b3eda1ef1852726efeda88cf6fb0b85",
+          "directly_same_named_in_JKP": [],
+          "model_tool_loop_present": true,
+          "source_prompt_scoring_is_executed_by_LLM": true
+        },
+        {
+          "method": "M033",
+          "source_file": "artifacts/us_monthly_actual_factors_v1_20261116/dependencies/guruagents/agents/JoelGreenblatt_agent.py",
+          "source_sha256": "0d27215aa0adc27342bfd816e67bcc12dd7025cb059c7f89b5824fe0f64ad92a",
+          "directly_same_named_in_JKP": [],
+          "model_tool_loop_present": true,
+          "source_prompt_scoring_is_executed_by_LLM": true
+        },
+        {
+          "method": "M033",
+          "source_file": "artifacts/us_monthly_actual_factors_v1_20261116/dependencies/guruagents/agents/JosephPiotroski_agent.py",
+          "source_sha256": "0624a03e6e71e53139c1eb036b0f1dcab243dda82269b223097bedde73b66641",
+          "directly_same_named_in_JKP": [],
+          "model_tool_loop_present": true,
+          "source_prompt_scoring_is_executed_by_LLM": true
+        },
+        {
+          "method": "M033",
+          "source_file": "artifacts/us_monthly_actual_factors_v1_20261116/dependencies/guruagents/agents/WarrenBuffett_agent.py",
+          "source_sha256": "0d0f2733be99b7e5643132f1c114b21686213aaef67fdf9b7ac12d9ad289fed8",
+          "directly_same_named_in_JKP": [
+            "cash_conversion"
+          ],
+          "model_tool_loop_present": true,
+          "source_prompt_scoring_is_executed_by_LLM": true
+        }
+      ]
+    },
+    "M064": {
+      "status": "partial_search_core_runnable_no_primary_whole_method_admission",
+      "reason": "Real semantic search, code agent, reward ensemble, exploitation/mutation and backend are released. DataConfig requires actual amount alongside OHLCV and can infer VWAP only as amount/volume. Current pinned daily provider has OHLCV/factor/change but no actual daily traded amount/VWAP. The published schema library includes amount/turnover/VWAP semantics. Configurably restricting required_fields alone does not supply their economic meaning; a reduced OHLCV-only schema domain is an explicitly narrower adapted component, not execution of the fixed released default search domain. Native final factor-pool selection, CSRankNorm/model combination and portfolio engine are absent from this release. Do not fabricate inputs or substitute the mock backend.",
+      "source_supports_custom_data_domain": true,
+      "domain_restricted_future_study_possible": true,
+      "all_original_table_match_required": false,
+      "released_code_missing": false,
+      "data_source_sha256": "d4512fbfd6230b10d75bed3559918bc1ce6e31cf427b6156aa20e661ec3eeb9e",
+      "search_config_sha256": "7d93de3a46cb039c6d463a8a1a9ef453977e135a9411bfb1067949e2fc22a852",
+      "prior_detailed_audit": "paper_runs/paper_replication_audits/alphaschema/manifest.json"
+    },
+    "M042": {
+      "status": "new_release_feasibility_in_progress",
+      "reason": "Both released central code and an ungated author checkpoint are present. A compatible existing runtime was found. Download shard hashes, complete82-factor U.S. execution, causal inputs/context and resource feasibility must pass before paid execution/admission. Retired placeholder and metadata-only verdicts are superseded only by these specific new observations.",
+      "source_commit": "5a55d35c2efb9157b5d58f869d2c8c1afb511768",
+      "checkpoint_revision": "82c2aa5fcdda6b4ff00caeba68b0903f13d0e1a5",
+      "source_price_proxy": "Released data loader explicitly falls back to (H+L+C)/3 for absent VWAP; expanding that literal source fallback is not actual VWAP and is disclosed.",
+      "all_original_table_match_required": false,
+      "released_code_missing": false
+    }
+  },
+  "at_utc": "2026-11-16T09:25:48.373542+00:00",
+  "no_strategy_outcomes_used_for_classification": true
+}

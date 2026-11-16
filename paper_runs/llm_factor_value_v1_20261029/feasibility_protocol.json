@@ -1,0 +1,89 @@
+{
+  "study_id": "llm_factor_value_v1_20261029",
+  "as_of_date": "2026-10-29",
+  "phase": "statistical_feasibility_before_new_search",
+  "status": "design_and_power_assessment_authorized",
+  "recorded_at_utc": "2026-10-30T03:03:50.823978+00:00",
+  "authorization": "User accepted the proposal to close broad replication as a bounded attempt and design one focused incremental-value experiment, first assessing statistical precision: good. go for it.",
+  "historical_work": "All original studies/results/archives remain frozen. This is a separately versioned planning analysis, not a rerun of original source/replay/model/account/analysis helpers.",
+  "question": "Does replacing a non-LLM factor proposal engine with an LLM add economically worthwhile net performance under a common search and portfolio evaluator?",
+  "scope": "Paper-informed methodological experiment, not reproduction of any original paper.",
+  "planning_preview_already_inspected": {
+    "source": "EFS archived grouped standard errors",
+    "exact_four_group_MDE80_annualized_gpt41": 0.27502385283804326,
+    "exact_four_group_MDE80_annualized_deepseek_v3": 0.7762632760072249,
+    "note": "These analytic previews were inspected during design. Full scenario-grid and simulation specifications are fixed here before running them; no new strategy outcomes are available."
+  },
+  "economic_margin_annualized": 0.02,
+  "ci_confidence": 0.99,
+  "power_target": 0.8,
+  "classification": {
+    "meaningful_increment": "99% CI lower bound exceeds +2 pp/year",
+    "rules_out_worthwhile_positive_increment": "99% CI upper bound below +2 pp/year; not proof of zero alpha",
+    "otherwise": "inconclusive"
+  },
+  "power_design_points": {
+    "ruleout_truth": 0,
+    "positive_truth": 0.04,
+    "separation_from_margin": 0.02
+  },
+  "primary_endpoint": "12 x mean paired monthly arithmetic net-return difference, same portfolio capital and 10-bp-per-side turnover costs; named net performance increment, not factor alpha.",
+  "alpha_endpoint": "Risk-adjusted economic alpha requires a separately frozen adequately identified low-dimensional benchmark and precision assessment; 134 factors on 72 months is prohibited.",
+  "development_only_inputs": "Inspected 2019-2024 EFS US50 aggregate returns and published four-block standard errors. They are variance proxies, not new confirmation observations. Historical model snapshots and original paper replication are not established.",
+  "planning_scenarios": {
+    "noise_backends": [
+      "gpt41",
+      "deepseek_v3"
+    ],
+    "noise_scale_multipliers": [
+      0.1,
+      0.25,
+      0.5,
+      1,
+      2
+    ],
+    "horizon_months": [
+      12,
+      36,
+      72,
+      120,
+      240
+    ],
+    "normal_reference": "Known-standard-error normal reference; optimistic planning approximation, no guarantee of financial validity.",
+    "four_group_reference": "Four independent normal block estimates, df3; conditional noncentral-t power, not empirical power of every dependent return process.",
+    "simulation_replications": 50000,
+    "simulation_seed": 20261029,
+    "simulation_scope": "Independent-normal block benchmark and monthly Gaussian/AR(0.3)/t5/volatility-shift stress scenarios, four contiguous blocks of 18 months; planning diagnostics only."
+  },
+  "go_no_go": {
+    "requirement": "At 72 evaluation months and baseline noise scale 1, both ruleout at true 0 and positive detection at true +4pp must achieve 80% power against the +2pp boundary under each planning reference. Passing these models alone would not certify external validity or allow spending.",
+    "data_gate": "A genuinely unused evaluation period, data/universe provenance and model-knowledge contamination assessment must be frozen. Existing inspected history is development-only.",
+    "execution_gate": "All gates required; no new paid calls, model fitting, backtesting or original scientific helper execution during feasibility. No automatic pivot to an easier primary endpoint."
+  },
+  "new_model_calls": 0,
+  "model_weights_download_or_load": false,
+  "old_jobs_not_to_touch": [
+    "26515245",
+    "26515246",
+    "26523981",
+    "26540173",
+    "27154958",
+    "27159153"
+  ],
+  "global_budget_rule": "STRICTLY <1000 USD including historical/uncertain charges; frozen runtime and per-study caps remain unchanged.",
+  "budget_readonly_receipt": "/nfs/roberts/project/pi_jss233/zc362/alpha_evolve/artifacts/llm_factor_value_v1_20261029/budget_readonly.json",
+  "sources": [
+    {
+      "url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.nct.html",
+      "role": "Noncentral-t distribution definition; installed SciPy version recorded separately."
+    },
+    {
+      "url": "https://doi.org/10.1198/jbes.2009.08046",
+      "role": "Grouped t inference has dependence and heterogeneity assumptions; not a blanket validity guarantee."
+    },
+    {
+      "url": "https://www.nber.org/papers/w20592.pdf",
+      "role": "Multiple testing in factor research."
+    }
+  ]
+}

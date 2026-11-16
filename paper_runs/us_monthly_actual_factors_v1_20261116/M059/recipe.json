@@ -1,0 +1,83 @@
+{
+  "paper_id": "M059",
+  "method": "AlphaMemo released graph-memory search and native downstream model, with a monthly U.S.portfolio adapter",
+  "status": "frozen_before_new_U.S.search_or_strategy_outcomes",
+  "frozen_at_utc": "2026-11-16T08:53:33.933168+00:00",
+  "source_commit": "412fee13d905bf5a25f0958aa572b7c668ccb925",
+  "source_core": "Unchanged run_search, GraphMemoryStrategy, FactorDAG, ResidualMemory, AsymmetricAPV, FormulaEvaluator, OpenAICompatibleGenerator prompts/extraction/fallback behavior, Qlib exporter and LGBModel settings.",
+  "source_default_search": {
+    "strategy": "alphamemo",
+    "budget": 500,
+    "batch_size": 10,
+    "warmup": 200,
+    "memory_weight": 0.05,
+    "motif_sample_size": 4,
+    "random_motif_prob": 0.35,
+    "success_ic": 0,
+    "success_icir": 0.02,
+    "corr_threshold": 0.7,
+    "label_days": 20,
+    "max_factors": 50,
+    "seed": 0
+  },
+  "data": {
+    "search_provider": "/nfs/roberts/project/pi_jss233/zc362/alpha_evolve/artifacts/us_monthly_actual_factors_v1_20261116/training_us_provider",
+    "complete_source_provider": "/nfs/roberts/project/pi_jss233/zc362/alpha_evolve/relocated_scratch/alphaagent_qlib_us_095",
+    "source_archive": "/nfs/roberts/project/pi_jss233/zc362/alpha_evolve/archives/alphaagent_qlib_us_095_20260825.zip",
+    "market": "sp500",
+    "search_start": "2000-01-01",
+    "search_end": "2004-12-31",
+    "downstream_train": [
+      "2000-01-01",
+      "2003-12-31"
+    ],
+    "downstream_valid": [
+      "2004-01-01",
+      "2004-11-30"
+    ],
+    "prediction_start": "2004-12-01",
+    "prediction_end": "2020-11-10",
+    "monthly_realization_start": "2005-01-31",
+    "monthly_realization_end": "2020-11-30",
+    "training_labels": "Native20-trading-day label uses only the physically bounded search provider. Downstream train/valid labels are purged so their realization endpoints stay inside the declared selection/valid windows.",
+    "universe": "Released source SP500 membership intervals, not largest1000or a pristine historical membership vintage. Only formation-time identifier/positive market-equity availability may restrict the monthly investable mapping; never future-return availability."
+  },
+  "model": {
+    "id": "deepseek/deepseek-v4-flash",
+    "provider": "DeepInfra",
+    "allow_fallbacks": false,
+    "temperature": 0.7,
+    "max_tokens": 180,
+    "input_usd_per_million_upper": 0.135,
+    "output_usd_per_million_upper": 0.27,
+    "basis": "The literal released run_main.sh model route, with a pinned provider supporting ordinal request seeds. All current provider endpoint tariffs are bounded before reservation.",
+    "reasoning": "No new reasoning override; preserve source request shape. Returned truncations/parse failures/fallbacks are recorded as source behavior, not regenerated."
+  },
+  "metering": {
+    "canonical_root": "runs/economic_fidelity/openrouter",
+    "study": "us_monthly_actual_factors_v1_20261116:M059",
+    "study_cap_usd": 15,
+    "overall_new_study_cap_usd": 50,
+    "unchanged_project_runtime_cap_usd": 450,
+    "global_strict_ceiling_usd": 1000,
+    "api_seed_base": 20261116059000,
+    "network_retry": "None. A transport/budget stop bypasses source retry-and-fallback using a fatal BaseException. Never resubmit an uncertain request.",
+    "key_source": "Only OPENROUTER_API_KEY from /nfs/roberts/project/pi_btk22/zc362/KnowledgeTemplate/.env; no other credentials loaded."
+  },
+  "adapters": [
+    "Canonical transport replaces only the HTTP request boundary; original generation prompts, response extraction and returned-response fallback remain.",
+    "Disable source generic dotenv loading to avoid reading unrelated credentials.",
+    "Correct the exporter template-directory location to the actual archived templates path; no scientific setting change.",
+    "Use monthly rather than daily Top50/drop5 decisions, maintaining source lookback units/model/selection. This is a declared transfer, not original-paper execution equivalence."
+  ],
+  "monthly_account": {
+    "signal_clock": "Last fully available prior-session prediction before month-end; form holdings before month-end close, hold through next month-end.",
+    "portfolio": "Source Top50/drop5 ranking and equal target weights; trade once per month. Preserve held positions and source-style turnover constraints; no hindsight selection.",
+    "return_source": "JKP raw monthly dividend-inclusive ret aligned by unique valid ticker/permno/date intervals. Subtract actual French RF for long-only net excess return.",
+    "cost_one_way_bps": 10,
+    "missing_realizations": "Primary zero return without future reweighting plus adverse-100 sensitivity; report affected weights.",
+    "baseline": "The same four-source-feature downstream model without discovered factors, identical training/portfolio/account settings; control diagnostic, not a selected replacement."
+  },
+  "primary_test": "Full-method net excess return intercept against actualFF5+MOM+fixedJKP132; recheck rank anddf on exact191monthdeclared calendar. Approximate HAC inference, retrospective development evidence, denominator69 preserved.",
+  "claims": "No freshholdout, no original historical model equivalence, no full original-paper reproduction; eligible as a source-core-preserving monthly transfer only if actual conformance/prefix/account checks pass."
+}

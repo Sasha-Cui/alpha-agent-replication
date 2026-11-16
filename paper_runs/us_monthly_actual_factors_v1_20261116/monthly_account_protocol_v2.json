@@ -1,0 +1,20 @@
+{
+  "status": "fixed_before_new_monthly_strategy_results",
+  "at_utc": "2026-11-16T09:13:16.996032+00:00",
+  "calendar": {
+    "formation": "2004-12 through 2020-10 month-ends",
+    "realization": "2005-01-31 through 2020-11-30, 191 months",
+    "signal": "Compute actual last provider trading session on/before formation calendar month-end as fill_date; use its immediately preceding provider session as signal_date, strictly earlier even when calendar month-end falls on a weekend. No same-close feature used for that close fill."
+  },
+  "selection": "Run source TopkDropoutStrategy bottom-sell/top-buy policy at monthly cadence; n_drop5, method topk100(M019),50(M043/M059); independent source-conformance test before accounts. Retained holdings drift; no artificial monthly liquidation or reset. Equal allocation of available buy budget across newly bought names only. Source risk_degree0.95; unused cash earns actual French RF. Fractional value accounting replaces source board-lot rounding, explicitly a monthly transfer.",
+  "mapping": "Exact CRSP ticker strings (case-normalized only) with name_start<=signal_date<=name_end; require exactly one distinct permno. Same ticker reused at other dates does not imply same security. Never select a match by future-return availability. Held positions retain original permno.",
+  "eligibility": "New purchase requires mapping plus finite positive ME at previous month-end and finite positive price at fill month-end. Source daily SP500 membership and finite prediction retained. Future realized return is never an eligibility condition. Fill-price availability is an execution condition, never a ranking feature.",
+  "fees": "10bp on actual one-way sold/bought notional. Deduct sale fee, size buys to available cash including buy fee; invest95% of remaining cash in new buys. Initial purchase included.0bp/25bp sensitivity fixed in advance; no terminal liquidation beyond declared window.",
+  "returns": "JKP ret is dividend-inclusive current realized-month total security return. Cash accrues actual French monthly RF. Net excess portfolio return equals total portfolio return minus actual French RF.",
+  "missing": "Primary missing held security return=0 with no hindsight reweighting, and a separate path assigning -100% on missing return; each month reports missing weight. Missing or ambiguous dated identifiers are not force-matched. Duplicate permno-month rows must agree exactly on return/price/ME or block affected account for diagnosis.",
+  "selection_clock": "M059 source search through2004; downstream train2000-2003, valid2004Jan-Nov with forward-label endpoints purged within each split. M019/M043 source feedbackthrough2004; downstream refits use the same2000-2003/2004Jan-Nov split and their native labels/model settings. No post2004selection or refitting.",
+  "baseline": "Identical native source baseline model, source-specific portfolio topk, dates, costs and missing policies; difference is discovered factor feature set. Evaluate all fixed cases, not only favorable methods.",
+  "clarification": "Earlier recipe equal-target wording is clarified to exact native retention/new-buy cash sizing before any monthly strategy outcome. Original recipes preserved, algorithm unchanged.",
+  "prior_protocol": "monthly_account_protocol_v1.json",
+  "reason": "Clarify actual session alignment before account code or outcomes; calendar month-end strict inequality alone would be insufficient on weekends."
+}

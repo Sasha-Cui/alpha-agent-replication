@@ -1,0 +1,17 @@
+{
+  "status": "fixed_before_new_monthly_strategy_outcomes",
+  "at_utc": "2026-11-16T09:32:01.418302+00:00",
+  "M019": {
+    "selection": "Exact released Trace.get_sota_hypothesis_and_experiment: most recent experiment with feedback.decision true. Preserve and audit every preceding failed/accepted trajectory; source runner ifFalse disables concatenation of previous SOTA features. Use the selected actual experiment feature library; do not union all historical candidates to manufacture a stronger model.",
+    "no_accepted_candidate": "Source has no accepted improvement; retain failure and empty-library status and report baseline as no-improvement reference, never fabricate selected factors.",
+    "model": "Released conf_us_combined.yaml for selected factors; conf_us.yaml control. Retain actual source one-day forward label and native model parameters, purging endpoint labels within train2000-2003 and valid2004Jan-Nov.",
+    "portfolio": "Top100/drop5 monthly, native95% risk and retained-position cash sizing; common total-return/cost account."
+  },
+  "M043": {
+    "selection": "Native EvolutionController.get_best_trajectories ranking by native primary metric on pre2005feedback. Use first valid best trajectory and its actual combined factor library for primary monthly transfer; retain the full pool and top5 display rather than forcing a150-factor or50-success library.",
+    "model": "Actual selected trajectory template/combined feature loader with its source baseline template; source one-day forward label and native LGB parameters. Same chronological downstream train2000-2003 and valid2004Jan-Nov, endpoint purged.",
+    "portfolio": "Top50/drop5 monthly with source95% risk and common account.",
+    "scope": "One completed released-default2-direction/3-round source-core transfer, not original-paper50-trajectory or150-factor experimental-scale equivalence."
+  },
+  "all_cases": "No selection from monthly2005-2020returns. Future-dependent or changed-source factor output blocks admission; never remove a failed prefix check and promote the surviving favorable subset. Four actual future-row removals for consumed factor programs; programs/input/config/path hashes bound."
+}

@@ -1,0 +1,4 @@
+arm,seeds,emitted_proposals,within_seed_valid_unique,globally_distinct_training_rank_fingerprints,duplicates,invalid,validation_hits,mean_selected_assessment_ic,mean_increment_over_initial_ic,model_cost_usd,total_wall_seconds,scope
+adaptive_grammar,3,144,70,67,73,1,20,0.005589487131751096,-0.0014760128650390643,0,2.695739562623203,development process pilot; per-seed novelty counts can repeat across seeds
+llm,3,144,110,94,29,5,19,0.0022741947479639544,-0.004791305248826206,0.036072,127.52583479415625,development process pilot; per-seed novelty counts can repeat across seeds
+adaptive_grammar_strengthened,3,144,130,126,12,2,54,0.002826328392319494,-0.004239171604470665,0,1.7858697287738323,development process pilot; per-seed novelty counts can repeat across seeds

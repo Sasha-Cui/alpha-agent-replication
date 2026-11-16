@@ -1,0 +1,10 @@
+{
+  "status": "complete_diagnostic_reattribution_only",
+  "old_component_methods": 17,
+  "attribution_rows": 68,
+  "new_central_methods_executed_by_this_script": 0,
+  "original_outputs_overwritten": false,
+  "actual_published_factor_count": 138,
+  "RF_reconciled": "16 of17; old Quanta output lacks raw total-security return and remains explicitly as-recorded-JKP-RF diagnostic",
+  "claim": "Do not promote these old representative formulas or partial adapters to the admitted central-method cohort."
+}

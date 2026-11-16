@@ -1,0 +1,4 @@
+route,availability,unused_status,model_information_boundary,ready_for_confirmation,next_requirement
+2019-2024 saved evaluation paths,verified complete saved outputs,already inspected development evidence,historical model knowledge unresolved,False,Do not relabel these paths as a fresh holdout.
+existing JKP daily source snapshot,Source footer includes future-labelled upper dates through 2028-12-01,not established; date provenance first needs diagnosis,not established,False,"Resolve future-date metadata semantics/provenance, then document non-use and model-information boundary before reading candidate outcome rows."
+new forward observations,future observations after a completed executable policy seal,can establish prospectively after actual seal,requires fixed model plus formation-time data restrictions,False,"Executable policy, provider/collector, universe, timestamps, financial checks and duration must all be fixed first; no backdating."

@@ -1,0 +1,23 @@
+{
+  "status": "fixed_before_new_method_monthly_performance_inspection",
+  "at_utc": "2026-11-16T09:47:12.176860+00:00",
+  "primary_return": "Method net excess total return at 10bp per side, actual French RF and zero-missing primary; report missing weights and adverse100/0/25bp sensitivities.",
+  "primary_benchmark": "Actual French5 + MOM + fixed132 JKP identities (138 columns). No factor stand-ins, ridge residuals or favorable calendar intersections.",
+  "primary_calendar": "190 months: 2005-02-28 through 2020-11-30. Every decision follows the 2004-12-31 source-selection data cutoff.",
+  "estimand": "12 times monthly full-span OLS intercept after scale normalization; rank, intercept information and residual df must pass.",
+  "usefulness_margin_annualized": 0.02,
+  "margin_basis": "Carry forward the project previously fixed 2 percentage-point annual economic margin. Non-significance at zero is not absence of useful alpha.",
+  "inference": "Newey-West Bartlett HAC, lag=floor(4*(n/100)^(2/9)), correction n/(n-rank-1), lag12 sensitivity. Pointwise99% intervals and two-sided zero-alpha pvalues remain descriptive approximate inference.",
+  "primary_positive_useful_alpha_test": "One-sided H0 annual alpha <= .02 versus > .02 with HAC SE; conservative 69*p at family .01. Retain denominator69 without inventing pvalues or returns for unavailable papers.",
+  "family_bounds": "Approximate one-sided99% Bonferroni lower/upper bounds using z=norm.isf(.01/69), distinct from pointwise99% intervals.",
+  "absence_rule": "A claim excluding useful alpha requires an adjusted upper bound below .02. Otherwise inconclusive; failure to reject does not establish no alpha.",
+  "paired_baseline": "Method-minus-native-control return intercept on identical dates/cost/missing paths. Verify paired intercept equals difference of arm intercepts. Diagnostic, not isolated causal LLM effect or another independent primary.",
+  "six_factor_diagnostic": "Actual French5 + MOM only; keep separate and never substitute its favorable result for the primary full benchmark.",
+  "limitations": [
+    "190 months and138 full-rank factors leave51 residual df: identified does not mean powerful, or guarantee finite-sample HAC calibration.",
+    "Current served models and retrospective data/source development preclude pristine model snapshots or untouched-holdout claims.",
+    "Published factor returns are gross long-short series; this is risk attribution, not a fully costed factor-hedged investment product.",
+    "Methods share one market history; stockmonths, calls and factors are not independent paper trials.",
+    "Source-core U.S. monthly transfers retain explicit data/model/frequency/proxy limitations."
+  ]
+}

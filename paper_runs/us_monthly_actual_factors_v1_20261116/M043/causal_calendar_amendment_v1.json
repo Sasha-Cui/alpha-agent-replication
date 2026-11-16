@@ -1,0 +1,13 @@
+{
+  "status": "authoritative_calendar_supplement",
+  "previous_recipe_sha256": "8b49992f2151f6ae36c6003b9bd3f2958571bcea76c608e3ce083bad4002d542",
+  "source_selection_data_and_calls_unchanged": true,
+  "first_formation": "2005-01-31",
+  "first_signal": "2005-01-28",
+  "first_realization": "2005-02-28",
+  "last_realization": "2020-11-30",
+  "months": 190,
+  "reason": "All source selection uses2004-12-31 closing information. Strictly embargo first signal until after that cutoff.",
+  "protocol": "monthly_account_protocol_v3.json",
+  "at_utc": "2026-11-16T09:35:39.212926+00:00"
+}

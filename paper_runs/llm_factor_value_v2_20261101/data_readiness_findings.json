@@ -1,0 +1,12 @@
+{
+  "as_of_date": "2026-11-01",
+  "metadata_date_min": "1913-07-24",
+  "metadata_date_max": "2028-12-01",
+  "row_groups": 1891,
+  "groups_with_upper_dates_after_today": 74,
+  "complete_future_groups": 0,
+  "outcome_rows_read": 0,
+  "status": "date_semantics_and_unused_status_not_established",
+  "interpretation": "A future-labelled upper date is not evidence of actual future market observations. Metadata alone cannot identify sentinel, parse, projection, test or other provenance reasons. Resolve date semantics/lineage before any candidate holdout access. Earlier bounded 2019-2024 extracts are unchanged and are not reclassified by this metadata finding.",
+  "raw_source_payload_fully_rehashed": false
+}

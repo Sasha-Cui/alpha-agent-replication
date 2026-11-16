@@ -1,0 +1,5 @@
+backend,variant,paired_SE,counterfactual_unpaired_SE,LLM_grammar_block_correlation,pairing_SE_ratio,pairing_is_new_improvement_over_V1,note
+gpt41,replicate_mean_3v3,0.07016687974236711,0.14600084538711283,0.7701321152124893,0.4805922839441352,False,"V1 legacy comparisons already used paired market dates. The unpaired calculation is a diagnostic identity, not an admissible worse control."
+gpt41,replicate_mean_3v10,0.053842339361506085,0.13736990318144887,0.8484093040276589,0.3919514982141825,False,"V1 legacy comparisons already used paired market dates. The unpaired calculation is a diagnostic identity, not an admissible worse control."
+deepseek_v3,replicate_mean_3v3,0.07328203269117578,0.16299446165827702,0.8075909796925149,0.44959829889689046,False,"V1 legacy comparisons already used paired market dates. The unpaired calculation is a diagnostic identity, not an admissible worse control."
+deepseek_v3,replicate_mean_3v10,0.06448611094305944,0.1553107786909864,0.8599891735417493,0.4152069256658871,False,"V1 legacy comparisons already used paired market dates. The unpaired calculation is a diagnostic identity, not an admissible worse control."

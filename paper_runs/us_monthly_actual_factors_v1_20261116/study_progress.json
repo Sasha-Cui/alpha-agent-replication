@@ -1,0 +1,36 @@
+{
+  "status": "active_study_paper_provisional",
+  "asof_utc": "2026-11-16T09:47:12.184090+00:00",
+  "actual_benchmark": "Complete:138 published factors/305 months, frozen inputs",
+  "primary_monthly_calendar": "190 causal months,2005Feb..2020Nov",
+  "completed_new_whole_method_evaluations": 0,
+  "method_status": {
+    "M059": {
+      "source_status": "running",
+      "returned_model_calls": 299,
+      "monthly_result_complete": false
+    },
+    "M019": {
+      "source_status": "running",
+      "returned_model_calls": 60,
+      "monthly_result_complete": false
+    },
+    "M043": {
+      "source_status": "running",
+      "returned_model_calls": 82,
+      "monthly_result_complete": false
+    },
+    "M042": {
+      "source_status": "zero-call factor/input preflight",
+      "checkpoint_verified": true,
+      "factor_cases_executed": 50,
+      "domain": 82,
+      "paid_calls": 0,
+      "monthly_result_complete": false
+    }
+  },
+  "independent_control_accounts": "M059190-month control,6paths PASS; method results pending",
+  "candidate_review": "candidate_conformance_review.json",
+  "inference_contract": "inference_protocol_v1.json",
+  "source_selection_contract": "source_final_selection_protocol.json"
+}

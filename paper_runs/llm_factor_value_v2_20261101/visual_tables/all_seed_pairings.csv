@@ -1,0 +1,13 @@
+backend,grammar_seed_order,max_ensemble_difference_from_other_pairings,averaging_all_pairs_invariant,actual_common_random_numbers_established
+gpt41,101-102-103,1.734723475976807e-17,True,False
+gpt41,101-103-102,1.734723475976807e-17,True,False
+gpt41,102-101-103,1.734723475976807e-17,True,False
+gpt41,102-103-101,1.734723475976807e-17,True,False
+gpt41,103-101-102,1.734723475976807e-17,True,False
+gpt41,103-102-101,1.734723475976807e-17,True,False
+deepseek_v3,101-102-103,2.0816681711721685e-17,True,False
+deepseek_v3,101-103-102,2.0816681711721685e-17,True,False
+deepseek_v3,102-101-103,2.0816681711721685e-17,True,False
+deepseek_v3,102-103-101,2.0816681711721685e-17,True,False
+deepseek_v3,103-101-102,2.0816681711721685e-17,True,False
+deepseek_v3,103-102-101,2.0816681711721685e-17,True,False

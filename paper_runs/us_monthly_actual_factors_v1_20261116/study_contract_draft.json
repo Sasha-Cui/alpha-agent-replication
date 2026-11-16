@@ -1,0 +1,23 @@
+{
+  "study_id": "us_monthly_actual_factors_v1_20261116",
+  "status": "active_benchmark_source_and_method_eligibility_preflight",
+  "authorization": "The user explicitly authorized the November16 correction: actual FF5 + momentum + JKP132, central-method U.S. monthly eligibility, and study execution. Preserve all prior versions.",
+  "created_at_utc": "2026-11-16T08:34:12.456014+00:00",
+  "goal": "Evaluate released LLM investment methods on monthly U.S.equities for useful performance beyond actual publishedFF5+MOM+JKP132.",
+  "benchmark_contract": "Use published U.S. French five-factor and momentum returns plus the historically fixed 132 JKP characteristic identities. Pin country, weighting, sign, units, realized-month calendar, version and matrix rank before new strategy outcomes. Do not label characteristic analogues FF5.",
+  "eligibility_contract": "Assess all69 records and reconcile author-linked implementation/component releases. Require a released investment mechanism with enough source and inputs for a documented monthly U.S. transfer. Preserve native lookback units. Full original-paper table reproduction is not required; a single output factor is not a substitute for an unreleased LLM search.",
+  "outcome_selection": "Freeze each eligible method recipe, fidelity decisions, data availability, substitutions and financial settings before its new U.S. result. Historical outcomes already seen remain disclosed.",
+  "execution": "Complete every feasible admitted method and report each unavailable method with its concrete blocker. Use unique saved intents and isolated output/workspaces; do not revive frozen jobs.",
+  "inference": "Estimate the actual factor-intercept/spanning specification only after rank, degrees-of-freedom and conditioning checks. Keep regularized out-of-sample residuals separate as diagnostics. No factor/calendar filling or silent dropping.",
+  "paper": "The November5 manuscript remains provisional until the correction study is finished. Preserve its PDF and add a dated correction supplement.",
+  "budget": {
+    "project_committed_usd": 371.1019975700029,
+    "unchanged_runtime_project_cap": 450,
+    "strict_global_authorization": 1000,
+    "new_study_initial_cap_usd": 50,
+    "prior_all_state_sha256": "5021383394d923d36a6027a342e45451ff8da767ccdafde63118baaa814ec0f9",
+    "old_charges_retained": true,
+    "calls_by_this_setup": 0
+  },
+  "no_gitops_no_installs_no_subagents_no_author_contact": true
+}

@@ -1,0 +1,98 @@
+{
+  "study_id": "llm_discovery_process_pilot_v1_20261102",
+  "frozen_at_utc": "2026-11-03T04:39:49.486431+00:00",
+  "authorization": "User explicitly approved the bounded research-process pilot after being told it changes the question; investment returns exploratory.",
+  "question": "Does an LLM produce more useful predictive factor discoveries than adaptive grammar search at the same proposal-slot budget?",
+  "scope": "Exploratory research-process benchmark on already inspected development history; not a fresh holdout, alpha-null test or original-paper reproduction.",
+  "model": {
+    "id": "openai/gpt-4.1",
+    "provider": "OpenAI",
+    "allow_fallbacks": false,
+    "input_usd_per_million": 2,
+    "output_usd_per_million": 8,
+    "temperature": 0.3,
+    "max_output_tokens": 2048,
+    "model_choice_basis": "Existing working canonical metering route and code-generation capability, selected before new pilot outcomes, not highest historical investment return."
+  },
+  "study_cap_usd": 5,
+  "project_runtime_cap_usd": 450,
+  "global_strict_ceiling_usd": 1000,
+  "seeds": [
+    101,
+    102,
+    103
+  ],
+  "rounds": 4,
+  "proposals_per_round": 12,
+  "proposal_slots_per_arm_seed": 48,
+  "arms": [
+    "adaptive_grammar",
+    "llm"
+  ],
+  "initial_bank": [
+    "mom_1",
+    "mom_5",
+    "mom_10",
+    "mom_20",
+    "mom_60",
+    "vol_5",
+    "vol_10",
+    "vol_20",
+    "vol_60",
+    "dist_ma_5",
+    "dist_ma_20",
+    "dist_ma_60"
+  ],
+  "DSL": {
+    "terminals": "the initial bank",
+    "unary": [
+      "neg",
+      "rank"
+    ],
+    "binary": [
+      "add",
+      "sub",
+      "mul"
+    ],
+    "max_depth": 4,
+    "max_nodes": 15,
+    "no_python_eval_or_exec": true
+  },
+  "features": "Split-adjusted close only; strictly trailing momentum, volatility and distance from moving average. Static legacy US50 universe and data/model historical-knowledge limitations retained. No raw licensed security data or ticker identities are sent to the model.",
+  "target": "Five-session forward dividend-inclusive total return from t+1 to t+5; predictive IC only, not a tradable execution/return claim.",
+  "splits": {
+    "train": [
+      "2019-01-01",
+      "2020-12-31"
+    ],
+    "validation": [
+      "2021-01-01",
+      "2021-12-31"
+    ],
+    "assessment": [
+      "2022-01-01",
+      "2024-12-31"
+    ]
+  },
+  "purge": "Target horizon end must lie inside each scored split; never labels crossing the split endpoint.",
+  "evaluation": "Daily cross-sectional Spearman IC on finite prediction/target pairs, at least20stocks. Coverage and missing labels retained. No future-driven feature filling.",
+  "orientation": "Learn sign on training meanIC only; use that same sign for validation and assessment.",
+  "fitness": "Training oriented meanIC; require coverage >=.95 for parents and final candidate eligibility.",
+  "adaptive_grammar": "Round1 random legal expressions; later75% proposals use mutation/crossover over up to6 highest training-fitness parents,25% fresh expressions. Independent seeded proposal RNG, no outcome-selected retry.",
+  "feedback": "Both arms receive only the same type of training-fitness parent summaries; LLM receives no validation/assessment score, dates, tickers or raw security-level observations.",
+  "failure_policy": "Every invalid, duplicate, missing/truncated or excess-response proposal remains recorded against its slot; no replacement or paid network retry.",
+  "duplicate_rule": "Canonical structural duplicates plus identical oriented training-prediction rank fingerprints are not credited as new discoveries.",
+  "selection": "After all rounds, highest validation meanIC among valid >=.95-coverage initial/proposed candidates; ties by canonical expression. Validation/assessment sign is never refitted.",
+  "primary_process_endpoint": "Assessment meanIC of validation-selected factor per arm/seed, with paired differences and all individual results reported descriptively; three seeds are not independent market histories.",
+  "secondary_endpoints": [
+    "Valid/unique proposal fraction",
+    "Novel validation hit yield: validation oriented meanIC>=.01 and coverage>=.95",
+    "Improvement over shared initial-bank validation selection",
+    "Provider cost, billed tokens, candidate evaluations and wall time separately"
+  ],
+  "investment_returns": "No new portfolio backtest is needed for this first process pilot. Predictive IC is not economic alpha.",
+  "private_public": "Security-level inputs, factor matrices, raw responses, request identities and receipts remain private; public outputs contain aggregate metrics and factor expressions only.",
+  "canonical_transport": "Unchanged CohortOpenRouter in runs/economic_fidelity/openrouter; only own new study requests may be added/settled. All old entries, charges, reservations and recovery map remain unchanged.",
+  "seed_label_is_common_random_number_coupling": false,
+  "old_jobs": "Do not alter existing held/dependent scientific jobs or completed archives/studies."
+}

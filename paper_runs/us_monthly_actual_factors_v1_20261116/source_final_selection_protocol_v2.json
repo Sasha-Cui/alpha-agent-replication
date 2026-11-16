@@ -1,0 +1,20 @@
+{
+  "status": "fixed_before_new_monthly_strategy_outcomes",
+  "at_utc": "2026-11-16T10:07:52.759293+00:00",
+  "M019": {
+    "selection": "Exact released Trace.get_sota_hypothesis_and_experiment: most recent experiment with feedback.decision true. Preserve and audit every preceding failed/accepted trajectory; source runner ifFalse disables concatenation of previous SOTA features. Use the selected actual experiment feature library; do not union all historical candidates to manufacture a stronger model.",
+    "no_accepted_candidate": "Source has no accepted improvement; retain failure and empty-library status and report baseline as no-improvement reference, never fabricate selected factors.",
+    "model": "Released conf_us_combined.yaml for selected factors; conf_us.yaml control. Retain actual source one-day forward label and native model parameters, purging endpoint labels within train2000-2003 and valid2004Jan-Nov.",
+    "portfolio": "Exact selected US combined configuration: Top50/drop5 monthly,95% risk/cash retention. Earlier Top100 assumption came from source baseline, not selected method; preserve that assumption as historical protocol, do not execute it as primary.",
+    "control": "Primary matched4-feature control removes only selected factorStaticDataLoader from selected native combined config, retaining its feature ordering, preprocessing, label,model,Top50/drop5. Preserve existing source-defaultbaseline4featuremodel/Top100 as separate author-default diagnostic; no extra paper/independence credit."
+  },
+  "M043": {
+    "selection": "Native EvolutionController.get_best_trajectories ranking by native primary metric on pre2005feedback. Use first valid best trajectory and its actual combined factor library for primary monthly transfer; retain the full pool and top5 display rather than forcing a150-factor or50-success library.",
+    "model": "Actual selected trajectory template/combined feature loader with its source baseline template; source one-day forward label and native LGB parameters. Same chronological downstream train2000-2003 and valid2004Jan-Nov, endpoint purged.",
+    "portfolio": "Top50/drop5 monthly with source95% risk and common account.",
+    "scope": "One completed released-default2-direction/3-round source-core transfer, not original-paper50-trajectory or150-factor experimental-scale equivalence."
+  },
+  "all_cases": "No selection from monthly2005-2020returns. Future-dependent or changed-source factor output blocks admission; never remove a failed prefix check and promote the surviving favorable subset. Four actual future-row removals for consumed factor programs; programs/input/config/path hashes bound.",
+  "previous_protocol": "source_final_selection_protocol.json",
+  "reason_for_change": "Direct immutable source config check before monthly method/control outcomes: baselineTop100/CSRankNormlabel differs from selectedTop50/CSZScoreNormlabel. Correct to actual selected policy and add a matched control, rather than attribute configuration differences to LLM factors."
+}

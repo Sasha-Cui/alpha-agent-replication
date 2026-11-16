@@ -1,0 +1,36 @@
+{
+  "status": "PROVISIONAL_ACTIVE_material_US_quote_input_failure_under_repair",
+  "at_utc": "2026-11-16T13:23:32.452178+00:00",
+  "actual_benchmark_complete": true,
+  "actual_factors": 138,
+  "papers_tracked": 69,
+  "central_investment_performance_admissions": 0,
+  "source_algorithms_executed_but_not_economically_admitted": [
+    "M019",
+    "M043",
+    "M059"
+  ],
+  "native_daily_portfolio_diagnostic_paths": 6,
+  "R1_policy_inference_executed": false,
+  "R1_data_dependent_jobs_stopped": [
+    "33543903",
+    "33543658"
+  ],
+  "verified_daily_input_extraction_job": "33544033",
+  "real_quarterly_statement_rows_recovered": 16921,
+  "source_quote_failure": {
+    "CHK_2005_qlib_return": 11.304011344909668,
+    "CHK_2005_CRSP_total_return": 0.9369670691928333
+  },
+  "paper_remains_provisional": true,
+  "no_claim_universal_absence_of_alpha": true,
+  "canonical_R1_budget_snapshot": {
+    "project_committed_usd": 372.7309017920029,
+    "study_committed_usd": 0.4355640000000001,
+    "project_soft_cap_usd": 450.0,
+    "study_cap_usd": 20,
+    "complete_calls": 16,
+    "uncertain_calls": 1
+  },
+  "next_required": "Validate real permanent-ID daily inputs and executable field/clock adapters, then separately bind any corrected new case with no blind source restart or uncertain-request retry."
+}

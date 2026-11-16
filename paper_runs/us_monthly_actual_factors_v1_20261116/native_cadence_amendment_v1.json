@@ -1,0 +1,10 @@
+{
+  "status": "native_cadence_correction_before_inspection_of_new_strategy_performance",
+  "basis": "Faithful source-method test preserves native daily trading for factor portfolios; monthly is the return-aggregation and actual factor-attribution frequency. User optionalcadenceclarification pending; proceedingwithmorefaithful interpretation. Monthly-decision transfers remain separatelylabelled.",
+  "native_primary_calendar": "190completecalendar months2005Jan..2020Oct; model signals strictlyafter2004Dec31, firstexecutionafterfirstJanuarysignal, lastcompletequote monthOctober2020. No partialNovember price-historymonth in native analysis.",
+  "original_monthly_transfer_calendar": "190months2005Feb..2020Nov, preserved",
+  "primary_friction_case": "Causalopeningeligibility/currentopen+priorclose only,10bpper-side; nativeas-codedeligibility andsourcefees/0/25bp diagnostic, no selecting favorablecase",
+  "models_and_paid_source_searches_reused": true,
+  "known_market_data_limits": "Sourceprovidedadjustedquotehistories anduniversevintage are not pristinehistorical securitymaster/corporateaction snapshots. Sourceas-codedNAVs not automatically proof ofdeployablealpha; independentdataaudit flags retained.",
+  "at_utc": "2026-11-16T12:50:02.402212+00:00"
+}

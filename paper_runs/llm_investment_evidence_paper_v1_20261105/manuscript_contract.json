@@ -1,0 +1,31 @@
+{
+  "title": "From Executable Agents to Investment Evidence",
+  "subtitle": "A 69-Paper Audit, Bounded Economic Evaluations, and a Controlled Discovery Pilot",
+  "manuscript_date": "2026-11-05",
+  "status": "working_paper_draft",
+  "new_version_of_manuscript": true,
+  "previous_manuscripts_unchanged": true,
+  "scope": "Narrative synthesis and presentation of completed evidence only. No scientific/source/model/replay/account/backtest reruns.",
+  "claim_boundaries": {
+    "corpus": "Inherited purpose-built collection of69paper records; not random sample or exhaustive systematic census.",
+    "reproduction": "Zero full original-paper reproductions established by this effort; not proof no paper is reproducible.",
+    "economics": "Available primary-family contrasts inconclusive; missing strictAlpha retained; no no-alpha or equivalence claim.",
+    "pilot": "Actual completed three-seed process pilot; not fresh holdout, independent market trials or economic-alpha test.",
+    "stronger_control": "Post-launch exploratory sensitivity after first-seed proposal counts, before assistant inspection of assessmentIC; original control retained.",
+    "current_availability": "Dates retained; October1refresh not a November5full recrawl.",
+    "human_review": "External and unasserted.",
+    "external_submission": "Not authorized or performed."
+  },
+  "deliverables": [
+    "manuscript.pdf",
+    "MANUSCRIPT.md",
+    "MANUSCRIPT_NO_IMAGES.md",
+    "content_model.json",
+    "audit_tables",
+    "figures",
+    "source_and_claim_manifest.json"
+  ],
+  "new_pdf_marker": "Do not repeat the original marker; user previously explicitly instructed never repeat.",
+  "input_count": 96,
+  "new_paid_cost_usd": 0
+}

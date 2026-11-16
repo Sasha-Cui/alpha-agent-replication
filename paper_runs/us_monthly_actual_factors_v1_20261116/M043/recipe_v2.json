@@ -1,0 +1,48 @@
+{
+  "paper_id": "M043",
+  "status": "fixed_before_new_US_source_probe_and_outcomes",
+  "source_method": "Released QuantaAlpha defaults",
+  "scope": "Central-source execution on substituted U.S.data with declared monthly portfolio transfer; not original historical experiment equivalence.",
+  "generation_inputs": "/nfs/roberts/project/pi_jss233/zc362/alpha_evolve/artifacts/us_monthly_actual_factors_v1_20261116/source_data/generation_manifest.json",
+  "feedback_configuration": {
+    "country": "us",
+    "market": "sp500",
+    "train": [
+      "2000-01-01",
+      "2002-12-27"
+    ],
+    "valid": [
+      "2003-01-01",
+      "2003-12-26"
+    ],
+    "feedback": [
+      "2004-01-02",
+      "2004-12-30"
+    ],
+    "benchmark": "^GSPC",
+    "no_China_price_limit": true,
+    "model_threads": 4,
+    "source_daily_lookbacks_preserved": true
+  },
+  "source_scale": "Complete native2-direction/3-round released-default pipeline; do not replace with a single example factor.",
+  "monthly_adapter": "Source ranking/Topk-dropout policy at monthly formation rather than daily; source US topk100 for M019, source topk50 for M043, drop5 retained. Preserve lookback units. Use prior-session predictions, JKP total returns and actualFrenchRF;10bp one-way cost with missing-weight sensitivity.",
+  "source_native_model_parameters_preserved_except_cpu_threads": true,
+  "model": "openai/gpt-4.1",
+  "provider": "OpenAI",
+  "input_price_usd_per_million": 2,
+  "output_price_usd_per_million": 8,
+  "embedding": "openai/text-embedding-3-small",
+  "embedding_dimensions": 1536,
+  "cap_usd": 20,
+  "global_runtime_cap_usd": 450,
+  "global_authorization_strictly_below_usd": 1000,
+  "frozen_at_utc": "2026-11-16T09:05:56.446702+00:00",
+  "probe_and_execution_outputs_separate": true,
+  "model_substitution": "GPT-4 Turbo has no routing endpoints in saved public metadata; substitute GPT-4.1 before any paid U.S. call. Central mechanism preserved; historical model equivalence not claimed.",
+  "prior_recipe_sha256": "f23e5e056735fb4e068bc3dada7288d3be7a51507a85e5c83d01137a91734d68",
+  "source_wrapper_sha256": "13629204fff0a23027bb4c8db0f732766b24a69f12b1c6f86354a8b2cb11d8ae",
+  "source_wrapper": "/nfs/roberts/project/pi_jss233/zc362/alpha_evolve/artifacts/us_monthly_actual_factors_v1_20261116/run_M043_source_v2.py",
+  "endpoint_preflight_sha256": "c1de5c0cc6420d8fc98825f8853f785015675e7b84d332ac3028ad172e4c778b",
+  "native_baseline_probe_sha256": "dc0050b61d117dccbd0aa3c8fbc5367734ddab4b73d0a44d8e00b35a3f3c38d1",
+  "fixed_at_utc": "2026-11-16T09:10:46.404648+00:00"
+}

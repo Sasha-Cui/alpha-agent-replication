@@ -1,0 +1,5 @@
+noise_reference,evaluation_months,noise_multiplier,planning_method,annualized_SE,MDE80_separation_annualized,ruleout_power_true_increment_0,worthwhile_power_true_increment_4pp,nominal_CI_confidence,economic_boundary_annualized,scenario_is_strategy_outcome
+gpt41,72,1,normal_known_SE_reference,0.03696316741063799,0.12631979632120835,0.020938010550018857,0.020938010550018857,0.99,0.02,False
+gpt41,72,1,four_normal_blocks_df3,0.03696316741063799,0.2750238528380428,0.012468856064361322,0.012468856064361322,0.99,0.02,False
+deepseek_v3,72,1,normal_known_SE_reference,0.10432967587972171,0.35654150687289976,0.008559793237540836,0.008559793237540836,0.99,0.02,False
+deepseek_v3,72,1,four_normal_blocks_df3,0.10432967587972171,0.7762632760072237,0.00703453276390553,0.00703453276390553,0.99,0.02,False

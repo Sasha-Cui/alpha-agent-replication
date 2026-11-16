@@ -1,0 +1,70 @@
+{
+  "study_id": "llm_factor_value_v2_20261101",
+  "recorded_at_utc": "2026-11-02T02:20:52.086533+00:00",
+  "authorization": "User: go ahead, following the completed design/power assessment and remaining conditions.",
+  "phase": "paired-development-precision and confirmation-data-readiness",
+  "scope": "New diagnostic calculations on saved aggregate returns; no original source/replay/account/analysis helper reruns.",
+  "known_before_diagnostics": "All historical returns and V1 power results are development evidence. V1 pooled contrasts are already paired on market dates. Single-seed first-row formatting was inspected, but no new variant precision has been computed.",
+  "question": "Can an unselected replicate-average comparison materially reduce temporal uncertainty at unchanged per-run portfolio exposure, and is unused confirmation data actually ready?",
+  "variants": [
+    {
+      "id": "legacy_union_pool",
+      "source": "sealed four-block SE from original EFS receipt",
+      "role": "reference only, different union-library strategy"
+    },
+    {
+      "id": "replicate_mean_3v3",
+      "llm_trials": "all three recorded per backend",
+      "grammar_seeds": [
+        101,
+        102,
+        103
+      ],
+      "role": "candidate expected-replicate-performance estimand; no outcome-based trial selection"
+    },
+    {
+      "id": "replicate_mean_3v10",
+      "llm_trials": "all three recorded per backend",
+      "grammar_seeds": [
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110
+      ],
+      "role": "unbalanced diagnostic only; cannot claim equal search opportunity"
+    }
+  ],
+  "return_treatment": {
+    "field": "total_cost_10",
+    "aggregation": "Compound each saved daily path to all 72 complete months, then average monthly performance across recorded algorithm replicates. This is an expected-replicate-performance statistic, not a newly backtested investable rebalanced ensemble.",
+    "require_calendar": "Exactly 1510 saved dates and 72 complete 2019-2024 month labels, no dropping/intersection/filling",
+    "exposure": "No leverage, scale, cash blend, volatility shrinkage or new holdings rule. Each saved full-exposure path is unchanged."
+  },
+  "inference": {
+    "blocks": 4,
+    "months_per_block": 18,
+    "confidence": 0.99,
+    "economic_boundary": 0.02,
+    "power_target": 0.8,
+    "separation_for_power": 0.02,
+    "conditioning": "Calendar SE conditions on the small recorded seed bank. It does not establish full uncertainty over future searches.",
+    "pairing_diagnostic": "All six permutations of three grammar seeds; demonstrate that their average paired contrast is invariant. Renaming seed IDs is not common random numbers.",
+    "variance_components": "Exploratory two-way random-effects method-of-moments on three seeds by four annualized block estimates. Preserve negative component estimates; do not clip them or use them as power certification. Evaluate all six pairings."
+  },
+  "validation_data_readiness": {
+    "historical_inputs": "Inspect only existing data provenance and date bounds, not raw unseen outcome rows. Never declare a period unused solely because another filename exists.",
+    "forward_route": "First market observation must follow a genuinely completed executable-policy and input/selection seal; the current proposal is not that seal. Full data/collector/execution/model-knowledge readiness and sufficient duration remain required.",
+    "historical_route": "Requires documented non-use in design/model selection and a model-information boundary. No new outcome fetch before that decision."
+  },
+  "launch_gate": "No new search may launch merely because one exploratory variant has a smaller SE; candidate estimand, joint seed/time uncertainty, equal-opportunity mechanism and fresh-data gates must all be established.",
+  "new_model_calls": 0,
+  "new_model_fits": 0,
+  "new_backtests": 0,
+  "new_factor_searches": 0
+}

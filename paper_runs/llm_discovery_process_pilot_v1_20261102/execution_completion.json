@@ -1,0 +1,18 @@
+{
+  "status": "complete_bounded_development_process_pilot",
+  "study_id": "llm_discovery_process_pilot_v1_20261102",
+  "protocol_sha256": "e41a682b587d85a85c383abc44f97d0df01cb7803087e08c446cf61b3c07d521",
+  "seeds": 3,
+  "arms": 2,
+  "proposal_slots": 288,
+  "paid_calls": 12,
+  "study_cost_usd": 0.036072,
+  "project_committed_usd": 371.1019975700029,
+  "old_canonical_entries_unchanged": true,
+  "new_investment_backtests": 0,
+  "alpha_claim": false,
+  "fresh_holdout_claim": false,
+  "full_original_paper_claim": false,
+  "original_inputs_unchanged": true,
+  "completed_at_utc": "2026-11-03T04:45:39.570034+00:00"
+}

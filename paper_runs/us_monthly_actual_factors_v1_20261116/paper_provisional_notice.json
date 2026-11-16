@@ -1,0 +1,9 @@
+{
+  "status": "provisional_pending_actual_factor_monthly_study",
+  "paper": "paper_runs/llm_investment_evidence_paper_v1_20261105/manuscript.pdf",
+  "original_pdf_sha256": "0be2577cc0cb80abc1c8d20422eb202a266bb75bd529d04170389d941727a31c",
+  "reason": "OriginaltargetFF5+MOM+JKP132cohortstudyreopened;priorproxybenchmarkdoesnotanswerexacttarget. Draftcannotrepresentthatgoalascomplete.",
+  "study": "paper_runs/us_monthly_actual_factors_v1_20261116",
+  "external_submission": false,
+  "old_pdf_rewritten": false
+}

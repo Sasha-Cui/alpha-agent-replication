@@ -1,0 +1,11 @@
+{
+  "status": "complete_actual_factor_panel_and_preflight",
+  "rows": 305,
+  "factor_count": 138,
+  "rank": 138,
+  "alpha_identifiable": true,
+  "residual_df": 166,
+  "max_span_projection_error": 1.687538997430238e-14,
+  "sha256": "4df228c9bdcf87b6d6cd3d89f49a6d296a106e2aedb20d482e6961c2627caa14",
+  "strategy_outcomes_computed": false
+}

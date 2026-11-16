@@ -1,0 +1,84 @@
+{
+  "status": "fixed_before_any_M042_paid_calls_or_monthly_outcomes",
+  "paper_id": "M042",
+  "source_commit": "5a55d35c2efb9157b5d58f869d2c8c1afb511768",
+  "checkpoint_revision": "82c2aa5fcdda6b4ff00caeba68b0903f13d0e1a5",
+  "checkpoint_completion_sha256": "3be48c101f3867706474e3421f6bd09a5224ae109c8ff76f494d8fd7d0e23902",
+  "existing_inference_runtime": "/nfs/roberts/project/pi_btk22/zc362/environments/bin/kt-vllm-python",
+  "core_preserved": [
+    "Entire82-factor released Alpha101 domain and source Qlib custom operators",
+    "Source P_i daily IC/RankIC/Top50 one-day portfolio summaries over bounded2000-2004 history",
+    "Released weekly iterative market-memory update and all82factor-description prompts",
+    "Actual released trained Alpha-R1 checkpoint for factor selection; source XML parser, maximum10factors, source prompt",
+    "Source fixed pooled OLS of winsorized/z-scored factors on5-trading-day forward return, beforemonthlytest",
+    "Native5capital-slot rotation and Top10stocks, transferred to monthly decision cadence"
+  ],
+  "inputs": {
+    "source_training_provider": "/nfs/roberts/project/pi_jss233/zc362/alpha_evolve/artifacts/us_monthly_actual_factors_v1_20261116/training_feedback_provider",
+    "source_information_cutoff": "2004-12-31",
+    "universe": "native archived SP500 membership/price coverage, no pristine vintage claim",
+    "VWAP": "Exact released CSV-loader fallback(H+L+C)/3 expanded inline because actualVWAP is absent; not actualVWAP.",
+    "news": "No news supplied. Native loader supports price-only units and optional inference state. Preserve this narrower information domain; do not fabricate news.",
+    "market_units": "Deterministic descriptions of actual observed daily cross-sectional returns/breadth/relative share volume through2004; source weekly LLM aggregation preserved.",
+    "inference_state": "Only observed price/volume summaries at each actual prior-session signal. No future row or realized target supplied.",
+    "downstream_train": "2000-01-01..2003-12-31 with5-session label endpoints purged within2003",
+    "primary_calendar": "formation2005Jan..2020Oct; realized2005Feb..2020Nov,190months"
+  },
+  "profile_model": {
+    "id": "openai/gpt-4.1",
+    "provider": "OpenAI",
+    "temperature": 0.7,
+    "max_tokens": 4096,
+    "input_price_per_million": 2,
+    "output_price_per_million": 8,
+    "substitution": "Accessible current model for released configurable description/memory API; not historical Claude3.7 snapshot equivalence.",
+    "max_workers": 1,
+    "request_seed": "Case base XOR stable full-prompt hash, preserving exact prompt-bound identity independent of coroutine scheduling.",
+    "network_retry": "None on uncertain request; fatal stop preserving full reservation."
+  },
+  "trained_policy": {
+    "backend": "released_vllm_backend",
+    "temperature": 0.0,
+    "top_p": 0.7,
+    "source_max_tokens": 12288,
+    "max_model_len": 40960,
+    "max_factors": 10,
+    "input_context": "All82whole descriptions must be retained. Tokenizer budget check beforeGPU; no silent descriptor truncation. Any necessary output-bound context adaptation requires explicit recorded version, never input deletion.",
+    "source_retries": "Preserve and record source local invalid-format attempts, no manufactured selections."
+  },
+  "portfolio": {
+    "top_n": 10,
+    "slots": 5,
+    "monthly_cadence": "Rotate only one of5capital slots permonth; factors/labels retain daily-lookback units. This is an explicit frequency transfer, not native5-day holding performance.",
+    "fees_bps_per_side": [
+      10,
+      0,
+      25
+    ],
+    "returns": "Actual JKP total security return and actualFrenchRF/cash; stable datedticker-permno mapping, nofuture eligibility; zero andadverse100missing sensitivity.",
+    "baseline": "Source fixed OLS using all82available factors without LLM selection; exact same slots,dates,costs,identities. No selecting its outcome."
+  },
+  "admission_gates": [
+    "Verified every checkpoint file and all4weightshards",
+    "All82sourcefactor preflight executions and bounded context completion",
+    "Full-profile tokenizer context check",
+    "Actual trained-policy execution and saved raw responses/parser checks",
+    "Consumed factor full-universe prefix causality with actualfuture rows removed",
+    "Allportfolio source/cash/cost/return/identifier checks and independentaccount replay",
+    "Actual138-factorintercept/rank/df on exact190months; no calendar intersection"
+  ],
+  "claims": [
+    "Source-core-preserving U.S.monthly transfer with declared inputs/model/VWAP/cadence substitutions, not original-paper experimental identity.",
+    "Current trained-model backcast is retrospective and may contain pretrained future information; not a pristine model/data snapshot or untouched holdout.",
+    "An unidentifiable or failed admission is not a zero return or proof of no alpha."
+  ],
+  "metering": {
+    "study": "us_monthly_actual_factors_v1_20261116:M042",
+    "cap_usd": 20,
+    "new_total_study_cap_usd": 70,
+    "unchanged_runtime_project_cap": 450,
+    "global_strict_ceiling": 1000,
+    "budget_amendment_sha256": "b277c4b3c33894bc99f69d56e4ad937a51d02f958969b598693b41315794ceb1"
+  },
+  "at_utc": "2026-11-16T09:42:18.355217+00:00"
+}

@@ -1,0 +1,41 @@
+{
+  "paper_id": "M019",
+  "status": "fixed_before_new_US_source_probe_and_outcomes",
+  "source_method": "Paper-era AlphaAgent exploration",
+  "scope": "Central-source execution on substituted U.S.data with declared monthly portfolio transfer; not original historical experiment equivalence.",
+  "generation_inputs": "/nfs/roberts/project/pi_jss233/zc362/alpha_evolve/artifacts/us_monthly_actual_factors_v1_20261116/source_data/generation_manifest.json",
+  "feedback_configuration": {
+    "country": "us",
+    "market": "sp500",
+    "train": [
+      "2000-01-01",
+      "2002-12-27"
+    ],
+    "valid": [
+      "2003-01-01",
+      "2003-12-26"
+    ],
+    "feedback": [
+      "2004-01-02",
+      "2004-12-30"
+    ],
+    "benchmark": "^GSPC",
+    "no_China_price_limit": true,
+    "model_threads": 4,
+    "source_daily_lookbacks_preserved": true
+  },
+  "source_scale": "One complete25-stage/five-cycle source-default GPT4Turbo search; not20paper trials.",
+  "monthly_adapter": "Source ranking/Topk-dropout policy at monthly formation rather than daily; source US topk100 for M019, source topk50 for M043, drop5 retained. Preserve lookback units. Use prior-session predictions, JKP total returns and actualFrenchRF;10bp one-way cost with missing-weight sensitivity.",
+  "source_native_model_parameters_preserved_except_cpu_threads": true,
+  "model": "openai/gpt-4-turbo",
+  "provider": "OpenAI",
+  "input_price_usd_per_million": 10,
+  "output_price_usd_per_million": 30,
+  "embedding": "openai/text-embedding-3-small",
+  "embedding_dimensions": 1536,
+  "cap_usd": 15,
+  "global_runtime_cap_usd": 450,
+  "global_authorization_strictly_below_usd": 1000,
+  "frozen_at_utc": "2026-11-16T09:05:56.415338+00:00",
+  "probe_and_execution_outputs_separate": true
+}
