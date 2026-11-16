@@ -35,6 +35,8 @@ jobs:
           python -m pip install --require-hashes -r requirements-lock.txt
           python -m pip install --no-deps -e .
           python -m pip check
+      - name: Check repository navigation and study status
+        run: python scripts/check_repository_docs.py
       - name: Lint Python sources and tests
         run: python -m ruff check src scripts tests
       - name: Validate public repository and submission package
