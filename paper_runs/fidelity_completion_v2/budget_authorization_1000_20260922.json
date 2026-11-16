@@ -1,0 +1,31 @@
+{
+  "AMZN_exact_retry_already_complete_never_repeat": true,
+  "ceiling_is_exclusive": true,
+  "cost_basis": "Historical costs plus paid responses plus all uncertain or missing-response retained reservations; new request commitment must remain strictly below1000.",
+  "current_finagent_study_cap_usd": 160,
+  "current_locked_finagent_committed_usd": 131.69788345000137,
+  "current_locked_project_committed_usd": 357.6566238800009,
+  "current_runtime_project_limit_usd": 450,
+  "future_budget_changes": "If needed to finish authorized work, preserve current sources/protocols and implement a separately versioned bounded budget adapter with locked reservation checks; do not mutate frozen live helpers or start duplicate/completed jobs.",
+  "future_job_ids_to_follow": {
+    "AMZN_full_replay": "27062474",
+    "AMZN_source": "27062473"
+  },
+  "ledger_mutations": 0,
+  "live_frozen_job_limits_changed": false,
+  "new_experiments_or_closed_cohort_reopening_authorized": false,
+  "new_paid_requests": 0,
+  "private_authorization": "artifacts/fidelity_completion_v2/budget_authorization_1000_20260922/authorization.json",
+  "private_authorization_sha256": "e92a202f521ee0eb4e5ac33f706ef472853628fe6f9198315cb115d44d00fb3a",
+  "project_hard_ceiling_usd": 1000,
+  "recorded_at_utc": "2026-09-22T06:19:33.288110+00:00",
+  "scientific_or_replay_gates_relaxed": false,
+  "scope": "Continue the reopened economic-fidelity and publication work, including AMZN completion, final accounting, manuscript and verified bundles.",
+  "status": "explicit_user_authorized_total_project_cost_below_1000",
+  "study_caps_preserved_for_current_jobs": true,
+  "supersedes_authorization_limits": {
+    "project_hard_ceiling_usd": 500,
+    "project_soft_stop_usd": 450
+  },
+  "user_instruction": "You should feel free to keep going so long as the total cost is below 1k$"
+}

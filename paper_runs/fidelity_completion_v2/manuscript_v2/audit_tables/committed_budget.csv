@@ -1,0 +1,9 @@
+study_id,label,committed_usd,cap_usd
+fidelity_v2_alphaagent_source_search,Alpha shared routes,12.773321939999931,20
+fidelity_v2_efs_trials,EFS,11.423824000000025,35
+fidelity_v2_finagent_source_settings,FinAgent,145.10718514000212,160
+fidelity_v2_finmem_paper_assets,FinMem,38.90290199999999,55
+fidelity_v2_input_summaries,Input summaries,2.157388999999997,5
+fidelity_v2_quantaalpha_fresh_search,Quanta shared variants,50.90319363999986,75
+fidelity_v2_tradingagents_alphabet_news_repair,TA news repair,2.4153969500000008,5
+fidelity_v2_tradingagents_source_roles,TradingAgents original,6.575148200000011,20

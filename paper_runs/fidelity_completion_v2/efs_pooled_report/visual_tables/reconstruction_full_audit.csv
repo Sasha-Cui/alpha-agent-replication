@@ -1,0 +1,5 @@
+backend,components,evaluation_observations,evaluation_start_index,label,mean_residual,model,no_unrestricted_alpha_p_value,not_a_tradable_forecast,penalty,rmse
+gpt41,,36,36,regularized chronological reconstruction diagnostic; no unrestricted spanning-alpha inference,-0.005432871402512449,ridge_all_factors,True,True,10,0.04866725259431703
+gpt41,5.0,36,36,regularized chronological reconstruction diagnostic; no unrestricted spanning-alpha inference,-0.0047168268447699176,pca5_ridge,True,True,10,0.04284807340358608
+deepseek_v3,,36,36,regularized chronological reconstruction diagnostic; no unrestricted spanning-alpha inference,-0.017432468034207605,ridge_all_factors,True,True,10,0.05057429693892846
+deepseek_v3,5.0,36,36,regularized chronological reconstruction diagnostic; no unrestricted spanning-alpha inference,-0.019306057778430672,pca5_ridge,True,True,10,0.04264086738132299

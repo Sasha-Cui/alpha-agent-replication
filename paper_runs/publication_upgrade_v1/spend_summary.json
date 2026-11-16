@@ -1,0 +1,11 @@
+{
+  "in_flight_requests": 0,
+  "known_or_tariff_cost_usd": 100.20369116,
+  "ledger_sha256_at_snapshot": "a03b86ab1401800e41dd8ca419a59784b585be2000eb0cb2b978cb8bedbf7bde",
+  "project_committed_usd": 100.8075647,
+  "project_hard_ceiling_usd": 500,
+  "project_soft_stop_usd": 450,
+  "scope": "Includes prior imported usage, setup runs, abandoned implementation attempts, summaries, embeddings, explicit technical recoveries and the prospective pilot. This is project research spend, not a production-cost estimate.",
+  "unavailable_requests": 36,
+  "unresolved_reservations_usd": 0.60387354
+}

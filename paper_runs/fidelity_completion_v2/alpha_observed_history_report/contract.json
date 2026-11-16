@@ -1,0 +1,15 @@
+{
+  "actual_attempts": 96,
+  "comparison_choice_based_on_returns": false,
+  "execution_sensitivity": "opening_information",
+  "family_entry": false,
+  "feature_counts": [
+    158,
+    304
+  ],
+  "missing_rounds": 4,
+  "native_role": "diagnostic",
+  "scope": "exploratory_all20_observed_history_sensitivity",
+  "sessions": 238,
+  "source_outcomes": 20
+}

@@ -1,0 +1,141 @@
+{
+  "contact_sheets": [
+    {
+      "path": "artifacts/fidelity_completion_v2/manuscript_draft_setup_20260920_2243/final_rendered/contact_1.jpg",
+      "sha256": "f05777b591559b270ba034a9d6feb5a5d7e623667457be8c8c6aba6bd4d44783"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/manuscript_draft_setup_20260920_2243/final_rendered/contact_2.jpg",
+      "sha256": "6e02bd42efb0f07d838de90b9312efe536c30767aa0ac66c0963a13119ea0855"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/manuscript_draft_setup_20260920_2243/final_rendered/contact_3.jpg",
+      "sha256": "f87a55498f49404894179c72a955188104574696684a323cb94bb500a6755ab3"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/manuscript_draft_setup_20260920_2243/final_rendered/contact_4.jpg",
+      "sha256": "b14c6fe92544f90123efa81646455661e54aabe8b855f5405d9c0db7ca51a835"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/manuscript_draft_setup_20260920_2243/final_rendered/contact_5.jpg",
+      "sha256": "8889eae59f9f71d96cbebd82c08afa31df56a7e6840f526c83159526ea238b8e"
+    }
+  ],
+  "findings": [
+    "All pages readable with explicit dark text/light backgrounds and contrasting table headers.",
+    "No invisible, clipped or overlapping text, blank figures or misplaced footers observed.",
+    "Three scientific figures retain labelled estimands, pointwise99% intervals and category boundaries.",
+    "All69 full paper titles and disposition codes are readable; wrapped titles are retained.",
+    "Every page carries INTERIM DRAFT and pending final-equity/human-review labels."
+  ],
+  "independent_human_review": false,
+  "method": "All20 final PDF pages rendered remotely with existing pypdfium2 and inspected through five remotely streamed contact sheets; no local project copy.",
+  "pages_inspected": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+  ],
+  "pdf_sha256": "af648e9939a2daf290aae8f737fab3956ab44ec58e7c765ed2f75b0cbb25d665",
+  "recorded_at_utc": "2026-09-20T23:29:03.883164+00:00",
+  "rendered_pages": [
+    {
+      "path": "artifacts/fidelity_completion_v2/manuscript_draft_setup_20260920_2243/final_rendered/page_01.png",
+      "sha256": "d65b4c3af97567363160769b638a77f3281f409ae47d38edb0ddb939d2f0e30c"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/manuscript_draft_setup_20260920_2243/final_rendered/page_02.png",
+      "sha256": "f6cfb6802599759187fccdcfc59992a68280d733d3cbf072c8064c3622446f79"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/manuscript_draft_setup_20260920_2243/final_rendered/page_03.png",
+      "sha256": "b96ebb04f4edb337b7fddb8f0cd52d6c2c57bc15c5dc3b660161998372fea369"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/manuscript_draft_setup_20260920_2243/final_rendered/page_04.png",
+      "sha256": "62a545597838ed0e9d813d7395dd443a35bec019bc84b2a6d34cb6040705ca9e"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/manuscript_draft_setup_20260920_2243/final_rendered/page_05.png",
+      "sha256": "b82b57cddf838f8cac152af1457d1b894cbcf4ab02c0dfb6c617114079f7c4db"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/manuscript_draft_setup_20260920_2243/final_rendered/page_06.png",
+      "sha256": "a1849a816698cb07ac850dca5eb66a3ebe7e77eff87372f9d9315e5f7a49364d"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/manuscript_draft_setup_20260920_2243/final_rendered/page_07.png",
+      "sha256": "2facd3d282d4e446b66c35f1d84cd702b8d1d7f9489338d2b25b5fdef0b2bf91"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/manuscript_draft_setup_20260920_2243/final_rendered/page_08.png",
+      "sha256": "87cfd663077aa0bdc55ad65d019d8120bdb0d9572b3166e513022de66a9f8018"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/manuscript_draft_setup_20260920_2243/final_rendered/page_09.png",
+      "sha256": "a8ec41fc682479d44914be07473a5a5c18be6a7602865f5ba334af097d0f8924"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/manuscript_draft_setup_20260920_2243/final_rendered/page_10.png",
+      "sha256": "e84362acbfdeb020e9da2ad7c3c42017b2949e7c8da2b554829839470ca0ff9e"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/manuscript_draft_setup_20260920_2243/final_rendered/page_11.png",
+      "sha256": "9874faba2bd5b907d849d10e829d6684df93e6d5945f210cb6dde0be54d73332"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/manuscript_draft_setup_20260920_2243/final_rendered/page_12.png",
+      "sha256": "6421aaf456bc3875e12c7ab987b20998ff9e604cd2ec48387274a94549ba3ed5"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/manuscript_draft_setup_20260920_2243/final_rendered/page_13.png",
+      "sha256": "bc5e9c63b1f094ac4a0ff0d035e1dbf8b3741f76b605b46b3cacf2738cf2c8c7"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/manuscript_draft_setup_20260920_2243/final_rendered/page_14.png",
+      "sha256": "83f181b25602d45eddf2ddf091ea080808a3b85ba8b6b6718e9d6a5a6432ebf7"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/manuscript_draft_setup_20260920_2243/final_rendered/page_15.png",
+      "sha256": "07d253dad468e74c15b7d0885a87e6580aa39d4c17a92c8e15b146f90e850529"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/manuscript_draft_setup_20260920_2243/final_rendered/page_16.png",
+      "sha256": "a20f860db75513adc959c6235870394e8975d104c93f5238f5036c039d331ed1"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/manuscript_draft_setup_20260920_2243/final_rendered/page_17.png",
+      "sha256": "7c23d8de953be13f8cf4913d243a2a1de6e982292db69dcdc12dffcc9659d6a7"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/manuscript_draft_setup_20260920_2243/final_rendered/page_18.png",
+      "sha256": "56046193698854eb8d260b4f631b493aa601bbf3872c06f1963ba6c768715e59"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/manuscript_draft_setup_20260920_2243/final_rendered/page_19.png",
+      "sha256": "dc2268ef5b04a1f6c0bdd3970a2162e8c0c3cfefd6fd4d06371db2466d9b207a"
+    },
+    {
+      "path": "artifacts/fidelity_completion_v2/manuscript_draft_setup_20260920_2243/final_rendered/page_20.png",
+      "sha256": "e3a24fce544789ea420693ffa963a5b4c3d86fa009ed01a2202ab788b5d16cfa"
+    }
+  ],
+  "reviewer": "assistant",
+  "status": "PASS_actual_assistant_visual_review"
+}

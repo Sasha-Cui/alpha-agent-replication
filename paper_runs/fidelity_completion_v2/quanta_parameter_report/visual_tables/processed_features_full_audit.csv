@@ -1,0 +1,7 @@
+baseline,constant_or_missing_columns,features,infinite_values,missing_values,rows,segment,source_validation
+source4,0,146,0,0,282088,train,/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_oos_source4_plus_library/independent_accounts/validation.json
+source4,0,146,0,0,72754,valid,/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_oos_source4_plus_library/independent_accounts/validation.json
+source4,0,146,0,0,289011,test,/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_oos_source4_plus_library/independent_accounts/validation.json
+alpha158,0,300,0,0,282088,train,/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_oos_alpha158_plus_library/independent_accounts/validation.json
+alpha158,0,300,0,0,72754,valid,/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_oos_alpha158_plus_library/independent_accounts/validation.json
+alpha158,0,300,0,0,289011,test,/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/fidelity_completion_v2/quantaalpha_paper_parameters_oos_alpha158_plus_library/independent_accounts/validation.json

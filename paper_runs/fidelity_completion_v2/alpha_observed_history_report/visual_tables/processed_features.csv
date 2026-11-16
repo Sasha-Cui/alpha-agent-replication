@@ -1,0 +1,7 @@
+arm,constant_or_missing_columns,features,infinite_values,missing_values,rows,segment
+alpha158,0,158,0,0,573674,train
+alpha158,0,158,0,0,121213,valid
+alpha158,0,158,0,0,119410,test
+alpha158_plus_library,2,304,0,2206039,573674,train
+alpha158_plus_library,2,304,0,372206,121213,valid
+alpha158_plus_library,2,304,0,394459,119410,test

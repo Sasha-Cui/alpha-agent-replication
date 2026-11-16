@@ -1,0 +1,24 @@
+{
+  "frozen_at_utc": "2026-09-17T10:59:48.240785+00:00",
+  "reason": "Native label Ref(close,-2)/Ref(close,-1)-1 crosses the nominal year boundary. Source search is preserved, but the new-period evaluation must start after all feedback labels have realized.",
+  "rule": "First evaluation signal is the first trading close strictly after the last search-label realization; first fill is the following trading open. No outcomes are used to choose the embargo.",
+  "calendar_sha256": "40199c53de84bbb038acda9cffe5965aac9993010d26d38ecda5eb94cd7167d5",
+  "calendar_path": "/nfs/roberts/scratch/pi_btk22/zc362/quantaalpha_recovery/provider/cn_data/calendars/day.txt",
+  "cases": {
+    "quantaalpha": {
+      "last_search_signal_date": "2021-12-31",
+      "last_feedback_label_realization": "2022-01-05",
+      "first_evaluation_signal_date": "2022-01-06",
+      "first_evaluation_execution_open": "2022-01-07"
+    },
+    "alphaagent": {
+      "last_search_signal_date": "2024-12-30",
+      "last_feedback_label_realization": "2025-01-02",
+      "first_evaluation_signal_date": "2025-01-03",
+      "first_evaluation_execution_open": "2025-01-06"
+    }
+  },
+  "prior_protocols_preserved": true,
+  "new_period_results_inspected_before_amendment": false,
+  "limits": "Chronological dataflow boundary only; not proof against model pretraining or data-vintage contamination."
+}

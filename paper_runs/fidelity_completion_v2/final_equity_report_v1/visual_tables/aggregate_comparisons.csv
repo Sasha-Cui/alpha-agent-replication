@@ -1,0 +1,4 @@
+case,study,assets,sessions,start,end,native_ending_wealth,matched_buy_hold_ending_wealth,terminal_wealth_difference,annualized_arithmetic_return_difference,scope
+finmem,FinMem,5,127,2022-10-06,2023-04-10,1.1012979632669073,1.0901751368428467,0.011122826424060595,-0.034192235936827964,"Within-case descriptive, not a test of alpha; dates differ across cases"
+tradingagents,TradingAgents,3,61,2024-01-02,2024-03-28,1.0847262600053376,1.0766759635026975,0.008050296502640109,0.030377038226819086,"Within-case descriptive, not a test of alpha; dates differ across cases"
+finagent,FinAgent,5,147,2023-06-01,2023-12-29,1.0095484020715335,1.1369065359030146,-0.1273581338314811,-0.21195038019821189,"Within-case descriptive, not a test of alpha; dates differ across cases"

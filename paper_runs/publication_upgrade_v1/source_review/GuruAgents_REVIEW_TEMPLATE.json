@@ -1,0 +1,23 @@
+{
+  "allowed_verdicts": [
+    "approved_for_conditional_mechanism_comparison",
+    "changes_required",
+    "not_economically_comparable"
+  ],
+  "case": "GuruAgents",
+  "human_attestation": null,
+  "independent_of_implementation": null,
+  "judgments": {
+    "claim_boundary": null,
+    "control": null,
+    "economics": null,
+    "information": null,
+    "mechanism": null
+  },
+  "packet_sha256": "fc1b57569cb0f6b2f216b631fcbd7387d2c4f59e483291220fdaa40d9c9ad3b3",
+  "required_changes": [],
+  "reviewed_at_utc": null,
+  "reviewer_name": null,
+  "reviewer_relationship_to_implementation": null,
+  "verdict": null
+}

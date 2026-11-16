@@ -1,0 +1,12 @@
+{
+  "current_packets": {
+    "EFS": "56502258fb585684f25a94cd3b6224db1c9f9f2076e32cb4446fc57315ff88a3",
+    "FinAgent": "24336c661bf10d9a5266f5b82a12d0f34b5c9e48eaeba867eaad11cbb0c971c3",
+    "FinMem": "912303543d12c416f9dc4197fb87f64a35ff941aff05867190299928ee058e84",
+    "GuruAgents": "fc1b57569cb0f6b2f216b631fcbd7387d2c4f59e483291220fdaa40d9c9ad3b3",
+    "QuantaAlpha": "7c9402addcd52ffa219badf953dfeb2af8e5ceb60da26cf3bd62aee677f995a4",
+    "TradingAgents": "290eac461abdf3963936c84afa4d82dbd40ef7fe2846ce12905d4423c7bce36c"
+  },
+  "independent_human_review_complete": false,
+  "reviews": []
+}

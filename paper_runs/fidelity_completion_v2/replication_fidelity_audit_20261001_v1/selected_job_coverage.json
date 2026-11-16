@@ -1,0 +1,8 @@
+{
+  "query": "artifacts/fidelity_completion_v2/replication_fidelity_audit_20261001_v1/scheduler_query_v3.json",
+  "selected_allocations": 205,
+  "deduplication": "backing allocation_id unique, array children via JobID; no job steps counted",
+  "coverage": "Selected six expanded scientific cases plus shared archive/storage jobs. Original audits, earlier jobs, debugging and labor are not exhaustively timed.",
+  "timestamp_timezone": "Slurm display timezone not supplied; within-record elapsed differences only.",
+  "unmapped": []
+}

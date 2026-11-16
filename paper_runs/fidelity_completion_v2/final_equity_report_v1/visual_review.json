@@ -1,0 +1,19 @@
+{
+  "figures": [
+    {
+      "path": "paper_runs/fidelity_completion_v2/final_equity_report_v1/visual_figures/aggregate_wealth.png",
+      "sha256": "c1f952d32fbfe1daea237ac6f7ef4cb278e6847511276c92292f3a88d7ae2005"
+    },
+    {
+      "path": "paper_runs/fidelity_completion_v2/final_equity_report_v1/visual_figures/asset_wealth_gaps.png",
+      "sha256": "67fee50a0b98ae4d6adf844421c4b6a9cf2454ed6d65488a3d2ef58fe3363470"
+    }
+  ],
+  "financial_recalculations": 0,
+  "independent_human_review": false,
+  "inspection": "Both final PNGs were rendered as remote JPEG previews and streamed directly for actual visual inspection. Three aggregate panels have a shared wealth scale, separate dates and sample sizes, readable dark labels on white, clear native/control lines and an unclipped legend. All13 asset gaps, including ties and losses, remain visible in source order with a symmetric axis and legible annotations. No clipping, overlap, invisible text or blank panels observed.",
+  "new_model_calls": 0,
+  "recorded_at_utc": "2026-09-22T16:59:06.668453+00:00",
+  "reviewer": "assistant",
+  "status": "pass_actual_assistant_visual_review"
+}

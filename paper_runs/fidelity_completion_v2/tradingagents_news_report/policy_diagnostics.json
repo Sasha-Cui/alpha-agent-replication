@@ -1,0 +1,68 @@
+{
+  "account_path_checks": [
+    {
+      "clock": "next_close",
+      "cost_bps": 0,
+      "original_repaired_buy_hold_paths_identical": true
+    },
+    {
+      "clock": "next_close",
+      "cost_bps": 10,
+      "original_repaired_buy_hold_paths_identical": true
+    },
+    {
+      "clock": "next_close",
+      "cost_bps": 25,
+      "original_repaired_buy_hold_paths_identical": true
+    },
+    {
+      "clock": "next_close",
+      "cost_bps": 50,
+      "original_repaired_buy_hold_paths_identical": true
+    },
+    {
+      "clock": "same_close_infeasible_diagnostic",
+      "cost_bps": 0,
+      "original_repaired_buy_hold_paths_identical": true
+    },
+    {
+      "clock": "same_close_infeasible_diagnostic",
+      "cost_bps": 10,
+      "original_repaired_buy_hold_paths_identical": true
+    },
+    {
+      "clock": "same_close_infeasible_diagnostic",
+      "cost_bps": 25,
+      "original_repaired_buy_hold_paths_identical": true
+    },
+    {
+      "clock": "same_close_infeasible_diagnostic",
+      "cost_bps": 50,
+      "original_repaired_buy_hold_paths_identical": true
+    }
+  ],
+  "actions": {
+    "tradingagents_GOOGL": {
+      "BUY": 61
+    },
+    "tradingagents_GOOGL_single_news_source": {
+      "BUY": 61
+    }
+  },
+  "changed_reports": {
+    "fundamentals_report": 0,
+    "market_report": 0,
+    "news_report": 61,
+    "sentiment_report": 0
+  },
+  "input_items": {
+    "tradingagents_GOOGL": 88,
+    "tradingagents_GOOGL_single_news_source": 10117
+  },
+  "input_prices": {
+    "tradingagents_GOOGL": 373,
+    "tradingagents_GOOGL_single_news_source": 373
+  },
+  "new_model_calls": 0,
+  "one_trajectory_per_policy": true
+}

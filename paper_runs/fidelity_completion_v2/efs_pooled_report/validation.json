@@ -1,0 +1,95 @@
+{
+  "allocation_summaries_checked": 6,
+  "assistant_visual_review": {
+    "clear_legends_and_units": true,
+    "independent_human_source_review": false,
+    "method": "All four previews were displayed and inspected. Final PNG/preview hashes still match the inspected figures after prose-only revisions.",
+    "no_clipped_or_overlapping_labels": true,
+    "readable_contrast": true,
+    "reviewed_at_utc": "2026-09-18T12:41:44.910828+00:00"
+  },
+  "available_project_cases": 3,
+  "fee_differences_recomputed": 8,
+  "figure_table_pairing": true,
+  "figure_text_within_canvas": true,
+  "figures": [
+    {
+      "path": "visual_figures/causal_wealth.png",
+      "pixel_std": 42.25816326719811,
+      "sha256": "b6c106c04b784a5e4f04f4c8995f907ca60a5891294b87441ae91c4066b2024a",
+      "shape": [
+        880,
+        1600,
+        3
+      ]
+    },
+    {
+      "path": "visual_figures/primary_intervals.png",
+      "pixel_std": 30.44248853348058,
+      "sha256": "5f4d8624b020a75e7a85c141b3147e6d97f80ee9a8758736ea249023915fd2fe",
+      "shape": [
+        736,
+        1600,
+        3
+      ]
+    },
+    {
+      "path": "visual_figures/fee_sensitivity.png",
+      "pixel_std": 30.662763156792543,
+      "sha256": "fe11484db8be642d5316de1f04dc5454dcf012b3a605701e2c28c36205d84e22",
+      "shape": [
+        768,
+        1440,
+        3
+      ]
+    },
+    {
+      "path": "visual_figures/allocation_diagnostic.png",
+      "pixel_std": 57.77876397170105,
+      "sha256": "38d4dfc5c129d8e6a00e131df3cf4d330249648a4041d56a88bbb39ecc3b13a5",
+      "shape": [
+        736,
+        1440,
+        3
+      ]
+    }
+  ],
+  "human_attestation": null,
+  "identical_common_allocator_baseline": true,
+  "independent_pool_paths_reaccounted": 24,
+  "links_exist": true,
+  "no_image_report_pass": true,
+  "outputs": {
+    "REPORT.md": "8b5cf1cf5907f6bc6fe63f465bcfe4eef1a8dee69c974f861b4062a38bed6285",
+    "VISUAL_REPORT.md": "d6db8a91941156205c3cbc5756b6530f8fa4e29bc7fc7b2bdd21069c0b4fbd39",
+    "contract.json": "bb52ee2a7a4d41b13ce36c858bed7e12b30516a30184a67c08730b9e4aa639b2",
+    "lineage.json": "e9fdcc06dfeabee08709c066c9068148658578c50fc05db16222aabbe3cfe598",
+    "visual_figures/allocation_diagnostic.pdf": "97f9b9f08ec91a08cf45c9ad80053d04f88c11e8e7fea2dd1d6e9c42ce9bcbc4",
+    "visual_figures/allocation_diagnostic.png": "38d4dfc5c129d8e6a00e131df3cf4d330249648a4041d56a88bbb39ecc3b13a5",
+    "visual_figures/allocation_diagnostic_preview.png": "8a673d58c0aef19c0946d95828e88eeead32b2b4d30f791d956f2305e31f8c83",
+    "visual_figures/causal_wealth.pdf": "5d48d3516d6fb62632c97853c2d32d78631672a1c1b85c3235859510838e068e",
+    "visual_figures/causal_wealth.png": "b6c106c04b784a5e4f04f4c8995f907ca60a5891294b87441ae91c4066b2024a",
+    "visual_figures/causal_wealth_preview.png": "a51120f18175fd469b32f7a74c4c6e9511f5fd188f8b592bbb7786898b26d11a",
+    "visual_figures/fee_sensitivity.pdf": "9250a22b8bafe2fc955a816bef13b126e7d9d4abc0cb688a797ddaa98bf1db9e",
+    "visual_figures/fee_sensitivity.png": "fe11484db8be642d5316de1f04dc5454dcf012b3a605701e2c28c36205d84e22",
+    "visual_figures/fee_sensitivity_preview.png": "e933bce9ba87aaefe0057de689a04c86418cbda8a5486a8d35a39c395a94070b",
+    "visual_figures/primary_intervals.pdf": "42bcdbb4005028c26b3a986f0afbf90d0856939c1a59b6014520f1a6a7ff43d8",
+    "visual_figures/primary_intervals.png": "5f4d8624b020a75e7a85c141b3147e6d97f80ee9a8758736ea249023915fd2fe",
+    "visual_figures/primary_intervals_preview.png": "07a639d797c437beb1d10cc146ec814092b6a5285a5c01d44aaa2b3eca4407c8",
+    "visual_tables/allocation_full_audit.csv": "490993338e14d322597e990ef8bd00775170c24716b6006362a3bea575fac514",
+    "visual_tables/allocation_increment_full_audit.csv": "e22f6f02720e4deacfe731de9f0a280df00e7359f3f3638480d0e3d23be6ccf4",
+    "visual_tables/cost_sensitivity_full_audit.csv": "e5fcaa629d7f768489deba73306157a836659ac6d62b5a8c8bf3c6b5e745fb59",
+    "visual_tables/performance_full_audit.csv": "e6b8e8ced2f5bd84d80b23ed137387b5851879a540611c9558efb0b228c66b21",
+    "visual_tables/primary_full_audit.csv": "bff0d4098fb0e63f0fd0b583c0be6126b3e6e998545413e22b4f4be34aa96736",
+    "visual_tables/project_family_full_audit.csv": "605dea6bb2521465aab5f92d465a5ad774ae5c2be80e3d6700cc0b13e01764e0",
+    "visual_tables/reconstruction_full_audit.csv": "4a57ce036baea8a788898080415eb33152f835ff817506614cd15cddd98d3c7e",
+    "visual_tables/six_factor_and_unidentified_full_audit.csv": "a89e9fb9445ffb5b8228ccf2be91abaae0701d1857ba7dabf383d3f8dc8659f9"
+  },
+  "performance_rows_recomputed": 42,
+  "primary_contrasts_recomputed": 2,
+  "project_denominator": 4,
+  "reconstruction_residual_summaries_checked": 4,
+  "six_factor_diagnostics_recomputed": 2,
+  "status": "numeric_layout_and_actual_assistant_visual_review_pass",
+  "text_contrast_ratio": 14.102034448456893
+}

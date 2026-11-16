@@ -1,0 +1,65 @@
+{
+  "errors": [],
+  "figures": [
+    {
+      "height": 1026,
+      "name": "paired_effects.png",
+      "sha256": "6d704c73e451359586ed99d46ac624581d852b9f02f2fd7fab9362e4f3200930",
+      "width": 1610
+    },
+    {
+      "height": 1500,
+      "name": "paths_long.png",
+      "sha256": "0a27be12fbbf26bd4d5d3a8f1a6b783ae27d804cef888f171c3b6305b22d0e0f",
+      "width": 1560
+    },
+    {
+      "height": 1500,
+      "name": "paths_short.png",
+      "sha256": "70a24d5bb6af7b84356598fc74a439f45463b3c266f01c2865275fbe46218706",
+      "width": 1559
+    },
+    {
+      "height": 1205,
+      "name": "efs_cost_and_cadence.png",
+      "sha256": "ce2a3f87c2da788e148002706e40b9cc780e9e3664a3bccf59126b27e973aa75",
+      "width": 1490
+    },
+    {
+      "height": 724,
+      "name": "guru_information_lag.png",
+      "sha256": "98f2919f287cfe49a21631bf06df8e6f51ff442a568e44c0a4aa342d5f88ad05",
+      "width": 1560
+    },
+    {
+      "height": 700,
+      "name": "quanta_predictive_economic.png",
+      "sha256": "f03480b7dd3da07139708c9172673ccb823d73a29e78d4751624ff3de48d31ae",
+      "width": 1560
+    },
+    {
+      "height": 767,
+      "name": "inference_calibration.png",
+      "sha256": "64db389bd572171e0c8467b4082b401c5231e4bbca6979204b943134f8ddbcfb",
+      "width": 1559
+    },
+    {
+      "height": 1098,
+      "name": "jkp_allocation.png",
+      "sha256": "a9627def265b6fb380d6b6c08fca09494a9e5d4330637769f878db71ab49112a",
+      "width": 1560
+    },
+    {
+      "height": 504,
+      "name": "prospective_timeline.png",
+      "sha256": "010a503596a1fa99c92fcf587346b4bbf900b6f96bdb11a24789e80e1096a417",
+      "width": 1549
+    }
+  ],
+  "human_review_complete": false,
+  "pages": 18,
+  "pdf_sha256": "8cc18d9c6d1360b138eac177818c9be1ec2a7e3cdd4ec3da8e5064febc5f8bd1",
+  "preview": false,
+  "status": "pass",
+  "visual_inspection_required": true
+}

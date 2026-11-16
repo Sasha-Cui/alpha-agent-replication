@@ -1,0 +1,23 @@
+{
+  "AMZN_retry_authorized": false,
+  "assistant_visual_review": "paper_runs/fidelity_completion_v2/manuscript_draft_v1/visual_review.json",
+  "assistant_visual_review_sha256": "c174e932c18309d695fe6a5bb5479b09ae85cc897565c9f4197efbfa6ea26d3f",
+  "audit_tables": 10,
+  "figures": 3,
+  "final_archive_created": false,
+  "final_equity_accounts_missing": true,
+  "final_publication_ready": false,
+  "future_edit_policy": "Preserve this completed interim draft; use a new version for later changes.",
+  "historical_method_versions_resolved": 3,
+  "independent_human_review": false,
+  "input_files_verified": 145,
+  "new_study_execution": false,
+  "numeric_validation": "paper_runs/fidelity_completion_v2/manuscript_draft_v1/draft_validation.json",
+  "numeric_validation_sha256": "34a6e50228419cd8774504244dec35c46fffceb6e6ef37a9915d8ada25b81c3e",
+  "pages": 20,
+  "papers": 69,
+  "pdf": "paper_runs/fidelity_completion_v2/manuscript_draft_v1/manuscript_draft_v1.pdf",
+  "pdf_sha256": "af648e9939a2daf290aae8f737fab3956ab44ec58e7c765ed2f75b0cbb25d665",
+  "recorded_at_utc": "2026-09-20T23:29:03.883164+00:00",
+  "status": "interim_manuscript_complete_not_final_publication"
+}

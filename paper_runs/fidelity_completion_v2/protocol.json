@@ -1,0 +1,25 @@
+{
+  "study_id": "fidelity_completion_v2",
+  "user_direction": "2026-09-16 finish remaining feasible fidelity work across the paper collection",
+  "frozen_previous_studies": [
+    "us_jkp_headline",
+    "us_jkp_in_spirit",
+    "publication_upgrade_v1",
+    "economic_fidelity/efs_v1"
+  ],
+  "new_return_selection_prohibited": true,
+  "project_soft_stop_usd": 450,
+  "project_hard_ceiling_usd": 500,
+  "existing_project_committed_usd": 100.8075647,
+  "planned_additional_caps_usd": {
+    "finagent_source_settings_all_equities": 160,
+    "finmem_remaining_paper_equities": 55,
+    "tradingagents_source_roles": 20,
+    "quantaalpha_fresh_native_search": 75,
+    "efs_additional_trajectories": 35
+  },
+  "priority": "Restore source mechanisms/settings first; broaden to available paper assets; retain all declared attempts, no best-return selection. If fixed caps prevent full source breadth/trials, report budget-limited incomplete rather than relabeling a pilot.",
+  "human_independent_review": "pending_external",
+  "full_original_paper_reproduction": "requires separately evidenced original inputs/models/run design/results; adapted execution alone never qualifies",
+  "publication_status": "in_progress"
+}

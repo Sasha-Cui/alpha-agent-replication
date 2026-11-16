@@ -1,0 +1,26 @@
+{
+  "all_compared_statistics_recomputed": 32,
+  "analysis_inputs": [
+    {
+      "completion_sha256": "5924ef7f07cabc35b51b35ca3f34bb6948efd15091fcb3251e63c1b3e5657121",
+      "exact_executed_source_snapshots": [
+        "artifacts/fidelity_completion_v2/oos_export_recovery_20260917/executed_quanta_grouped_analysis.py"
+      ],
+      "folder": "paper_runs/fidelity_completion_v2/native_grouped_oos_quantaalpha"
+    },
+    {
+      "completion_sha256": "f32cafd01a0d5ce5a1d68e2a13ef6184e0ffde7ee6ac4c9cb4ea5aaf33fa7200",
+      "exact_executed_source_snapshots": [
+        "scripts/analyze_native_oos_v2.py",
+        "scripts/analyze_native_secondary_oos_v2.py",
+        "scripts/native_secondary_evidence_v2.py",
+        "src/alpha_evolve/fidelity_inference_v2.py",
+        "src/alpha_evolve/publication_inference.py"
+      ],
+      "folder": "paper_runs/fidelity_completion_v2/native_secondary_oos_quantaalpha"
+    }
+  ],
+  "builder_sha256": "18faed2601356feb2bfc9807ef770fbf1098ba6d4757034c499b072731e144ad",
+  "new_model_calls": 0,
+  "source_results_overwritten": false
+}

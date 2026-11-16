@@ -1,0 +1,21 @@
+{
+  "recorded_at_utc": "2026-09-17T19:43:17.722972+00:00",
+  "source_audit_sha256": "e7fda7767f8d0f2777829155a0e432b2934c4faa94a7eb82852feb45b3fb9a2e",
+  "trigger": "NativeQlib Exchange._update_limit uses the currentday change field and current closing-price missingness for limit eligibility despite open execution. Training-period audit found433buy/181sell flags different from opening-gap flags. The change field closely tracks same-day closing returns, but is not numerically identical; vendor rounding/adjustment differences remain.",
+  "rule": "Use finite positive current open and prior close only to set eligibility. Keep source0.095 uniform proxy: block buys at opening gap>=0.095 and sells at<=-0.095; block both when required quotes are missing/nonpositive. Current close is used later for valuation, not opening eligibility.",
+  "held_fixed": [
+    "Byte-identical saved model predictions and labels",
+    "Source portfolio algorithm, dates and initial capital",
+    "Open fill prices, fee rates/minimums and lot conventions",
+    "All fitted models; no retraining or new model calls"
+  ],
+  "role": "Required execution-clock sensitivity alongside preserved native-Qlib comparisons. Do not silently overwrite native source outputs or claim that native next-open results alone certify tradable causal alpha.",
+  "limits": [
+    "Uniform9.5percent is an explicit proxy, not board-specific actual limits.",
+    "No opening-auction queue, impact, liquidity or point-in-time adjustment-vintage guarantee.",
+    "Missing/nonpositive prior-close reference is handled conservatively."
+  ],
+  "selection": "Apply uniformly to all four primary feature arms and every prespecified secondary augmented arm; no choice based on evaluation returns.",
+  "economic_scope": "Same-source model signals; tests robustness of economic conclusions to execution information timing.",
+  "status": "specified; Quanta search-period saved-prediction replay and independent account check already pass; later-period sensitivities not yet executed"
+}

@@ -1,0 +1,47 @@
+{
+  "assistant_visual_review": "pending separate actual image inspection",
+  "canonical_comparison_rows": 4,
+  "figure_table_pairing_pass": true,
+  "figures": [
+    {
+      "height": 799,
+      "nonblank": true,
+      "path": "visual_figures/effects_99.png",
+      "sha256": "00268f731cf8d7be0e585326ba3bced33081c431657be71f51b152e1568eb5f1",
+      "width": 1836
+    },
+    {
+      "height": 781,
+      "nonblank": true,
+      "path": "visual_figures/opening_wealth.png",
+      "sha256": "6c63c66f59b0f831c06e6c2a9672dc10f32cf51110c50e5a7537696ad0a7a2c9",
+      "width": 1836
+    }
+  ],
+  "independent_human_review": false,
+  "new_financial_execution": false,
+  "no_image_counterpart_pass": true,
+  "outputs": {
+    "REPORT.md": "f325be204a3f51a670c3ce9bb47760c44005bd60a9bd4d4df0f3b8090b0ba70f",
+    "VISUAL_REPORT.md": "e01f2dc39c2654c9085789741fa36832482292dbd9a63a1fa3571fae89ddb0da",
+    "report_build.json": "f8b8d87d7b794f103d98755a4569d2cd3b597fc6a7195e274d8d7bbd4c9a1540",
+    "report_contract.json": "8898b4f1935bcbd2b055f9b847b46c82d1c81742c6c5d10f8de8c77a62176874",
+    "visual_figures/effects_99.png": "00268f731cf8d7be0e585326ba3bced33081c431657be71f51b152e1568eb5f1",
+    "visual_figures/opening_wealth.png": "6c63c66f59b0f831c06e6c2a9672dc10f32cf51110c50e5a7537696ad0a7a2c9",
+    "visual_tables/artifact_index.csv": "b3c73d99db6e64a6b4ff2e7667c642092d7f374bc4042a27efe827e940ec0df5",
+    "visual_tables/comparisons_full_audit.csv": "5c3039623d4ea1deb4536d0927aa16bb568423033653259f7c04d7892b277ea0",
+    "visual_tables/performance_full_audit.csv": "b651916ab82855a0045322e800fc9bde856172f1052f788e08f4935eb1c4e7e7",
+    "visual_tables/processed_features_full_audit.csv": "883623e615d6111df981c0f19c6565b78df4891f4116352cd15d9bb83e4f90e3",
+    "visual_tables/raw_library_diagnostics.json": "40e3fe8751ae5221f2721b6c57c9b98e46a4ae8a0fcf58f3c0bca587cd852073"
+  },
+  "palette_contrast_vs_white": {
+    "#075985": 7.562998081458594,
+    "#172b4d": 14.102034448456891,
+    "#475569": 7.577663953533317,
+    "#64748b": 4.758842787868666
+  },
+  "performance_rows": 8,
+  "processed_feature_rows": 6,
+  "status": "numeric_links_image_integrity_and_palette_contrast_pass",
+  "validator_sha256": "e7cc68ddcb67c8218b11a60fbe4e54bec640e3b1b7167f261e4a6b1ddf1a2145"
+}

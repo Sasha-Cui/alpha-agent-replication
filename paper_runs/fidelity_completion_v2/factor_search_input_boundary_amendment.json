@@ -1,0 +1,27 @@
+{
+  "frozen_at_utc": "2026-09-17T11:29:41.110655+00:00",
+  "reason": "Original AlphaAgent generator exposes fiveOHLCVfields from2015 and first100instrumentdebug through2024-12-30. Initial sharedHDF exposed sixfields/full2008-2026 and100instrument2018-2019debug. None of the initial used programs referenced$factor, but that column was disclosed in prompts. Preserve these runs as adapted source-core pilots.",
+  "source_audit": "artifacts/fidelity_completion_v2/factor_search_input_boundary_audit.json",
+  "alphaagent_search_full": [
+    "2015-01-01",
+    "2025-01-02"
+  ],
+  "alphaagent_debug": [
+    "2015-01-01",
+    "2024-12-30"
+  ],
+  "alphaagent_columns": [
+    "$open",
+    "$close",
+    "$high",
+    "$low",
+    "$volume"
+  ],
+  "quantaalpha_search_end": "2022-01-05",
+  "quantaalpha_debug": "Exact released100-instrument2018-2019file; no future debug rows relative to2021search.",
+  "important_correction": "Earlier20-security narrative was incorrect: debugfixture has100securities ending2019-12-31. The old2019/2020/2021/2024debug checks did not removefuture rows and were plumbing only, not meaningful causality tests. Rerun at strictly internal2018-2019cutoffs.",
+  "new_search_scope": "Physically bound all search calculations before causal new-period claims. AlphaAgent20-trial paper-model study uses corrected five-field/source-dateinputs; initial shared-HDF run is not counted as one of20corrected trajectories. A boundedGPT4Turbocontrol is separate. Quanta bounded rerun may reuse identical cached envelopes, but search never sees evaluationHDFs.",
+  "all_study_caps_unchanged": true,
+  "no_return_based_selection": true,
+  "evaluation": "Use the mechanical label embargo and strong-baseline protocols; data-vintage/model-pretraining limits remain."
+}

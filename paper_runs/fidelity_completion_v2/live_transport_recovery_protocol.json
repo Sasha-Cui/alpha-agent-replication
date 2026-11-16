@@ -1,0 +1,25 @@
+{
+  "recorded_at_utc": "2026-09-17T18:53:07.103758+00:00",
+  "scope": "Opt-in process wrapper for resumed EFS and TAnews sensitivity only; no shared frozen driver edit.",
+  "eligible_errors": [
+    "TimeoutError",
+    "http.client.RemoteDisconnected",
+    "http.client.IncompleteRead"
+  ],
+  "maximum_technical_attempts_per_original_request": 2,
+  "charges": "Every missing response retains its full original reservation; each new network attempt passes unchanged project/study caps.",
+  "conditions": "Only the current process own synchronous attempt that has already raised a transport exception; exact request identity, study andPID; both journal/SQLite must lack a durable response. No reconciliation of other active requests.",
+  "retry_body": "Byte-identical HTTP body; technical attempt metadata changes only the cache envelope.",
+  "not_retried": [
+    "HTTP4xx",
+    "HTTP5xx",
+    "JSON/strategy errors",
+    "budget failures",
+    "durable responses requiring reconciliation"
+  ],
+  "persistence": "Locked ledger/journal, explicit event with complete request envelope and exact executed helper source; failed ledger write/mapping update fails closed.",
+  "gates": "Six fault-injection guards pass onPython3.12/3.9 plus real canonical-factory cached-response integration with no network.",
+  "full_paper_reproduction": false,
+  "boundary_guard_amendment": "New HTTP-boundary wrapper checks the exact frozen urlopen/read stack before a response is assigned. Non-HTTP/cache/journal timeouts stop for reconciliation. Already-running EFS26518662 retains the prior wrapper; no live source edited. NewTA job uses the boundary guard.",
+  "boundary_guard_tests": "Seven fault-injection guards pass inPython3.12/3.9, including received-response persistence failure; underlying six recovery guards also pass."
+}

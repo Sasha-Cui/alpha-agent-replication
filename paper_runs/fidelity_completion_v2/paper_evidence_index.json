@@ -1,0 +1,2314 @@
+{
+  "status": "evidence_indexed_final_dispositions_pending",
+  "indexed_at_utc": "2026-09-17T09:40:02.664539+00:00",
+  "paper_count": 69,
+  "papers_with_resolved_native_audits": 69,
+  "papers": [
+    {
+      "id": "M001",
+      "title": "GPT-Signal: Generative AI for Semi-automated Feature Engineering in the Alpha Research Process",
+      "canonical_work_id": "CensusArxiv241018448",
+      "existing_strict_status": "completed_adapted",
+      "existing_recipe": "paper_runs/us_jkp_headline/M001_gpt_signal/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M001_gpt_signal/verdict.md",
+      "existing_scope": "Published EVC signal and source-signed direction; JKP ratio conventions, U.S. universe, monthly cadence, common value-weighted decile portfolio, costs and factor attribution are disclosed adaptations.",
+      "existing_closure_reason": "One source-selected headline signal produced a complete 305-month common-benchmark path and verdict; the adaptation and non-claims are explicit.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "683fb991e7ff061c89e0241e3b13d291ae54b826b439ec6a42d04353385f9207",
+      "prior_documented_limitations": {
+        "missing_input_rule": "Do not fill across time or introduce arbitrary epsilon/absolute-value transforms. Record convention differences as adaptations when economically defensible.",
+        "not_claimed": [
+          "fresh GPT-4-1106-preview signal generation",
+          "reproduction of original FactSet inputs or all published tables",
+          "replication of the paper's Fama-MacBeth experiment",
+          "an exact original-paper trading portfolio"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/gpt_signal/manifest.json",
+          "sha256": "620fac1631b00d35520622bfb2b38274a3bde9ba1702f571246dcba3207f5f9c",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M002",
+      "title": "CryptoTrade: A Reflective LLM-based Agent to Guide Zero-shot Cryptocurrency Trading",
+      "canonical_work_id": "CensusACL2024emnlpmain63",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M002_cryptotrade/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M002_cryptotrade/verdict.md",
+      "existing_scope": "No common-benchmark return: the central stateful four-call reflective agent has no defensible monthly U.S./JKP input, cross-sectional, or portfolio transfer without replacing most of its method.",
+      "existing_closure_reason": "A direct common-universe port requires 1,220,000 stateful LLM calls plus invented stock analogues for crypto transaction/news state and a new portfolio aggregation rule; every bounded shortcut tested at the design boundary removes the central reflective-agent mechanism.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "b13babcb482d5b81c27751ec21f73cbf8c608896b7b6e11b7f1f0f8fad1af6f0",
+      "prior_documented_limitations": {
+        "paper_portability_to_common_task": "not defensible",
+        "missing_common_inputs": [
+          "point-in-time stock news text",
+          "stock analogues with source-defined semantics for unique addresses, transferred value, gas, transaction success, and gas price",
+          "an immutable GPT-4o snapshot/fingerprint",
+          "a source-defined mapping from 1,000 isolated cash/asset states to one cross-sectional portfolio"
+        ],
+        "source_execution_conflicts": [
+          "The active source prompts and state are cryptocurrency-specific and often hard-code ETH.",
+          "The source default is GPT-3.5 while paper-labelled GPT-4o output lineage is incomplete or model-conflicted.",
+          "The source loop is daily and stateful per one asset; batching or normalizing 1,000 actions changes both memory and portfolio semantics."
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/cryptotrade/manifest.json",
+          "sha256": "fcaab851d68db04a0f0467353165366451b08dc50eb6f536cc4ba7f3c10f5fcf",
+          "status": "partial_reproduction_traditional_plus_author_llm_traces_lstm_lookahead_uncredited",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M003",
+      "title": "Can Large Language Models Mine Interpretable Financial Factors More Effectively? A Neural-Symbolic Factor Mining Agent Model",
+      "canonical_work_id": "CensusACL2024findingsacl233",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M003_fama/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M003_fama/verdict.md",
+      "existing_scope": "No common-task return: the headline is a factor-mining agent, but neither an executable miner nor a final mined factor/strategy is released, and the printed algorithm is internally inconsistent.",
+      "existing_closure_reason": "The only recovered prompt lacks its required function definition; the initial factor universe is 38 versus 71, the clustering equation changes the method, Algorithm 1 conflicts with the narrative, and no final factor or portfolio rule exists to evaluate without designing a new miner.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "447c0fec38d9614388099c62e2ee5c304a59c9e0c40c32783a76cc6ef278c56a",
+      "prior_documented_limitations": {
+        "paper_portability_to_common_task": "not defensible from released information",
+        "missing_executable_objects": [
+          "author-linked FAMA implementation",
+          "runtime function definitions required by the recovered prompt",
+          "the actual initial factor pool (38 claimed versus 71 Appendix identifiers)",
+          "final mined factor expressions or checkpoint",
+          "search/experience trace and factor evaluation data",
+          "portfolio construction, cost treatment and random seeds"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/fama/manifest.json",
+          "sha256": "d3b2c07ff42dd3e09005e43f3c3305c6e29d4a30a7bc0101d02a110c5f633d1c",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M004",
+      "title": "FLAG-TRADER: Fusion LLM-Agent with Gradient-based Reinforcement Learning for Financial Trading",
+      "canonical_work_id": "CensusACL2025findingsacl716",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M004_flag_trader/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M004_flag_trader/verdict.md",
+      "existing_scope": "No common-task return: the central LLM-policy/PPO training procedure, learned parameters and action policy are not released or unambiguously specified; InvestorBench buy-and-hold results are baselines only.",
+      "existing_closure_reason": "Although the paper records a prompt and 22 settings, it releases no implementation, checkpoint, trajectory or native output, and conflicts in state, action mask, reward, KL/value losses and annualization do not identify one trainable policy.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "80da3230356b439e628e8b3859b43ab855ae9443ebcefe6b45b79929ef462552",
+      "prior_documented_limitations": {
+        "paper_portability_to_common_task": "not defensibly executable from released information",
+        "missing_executable_objects": [
+          "author-linked FLAG-Trader source",
+          "base-model revision and trainable-layer split",
+          "optimizer, initialization, seed count and checkpoint-selection procedure",
+          "learned policy/value checkpoint",
+          "training and test action trajectories",
+          "paper-time market/news/macro inputs and exact adjustment conventions",
+          "native result/PnL paths"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/flag_trader/manifest.json",
+          "sha256": "e1e89baa1a4a6cfef0c221d1c336ebd5171c3c525320918601bfe4086dadaddb",
+          "status": "partial_6_of_360_author_linked_buy_hold_baseline_cells_reproduced_4_current_response_verified_zero_flag_trader_native_results",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M005",
+      "title": "AlphaQuanter: An End-to-End Tool-Augmented Agentic Reinforcement Learning Framework for Stock Trading",
+      "canonical_work_id": "CensusACL2026findingsacl456",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M005_alphaquanter/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M005_alphaquanter/verdict.md",
+      "existing_scope": "No common-task return: released prompt/reward-label components do not identify the trained tool-augmented RL policy; using forward-looking reward labels as actions would be lookahead.",
+      "existing_closure_reason": "The release lacks the 2025 test prompts, actions, multimodal inputs, complete VERL runtime, policy checkpoint, three-seed outputs and ratings; reward labels are future-return training targets rather than a causal trading rule.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "2fcaa3855c6b3090e415e8436820b119e88f3be18db9caaecf99971f5ccc0624",
+      "prior_documented_limitations": {
+        "paper_portability_to_common_task": "not defensibly executable from released information",
+        "missing_headline_objects": [
+          "the paper's 2025 test prompts and original multimodal inputs",
+          "paper-test actions and portfolio paths",
+          "complete VERL training/runtime modules",
+          "trained policy checkpoint and model/API snapshot",
+          "three-seed identities and outputs",
+          "token/cost logs and individual human ratings"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/alphaquanter/manifest.json",
+          "sha256": "eb47cb9eb39adb46cb6473eb464e5103506f156164b22a69bff0a838b91a1d77",
+          "status": "not_reproduced_prompt_label_component_and_buy_hold_reconstruction_only",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M006",
+      "title": "FinMem: A Performance-Enhanced LLM Trading Agent with Layered Memory and Character Design",
+      "canonical_work_id": "CensusArxiv231113743",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M006_finmem/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M006_finmem/verdict.md",
+      "existing_scope": "No common-task return: the central layered-memory LLM policy requires unreleased point-in-time text, memories, complete five-stock trials and a model/configuration that are not recoverable; historical actions are outputs, not a transferable rule.",
+      "existing_closure_reason": "A top-1,000 monthly port would require hundreds of thousands of independent stateful agents, invented numerical substitutes for news/filing memories, and a new cross-sectional portfolio rule; behavior cloning or action replay removes FinMem's layered-memory mechanism.",
+      "fidelity_completion_status": "bounded_native_extension_validated_with_disclosed_adapters",
+      "cohort_case": "FinMem",
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "54e8b8faf428603ebb5490efb60afc0a0ca5015556f67e33ce3f93b038890aa9",
+      "prior_documented_limitations": {
+        "paper_portability_to_common_task": "not defensibly executable from released information",
+        "missing_headline_objects": [
+          "paper-time Alpaca/Benzinga news and SEC-filing inputs",
+          "the exact Yahoo snapshot and five-stock processed inputs",
+          "trained layered memories and retrieval state",
+          "complete action paths for five tickers and all five trials",
+          "paper-model snapshot, complete prompt/configuration and seeds",
+          "a paper-defined portfolio combining independent ticker agents"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/finmem/manifest.json",
+          "sha256": "071103d5ab3af93ccd22ec9b0a69444c886db24da18cdd7e634e82627eb43799",
+          "status": "author_outputs_partially_verified_not_end_to_end_reproduced",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M007",
+      "title": "QuantAgent: Seeking Holy Grail in Trading by Self-Improving Large Language Model",
+      "canonical_work_id": "CensusArxiv240203755",
+      "existing_strict_status": "completed_partial",
+      "existing_recipe": "paper_runs/us_jkp_headline/M007_quantagent/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M007_quantagent/verdict.md",
+      "existing_scope": "The paper's only executable published strategy component, the literal VolatilityBreakoutSignal with its source two-bar close lag, evaluated as an explicitly adapted monthly U.S. top-1,000 long-only strategy. This is not the unreleased self-improving LLM agent.",
+      "existing_closure_reason": "The full self-improving agent remains unavailable, but the only released executable strategy formula was preserved literally and produced a complete 305-month common-benchmark path. Researcher portfolio adaptations and the fact that earlier JKP outcomes were seen are explicit.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "a81514e343cfa30f489e68e7be4d0a6497f178bb0c565402ad748b2702aa1668",
+      "prior_documented_limitations": {
+        "not_claimed": [
+          "self-improving agent",
+          "LLM idea generation",
+          "mentor process",
+          "native data/evaluator",
+          "paper result"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/quantagent_self_improving/manifest.json",
+          "sha256": "cabe41a67e038eeb7e67fbb9aad088c648f398246517e56f4fa3a3a2d2cb7290",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M008",
+      "title": "Alpha-GPT 2.0: Human-in-the-Loop AI for Quantitative Investment",
+      "canonical_work_id": "CensusArxiv240209746",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M008_alpha_gpt_2_0/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M008_alpha_gpt_2_0/verdict.md",
+      "existing_scope": "No common-task return: Alpha-GPT 2.0 is an explicitly unfinished architecture proposal with no empirical experiment, executable agents, final alpha, causal trading rule, or portfolio; inactive Alpha-GPT 1 source files are not 2.0 evidence.",
+      "existing_closure_reason": "The authoritative four-page draft contains zero empirical result units and the source omits the agents, prompts, tools, memories, generated alpha and portfolio needed for execution. Every bounded substitute changes the system or attributes a different version's strategy to 2.0.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "496b57f06b115a472e01c939a8d91afd3500025d6a02a6d7b53f507c96a19f78",
+      "prior_documented_limitations": {
+        "paper_portability_to_common_task": "not defensibly executable as a monthly U.S./JKP trading strategy from the authoritative paper and source",
+        "missing_headline_objects": [
+          "an implemented Alpha Mining, Alpha Modeling, or Alpha Analysis agent",
+          "the agents' system-of-procedure prompts and model configuration",
+          "tool implementations and API contracts",
+          "memory contents, retrieval state, and financial knowledge graph",
+          "a generated alpha set or selected final alpha",
+          "a causal score-to-position or portfolio construction rule",
+          "any native evaluation, return path, checkpoint, trace, or output"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/alpha_gpt_lineage/manifest.json",
+          "sha256": "9799932dd5fba3c5eb83a670a03e43020919e83f599b61acaeca15175fc736a1",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M009",
+      "title": "A Multimodal Foundation Agent for Financial Trading: Tool-Augmented, Diversified, and Generalist",
+      "canonical_work_id": "CensusArxiv240218485",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M009_finagent/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M009_finagent/verdict.md",
+      "existing_scope": "No common-task return: the headline multimodal LLM decision policy has no released paper-time inputs, memories, trajectories, native actions, or portfolio rule; runnable metrics, environment mechanics, and technical baselines do not generate FinAgent decisions.",
+      "existing_closure_reason": "The author-linked source is substantial, but its executable components stop short of the central policy and the native chart path exposes future prices. All bounded substitutes either use baselines/outputs, violate no-lookahead, or remove multimodal memory and reflection.",
+      "fidelity_completion_status": "extension_execution_or_validation_pending",
+      "cohort_case": "FinAgent",
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "beea4c0ec4dce1f185d9fa81e9d94c89e5b6723a7e269f153dfcd62186b0afee",
+      "prior_documented_limitations": {
+        "paper_portability_to_common_task": "not defensibly executable from released inputs and outputs without replacing the central multimodal decision policy",
+        "missing_headline_objects": [
+          "the exact Financial Modeling Prep price/news/fundamental input snapshot",
+          "paper-time multimodal market-intelligence records and rendered decision images",
+          "FinAgent memories, retrieval state, and reflection trajectories",
+          "paper-time model endpoints or an author-approved replacement policy",
+          "native agent decisions, action/equity paths, checkpoints, and result tables",
+          "a paper-defined cross-sectional portfolio combining 1,000 stock agents",
+          "stochastic trial seeds and variance"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/finagent/manifest.json",
+          "sha256": "ce7d418955c91d4f43e9ee911421acf9964d8603fae08e0b13882375964aaa5b",
+          "status": "substantial_author_linked_source_but_zero_of_1061_published_result_units_reproduced",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M010",
+      "title": "LLMFactor: Extracting Profitable Factors through Prompts for Explainable Stock Movement Prediction",
+      "canonical_work_id": "CensusArxiv240610811",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M010_llmfactor/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M010_llmfactor/verdict.md",
+      "existing_scope": "No common-task return: the headline three-stage relation/factor/prediction pipeline lacks author code, paper-time news, request/output traces, parser, predictions, and a portfolio rule; later community implementations materially change it.",
+      "existing_closure_reason": "Prompt skeletons alone cannot generate a formation-time signal without the missing news, matcher, request envelope, model behavior and parser. Both bounded community alternatives change the method and reproduce no paper result; JKP does not contain the central text inputs.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "a80ef6269e837faee7a4df5eb4aec9b68eaf107787b53cbee9b615d9114dc0e3",
+      "prior_documented_limitations": {
+        "paper_portability_to_common_task": "not defensibly executable from the paper/source as a formation-time monthly U.S./JKP signal",
+        "missing_headline_objects": [
+          "author-linked implementation or executable pipeline",
+          "the exact point-in-time price/text snapshots and stock-universe membership",
+          "train, validation, and test splits plus preprocessing and news aggregation",
+          "complete request envelopes, generation settings, timestamps, and request/response logs",
+          "the company matcher, response parser, invalid-response policy, and flat-price label",
+          "raw daily predictions, confusion matrices, repeated runs, and uncertainty",
+          "a paper-defined portfolio converting binary predictions into cross-sectional holdings"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/llmfactor/manifest.json",
+          "sha256": "21d678907355832cc90ee84ba7fd3792c352a6de32738229295b90fa546b5037",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M011",
+      "title": "FinCon: A Synthesized LLM Multi-Agent System with Conceptual Verbal Reinforcement for Enhanced Financial Decision Making",
+      "canonical_work_id": "CensusArxiv240706567",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M011_fincon/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M011_fincon/verdict.md",
+      "existing_scope": "No common-task return: the central manager/analyst hierarchy, multimodal memories, CVaR reflection, conceptual verbal reinforcement, actions and portfolio optimizer are not released; the official repository and forks contain no code.",
+      "existing_closure_reason": "The complete official history and all accessible forks are README-only, and the paper omits the prompts, data, models, memory/CVRF state, action semantics and optimizer needed to generate the headline policy. Every bounded substitute removes its central mechanism.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "bc33e1a85ee2e1a6489feca98011043f8c338b02cb9da0b9fcff653d06a44042",
+      "prior_documented_limitations": {
+        "paper_portability_to_common_task": "not defensibly executable because neither the decision policy nor any implementation/data/model artifact is released",
+        "missing_headline_objects": [
+          "FinCon source code, complete prompts, configurations, environment, and tests",
+          "frozen multimodal commercial/public inputs and exact 42-stock membership",
+          "paper-time GPT-4-Turbo and Whisper snapshots plus sampling and parsing rules",
+          "working, procedural, and episodic memory state and decay parameters",
+          "CVaR estimator, alert, reflection, and conceptual verbal reinforcement implementation",
+          "manager actions, analyst outputs, raw trajectories, beliefs, and checkpoints",
+          "the complete direction-constrained mean-variance objective, covariance estimator, solver and bounds",
+          "execution timing, position persistence, leverage/short rules and trading frictions"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/fincon/manifest.json",
+          "sha256": "fc7d7dda87dc0c9eacaf30241d4d09c2fcbf28b70589684a0d9c50cf19556465",
+          "status": "paper_specification_audited_but_official_code_and_data_not_released",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M012",
+      "title": "Empirical Asset Pricing with Large Language Model Agents",
+      "canonical_work_id": "CensusArxiv240917266",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M012_aapm/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M012_aapm/verdict.md",
+      "existing_scope": "No common-task return: the headline hybrid news-report/manual-factor pricing model lacks paper inputs, training/pretraining, trained weights, predictions and portfolio code; runnable memory/model fixtures do not produce a strategy.",
+      "existing_closure_reason": "The paper-era analysis reaches the first missing private news-analysis record before any LLM call, and no route exists from the released components to trained formation-time predictions or holdings. Bounded substitutes remove either the news-agent or trained hybrid mechanism.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "30a7d2c045012b25687ed96afc22cc493a140737f9d6bee63cb0650c166d8b9b",
+      "prior_documented_limitations": {
+        "paper_portability_to_common_task": "not defensibly executable because the release has components but no training path, paper inputs, trained weights, predictions, or portfolio implementation",
+        "missing_headline_objects": [
+          "the filtered WSJ article bodies and derived Tickers, Topics, and Content records",
+          "CRSP daily returns, Jensen-et-al. characteristic inputs, imputation, and mappings",
+          "generated report embeddings and continuously updated macro-note outputs",
+          "historical-factor pretraining code, training entrypoint, sweep history, and trained checkpoint",
+          "v2 GPT-4o/O1 request-response traces, exact generation settings, and parser",
+          "native return predictions, decile assignments, portfolio returns, baselines, and result arrays",
+          "TP/EW/VW long-short portfolio and asset-pricing test implementation"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/aapm/manifest.json",
+          "sha256": "19ecf4fa046caf8940cdf8303e237bd356f8f72e439bc2637bc7370236b77800",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M013",
+      "title": "FinVision: A Multi-Agent Framework for Stock Market Prediction",
+      "canonical_work_id": "CensusArxiv241108899",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M013_finvision/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M013_finvision/verdict.md",
+      "existing_scope": "No common-task return: five prompt templates are public, but the LangGraph system, original news/prices, actual model traces, actions, execution rules and portfolio trajectory are unavailable.",
+      "existing_closure_reason": "The recovered templates do not identify a tradable policy without runtime inputs, model snapshots, responses, orchestration and accounting. Every bounded substitute either replays a baseline/output or invents the central multi-agent execution.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "dc272ac7501ce5e473b2f97cac4538c0032503484954deb8d9416dfb3158d34b",
+      "prior_documented_limitations": {
+        "paper_portability_to_common_task": "not defensibly executable because only manuscript prompts are released, with no system code, frozen inputs, actions, or portfolio accounting",
+        "missing_headline_objects": [
+          "LangGraph implementation, dependency lock, runnable configuration and data pipeline",
+          "the original Yahoo/EODHD news rows, query parameters, timestamps, timezone and deduplication",
+          "the exact price snapshot, adjusted/unadjusted field, chart inputs and indicator implementation",
+          "immutable GPT-4o-mini/o1-mini snapshots, seeds, request IDs, requests and responses",
+          "daily BUY/SELL/HOLD actions, position sizes, fills, rewards, cash ledger and equity trajectory",
+          "trade timing, share rounding, long/short constraints, costs, slippage and cash equations",
+          "a paper-defined cross-sectional portfolio adapter for the monthly top-1,000 JKP universe"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/finvision/manifest.json",
+          "sha256": "9471f485d3b5892346986d5f8b1dfe4724fb455fb945770595dd9ddf7fed7887",
+          "status": "not_reproduced_no_public_system_source_frozen_inputs_or_trajectories",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M014",
+      "title": "TradingAgents: Multi-Agents LLM Financial Trading Framework",
+      "canonical_work_id": "CensusArxiv241220138",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M014_tradingagents/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M014_tradingagents/verdict.md",
+      "existing_scope": "No common-task return: a substantive post-paper graph release exists, but it lacks paper-time inputs, model/configuration lineage, sizing, portfolio/execution state, backtester, metrics, daily arrays and cross-sectional allocation.",
+      "existing_closure_reason": "The nearest graph preserves several roles but materially differs from the experiment and stops before a tradable portfolio. A top-1,000 monthly port would require 305,000 new agent decisions and invented capital allocation/execution, while published outputs expose no recoverable holdings.",
+      "fidelity_completion_status": "bounded_native_extension_validated_with_disclosed_adapters",
+      "cohort_case": "TradingAgents",
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "dee9802dd7d8fa46a8582d275d39b701896466f3553b65979a80c13052211032",
+      "prior_documented_limitations": {
+        "paper_portability_to_common_task": "not defensibly executable as a monthly top-1,000 U.S. strategy from the nearest release because the decision graph has no paper-time inputs, sizing, portfolio, execution, or backtest path",
+        "missing_headline_objects": [
+          "paper-era executable source and exact experiment configuration",
+          "frozen point-in-time prices, news, social, insider, statement, and indicator inputs",
+          "immutable model snapshots, complete prompts/tool schemas, sampling settings, trials and seeds",
+          "the published AAPL trace inputs/responses and all daily decision trajectories",
+          "position sizing, cash/holdings state, order/fill execution, shorting and cost semantics",
+          "the paper backtest runner, baseline implementations, metric code and return/NAV arrays",
+          "a paper-defined cross-sectional capital allocation rule across the monthly JKP universe"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/tradingagents/manifest.json",
+          "sha256": "7eb67d3e99bf61454e75a68b0136511fb0d7578769caff75131c61ac72aea2f3",
+          "status": "not_reproduced_author_output_rasters_and_architecture_components_only",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M015",
+      "title": "LLM-Powered Multi-Agent System for Automated Crypto Portfolio Management",
+      "canonical_work_id": "CensusArxiv250100826",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M015_maci/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M015_maci/verdict.md",
+      "existing_scope": "No common-task return: the v1/v2 four-expert crypto strategy has recovered training payloads and portfolio functions but no verified paper fine-tuning job/checkpoint, market inputs, expert predictions, holdings or stock-transfer rule; v3 is a different experiment.",
+      "existing_closure_reason": "Without the selected fine-tuned experts and paper-time blockchain/market/news inputs, the released portfolio rules have no causal scores. Every bounded route either creates a new model, fabricates data, substitutes a different version, or abandons the crypto-specific mechanism.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "a059e4a8eea7b0a7e129fa050e0e599de2184cae54a6db2a8b8c583921a1e73d",
+      "prior_documented_limitations": {
+        "paper_portability_to_common_task": "not defensibly executable because the trained expert checkpoints, inference records, market inputs, weekly universes and result portfolios are absent, and the method is crypto-specific",
+        "missing_headline_objects": [
+          "the actual uploaded fine-tuning file ID, job ID, active selected checkpoint, and paper-run linkage",
+          "paper-time coin prices, blockchain factors, market/news records, processed inputs, and weekly top-30 memberships",
+          "immutable inference requests/responses, predictions, token/logprob records, retries, and API-cost ledger",
+          "released expert checkpoint pickles and prediction JSON records required by the runner",
+          "paper portfolio arrays, holdings, costs/slippage, and result tables",
+          "a source-defined transfer from crypto/blockchain/image inputs to monthly U.S. stock characteristics"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/maci/manifest.json",
+          "sha256": "b5bf330c955abd8e6a7a6f8155abca010eeba2355b43b9553a3297cbd5fb03a9",
+          "status": "both_lineages_have_incomplete_author_source_and_output_correspondence_zero_end_to_end_result_regeneration",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M016",
+      "title": "MarketSenseAI 2.0: Enhancing Stock Analysis through LLM Agents",
+      "canonical_work_id": "CensusArxiv250200415",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M016_marketsenseai/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M016_marketsenseai/verdict.md",
+      "existing_scope": "No common-task return: the paper's monthly U.S. buy-signal portfolio shell is relevant, but the five-agent signal generator, prompts, point-in-time inputs, security ratings, holdings and execution path are not public.",
+      "existing_closure_reason": "Without monthly security-level buy/hold/sell records or an executable policy, equal/cap weighting has no holdings to consume. Every bounded alternative invents the central five-agent signal rather than adapting it.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "cd5f812f1bd2af803826d1d24e6ba9966b2ad550e0a251247b2a86e7f6ee11d0",
+      "prior_documented_limitations": {
+        "paper_portability_to_common_task": "the cadence and U.S. long-only portfolio are directly relevant, but the signal-generation policy is not executable because no operational release, prompts, frozen inputs, signals, or holdings are public",
+        "missing_headline_objects": [
+          "attributable operational code, dependency/runtime configuration, and exact five-agent graph",
+          "verbatim prompts, parser, GPT snapshots, inference parameters, seeds and repeated-run protocol",
+          "point-in-time S&P constituents and frozen price, news, SEC, transcript, and macro inputs",
+          "release-time/decision-time timestamps and execution lag",
+          "monthly buy/hold/sell generation records and confidence/explanation outputs",
+          "portfolio holdings, cap weights, trades, fills, cash, dividends, costs and NAV paths",
+          "VectorBTPro version/configuration, metric formulas, and factor-regression inputs/horizon"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/marketsenseai/manifest.json",
+          "sha256": "d8fe3bcf1adf616f06a1de3978493626b3a0bedfbceefa3e19a2697c87ef4170",
+          "status": "not_reproduced_manuscripts_only_no_operational_release",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M017",
+      "title": "FinRL-DeepSeek: LLM-Infused Risk-Sensitive Reinforcement Learning for Trading Agents",
+      "canonical_work_id": "CensusArxiv250207393",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M017_finrl_deepseek/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M017_finrl_deepseek/verdict.md",
+      "existing_scope": "No common-task return: released checkpoints and data execute, but the trained daily 84-stock policy and its 2019-2023 DeepSeek columns cannot consume the 1999-2024 monthly top-1,000 JKP state; the exact headline CPPO training lineage is also absent.",
+      "existing_closure_reason": "A common-calendar transfer requires a new model, score generator and state/action mapping, which would replace the central trained policy. The released original artifacts are runnable but neither dimensionally portable nor sufficient to identify the paper's headline CPPO result.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "24a85331301c781fe694269a46230ee852097fb4c74d85de9a10f1c7cc0a16b0",
+      "prior_documented_limitations": {
+        "paper_portability_to_common_task": "not defensibly executable on the full 1999-2024 monthly top-1,000 JKP panel because the trained policy is fixed to an 84-stock daily state and its LLM scores cover only released Nasdaq data",
+        "missing_or_conflicting_headline_objects": [
+          "the exact 100-epoch DeepSeek 10% CPPO training entrypoint and checkpoint-to-run manifest",
+          "the random article sample, selected FNSPID subset, request/response logs, and paper-era DeepSeek snapshot",
+          "paper evaluation RNG seeds/states and table-generating notebook/output",
+          "the paper-time Nasdaq benchmark and a non-lookahead constituent/reconstitution record",
+          "a CPPO implementation matching the displayed CVaR Lagrangian and alpha=0.05 tail",
+          "a model/input adapter from the fixed 84-stock daily state to monthly top-1,000 JKP securities",
+          "full-calendar 1999-2024 LLM recommendation scores required by the policy"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/finrl_deepseek/manifest.json",
+          "sha256": "36b9c305308031ccabf8c68bf06ab4ac9d0bf6d08272492683f7dfd5380bcf1b",
+          "status": "released_data_checkpoints_and_code_execute_but_paper_results_not_reproduced",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M018",
+      "title": "HedgeAgents: A Balanced-aware Multi-agent Financial Trading System",
+      "canonical_work_id": "CensusArxiv250213165",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M018_hedgeagents/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M018_hedgeagents/verdict.md",
+      "existing_scope": "No common-task return: the public project is static documentation with profile screenshots and author tables but no specialist-agent, conference, optimizer, memory, tool, action, execution or portfolio implementation.",
+      "existing_closure_reason": "Bob's stock policy and Otto's allocation policy cannot be recovered from screenshots and symbolic equations. Every bounded alternative invents the central agent/conference mechanism or infers holdings from outputs that do not encode them.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "dc9ffd7242465057f15a37526f769f929c67f8df7406fa908d3973bee3fec178",
+      "prior_documented_limitations": {
+        "paper_portability_to_common_task": "not defensibly executable because only a static project site and screenshots are released, with no agent, tool, memory, allocation, order, or portfolio implementation",
+        "missing_headline_objects": [
+          "HedgeAgents code, runtime environment, agent/profile serialization, tool implementations, and runner",
+          "exact DJ30/FX/crypto universe and constituent vintage plus frozen Yahoo/Alpaca inputs",
+          "the 60 indicators, full prompts, model/embedding snapshots, memory database, seeds and repeated-run policy",
+          "budget-allocation lambdas, CVaR alpha, covariance window, solver, constraints and failure handling",
+          "experience-sharing cadence/rounds and extreme-market definition/execution logic",
+          "initial capital, sizing, fill timing, cash, short/leverage, costs and slippage",
+          "native actions, orders, fills, holdings, cash ledger, NAV/return paths and plot arrays"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/hedgeagents/manifest.json",
+          "sha256": "ed0d7828ab6bf86ee907819789f80fc7741bebbaa95eea248d4b42116ec68edb",
+          "status": "not_reproduced_no_public_system_source_frozen_inputs_runtime_traces_or_portfolio_path",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M019",
+      "title": "AlphaAgent: LLM-Driven Alpha Mining with Regularized Exploration to Counteract Alpha Decay",
+      "canonical_work_id": "CensusArxiv250216789",
+      "existing_strict_status": "completed_partial",
+      "existing_recipe": "paper_runs/us_jkp_headline/M019_alphaagent/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M019_alphaagent/verdict.md",
+      "existing_scope": "All six source-disclosed U.S. factor expressions from the paper-mechanism snapshot, combined by a strictly prior-trained rolling ridge score and the common monthly U.S. value-weighted decile adapter. This is not the LLM mining loop, anonymous native five-factor LightGBM run, or top-50/drop-5 paper result.",
+      "existing_closure_reason": "The strongest identifiable central partial produced a complete 305-month common-benchmark path without selecting among source factors on JKP outcomes. The exact native five-factor identity is unrecoverable, so formula-pool performance is reported only as an adapted partial.",
+      "fidelity_completion_status": "paper_era_native_baseline_validated_two_fresh_searches_in_progress",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "v2_extension": "AlphaAgent source and paper-model routes; bounded shared20USD cap",
+      "strict_recipe_sha256": "e9ea7a8385f13f401458b471e95881e0f6df4debc9ea61216c55f7c0e1ce7951",
+      "prior_documented_limitations": {
+        "not_claimed": [
+          "AlphaAgent LLM factor-mining loop",
+          "regularized-exploration objective",
+          "the matching author run's anonymous five-factor identity",
+          "native Qlib LightGBM/top-50/drop-5 result",
+          "paper performance"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/alphaagent/manifest.json",
+          "sha256": "e0f4b491e012914710e7770c819ae717ba643ba8a4940186306ab32820f61677",
+          "status": "partially_corroborated_paper_era_native_run_records_recovered",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M020",
+      "title": "MASS: Muli-agent simulation scaling for portfolio construction",
+      "canonical_work_id": "CensusArxiv250510278",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M020_mass/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M020_mass/verdict.md",
+      "existing_scope": "No common-task return: the release contains a dated investor-type distribution and SSE50-like inputs but no agent decisions, dated signals, U.S. panels, portfolio implementation or returns; native code proves the distribution cannot identify signals.",
+      "existing_closure_reason": "Two valid native decision assignments using the identical released distribution produce different stock signals, constructively proving the strategy is underidentified. The U.S. extension also lacks every input and result path needed for the common task.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "3d9a0a61ee962088f4843b916cfb1c01063fca962bc07e571306c21da5a9c20e",
+      "prior_documented_limitations": {
+        "paper_portability_to_common_task": "not defensibly executable because the release contains distribution state but no agent decisions, dated signals, U.S. input panel, portfolio, or return path",
+        "missing_headline_objects": [
+          "all per-agent prompts, multimodal inputs, decisions and candidate-pool assignments",
+          "dated aggregated signals and security rankings",
+          "Nasdaq-100/S&P-500 and other paper input panels, point-in-time memberships, and news",
+          "paper hyperparameter execution, run seeds, random draws, and metric horizon",
+          "weekly portfolio/backtest/cost code, baseline outputs, timing logs and API accounting",
+          "holdings, returns, risk-free rate, NAV paths and table/figure arrays"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/mass/manifest.json",
+          "sha256": "6c78118e53d9b13cbfcaa7c74bfa435ea23b83aac5273c0c7aaa46c63a3b7fc0",
+          "status": "not_reproduced_partial_internal_state_only",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M021",
+      "title": "Navigating the Alpha Jungle: An LLM-Powered MCTS Framework for Formulaic Factor Mining",
+      "canonical_work_id": "CensusArxiv250511122",
+      "existing_strict_status": "completed_partial",
+      "existing_recipe": "paper_runs/us_jkp_headline/M021_alpha_jungle/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M021_alpha_jungle/verdict.md",
+      "existing_scope": "The first paper-ordered Ours formula executable from approved JKP inputs, Table 7 formula 4 Diff(Ma(volume,20),3)/Ma(volume,60), under the existing monthly U.S. top-10 component adapter. This is not the LLM/MCTS search or native paper portfolio.",
+      "existing_closure_reason": "Formula 4 was selected before new re-accounting because formulas 1-3 require unavailable VWAP and it is first among the remaining source outputs. Its fixed holdings produce a complete 305-month common-benchmark path with explicit partial-scope boundaries.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "076ce6a351301bcb09164e2fbef79f6bc9acf312e0085721d210dbdad4e1659a",
+      "prior_documented_limitations": {
+        "not_claimed": [
+          "MCTS search",
+          "LLM prompts/responses",
+          "native model",
+          "native portfolio",
+          "paper result"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/alpha_jungle/manifest.json",
+          "sha256": "b5c932161c6544db7b07ed37a86571ac5523fe571b785c7a8068b495262bbe97",
+          "status": "zero_of_64_published_cells_reproduced_zero_native_results_three_of_six_formula_trees_conditionally_adapted",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M022",
+      "title": "R&D-Agent: An LLM-Agent Framework Towards Autonomous Data Science",
+      "canonical_work_id": "CensusArxiv250514738",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M022_rd_agent/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M022_rd_agent/verdict.md",
+      "existing_scope": "No common-task return: the cited primary record is a general 75-competition MLE-Bench data-science agent with no stock signal, portfolio or investment result; R&D-Agent-Quant is a separate lineage.",
+      "existing_closure_reason": "A monthly U.S. return would require replacing the primary paper with a different quant application. The native components have no security or portfolio semantics, so non-evaluability is a scope fact rather than a missing implementation shortcut.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "88ff4aa63243d6da3e41de7ea260a35174c046d27e268d639b46522ef0f650b0",
+      "prior_documented_limitations": {
+        "scope_finding": "The primary paper contains no stock signal, trading action, asset universe, portfolio construction, or investment return. It is the general MLE-Bench R&D-Agent report, not the separate R&D-Agent-Quant lineage.",
+        "common_task_portability": "not applicable without substituting a different paper and system",
+        "missing_paper_result_objects": [
+          "the frozen 75-competition dataset/container manifest and grading revision",
+          "paper run configurations, prompts/responses, generated code, seeds and traces",
+          "three complete 12-hour runs for every main and ablation configuration",
+          "Azure deployment snapshots, credentials and exact historical package/container state",
+          "submissions, checkpoints, medal outcomes and complete published result rows"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/rd_agent/manifest.json",
+          "sha256": "9f40023c7f2c451fe5e6105de3e07dcbe199bf008dac41dcbec465b4949f34d1",
+          "status": "paper_specification_source_official_history_and_1854_forks_audited_zero_native_results_missing_attributable_run_artifacts",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M023",
+      "title": "EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models",
+      "canonical_work_id": "CensusArxiv250717211",
+      "existing_strict_status": "completed_partial",
+      "existing_recipe": "paper_runs/us_jkp_headline/M023_efs/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M023_efs/verdict.md",
+      "existing_scope": "The paper's only explicitly U.S.-universe example, Table VI US50 skew-gated breakout, re-accounted under its existing literal-tree monthly U.S. top-10 adapter. This is not EFS search, Scores-to-Weights/RW, sparse optimization, or a native paper portfolio.",
+      "existing_closure_reason": "The U.S.-labeled factor was selected before new re-accounting and produces a complete 305-month path. It is the strongest identifiable common-market partial while the generated pool, search, scoring-to-weight and sparse portfolio pipeline remain unavailable.",
+      "fidelity_completion_status": "extension_execution_or_validation_pending",
+      "cohort_case": "EFS",
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "9e98616adfad63d22ad36e309cc97e1c4e0f60a0339c13505c658c0070d4c6b7",
+      "prior_documented_limitations": {
+        "not_claimed": [
+          "evolutionary search",
+          "LLM generation",
+          "Scores-to-Weights or RW",
+          "sparse optimizer",
+          "native portfolio",
+          "paper result"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/efs/manifest.json",
+          "sha256": "258389e5dc57d3ddbe47f97f505635e90130ca7f18aede3c7ca5e3406a655d7e",
+          "status": "partial_11_of_773_cited_baseline_cells_reproduced_zero_efs_native_results_v2_audited_separately",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M024",
+      "title": "MountainLion: A Multi-Modal LLM-Based Agent System for Interpretable and Adaptive Financial Trading",
+      "canonical_work_id": "CensusArxiv250720474",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M024_mountainlion/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M024_mountainlion/verdict.md",
+      "existing_scope": "No common-task return: attributable frontend/platform components exist, but no public pipeline generates the crypto forecasts and the paper supplies no portfolio, actions, holdings, costs, return path or U.S.-stock transfer.",
+      "existing_closure_reason": "Neither the forecast policy nor any trading strategy is identifiable from public artifacts. A forecast reconstruction would still lack the portfolio/execution object required by the common task, so every bounded alternative invents a strategy.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "42d759e2babefe9eb93c9d4fed2bab13d7937e8307885602e1075025757d1cfb",
+      "prior_documented_limitations": {
+        "paper_portability_to_common_task": "not defensibly executable and not directly a monthly U.S.-stock policy; public product components read precomputed crypto forecasts but do not generate the paper forecasts or positions",
+        "missing_headline_objects": [
+          "forecast training panel, exchange, dates, candle frequency, preprocessing and split",
+          "ML estimator, fitted model, cross-validation folds/scores and prediction arrays",
+          "exact LLM snapshots, substituted prompts, requests/responses, tools, parameters and seeds",
+          "GraphRAG graph/data, retrieval provenance, sentiment embeddings and news recommendation records",
+          "adaptive-alpha optimizer, LLM/ML horizon alignment, reflection and feedback implementation",
+          "private ml4gp modules, plugin, MySQL/Redis schemas/state and service credentials",
+          "portfolio rule, actions, holdings, fills, cash, fees, returns and benchmark path"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/mountainlion/manifest.json",
+          "sha256": "80655ca8043161858178685b8a6d86c2d0ccdc3208026ade4cd1bb1f615657af",
+          "status": "not_reproduced_public_components_only_no_result_lineage",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M025",
+      "title": "ContestTrade: A Multi-Agent Trading System Based on Internal Contest Mechanism",
+      "canonical_work_id": "CensusArxiv250800554",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M025_contesttrade/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M025_contesttrade/verdict.md",
+      "existing_scope": "No common-task return: the active CLI bypasses both contests and portfolio allocation; isolated components are incomplete or conflict with the paper, and no input, action, holding, return or evaluation path is released.",
+      "existing_closure_reason": "No public revision or fork connects paper-consistent Data and Research Contests to an executable portfolio. Repair would require inventing missing models, methods, allocator, reward, panel, backtester and output semantics.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "0e812e8e5fd2ef4860f9266b5c3ccc353ba37be44eda51cec1a591da457a5501",
+      "prior_documented_limitations": {
+        "paper_portability_to_common_task": "not defensibly executable because the public entrypoint bypasses both contests and portfolio construction, while isolated contest code is incomplete and lacks experiment inputs/outputs",
+        "missing_or_conflicting_headline_objects": [
+          "an active entrypoint connecting Data Contest, Research Contest and portfolio construction",
+          "the paper's facility-location/lazy-greedy token allocator and embedding-cosine diversity implementation",
+          "rolling Data Contest training data, dates, split, seed and model provenance",
+          "the two Research Contest models and its called predict_signal_scores method",
+          "paper input snapshot, point-in-time universe, model/API snapshots, prompts/responses and seeds",
+          "portfolio/backtester, baselines, ablation runner, metrics, holdings, returns and result logs",
+          "paper-consistent signed ZI reward and five-day research horizon"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/contesttrade/manifest.json",
+          "sha256": "6394c90665eee2447bcb3dcecaf701d2f3d4af1371ebf6923389d8fc48ccdfb4",
+          "status": "not_reproduced_public_entrypoint_omits_contests",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M026",
+      "title": "Chain-of-Alpha: Unleashing the Power of Large Language Models for Alpha Mining in Quantitative Trading",
+      "canonical_work_id": "CensusArxiv250806312",
+      "existing_strict_status": "completed_partial",
+      "existing_recipe": "paper_runs/us_jkp_headline/M026_chain_of_alpha/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M026_chain_of_alpha/verdict.md",
+      "existing_scope": "The only showcased formula executable without unavailable VWAP, Volume_Adjusted_Mean_Corr, using its exact five-period rank/correlation tree, paper-positive direction, JKP close/dollar-volume inputs and common monthly value-weighted deciles. This is not the withdrawn paper's dual-chain search or native portfolio.",
+      "existing_closure_reason": "The exact close/amount expression was frozen before its new outcome and produces a complete 305-month path. It is the strongest defensible source component while native search, selected pool, model, portfolio and result lineage remain unavailable.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "32404dd0646a42136d64e151e58001b4ec031f411aa253ca474dd5281e517ee1",
+      "prior_documented_limitations": {
+        "not_claimed": [
+          "native parser semantics",
+          "generation or optimization chain",
+          "1,000-candidate search",
+          "selected 100-factor pool",
+          "LightGBM",
+          "native Qlib portfolio",
+          "paper result"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/chain_of_alpha/manifest.json",
+          "sha256": "034658f7391e241e20f60539306cc3ae7fd62bb36a4ff43754c5f5c90f3ce994",
+          "status": "not_reproduced_withdrawn_primary_record_no_attributable_system_or_native_experiment_lineage",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M027",
+      "title": "AlphaAgents: Large Language Model based Multi-Agents for Equity Portfolio Constructions",
+      "canonical_work_id": "CensusArxiv250811152",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M027_alphaagents/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M027_alphaagents/verdict.md",
+      "existing_scope": "No common-task return: exact source-only February 2024 multi-agent holdings are recovered, but no causal repeatable selection rule exists for prior months; backcasting the future-selected list would violate no-lookahead.",
+      "existing_closure_reason": "The central portfolio is identifiable only as a one-off 2024 output. Without agent code, inputs and historical recommendations, a 305-month path requires direct future-selection leakage or an invented formation rule.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "71680e82edef270d91dd8e81d148542fd81714a5503b36a97497059601490a68",
+      "prior_documented_limitations": {
+        "common_task_portability": "not defensibly backtestable over 1999-2024 because the only recovered holdings were selected once using January 2024 information",
+        "missing_headline_objects": [
+          "author-linked implementation, AutoGen version, group-chat termination and complete scheduling",
+          "risk-neutral/risk-averse persona prompts, model snapshot, sampling settings, seeds and retries",
+          "Bloomberg news, filing accessions, Yahoo price snapshot, tool code and RAG state",
+          "agent recommendations, debate histories, human review, Phoenix evaluations and repeated trials",
+          "a point-in-time repeatable rule producing memberships before February 2024",
+          "execution timing, prices, corporate actions, costs/slippage and portfolio return arrays"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/alphaagents/manifest.json",
+          "sha256": "637dd678f634de8982342552702985a46fe1c07e9b28bed7202cb2787a843a7e",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M028",
+      "title": "From Flat to Hierarchical: Evolving Tree-structured Thoughts for Fine-grained Alpha Mining",
+      "canonical_work_id": "CensusArxiv250816334",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M028_treevo/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M028_treevo/verdict.md",
+      "existing_scope": "No common-task return: prompt templates, operators and metric equations are public, but no implementation, seed tree, thought-to-code prompt, generated factor, search trajectory, score, holding or return path exists.",
+      "existing_closure_reason": "The paper releases zero selected factor expressions. Without an executable factor or formation score, every common-task route requires creating the central search output rather than adapting it.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "a9c855c2fee0259a13922b986aa7be0674eed988c6acd0c892160a85c3ccdc7d",
+      "prior_documented_limitations": {
+        "paper_portability_to_common_task": "not defensibly executable because no implementation, seed trees, thought-to-code converter, generated factor expression, parser, trajectory, or portfolio output is released",
+        "missing_headline_objects": [
+          "TreEvo implementation, dependency environment, execution sandbox and runner",
+          "actual seed trees, filled prompts, model snapshots, responses, seeds and search trajectories",
+          "the thought-tree-to-executable-code prompt, schema, parser and correction policy",
+          "generated factor expressions/code, factor scores, selected population and five-run outputs",
+          "point-in-time universe memberships, market-data snapshot, adjustment and calendar rules",
+          "portfolio weights, holdings, costs, daily returns and raw table/figure arrays"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/treevo/manifest.json",
+          "sha256": "67752888dbc11e34faa7579f7ec8aa234e6173149d94739eb9da01ecfa16a112",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M029",
+      "title": "TradingGroup: A Multi-Agent Trading System with Self-Reflection and Data-Synthesis",
+      "canonical_work_id": "CensusArxiv250817565",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M029_tradinggroup/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M029_tradinggroup/verdict.md",
+      "existing_scope": "No common-task TradingGroup return: exact FINSABER inputs and 156/156 baseline cells reproduce, but the five-agent source, checkpoint, trajectories, prompts, actions and portfolio path are unavailable; baseline success is tracked separately.",
+      "existing_closure_reason": "The complete baseline experiment does not generate TradingGroup decisions. Without the fine-tuned checkpoint, trajectories, agent implementation and execution ledger, every common-task strategy would substitute a comparator or invent the central policy.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "bc87def570c2b394352fc99b6440f1ce839426e81b980482b61749ec9d3a15f1",
+      "prior_documented_limitations": {
+        "paper_portability_to_common_task": "not defensibly executable because no attributable TradingGroup source, fine-tuned checkpoint, trajectories, complete prompts, actions, execution ledger, or repeatable policy is public",
+        "missing_headline_objects": [
+          "attributable TradingGroup implementation and exact runtime dependency/configuration",
+          "Qwen3-Trader-8B-PEFT checkpoint and complete LoRA hyperparameters",
+          "the 1,080 training trajectories, teacher traces, full prompts and immutable requests/responses",
+          "complete news/RAG/forecast/style/reflection tool implementations and model snapshots",
+          "paper actions, quantities, fills, commissions, cash, NAV, daily returns and figure arrays",
+          "run seeds, repeated trials and a policy transferable beyond the five test tickers"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/tradinggroup/manifest.json",
+          "sha256": "c0d49fb9ebfb74e87fe9cf7313915fa36ef837775c4bff558390e1f364181632",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M030",
+      "title": "MM-ARC: Multimodal Adaptive Routing of Capital with Robustness-Audited Strategy Pools",
+      "canonical_work_id": "CensusArxiv250905080",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M030_mm_arc/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M030_mm_arc/verdict.md",
+      "existing_scope": "No common-task return: the substantial v3 release passes 111 tests but every trained adapter/router and both strategy-history tables remain unavailable LFS payloads; tests use doubles and the acceptance replay is not the full benchmark.",
+      "existing_closure_reason": "The missing six paper-specific payloads are precisely the objects required to generate strategy decisions. Without them, artifact verification and model execution fail closed, and no bounded adapter can recover the trained policy.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "8db68b88d452925c9bff54f8a5ac2edcd0f09db84b1996b31eb1a0b1a442e41d",
+      "prior_documented_limitations": {
+        "paper_portability_to_common_task": "not executable because six paper-specific registered LFS payloads remain unavailable, including every trained adapter/router and both historical strategy-signal tables",
+        "missing_headline_objects": [
+          "three trained adapter_model.safetensors payloads",
+          "the seed-42 reinforcement-learning router best_model.pt payload",
+          "the full strategy-signal and robustness-history tables",
+          "full benchmark market data beyond the 120-observation acceptance fixture",
+          "the training/experiment controller and private model history",
+          "trained seeds 43-46, full decision cycles, result arrays and report generator"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/mm_arc/manifest.json",
+          "sha256": "cc0499fa5dfaee06b4672e68a1b4a7c8a0c0984c74e12ec07991846b9ee5d8f0",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M031",
+      "title": "QuantHarness: Price-Driven Multi-Agent LLMs for High-Frequency Trading",
+      "canonical_work_id": "CensusArxiv250909995",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M031_quantharness/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M031_quantharness/verdict.md",
+      "existing_scope": "No common-task return: the paper's mandatory price-driven multi-agent decision needs a timestamped 45-bar intraday OHLC path, chart reasoning, and an identified LLM policy that monthly JKP and the release do not provide.",
+      "existing_closure_reason": "An honest monthly U.S./JKP run would require fabricating opening prices, changing 1h/4h bars and three-candle execution into a multi-year/monthly mechanism, and choosing an undisclosed LLM policy. Those changes define a new strategy rather than an adapter.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "136dad5862962b16bb1cef5f441dea07fed3f0a0cd2f17e8a070e4a971701898",
+      "prior_documented_limitations": {},
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/quantharness/manifest.json",
+          "sha256": "b5c7f0b2d3233aed815893695c1ac59d66e52790af3002dbf8be6b7b0f6272b0",
+          "status": "not_reproduced_full_history_and_608_forks_exhausted_author_table_rasters_only",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M032",
+      "title": "Trading-R1: Financial Trading with LLM Reasoning via Reinforcement Learning",
+      "canonical_work_id": "CensusArxiv250911420",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M032_trading_r1/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M032_trading_r1/verdict.md",
+      "existing_scope": "No common-task return: the headline object is a three-stage SFT/RFT/self-distilled Qwen3-4B policy, but the official release and all audited forks contain no code, checkpoint, training data, action mapping, predictions, trades, or backtest paths.",
+      "existing_closure_reason": "The learned policy is unreleased and underidentified: Tauric-TR1-DB, checkpoints, training/runtime code, reward parsers, action weights, portfolio rules, and per-date outputs are absent. Paper equations describe targets/rewards rather than an executable strategy.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "6e8bd1d07265185337b456cc83a4d2f5b7e17b375c06870b0d0e0ccc4b8a3a92",
+      "prior_documented_limitations": {},
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/trading_r1/manifest.json",
+          "sha256": "9462f973bc266eba24711379b5dfe22e5e4bbadb76d3dad9b336f564975d391a",
+          "status": "paper_spec_mechanisms_reconstructed_but_zero_of_348_published_result_units_reproduced_official_release_still_placeholder",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M033",
+      "title": "GuruAgents: Emulating Wise Investors with Prompt-Guided LLM Agents",
+      "canonical_work_id": "CensusArxiv251001664",
+      "existing_strict_status": "completed_partial",
+      "existing_recipe": "paper_runs/us_jkp_headline/M033_guruagents_buffett/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M033_guruagents_buffett/verdict.md",
+      "existing_scope": "Paper-highlighted Buffett sleeve; official deterministic prompt formula with fourteen direct/algebraic JKP mappings, two explicit omissions, monthly top-1,000 U.S. formation, continuous score-proportional long-only weights, common costs and rolling JKP133 attribution.",
+      "existing_closure_reason": "The source-anchored partial produced a complete 305-month path. At 10 bp it has 7.93% CAGR and 0.532 Sharpe, but its +0.65% annual JKP133 residual is insignificant (HAC t=1.364, p=0.1725) and adverse missing-return sensitivity is materially weaker.",
+      "fidelity_completion_status": "frozen_v1_prompt_replay_and_accounts_retained",
+      "cohort_case": "GuruAgents",
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "c7ad4ce9ca2eef83d813fa0b3411827b2cffd09adfe2be573e5277ee008cb73d",
+      "prior_documented_limitations": {
+        "intentionally_missing_source_metrics": [
+          {
+            "metric": "MarginStability",
+            "reason": "JKP's available quarterly-margin volatility uses a different estimation window from the source's last-four-quarter standard deviation."
+          },
+          {
+            "metric": "BuybackYield",
+            "reason": "JKP payout and share-change fields do not exactly reproduce the source's first-versus-last share count over its last four observations."
+          }
+        ],
+        "quality_missing_renormalization": "Preserve the source's +0.38 positive and -0.06 negative QualityPlus budgets separately. Renormalize the available positive ROCE/CashConversion weights to +0.38; retain the available CapExIntensity weight at -0.06."
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/guruagents/manifest.json",
+          "sha256": "3a8697ad47ed8f0f55cf2213ebddc03f59a7c7fa092bcf5e8db436fc4e0a15f7",
+          "status": "benchmark_protocol_recovered_20_of_70_cells_reproduced_agent_results_not_reproduced",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M034",
+      "title": "QuantAgents: Towards Multi-agent Financial System via Simulated Trading",
+      "canonical_work_id": "CensusArxiv251004643",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M034_quantagents/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M034_quantagents/verdict.md",
+      "existing_scope": "No common-task return: the central four-agent meeting/memory system learns an adaptive dual-reward policy, but the release is a static site and the strategy pool, risk weights, prompts, tools, memories, policy state, data, actions and execution paths are not identified.",
+      "existing_closure_reason": "No executable or uniquely reconstructable mapping from formation data to stock weights exists. Supplying the strategy grammar, risk score, policy/reward histories, action parser, point-in-time inputs and execution accounting would create a new system rather than adapt the disclosed one.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "bb1080b3491bd83526eb6657cfbe27cf1644c7e6edae948ccdb2ebef1703f601",
+      "prior_documented_limitations": {
+        "missing_headline_objects": [
+          "the complete runtime prompts, fills, response schema and action parser",
+          "the 26 callable tools and 60 indicator implementations",
+          "the three memory stores, update rules and retrieved records",
+          "the finite strategy-pool grammar, parameter grid and realized strategies",
+          "the four risk-score weights, component normalizations and risk-reward function",
+          "the policy parameterization, optimizer, simulated and real reward histories",
+          "point-in-time NASDAQ-100 membership, frozen Yahoo/Alpaca rows and news identifiers",
+          "capital, order, fill, cost, slippage, constraint, rebalance and corporate-action rules",
+          "actions, orders, fills, dated holdings, portfolio paths, seeds and repeated runs"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/quantagents/manifest.json",
+          "sha256": "4417fe95a6892b79300d154061a6193d910d9ef2c2d68f10f79e7b6804e281bd",
+          "status": "not_reproduced_no_public_system_source_frozen_inputs_runtime_traces_or_portfolio_path",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M035",
+      "title": "Trade in Minutes! Rationality-Driven Agentic System for Quantitative Financial Trading",
+      "canonical_work_id": "CensusArxiv251004787",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M035_timi/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M035_timi/verdict.md",
+      "existing_scope": "No common-task return: TiMi's central object is an agent-generated, simulation-optimized minute-level grid bot, but no parameterized bot, prompts, feedback history, point-in-time input, execution record, or currently recoverable official supplement is available.",
+      "existing_closure_reason": "Every value controlling pair selection, grid prices, quantities, risk scaling and exits is undisclosed, as are the generated bot and optimization lineage. Monthly JKP cannot represent the intraday funding/order/stop state, so any run would be a newly designed strategy.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "df09a770a90dd3648a54fadd17f7099e1936c1b5b5173febd0709ae00f09154e",
+      "prior_documented_limitations": {},
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/timi/manifest.json",
+          "sha256": "98c1d682877e7970745e51ea7da912b128b9f907fa63afd797a5f21d4ed94f69",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M036",
+      "title": "Profit Mirage: Revisiting Information Leakage in LLM-based Financial Agents",
+      "canonical_work_id": "CensusArxiv251007920",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M036_factfin/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M036_factfin/verdict.md",
+      "existing_scope": "No common-task return: FinLake/FinLeak is an out-of-scope leakage QA benchmark; in-scope FactFin requires an unreleased RAG/SCG/MCTS/counterfactual search to identify final executable code C*, and no generated strategy, execution contract, trades, or path is public.",
+      "existing_closure_reason": "The named components and two MCTS settings do not identify a policy. Strategy language, prompts, retrieval state, search grammar/evaluator, counterfactual generators/weights, code, inputs, positions, timing, costs and result lineage are missing, so a JKP run would be a new research system.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "6a85b9241bf0d6f3242e82b732cc90b46269a9e104e7229ad52d19a445dbcc53",
+      "prior_documented_limitations": {
+        "missing_headline_objects": [
+          "the executable SCG language, function signature, package surface, sandbox and parser",
+          "all runtime prompts beyond one explicitly simplified template and all immutable model requests/responses",
+          "the RAG corpus, chunks, index, query construction, distances and retrieved records",
+          "the initial strategy code, MCTS node/action/branch definitions and every evolved strategy",
+          "the strategy evaluator, rollouts, reward, budget, convergence/stopping rule and random seeds",
+          "counterfactual generators, perturbation magnitudes, constraints, scenarios and alpha/beta/gamma objective weights",
+          "the original Yahoo/Alpaca price/news snapshots, exact factors, lookbacks and point-in-time rules",
+          "position quantities/weights, capital, inventory, shorting/leverage and signal-to-fill timing",
+          "numeric transaction costs, slippage, orders, fills, cash ledger and dated NAV",
+          "the train/validation split, repetitions, uncertainty, baseline snapshots and environment lock"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/factfin/manifest.json",
+          "sha256": "838103a05842836ec7a27cd98bccdfd028f201440c069afcfe26d67ba601b334",
+          "status": "not_reproduced_no_public_system_or_benchmark_release_and_missing_runtime_data_strategy_trade_lineage",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M037",
+      "title": "ATLAS: Adaptive Trading with LLM AgentS Through Dynamic Prompt Optimization and Multi-Agent Coordination",
+      "canonical_work_id": "CensusArxiv251015949",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M037_atlas/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M037_atlas/verdict.md",
+      "existing_scope": "No common-task return: ATLAS is the daily analyst/CTA system with five-day Adaptive-OPRO prompt updates, but only the StockSim precursor is public; the ATLAS prompts, optimizer, histories, configs, data, seeds, orders and paths are absent.",
+      "existing_closure_reason": "The defining policy is an evolving instruction prompt, yet neither its initial state nor update mechanism/trajectory and resulting orders are released. The recovered XOM output has no ATLAS identifier and matches no paper mean, so a monthly JKP run would require inventing the policy.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "ab7527c185cf0a8f13f465b8b0a4ce02ed5a8b7a545e924cbdd7bb3e02732757",
+      "prior_documented_limitations": {
+        "missing_atlas_objects": [
+          "the fixed baseline Central Trading Agent instruction and exact filled runtime prompts",
+          "the Adaptive-OPRO optimizer implementation, meta-prompt, model requests/responses and edit history",
+          "the complete optimization history of prompts, five-day outcome summaries and scores",
+          "the paper's promised o4-mini Adaptive-OPRO sample configuration",
+          "the exact three-asset experiment matrix, seeds and three-run artifacts",
+          "frozen Massive/Polygon market data plus aligned news and fundamental inputs",
+          "the paper's CTA actions, orders, fills, cash, positions and portfolio trajectories",
+          "provider snapshot/decoding parameters for all seven backbones",
+          "paper result arrays and report-generation lineage"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/atlas/manifest.json",
+          "sha256": "d3552ff9e2f872a875b187f2eef102d2640a77ba0c2e6efb5d49c76b6f32b5f8",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M038",
+      "title": "P1GPT: a multi-agent LLM workflow module for multi-modal financial information analysis",
+      "canonical_work_id": "CensusArxiv251023032",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M038_p1gpt/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M038_p1gpt/verdict.md",
+      "existing_scope": "No common-task return: P1GPT's layered daily Buy/Sell/Hold workflow depends on unreleased agents, prompts, multimodal inputs, fusion and private model/database services; author-rendered positions verify outputs but do not define a transferable policy.",
+      "existing_closure_reason": "The only attributable code is a client for a private backend. No decision-generating implementation exists, the recovered positions cover only three 2025 assets, and one report contains future product information, so a 1999-2024 JKP policy cannot be formed or trusted.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "bafff6214c396989bdffe47f79c811f7a800d5d803d729ec6330dda7669c85c6",
+      "prior_documented_limitations": {
+        "missing_headline_objects": [
+          "all paper agent implementations and orchestration code",
+          "LLM/provider/model identities, checkpoints, temperatures, decoding and seeds",
+          "system, developer, tool and daily prompts for each role",
+          "structured message schemas, routing, fusion weights, confidence and conflict/retry rules",
+          "exact market/news/fundamental/search endpoints, query timestamps and frozen responses",
+          "decision time relative to market close and information publication",
+          "initial capital, Buy quantity, repeated-Buy behavior, cash/inventory and position constraints",
+          "daily requests, responses, independent decisions, positions and equity arrays",
+          "the result runner and metric/formatting implementation",
+          "replicates, uncertainty, significance and selection protocol"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/p1gpt/manifest.json",
+          "sha256": "c6202c68a54a348d2f7b1a95e6c914baf7b7c20b7ed0aae94cff5ca0ec6379bc",
+          "status": "not_reproduced_author_output_and_baseline_verification_only",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M039",
+      "title": "FinPos: A Position-Aware Trading Agent System for Real Financial Markets",
+      "canonical_work_id": "CensusArxiv251027251",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M039_finpos/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M039_finpos/verdict.md",
+      "existing_scope": "No common-task return: FinPos's position accounting and future multi-timescale reward are executable paper-derived components, but the test-time Direction and Quantity/Risk Agents, memory, valid prompts, sizing conversion, inputs, trades and account path are unreleased.",
+      "existing_closure_reason": "The paper defines how a chosen carried position earns return and receives training feedback but not a causal mapping from observable state to direction and dimensionally valid quantity. Without the agents, memory and execution/accounting contract, no monthly JKP policy exists.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "a954a9307640e6e649f75f6077bbed78aba5748d1d9eec566fc8c4b100c62158",
+      "prior_documented_limitations": {
+        "missing_headline_objects": [
+          "the signal-filtering and analyst implementations and domain heuristics",
+          "hierarchical-memory allocation, retrieval, scoring, migration and persistence",
+          "the Direction Agent and Quantity/Risk Agent runtime prompts, responses and parser",
+          "the GPT-4o revision/API configuration, seeds and repeated trajectories",
+          "a dimensionally defined conversion from CVaR return/PnL to integer share quantity",
+          "initial cash/positions, account-value definition, leverage/shorting limits and liquidation",
+          "decision/fill timing, price, fees, spread, slippage and borrowing rules",
+          "immutable Yahoo/Finnhub/EDGAR rows, query timestamps and point-in-time alignment",
+          "daily actions, quantities, orders, fills, positions, PnL and account paths",
+          "the result generator, CR-percent mapping, metric conventions and uncertainty protocol"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/finpos/manifest.json",
+          "sha256": "60eea32a3ab6cee93e267aef648879594347617f74c93547f43e95da25e563f3",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M040",
+      "title": "FINRS: A Risk-Sensitive Trading Framework for Real Financial Markets",
+      "canonical_work_id": "CensusArxiv251112599",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M040_finrs/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M040_finrs/verdict.md",
+      "existing_scope": "No common-task return: FinRS's claimed risk-sensitive direction/sizing policy names scaled Kelly, CVaR and volatility adjustment without defining them; its only executable equations are FinPos-v1 training/state components and 216/225 displayed cells are exact FinPos reuse.",
+      "existing_closure_reason": "No causal direction/quantity mapping exists: all novel risk-sizing mechanics, prompts, memory, provider state, execution/accounting and outputs are absent. Shared equations do not choose trades and the near-total result reuse is not independent evidence.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "5c479ef1e888914922f6dffbf178bb4dcb3fd498c77e8fbed39befaa5529bdf9",
+      "prior_documented_limitations": {
+        "missing_headline_objects": [
+          "all domain filtering/analysis implementations and risk-focused prompts",
+          "hierarchical-memory allocation, retrieval, promotion/discard and persistence",
+          "the direction and quantity/risk agent runtime prompts, responses and parser",
+          "the scaled-Kelly equation, scale, probability/odds inputs and portfolio constraints",
+          "the CVaR confidence level, horizon, estimator, units and conversion to quantity",
+          "the volatility-adjustment formula, window, units and interaction with exposure",
+          "the GPT-4o immutable snapshot, decoding configuration, seeds and repetitions",
+          "initial account state, trade units, timing, fills, costs, slippage, borrowing and liquidation",
+          "immutable provider rows, publication timestamps, actions, positions, PnL and account paths",
+          "metric definitions, result generator, raw arrays and uncertainty protocol"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/finrs/manifest.json",
+          "sha256": "80f2a55b82331ececd043ce259baf2f00c196d7a51f9db0fa98831c321ecbaea",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M041",
+      "title": "Cognitive Alpha Mining via LLM-Driven Code-Based Evolution",
+      "canonical_work_id": "CensusArxiv251118850",
+      "existing_strict_status": "completed_partial",
+      "existing_recipe": "paper_runs/us_jkp_headline/M041_cogalpha/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M041_cogalpha/verdict.md",
+      "existing_scope": "Paper-showcased final evolved liquidity-impact factor; monthly abs(ret)*abs(prc)/dolvol adapter, positive paper direction, top-1,000 U.S. common value-weighted deciles, costs, missing-return sensitivity and rolling JKP133 attribution.",
+      "existing_closure_reason": "The source-anchored factor produced a complete 305-month path. At 10 bp it loses 4.03% CAGR with -0.281 Sharpe and -68.74% drawdown; the -1.56% annual JKP residual is insignificant (HAC t=-0.895, p=0.3709).",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "78648ee00360584304a4835a90334cf88c84bdaa12510066923665013d14247d",
+      "prior_documented_limitations": {
+        "full_system_not_reproduced": [
+          "the 21-agent seven-level hierarchy and random selection of 13 agents",
+          "the approximately 80-factor initial pool and 32-factor parent pool",
+          "the 96-child multi-operator evolution cycles and selection thresholds",
+          "gpt-oss-120b serving/checkpoint, sampling, requests and seeds",
+          "quality-checker judgments, repairs, leakage checks and adaptive memory",
+          "LightGBM/Ridge multifactor learner and top-50/drop-5 Qlib portfolio",
+          "paper datasets, memberships, daily open execution, fees, holdings and results"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/cogalpha/manifest.json",
+          "sha256": "c8ce2004d9e36b68bdc742990ef96e6d119cd2487c5fcc336fbd4e3b92b772e7",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M042",
+      "title": "Alpha-R1: Alpha Screening with LLM Reasoning via Reinforcement Learning",
+      "canonical_work_id": "CensusArxiv251223515",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M042_alpha_r1/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M042_alpha_r1/verdict.md",
+      "existing_scope": "No common-task return: Alpha-R1 is a trained semantic factor gate over an unreleased 82/40-factor zoo and fixed betas; its checkpoint, profiles, states, prompts, reward/training settings, selections, data, fills and paths are absent.",
+      "existing_closure_reason": "No factor list, beta vector, semantic state/profile or trained policy exists to generate stock scores. The official repository still contains one README marking code and weights Coming Soon, directly conflicting with the paper's availability claim.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "77f7ab1a8aef1303cb4995b58aae5238263285ee7250910be06e7ac14002b269",
+      "prior_documented_limitations": {
+        "missing_headline_objects": [
+          "the identities and exact implementations of the 82 retained Alpha101 factors",
+          "the historically selected fixed 40-factor test set and selection tie/missing rules",
+          "all four-year beta coefficients and intercept plus estimator/target conventions",
+          "weekly memory inputs, prompts, model calls and final global memory",
+          "factor semantic profiles, performance vectors, prompts, model calls and schema",
+          "daily price/news descriptions, state prompts, raw-to-text models and outputs",
+          "the Alpha-R1 input prompt, output schema, trained checkpoint and tokenizer revision",
+          "judge model/prompt/rubric plus structural-penalty formula and weights",
+          "GRPO group size, optimizer, learning rate, batches, epochs, epsilon, KL beta and seeds",
+          "point-in-time memberships, market/news/macro data, calendars and adjustment rules",
+          "per-run factor selections, scores, actions, VWAP fills, holdings, returns and NAVs",
+          "baseline implementations, metric definitions, aggregation order and result arrays"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/alpha_r1/manifest.json",
+          "sha256": "d22a72592bc4210a700deb10142e991e06f6937d0350d8fae41a30d9bd8cd090",
+          "status": "not_reproduced_official_repository_is_placeholder_zero_native_code_or_results",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M043",
+      "title": "QuantaAlpha: An Evolutionary Framework for LLM-Driven Alpha Mining",
+      "canonical_work_id": "CensusArxiv260207085",
+      "existing_strict_status": "completed_partial",
+      "existing_recipe": "paper_runs/us_jkp_headline/M043_quantaalpha/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M043_quantaalpha/verdict.md",
+      "existing_scope": "The strongest executable author-attributed historical GPT pool: all 150 recovered QuantaAlpha expressions plus the released Alpha158(20) seed set, one causal fixed LightGBM fit, and monthly Top-50/drop-5 portfolio. The unreleased v3 pool and original LLM mining run are not claimed.",
+      "existing_closure_reason": "The complete historical source pool produced a 305-month accounting path with 233 scored out-of-sample months. At 10 bp one-way costs the active CAGR is 1.38%, Sharpe 0.186, maximum drawdown -37.34%, and JKP133 residual 1.80% annually (HAC t=0.847, p=0.397); it is a central partial because the v3 headline pool is absent.",
+      "fidelity_completion_status": "extension_execution_or_validation_pending",
+      "cohort_case": "QuantaAlpha",
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "ebbb359a67d4694781229401cb392b59b6acd13f5ec96cafd21c06c88643247f",
+      "prior_documented_limitations": {
+        "full_system_not_reproduced": [
+          "The unreleased v3 GPT-5.2 factor pool, predictions, holdings, and raw returns.",
+          "The 1.8M-token, ten-direction, five-iteration LLM mining run and exact model snapshots.",
+          "The paper's daily CSI300 data and market microstructure.",
+          "The next-day open execution and Chinese price-limit rules.",
+          "The v3 headline numbers or an explanation for their large revision from v1/v2.",
+          "A pristine confirmatory test; earlier audit and JKP outcomes were already visible.",
+          "Proof that the historical prepublication GPT pool is the exact pool behind v3."
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/quantaalpha/manifest.json",
+          "sha256": "a6d28a6eecf66724307fe7d007deeadec292db4ccc607a60c080c843fae8f032",
+          "status": "one_baseline_row_plus_one_alpha158_cell_regenerated_main_claim_not_reproduced",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M044",
+      "title": "FactorMiner: A Self-Evolving Agent with Skills and Experience Memory for Financial Alpha Discovery",
+      "canonical_work_id": "CensusArxiv260214670",
+      "existing_strict_status": "completed_partial",
+      "existing_recipe": "paper_runs/us_jkp_headline/M044_factorminer/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M044_factorminer/verdict.md",
+      "existing_scope": "All 110 formulas in the current v2 paper, a fixed first-12-month Top-40 absolute-IC selection with signed IC weights, and the common monthly U.S. top-1,000 value-weighted decile portfolio. Formula semantics use a pinned independent interpreter because no author-native runtime is released.",
+      "existing_closure_reason": "The complete v2 formula library and central IC-weighted combination produced a 305-month path with 293 out-of-sample months. Zero-cost CAGR is -0.23%; at 10 bp one-way, 3.06 monthly traded notional drives CAGR to -3.84%, Sharpe -0.278, drawdown -67.40%, and JKP133 residual -2.36% annually (HAC t=-0.914, p=0.361).",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "70684b073760313757f2dac2e06a8f106e1979fc12917779304df665947d136d",
+      "prior_documented_limitations": {
+        "full_system_not_reproduced": [
+          "The Gemini 3.0 Flash Ralph Loop, prompts, memory states, candidates, admission trajectory, and exact model calls.",
+          "The unreleased author-native 60+ operator runtime; an explicitly unaffiliated interpreter supplies semantics.",
+          "The 10-minute A-share/Binance panels, point-in-time constituents, and 2024/2025 arrays.",
+          "The exact reported IC/ICIR or the claimed 40-worker GPU/C backend.",
+          "An author-specified portfolio and trading return, because the paper reports only predictive scores.",
+          "A pristine confirmatory test; prior project and JKP outcomes were already visible."
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/factorminer/manifest.json",
+          "sha256": "ba6ddbaef576e99f1651fd6a4a460138f60992478bc26026209ea8d9d1b01772",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M045",
+      "title": "Janus-Q: End-to-End Event-Driven Trading via Hierarchical-Gated Reward Modeling",
+      "canonical_work_id": "CensusArxiv260219919",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M045_janus_q/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M045_janus_q/verdict.md",
+      "existing_scope": "No common-task return: the central policy is an unreleased SFT+GRPO language model over point-in-time news. Released Chinese event labels are deterministic functions of future CAR and cannot be replayed causally; JKP has no event-text input.",
+      "existing_closure_reason": "The current v2 paper and fresh repository-head check expose no checkpoint, model identity, inference/training code, selected reward parameters, predictions, orders, or portfolio engine. The one plausible released-data shortcut is direct lookahead, and JKP cannot supply the defining news/event state.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "069144180de434736455e52c1a77cbba8fad4b162aec89e3e1b25dad73a2742c",
+      "prior_documented_limitations": {},
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/janus_q/manifest.json",
+          "sha256": "b5a1dc255385963276298271320a420c4b52313e0acdf068813ca23d5772e0d1",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M046",
+      "title": "FactorEngine: A Program-level Knowledge-Infused Factor Mining Framework for Quantitative Investment",
+      "canonical_work_id": "CensusArxiv260316365",
+      "existing_strict_status": "completed_partial",
+      "existing_recipe": "paper_runs/us_jkp_headline/M046_factorengine/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M046_factorengine/verdict.md",
+      "existing_scope": "The representative factor printed after 40 FactorEngine evolution iterations, with its sole omitted high-minus-low range restored, source default weights and smoothing retained, and common monthly U.S. top-1,000 value-weighted deciles.",
+      "existing_closure_reason": "The strongest concrete evolved program produced a complete 305-month path. Zero-cost CAGR is -0.91%; at 10 bp one-way, CAGR is -3.67%, Sharpe -0.155, drawdown -69.57%, and JKP133 residual -1.67% annually (HAC t=-0.703, p=0.482), with 2.35 monthly traded notional.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "91b3a7f112aa89da9b3274dad172f302b67f048b5e2f14a11b67cf21ab035006",
+      "prior_documented_limitations": {
+        "full_system_not_reproduced": [
+          "The program-level LLM evolution, research-report ingestion, prompts/responses, and 40-iteration trajectory.",
+          "The unreleased generated factor pool and LightGBM synthesis behind headline tables.",
+          "The original Qlib A-share data, point-in-time constituents, predictions, holdings, and returns.",
+          "The author runtime and environment; the listing is translated directly into pandas arithmetic.",
+          "Any original-paper metric or figure.",
+          "A pristine confirmatory test; prior project and JKP outcomes were already visible."
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/factorengine/manifest.json",
+          "sha256": "6ccd4923b41570fc41fadf389960d2d39e836c744c594356a6060a87aaaefcdf",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M047",
+      "title": "Can Blindfolded LLMs Still Trade? An Anonymization-First Framework for Portfolio Optimization",
+      "canonical_work_id": "CensusArxiv260317692",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M047_blindtrade/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M047_blindtrade/verdict.md",
+      "existing_scope": "No common-task return: BlindTrade is a trained four-agent Gemini/SemGAT/PPO-DSR policy over unavailable point-in-time anonymized headlines and unreleased feature, graph, checkpoint, prediction, and holding artifacts. RAW Top-20 is a baseline, not a transferable BlindTrade partial.",
+      "existing_closure_reason": "The current paper promises rather than exposes the input/output feature dataset, and a fresh exact repository/code search found no attributable release. JKP lacks news/reasoning/graph state, while reconstructing the central policy requires unavailable model calls, GNN/RL weights and roughly 1.22 million agent-stock evaluations.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "fedf28c01b407245599ce8590f99e2f614cc29f8f051bd52beecf11b8f79a7e0",
+      "prior_documented_limitations": {},
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/blindtrade/manifest.json",
+          "sha256": "63155afcca3d08087321d06d949fcf0b38909a464919d08d64ac3afbbe25c758",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M048",
+      "title": "AlphaLogics: A Market Logic-Driven Multi-Agent System for Scalable and Interpretable Alpha Factor Generation",
+      "canonical_work_id": "CensusArxiv260320247",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M048_alphalogics/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M048_alphalogics/verdict.md",
+      "existing_scope": "No common-task return: the paper releases no AlphaLogics-generated factor expression, logic library/compiler output, selected factor pool, fitted model, prediction, or holding. Alpha101/191/158/360 are seeds/baselines, and independent component code has no native lineage.",
+      "existing_closure_reason": "The v1 paper remains the current source and a fresh exact GitHub search found no attributable release. JKP can evaluate disclosed formulas but cannot infer the missing market-logic library, compiler output, objective, evolved factors, or LightGBM model; no central partial signal is identifiable.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "634f74cdc125ed0a15002f72e2cb645330c9cf507e35fc73c891f9ecc2183654",
+      "prior_documented_limitations": {},
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/alphalogics/manifest.json",
+          "sha256": "f1ee4692249d061a1406d037754d9009b2458a019141ad0e6445c5496c68689a",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M049",
+      "title": "TrustTrade: Human-Inspired Selective Consensus Reduces Decision Uncertainty in LLM Trading Agents",
+      "canonical_work_id": "CensusArxiv260322567",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M049_trusttrade/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M049_trusttrade/verdict.md",
+      "existing_scope": "No common-task return: the selective-consensus, temporal-scoring, trader/risk-manager, and reflective-memory policy is underidentified and has no public decisions. Recovered three-stock interfaces implement only the human-study widget and contain temporally contaminated inputs.",
+      "existing_closure_reason": "Consensus models/parameters, temporal score/action rules, reflection/memory implementation, participant outputs, 2026 traces, costs, fills and NAVs are missing. JKP cannot infer these stateful text/decision components, and 68/183 recovered nominal-2024 interface days contain explicit later-year references.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "02cbe0e968621a76abca2e84cbae73726df64aeffb8b38698d83f20aae84c2ae",
+      "prior_documented_limitations": {},
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/trusttrade/manifest.json",
+          "sha256": "aa4d8234eba41f5a6347c54119c28612f26d7506808457c6a62e20e4ed13a010",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M050",
+      "title": "Designing Agentic AI-Based Screening for Portfolio Investment",
+      "canonical_work_id": "CensusArxiv260323300",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M050_agentic_screening/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M050_agentic_screening/verdict.md",
+      "existing_scope": "No common-task return: the central LLM-S plus FinBERT monthly screen lacks annual rules, checkpoint/scores, dated ensemble sets, and fitted portfolio artifacts. The linked news file and one-date prompt are components only; the later implementation replaces the method.",
+      "existing_closure_reason": "The current v2 source still has no author implementation or complete annual prompt/output set. One linked news input cannot reconstruct FinBERT scores or the fundamental/IBES screen, and all covariance/model/weight/return outputs are absent; no central partial portfolio is identifiable without replacing the method.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "4943857fb90ca52b6ea9bf0fda0083a495e3050bc3b8b743f6be6c843b3414ef",
+      "prior_documented_limitations": {},
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/agentic_ai_screening/manifest.json",
+          "sha256": "0194e2051ae94674f13d6273738a8016476226b2f1fd4828ed7c7527fafb88b8",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M051",
+      "title": "Hubble: An LLM-Driven Agentic Framework for Safe, Diverse, and Reproducible Alpha Factor Discovery",
+      "canonical_work_id": "CensusArxiv260409601",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M051_hubble/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M051_hubble/verdict.md",
+      "existing_scope": "No common-task return: v2 intentionally withholds the five selected factor formulas and hyperparameters, while no runtime, candidate/selection artifacts, universe/data snapshot, factor values, or raw diagnostics are public. Family labels cannot identify a score.",
+      "existing_closure_reason": "The current v2 paper withholds the exact range/volatility/trend formulas and a fresh exact search found no author release. JKP can evaluate formulas but cannot infer them from families; the local AST fixture has no candidate identity or result lineage, so no defensible central partial exists.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "7529e75849cd0380796cc9220b88d3e5c01d3aedb289e783b1e3904d80e6b610",
+      "prior_documented_limitations": {},
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/hubble/manifest.json",
+          "sha256": "0bae112d04ad47149aacd3f993a38a063a8449a7fd1e4d7b0bed45fc1bc5f750",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M052",
+      "title": "Signal or Noise in Multi-Agent LLM-based Stock Recommendations?",
+      "canonical_work_id": "CensusArxiv260417327",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M052_marketsenseai/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M052_marketsenseai/verdict.md",
+      "existing_scope": "No common-task return: the central equal-weight monthly strong-buy portfolio is identifiable in form but none of the 12,163 stock-date recommendations, cohort tickers, agent/synthesis texts, embeddings, or dated selected sets is public. Aggregate counts cannot reconstruct holdings.",
+      "existing_closure_reason": "The paper specifies monthly strong-buy equal weighting but omits every security-date label and cohort identity needed to form it. A fresh search found no author release; the new same-day repository explicitly says not implemented. JKP cannot infer deployed LLM decisions from aggregate counts.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "c63efdfe78900b9eb2a50de3033901f3bb264bd0cfac025ec8d73918729273e5",
+      "prior_documented_limitations": {},
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/marketsenseai/manifest.json",
+          "sha256": "d8fe3bcf1adf616f06a1de3978493626b3a0bedfbceefa3e19a2697c87ef4170",
+          "status": "not_reproduced_manuscripts_only_no_operational_release",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M053",
+      "title": "AlphaCrafter: Harnessing Multi-Agent Workflows for Cross-Sectional Quantitative Trading",
+      "canonical_work_id": "CensusArxiv260505580",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M053_alphacrafter/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M053_alphacrafter/verdict.md",
+      "existing_scope": "No common-task return: the substantive attributable release executes exchange, fee, and metric components, but it releases no paper stock/news inputs, selected factor pool, model outputs, actions, holdings, or result arrays; the default launcher is internally broken and misroutes the U.S. path.",
+      "existing_closure_reason": "The current source remains at the fully audited head with no tags/releases or result artifacts. Components cannot produce a security score without the missing generated factor pool and stateful trader outputs, while choosing a generic JKP factor would replace the central multi-agent workflow.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "2785b1188fed034a1a62f264a19087accb88d84ec91736b3777e66e330cfe576",
+      "prior_documented_limitations": {},
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/alphacrafter/manifest.json",
+          "sha256": "eac24b6e22142449b795c2ba6033403e8072be6f1a7daf84cf4f29832cd0e897",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M054",
+      "title": "Strat-LLM: Stratified Strategy Alignment for LLM-based Stock Trading with Real-time Multi-Source Signals",
+      "canonical_work_id": "CensusArxiv260506024",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M054_stratllm/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M054_stratllm/verdict.md",
+      "existing_scope": "No common-task return: the central multi-source LLM alignment policy has no attributable code, exact prompts, frozen inputs, complete S1-S4 rules, model requests/responses, actions, holdings, or broker/result arrays. One 3-day-high clause and a synthetic T+1 check do not define the strategy.",
+      "existing_closure_reason": "The advertised project remains 404 and fresh exact repository searches found no native release. The paper does not preselect a universal model/mode, its four strategy motifs are operationally incomplete, and JKP cannot recreate the missing real-time multi-source LLM actions without replacing the headline mechanism.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "707898f3fe3d1cfe70a15591cb62fa1ae996d9cf9239101f9cddb865f5037084",
+      "prior_documented_limitations": {},
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/stratllm/manifest.json",
+          "sha256": "a6f2fe70a78fac9ea2e0de43b71596c7eaf5fbba56141a0d659c2b78346717c6",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M055",
+      "title": "SHARP: A Self-Evolving Human-Auditable Rubric Policy for Financial Trading Agents",
+      "canonical_work_id": "CensusArxiv260506822",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M055_sharp/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M055_sharp/verdict.md",
+      "existing_scope": "No common-task return: seven paper-derived mechanics execute on synthetic fixtures, but no complete evolved rubric, base LLM score, prompt/call record, point-in-time input, or action/holding ledger is released. The printed initial rules only adjust a missing model prediction.",
+      "existing_closure_reason": "The cited dataset endpoint remains 404 and fresh exact searches found no attributable implementation. JKP cannot instantiate the missing daily news-conditioned LLM prediction or attribution/evolution loop, and the disclosed mechanics alone do not identify a monthly security score.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "3a00726276c63d936d152a3b6aa4be2930c1a6bfb7f5a67a2829593428fc9d3c",
+      "prior_documented_limitations": {},
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/sharp/manifest.json",
+          "sha256": "3a5de51116e4310588eeca7aa3aad2cc43c3c7b6c22f615333f83b72e6b10da2",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M056",
+      "title": "From Feedback Loops to Policy Updates: Reinforcement Fine-Tuning for LLM-Based Alpha Factor Discovery",
+      "canonical_work_id": "CensusArxiv260515412",
+      "existing_strict_status": "completed_partial",
+      "existing_recipe": "paper_runs/us_jkp_headline/M056_quantevolver/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M056_quantevolver/verdict.md",
+      "existing_scope": "The first valid author-released seed, return_sharpe_60, preserves its complete DSL operator tree and positive risk-adjusted momentum direction on 60 monthly close-return bars, then uses the common U.S. top-1,000 value-weighted decile portfolio, costs, missing-return policies, and JKP133 attribution. This is not the withheld RFT miner or paper result.",
+      "existing_closure_reason": "The strongest attributable executable partial produced a complete 305-month common-benchmark path. At 10 bp one-way costs its CAGR is -0.80%, Sharpe 0.056, maximum drawdown -73.79%, and rolling JKP133 residual mean -0.70% annually (HAC t=-0.227, p=0.8205).",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "a6804eded52b6e10dfe4b5f29dd46cd878eb9e8903c9d807d05573029e3db7b6",
+      "prior_documented_limitations": {
+        "not_claimed": [
+          "reinforcement fine-tuning",
+          "trained miner checkpoint",
+          "paper seed/task bank",
+          "LLM factor search",
+          "DiCo/archive reward learning",
+          "mined factor library or fusion",
+          "native benchmark data",
+          "paper result"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/quantevolver/manifest.json",
+          "sha256": "feded6b9052288986203d000c9efb65a1f00d34c75f8837e379cc47f1a09decf",
+          "status": "not_reproduced_substantial_public_framework_zero_paper_results",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M057",
+      "title": "MadEvolve: Evolutionary Optimization of Trading Systems with Large Language Models",
+      "canonical_work_id": "CensusArxiv260523007",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M057_madevolve/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M057_madevolve/verdict.md",
+      "existing_scope": "No common-task return: the first-party release provides general evolutionary infrastructure and five passing component fixtures, but no trading code, paper configuration, candidate program, evolved system, market data, actions, holdings, or result arrays. Appendix pseudocode is incomplete and not the headline output.",
+      "existing_closure_reason": "The repository remains at the fully audited head with no trading payload, tags, or releases. Because the object MadEvolve optimizes is unreleased trading-system code with limit-order execution, no monthly U.S./JKP score can be formed without designing a different system.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "9d2d80b5056c7171311d1bdd15b9c4cbbc16acec62203197aaa7345c829206e3",
+      "prior_documented_limitations": {},
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/madevolve_trading/manifest.json",
+          "sha256": "0cc0a5badc6e7705cf58da2d41e6f860c1d0f957d2c127135a6406a43a1403b0",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M058",
+      "title": "Macro Economists in the Machine: A Multi-Agent LLM Framework for Commodity-Related ETF Portfolio Construction",
+      "canonical_work_id": "CensusArxiv260608283",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M058_macro_machine/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M058_macro_machine/verdict.md",
+      "existing_scope": "No common-task return: 22 paper-derived ETF allocation mechanics pass controlled checks, but the weekly data, LLM contracts, debate outputs, core risk-control projection, weights, and returns are unavailable. The paper defines no transfer from its 15 ETFs to individual U.S. stocks or JKP scores.",
+      "existing_closure_reason": "The paper provides no implementation/artifact URL and fresh exact searches found no release. Missing LLM probabilities and portfolio projection prevent the native ETF weights, while converting the method into a JKP stock score would change both its assets and central multi-agent mechanism.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "0f1794806dddae7eb06b9e9d86fff707d689c73f23c8ba388317ca7a31566b3f",
+      "prior_documented_limitations": {},
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/macro_economists_machine/manifest.json",
+          "sha256": "f4a83615bef1dd04b8fa9ef9cf7b91819f87a48fc1e3cc621a6fa98f86591539",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M059",
+      "title": "AlphaMemo: Structured Search-Process Memory for Self-Evolving Alpha Mining Agents",
+      "canonical_work_id": "CensusArxiv260620625",
+      "existing_strict_status": "completed_partial",
+      "existing_recipe": "paper_runs/us_jkp_headline/M059_alphamemo/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M059_alphamemo/verdict.md",
+      "existing_scope": "The first paper-listed representative evolved factor, SSPM_000, preserves its complete nested price-volume formula and literal printed orientation on monthly JKP bars, then uses the common U.S. top-1,000 value-weighted decile portfolio, costs, missing-return policies, and JKP133 attribution. This is not the withheld memory-guided search or fused strategy.",
+      "existing_closure_reason": "The strongest attributable evolved-factor partial produced a complete 305-month common-benchmark path. At 10 bp one-way costs its CAGR is -0.88%, Sharpe -0.002, maximum drawdown -56.09%, and rolling JKP133 residual mean 2.20% annually (HAC t=0.855, p=0.3923).",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "ecf5242540e2318e730f4f6ed268967d45bf3f4f40bae25dc74f7c6a7cd19930",
+      "prior_documented_limitations": {
+        "not_claimed": [
+          "AlphaMemo search-process memory",
+          "paper search trajectory or admitted pool",
+          "source-confirmed factor sign",
+          "LightGBM factor fusion",
+          "Top-k/drop portfolio",
+          "paper CSI500 or S&P500 data",
+          "paper result"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/alphamemo/manifest.json",
+          "sha256": "c2b85b64e973ff6c22edbb47ad120e834044262d6891470bd64688f449780a9d",
+          "status": "not_reproduced_native_current_data_pipeline_component_only",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M060",
+      "title": "MetaPS: Adaptive Programmatic Strategy Selection for Market Agents",
+      "canonical_work_id": "CensusArxiv260622385",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M060_metaps/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M060_metaps/verdict.md",
+      "existing_scope": "No common-task return: 12 paper-derived compact-strategy and label mechanics pass controlled checks, but no rankings, rollouts, SFT records, trained checkpoint, model outputs, size mapping, actions, holdings, or returns are released. A library momentum branch is not the adaptive selector.",
+      "existing_closure_reason": "Fresh exact searches found no attributable release, and isolated snippets cannot identify the trained program-selection policy. The price-only branch changes both selection and execution under a JKP decile port, while the printed volatility breakout is unreachable without repair.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "26a751f8b9e8f4b92144f0e3b9793699ebc310484daa8c5ab08425a5a9b320d9",
+      "prior_documented_limitations": {},
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/metaps/manifest.json",
+          "sha256": "4075e9c1da2069cbe85b3b37105421037ea64dd70b65a5281243b23b925f6eb6",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M061",
+      "title": "AI Trading's Alpha Singularity: Emergent Market Reasoning through Agent-to-Agent Self-Evolution",
+      "canonical_work_id": "CensusArxiv260629194",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M061_agora/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M061_agora/verdict.md",
+      "existing_scope": "No common-task return: two complete paper metric programs execute, but they score supplied outputs rather than generate a security signal. The claimed release, 94 alpha programs, top-30 pool, registries, PPO checkpoint/actions, holdings, and returns are unavailable.",
+      "existing_closure_reason": "Fresh exact searches still find no release despite contradictory release claims. JKP cannot instantiate the missing AlphaGen pool or trained PPO relay, and the executable metric components provide no score or action for a monthly portfolio.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "b7d7d6e61a7959cfe270db536d36bd0c256da5d000e17c83f75a7c833b62ad47",
+      "prior_documented_limitations": {},
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/agora/manifest.json",
+          "sha256": "f6362dcef21e4ac5ac36a0b36ab64b95515103a23c7af86e31bb56331d48e2f5",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M062",
+      "title": "XALPHA: A Memory-Driven AI Quant Researcher for Hypothesis-to-Code Alpha Discovery",
+      "canonical_work_id": "CensusArxiv260708332",
+      "existing_strict_status": "completed_partial",
+      "existing_recipe": "paper_runs/us_jkp_headline/M062_xalpha/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M062_xalpha/verdict.md",
+      "existing_scope": "The main-text representative elite overshoot-pressure factor preserves its complete program and paper-reported positive IC direction on monthly JKP close bars, then uses the common U.S. top-1,000 value-weighted decile portfolio, costs, missing-return policies, and JKP133 attribution. This is not the memory-driven search or fused strategy.",
+      "existing_closure_reason": "The strongest attributable elite-factor partial produced a complete 305-month common-benchmark path. At 10 bp one-way costs its CAGR is -1.71%, Sharpe -0.003, maximum drawdown -69.29%, and rolling JKP133 residual mean 3.84% annually (HAC t=1.029, p=0.3036).",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "b583809de472b3cb665df5570064f8be1395eb66568adc5def2f0f7f2e34b1ce",
+      "prior_documented_limitations": {
+        "not_claimed": [
+          "XALPHA memory routing",
+          "hypothesis generation or factor evolution",
+          "complete selected factor library",
+          "Ridge fusion",
+          "Qlib Top-50/drop-5 execution",
+          "native CSI300 data",
+          "paper result"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/xalpha/manifest.json",
+          "sha256": "d58aaec62818168b90b500ed579ae25d780c48d08178c156cfd431be9b00fa28",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M063",
+      "title": "Fin-Analyst at FinMMEval 2026 Task 3: A Live Hybrid Trading Agent with LLM Specialists and Rule-Based Signals",
+      "canonical_work_id": "CensusArxiv260712233",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M063_fin_analyst/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M063_fin_analyst/verdict.md",
+      "existing_scope": "No common-task return: 97 official TSLA/BTC decisions and 33 paper cells have strong replay/scorer lineage, but they are historical two-asset outputs rather than a causal rule for generating monthly top-1,000 U.S. stock scores. The hybrid model/text/vote state is unavailable for the common history.",
+      "existing_closure_reason": "Current public surfaces remain unchanged. JKP cannot recreate asset-specific LLM/text/sentiment votes or infer decisions for other securities, and mapping two-asset output replay or generic momentum to the common universe would replace the hybrid policy.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "a2f757cc776d06a18d4cae7a94793e292ad6dd629d1aaf1295809c36d71cee17",
+      "prior_documented_limitations": {},
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/fin_analyst/manifest.json",
+          "sha256": "0ffc643e326b3d7ae69426f3b151eb530dfc70d5c123d0b3c385ce85d4683334",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M064",
+      "title": "AlphaSchema: Exploring the Space of Trading Semantics for LLM-Based Alpha Mining",
+      "canonical_work_id": "CensusArxiv260726642",
+      "existing_strict_status": "completed_partial",
+      "existing_recipe": "paper_runs/us_jkp_headline/M064_alphaschema/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M064_alphaschema/verdict.md",
+      "existing_scope": "The paper's complete example schema-realized factor preserves its source plan, best period 20, positive Rank-IC direction, price-volume synergy, reference distance, cooldown, and event-memory semantics on monthly JKP bars, then uses the common U.S. top-1,000 value-weighted decile portfolio, costs, missingness, and JKP133 attribution.",
+      "existing_closure_reason": "The strongest source-selected executable factor produced a complete 305-month common-benchmark path. At 10 bp one-way costs its CAGR is 0.70%, Sharpe 0.127, maximum drawdown -62.63%, and rolling JKP133 residual mean 1.88% annually (HAC t=0.627, p=0.5305).",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "270e78fe5c15224bb4a32abc1c47d30b5e69d964305273cbf270ba55c90e0d9b",
+      "prior_documented_limitations": {
+        "not_claimed": [
+          "AlphaSchema semantic search",
+          "LLM code generation/repair",
+          "reward-model exploitation or mutation",
+          "120/150-factor pools",
+          "LightGBM combination",
+          "Qlib Top-50/drop-5 strategy",
+          "paper result"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/alphaschema/manifest.json",
+          "sha256": "e270a848fb12d163d9dd2849144ea9fb3b7848265a9eb052d5b247d551a427c1",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M065",
+      "title": "FactorMAD: A Multi-Agent Debate Framework Based on Large Language Models for Interpretable Stock Alpha Factor Mining",
+      "canonical_work_id": "CensusDOI10114537682923770377",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M065_factormad/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M065_factormad/verdict.md",
+      "existing_scope": "No common-task return: 13 paper-derived mechanics pass controlled checks, but the debate-generated factor programs, library, prompts, thresholds, validation/correction traces, fitted models, predictions, holdings, and returns are unavailable. No attributable score formula exists.",
+      "existing_closure_reason": "Fresh search finds only two unaffiliated post-paper skills and no DOI-linked release. JKP can evaluate disclosed factors but cannot infer the missing debate output, while the local narrative proxy has no FactorMAD method or result lineage.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "d08b250dc98dcec9194ca9c49306ba164c27ea051d7a6d11905db9d08a5e4fa5",
+      "prior_documented_limitations": {},
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/factormad/manifest.json",
+          "sha256": "77db38576b854aca7d49e623a4daee02b60ae48eda6ec42b66957581169fb250",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M066",
+      "title": "AlphaAgentEvo: Evolution-Oriented Alpha Mining via Self-Evolving Agentic Reinforcement Learning",
+      "canonical_work_id": "CensusORlNmZrawUMu",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M066_alphaagentevo/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M066_alphaagentevo/verdict.md",
+      "existing_scope": "No common-task return: the accepted paper specifies a self-evolving agentic RL miner but releases no accessible supplement, author code, learned checkpoint, offspring factor, score, holdings, or result arrays. Two later third-party candidates materially diverge and lack author attribution.",
+      "existing_closure_reason": "The listed supplement remains 404 and the OpenReview API returns 403; no alternative author release exists. JKP can evaluate a disclosed alpha but cannot infer the missing learned policy or offspring formulas, and the third-party candidates are not faithful substitutes.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "c5870e9afe2b5d596bf04c4849857425ff5a618afd8bd69c9918cce0cb6a8463",
+      "prior_documented_limitations": {},
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/alphaagentevo/manifest.json",
+          "sha256": "e20a7dd715a0952379ee79691796dc8bf6264b28a0767684ee87408697405c51",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M067",
+      "title": "RAPTOR: Reasoned Agentic Portfolio Trading with Orchestrated Rebalancing",
+      "canonical_work_id": "CensusORziuTkKhgT0",
+      "existing_strict_status": "closed_not_evaluable",
+      "existing_recipe": "paper_runs/us_jkp_headline/M067_raptor/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M067_raptor/verdict.md",
+      "existing_scope": "No common-task return: 166 author snapshots, 18 author-output scalar results, 29/42 verified scalars across all routes, and three raster curves provide strong output evidence, but the paper-time multimodal inputs, agent views, full actions/blackboard, and runnable backtest are absent. Output replay is not a transferable policy.",
+      "existing_closure_reason": "The author heads remain unchanged and still lack the missing price/API inputs and full decision traces. JKP cannot reconstruct multi-agent views, while extrapolating one 2025 output path or January decisions across the common history would fabricate actions.",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "bb60a4ae0f290c13dcbdb4687b7493450cfdd3db54ae19a0d92c1fcaea959b66",
+      "prior_documented_limitations": {},
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/raptor/manifest.json",
+          "sha256": "b627a62461fb866e800c11566d38e620eafc8766834b8c353ffb82c4448c67a6",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M068",
+      "title": "Alpha-GPT: Human-AI Interactive Alpha Mining for Quantitative Investment",
+      "canonical_work_id": "WorkAlphaGPT",
+      "existing_strict_status": "completed_partial",
+      "existing_recipe": "paper_runs/us_jkp_headline/M068_alphagpt/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M068_alphagpt/verdict.md",
+      "existing_scope": "The first source-ordered arity-valid Alpha-GPT formula, 20-bar volume-price correlation with cross-sectional z-scoring, is evaluated in its literal orientation on monthly JKP bars using the common U.S. top-1,000 value-weighted decile portfolio, costs, missingness, and JKP133 attribution. This is not the interactive mining/search system.",
+      "existing_closure_reason": "The strongest source-ordered executable formula partial produced a complete 305-month common-benchmark path. At 10 bp one-way costs its CAGR is 3.73%, Sharpe 0.281, maximum drawdown -50.27%, and rolling JKP133 residual mean 3.82% annually (HAC t=1.353, p=0.1759).",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "0552c89650c2027474d8c3e5ee84e9ecf8fda8cb8a52022476008a263e27b78a",
+      "prior_documented_limitations": {
+        "not_claimed": [
+          "Alpha-GPT human interaction",
+          "LLM alpha generation",
+          "genetic-program search",
+          "complete generated alpha set",
+          "native market data/evaluator",
+          "paper result"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/alpha_gpt_lineage/manifest.json",
+          "sha256": "9799932dd5fba3c5eb83a670a03e43020919e83f599b61acaeca15175fc736a1",
+          "status": null,
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    },
+    {
+      "id": "M069",
+      "title": "Automate Strategy Finding with LLM in Quant Investment",
+      "canonical_work_id": "WorkAutomateStrategy",
+      "existing_strict_status": "completed_partial",
+      "existing_recipe": "paper_runs/us_jkp_headline/M069_strategy_finding/recipe.json",
+      "existing_verdict": "paper_runs/us_jkp_headline/M069_strategy_finding/verdict.md",
+      "existing_scope": "The first Table 3 selected alpha, CLOSE minus its 14-bar lag, preserves its paper-era formula and positive author-workbook IC direction on monthly JKP bars, then uses the common U.S. top-1,000 value-weighted decile portfolio, costs, missingness, and JKP133 attribution. This is not the integrated GPT/DNN strategy.",
+      "existing_closure_reason": "The strongest source-selected executable component produced a complete 305-month common-benchmark path. At 10 bp one-way costs its CAGR is 3.20%, Sharpe 0.256, maximum drawdown -39.11%, and rolling JKP133 residual mean 2.11% annually (HAC t=0.924, p=0.3557).",
+      "fidelity_completion_status": "prior_source_evidence_reviewed_residual_limits_recorded",
+      "cohort_case": null,
+      "full_original_paper_reproduced": false,
+      "source_evidence_indexed": true,
+      "strict_recipe_sha256": "415cfb5488ff4e10bbdc00825b546e3e3beede4dfd02891103fc9857a1846b1c",
+      "prior_documented_limitations": {
+        "not_claimed": [
+          "GPT-4o factor comparison",
+          "complete 100-alpha SAF",
+          "12-alpha learned weights or combined IC",
+          "DNN prediction",
+          "top-13/drop-5 portfolio",
+          "paper integrated return"
+        ]
+      },
+      "native_audit_links": [
+        {
+          "path": "paper_runs/paper_replication_audits/automate_strategy_finding/manifest.json",
+          "sha256": "d06420db4c3d6ce96909f288c8c4301ca9ca578e2db06cf8ad81ae9bc58a8889",
+          "status": "not_reproduced_missing_integrated_native_output",
+          "matching_basis": "explicit recipe audit path, matching paper identifier, or manually verified same-paper folder identity",
+          "full_paper_reproduced": false
+        }
+      ],
+      "independent_human_review_complete": false
+    }
+  ],
+  "unresolved_native_audit_links": [],
+  "rule": "Never equate audit closure, surrogate execution or component rerun with full original-paper reproduction. Preserve concrete source/input/model/budget limitations.",
+  "source_availability_date": "Inherited pinned audits; no assertion that every upstream repository was freshly re-audited today."
+}

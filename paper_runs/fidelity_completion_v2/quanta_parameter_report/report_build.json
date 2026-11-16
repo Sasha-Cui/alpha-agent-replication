@@ -1,0 +1,15 @@
+{
+  "builder_sha256": "00f42268cb0141f92be82f472e5e58cef644bcfff09a7cbf6218ea6f7f5edc49",
+  "canonical_analysis_completion_sha256": "8394e0f8d5f47825425a94d83f5e789e69fd3438614aa8c81c93cce6c4625fd7",
+  "economic_audit_sha256": "bb7673ac3442880cfd456c82c8f1afc5b8153d1945a3894424461a79ffa0f479",
+  "independent_human_review": false,
+  "inputs": {
+    "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/paper_runs/fidelity_completion_v2/quanta_paper_parameter_sensitivity/comparisons.json": "cdb21b954110845bbeeb9639eec91ce9f3ea3168da2aa503ab35c307375bb879",
+    "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/paper_runs/fidelity_completion_v2/quanta_paper_parameter_sensitivity/daily_net_returns.csv": "57cc6f465a33b20a2300a19ea9dcbccdfcb47fd0895729c3fc8412d5e2e35482",
+    "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/paper_runs/fidelity_completion_v2/quanta_paper_parameter_sensitivity/execution_evidence.json": "e430add8e024a36bcaeeb0d0bba04d207e525cc5c626ebd5a1200998bef398fc",
+    "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/paper_runs/fidelity_completion_v2/quanta_paper_parameter_sensitivity/performance.json": "5279b0b93300f5bfbf491107f1a04315a14899065406a13467ed3243513de38e",
+    "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/paper_runs/fidelity_completion_v2/quanta_paper_parameter_sensitivity/source_evidence.json": "6c530445710cd44a3a3bd31af55b97ccce21a452d6f279f5ed29ffa66367c7de"
+  },
+  "new_study_execution": false,
+  "status": "built_pending_numeric_and_assistant_visual_QA"
+}

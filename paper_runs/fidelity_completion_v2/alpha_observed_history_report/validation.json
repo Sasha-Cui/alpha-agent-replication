@@ -1,0 +1,59 @@
+{
+  "all20_outcomes_retained": true,
+  "assistant_visual_review": {
+    "human_source_attestation": false,
+    "legends_clear": true,
+    "method": "Both remote-generated preview images were displayed to the assistant and inspected; final PNG/preview bytes match those inspected.",
+    "no_clipping_or_overlapping_labels": true,
+    "readable_contrast": true,
+    "reviewed_at_utc": "2026-09-18T11:49:38.363428+00:00"
+  },
+  "comparisons_recomputed": 2,
+  "each_figure_followed_by_table": true,
+  "exact_calendar_sessions": 238,
+  "figure_text_within_canvas": true,
+  "figures": [
+    {
+      "path": "visual_figures/opening_wealth.png",
+      "pixel_std": 33.33012055073524,
+      "sha256": "43d95569c43c0f6ea46743f64149f56eb8426b24e9e700dfa730d570db9ba967",
+      "shape": [
+        864,
+        1600,
+        3
+      ]
+    },
+    {
+      "path": "visual_figures/paired_intervals.png",
+      "pixel_std": 31.151223664339664,
+      "sha256": "b3bb47d8c029f754f77df2a7c0aa18aa4b4b8400170fa314d7f4a1c3a3ce497b",
+      "shape": [
+        752,
+        1600,
+        3
+      ]
+    }
+  ],
+  "human_attestation": null,
+  "links_exist": true,
+  "no_image_report_pass": true,
+  "outputs": {
+    "REPORT.md": "4b672cdbfa500176c0c9f1c76dc738a2f5d181927cad6b9129f570262854077c",
+    "VISUAL_REPORT.md": "379ddbc23f33a9d838215e099f870e9ec8e5aebe5fcb0c85179894d504662915",
+    "contract.json": "840d6526b2010573b8226652addf42a499dc5065abd579b58d564aef14731937",
+    "lineage.json": "ea31ce231a2a3874236c165b7c87a643c7248a2e05b3360b8f9a6e7e0f438651",
+    "visual_figures/opening_wealth.pdf": "ecdbff42a8a05061964c151c5b14a8608d455db2b4fa5c76be38cf3574801ae1",
+    "visual_figures/opening_wealth.png": "43d95569c43c0f6ea46743f64149f56eb8426b24e9e700dfa730d570db9ba967",
+    "visual_figures/opening_wealth_preview.png": "3857812e06ae8a3dfe0a040e2a132fbaec91872da820d9831bd74c01ccdf72a0",
+    "visual_figures/paired_intervals.pdf": "3d37411365978d06a9449f51ef68658afb3f65793f5cfef65cd7a30680f0bbf8",
+    "visual_figures/paired_intervals.png": "b3bb47d8c029f754f77df2a7c0aa18aa4b4b8400170fa314d7f4a1c3a3ce497b",
+    "visual_figures/paired_intervals_preview.png": "d3af6d889390e6aa56fb08ff8dd96e4c62815c539d587cdeea44e6866ccb7dba",
+    "visual_tables/all20_source_outcomes.csv": "0be859092958c5edfbfa0d25c290520c55f0b801ae3d6fa491843befb5e8e9de",
+    "visual_tables/comparisons_full_audit.csv": "a5531a84ab60e7ae9b7952d5492be005042514efc3c12f715411499635beaf99",
+    "visual_tables/performance_full_audit.csv": "8f3c4916f51b92acf74f504dc0fdb7bb0e426d1369153e091fb2700fdd4e6539",
+    "visual_tables/processed_features.csv": "cf520dc22f81d91b04c7f933066cd69c839811d5855985d30f39a176bb6a0a79"
+  },
+  "performance_paths_recomputed": 4,
+  "status": "numeric_layout_and_assistant_visual_review_pass",
+  "text_contrast_ratio": 14.102034448456893
+}

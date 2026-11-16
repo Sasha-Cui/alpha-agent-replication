@@ -1,0 +1,12 @@
+study,complete_provider_requests,unavailable_requests,in_flight_requests,known_or_tariff_cost_usd,reserved_bound_usd,committed_usd
+imported_prior_GuruAgents,307,0,0,9.9103025,0.0,9.9103025
+efs_forward_pilot_v1,1,0,0,0.009834,0.0,0.009834
+efs_v1_daily,344,1,0,5.808226,0.036876,5.845102000000001
+embedding_batch_validation_v1,1,0,0,3.65e-05,0.0,3.65e-05
+finagent_native_embedding_validation,1,0,0,1.56e-06,0.0,1.56e-06
+finagent_native_v1,13184,26,0,43.6471941,0.00282204,43.65001614
+finmem_input_summaries_v1,245,0,0,0.2597425,0.0,0.2597425
+finmem_native_actor_v1,3475,2,0,18.3240204,0.20615,18.5301704
+finmem_native_embedding_validation,1,0,0,1.4e-06,0.0,1.4e-06
+publication_dated_summaries_v1,318,1,0,0.2481765,0.0011155,0.24929199999999999
+tradingagents_native_v1,1464,6,0,21.9961557,0.35691,22.3530657

@@ -1,0 +1,20 @@
+{
+  "JKP132_alpha_established_by_this_analysis": false,
+  "conditional_on_frozen_libraries": true,
+  "full_original_paper_reproduced": false,
+  "independent_market_histories_per_case": 1,
+  "new_model_calls": 0,
+  "outputs": {
+    "block_sensitivity.json": "5d567bb1fa70eb4563f81719482324164167f8414d1b1e4b34cc53d0de3b9477",
+    "comparisons.json": "a928fe7509f6564ca4a3c6ac80a6636609673de9dd48a4013d8cc05847e70a43",
+    "daily_net_returns.csv": "6f6db751be3cfd8818a95e539b16984b530d56052b50594b5a72e041a46856f2",
+    "execution_evidence.json": "a17089b5cb3f33b25585fd55a5df6d53b438e0ed2ed5bc2aeb20f98c004737a9",
+    "performance.json": "d81bd6d2220db8db6f726b9a53300c8ed1a8f9a07eb20c79fdcd9ecebbbad3e3"
+  },
+  "plumbing_search_period_only": true,
+  "primary_comparisons": 2,
+  "pristine_confirmatory_claim": false,
+  "protocol_sha256": "0c46328c8b6257f6f3ae4a099842b8d5e5f70e2663b1cbfa18765e17e3c3d92e",
+  "script_sha256": "71b690c7dc9ecff0f66b577ffab6af01ad1d360fc502fb5d2f2a1dced9bb7918",
+  "status": "search_period_pipeline_check_complete"
+}

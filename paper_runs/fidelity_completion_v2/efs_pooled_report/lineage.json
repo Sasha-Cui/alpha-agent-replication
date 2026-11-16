@@ -1,0 +1,42 @@
+{
+  "analysis_completion_sha256": "1af92366cf33de5b266df0f1a6cb2aae5f66b635cd036ca15861421c39a1fae9",
+  "builder_sha256": "9922b0735826f645186963e32195e34ad9094e747c1198770c06b4e0904c420e",
+  "collector_completion_sha256": "6f03e1e4cb73694e05b61a95d629697308e624190286da1e3d25d30ff82dab4a",
+  "collector_snapshot": "paper_runs/fidelity_completion_v2/project_primary_family/0683d5d31e026175",
+  "executed_analyzer_sha256": "fbc84accc6af5ddc22cda43b136954723012cd1c30f42bf18ec1047fe4bf4f37",
+  "helper_sha256": "18faed2601356feb2bfc9807ef770fbf1098ba6d4757034c499b072731e144ad",
+  "new_model_calls": 0,
+  "no_frozen_results_overwritten": true,
+  "pool_bindings": [
+    {
+      "completion_sha256": "c9a29a92d2d27bcb2244dcbc9c8438646b48a5f30b8d6f70cfa44e09b18a1d0d",
+      "group": "grammar_101_103",
+      "library_factors": 1104,
+      "maximum_reaccounting_difference": 9.35015953551499e-16
+    },
+    {
+      "completion_sha256": "65c9e96abd67de18e237cce712e0dfa643741e6a93a952139366c0a0c28c53e2",
+      "group": "gpt41",
+      "library_factors": 1820,
+      "maximum_reaccounting_difference": 9.35015953551499e-16
+    },
+    {
+      "completion_sha256": "e8320e43151ca900132ddca71c85ed74ee7375dc235476b0e35a6aef797cb3cf",
+      "group": "deepseek_v3",
+      "library_factors": 2198,
+      "maximum_reaccounting_difference": 9.35015953551499e-16
+    }
+  ],
+  "private_output_hashes": {
+    "deepseek_v3_allocation_returns.csv": "1921d9626415c7273390f1f3abba61b52f2d479dd70203b56cf5fb5b82ec95dd",
+    "deepseek_v3_allocation_weights.npz": "ce02d7d5edc9267f526a0c2faee19b1702d461156deea471c9eb7d29b8dd21b7",
+    "deepseek_v3_pca5_ridge_reconstruction.csv": "68ebe3ec1ce3f122505b5bef553dbb90ce34ab93f65bbcf7a509dbdb4b254e40",
+    "deepseek_v3_ridge_all_factors_reconstruction.csv": "f6dcf937336e4842e75af85f16f55af94955f04bc8ad7fef8a6cc88684d56321",
+    "gpt41_allocation_returns.csv": "49ee8d6c9fc5dcf5534ee8cfe35afb010569f44ff4ff680ea0f1bd4de52bf674",
+    "gpt41_allocation_weights.npz": "1a94d7649567affcf84207096cc8a93b769846d11b52b2ec4298a6de38e2a545",
+    "gpt41_pca5_ridge_reconstruction.csv": "8c41f2b8b4712a0c225eb395faaf4881ac2dcf4dd80c7fe427ec2caa2cc8abef",
+    "gpt41_ridge_all_factors_reconstruction.csv": "de01af0bc4b2559ac79e7c0f61782e184ff3b7482188adf07078a14a199f9c5d",
+    "grammar_allocation_returns.csv": "913404075a13acec3b3ad4372ea83f8bfb75e21f3f96ec6fe3330fcd16efb74b",
+    "grammar_allocation_weights.npz": "ed3005f35c317da1d8bb36cbc20a75e34741395cd10453b9455e639c154708b4"
+  }
+}

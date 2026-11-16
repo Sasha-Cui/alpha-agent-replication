@@ -1,0 +1,20 @@
+{
+  "account_days": 1510,
+  "allocation_is_net_deployable_fund": false,
+  "available_project_cases": 3,
+  "block_months": 18,
+  "grammar_seeds": [
+    101,
+    102,
+    103
+  ],
+  "groups": 4,
+  "matched_trajectory_count": 3,
+  "primary_cost_bps": 10,
+  "primary_frequency": 12,
+  "primary_months": 72,
+  "project_correction_denominator": 4,
+  "regularized_projection_is_tradable_forecast": false,
+  "strict_alpha_unavailable": true,
+  "unrestricted134_parameter_OLS_identified": false
+}

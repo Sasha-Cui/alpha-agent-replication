@@ -1,0 +1,7 @@
+Case,Paired observations,Effect (pp/year),Primary interval
+EFS,72 months,+13.18,"[-19.5, 45.9]"
+GuruAgents,36 months,-2.29,"[-10.1, 5.6]"
+QuantaAlpha,48 months,-1.48,"[-21.7, 18.8]"
+FinMem,127 days,-2.10,"[-111.2, 107.0]"
+TradingAgents,61 days,-6.33,"[-293.6, 281.0]"
+FinAgent,147 days,-14.61,"[-162.2, 133.0]"

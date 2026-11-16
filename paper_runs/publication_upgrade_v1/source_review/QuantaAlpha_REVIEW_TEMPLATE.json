@@ -1,0 +1,23 @@
+{
+  "allowed_verdicts": [
+    "approved_for_conditional_mechanism_comparison",
+    "changes_required",
+    "not_economically_comparable"
+  ],
+  "case": "QuantaAlpha",
+  "human_attestation": null,
+  "independent_of_implementation": null,
+  "judgments": {
+    "claim_boundary": null,
+    "control": null,
+    "economics": null,
+    "information": null,
+    "mechanism": null
+  },
+  "packet_sha256": "7c9402addcd52ffa219badf953dfeb2af8e5ceb60da26cf3bd62aee677f995a4",
+  "required_changes": [],
+  "reviewed_at_utc": null,
+  "reviewer_name": null,
+  "reviewer_relationship_to_implementation": null,
+  "verdict": null
+}

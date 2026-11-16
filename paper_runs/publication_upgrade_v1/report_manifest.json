@@ -1,0 +1,104 @@
+{
+  "analysis_file_sha256": {
+    "controlled_adaptations.csv": "5715cd2163ed1f62ab2191a37cca67b2eadfd3b7881f2dfb19da5c4f75190752",
+    "economic_performance.csv": "2bdc4304337c692c97f6999b448d09d489ed6af50534c24b9be53338609ccf1a",
+    "factor_attribution.csv": "e274b076060dc50f6d80c7ffe06ce3437c5febfcf851b1804a2a251c517f663b",
+    "finmem_source_scores.json": "0aabf74f50fd127e1b3be8b65d4968b708910e1e7f2ffceb28c4fc3ba73c29e8",
+    "independent_account_validation.json": "4f5fee96e1cd029c29d791f5d2ae5a5d9217fb0ee247168752397c3a080c56ef",
+    "paired_effects.csv": "61f1366c992618a16148696b47a9dab860175dd5201cbcc0478a60e718daa7b0",
+    "regularized_projection_diagnostics.csv": "3b8466943a51d0513cfeec638253515c6e17d260d5926340435e2ebfc0983068",
+    "status.json": "feb7e3cfe78f3de986da540f2e0ea3cd77f67ee7c9ca3ec7101790baf6da5f91"
+  },
+  "analysis_status": {
+    "complete_cases": [
+      "EFS",
+      "GuruAgents",
+      "QuantaAlpha",
+      "FinMem",
+      "TradingAgents",
+      "FinAgent"
+    ],
+    "economic_margin": 0.02,
+    "human_review": "pending",
+    "interpretation": "Historical conditional mechanism comparisons; no insignificant result is treated as proof of no alpha. Model-seed uncertainty is not estimated.",
+    "nominal_primary_confidence": 0.99,
+    "open_cases": [],
+    "primary_comparisons": 6,
+    "prospective_returns": "not_yet_observed",
+    "script_sha256": "2a79af62f5602284a2991d01b3526ead85b9b3f93c66cd533ea188fbcc94678f",
+    "source_paper_reproduction_claim": false,
+    "status": "complete"
+  },
+  "builder_sha256": "9fb5b92785706543dbd12ce948e13a638bc4b76e8b8069579a8cf3a5c1154c07",
+  "explicit_colors": {
+    "background": "#ffffff",
+    "control": "#b45309",
+    "foreground": "#172033",
+    "tested": "#145da0"
+  },
+  "figures": [
+    {
+      "audit": "analysis/paired_effects.csv",
+      "image": "visual_figures/paired_effects.png",
+      "name": "paired_effects",
+      "presentation_table": "visual_tables/paired_effects.csv"
+    },
+    {
+      "audit": "analysis/economic_performance.csv",
+      "image": "visual_figures/paths_long.png",
+      "name": "paths_long",
+      "presentation_table": "visual_tables/paths_long.csv"
+    },
+    {
+      "audit": "analysis/economic_performance.csv",
+      "image": "visual_figures/paths_short.png",
+      "name": "paths_short",
+      "presentation_table": "visual_tables/paths_short.csv"
+    },
+    {
+      "audit": "analysis/controlled_adaptations.csv",
+      "image": "visual_figures/efs_cost_and_cadence.png",
+      "name": "efs_cost_and_cadence",
+      "presentation_table": "visual_tables/efs_cost_and_cadence.csv"
+    },
+    {
+      "audit": "analysis/controlled_adaptations.csv",
+      "image": "visual_figures/guru_information_lag.png",
+      "name": "guru_information_lag",
+      "presentation_table": "visual_tables/guru_information_lag.csv"
+    },
+    {
+      "audit": "quantaalpha_native_metrics.json",
+      "image": "visual_figures/quanta_predictive_economic.png",
+      "name": "quanta_predictive_economic",
+      "presentation_table": "visual_tables/quanta_predictive_economic.csv"
+    },
+    {
+      "audit": "visual_tables/calibration_full_audit.csv",
+      "image": "visual_figures/inference_calibration.png",
+      "name": "inference_calibration",
+      "presentation_table": "visual_tables/inference_calibration.csv"
+    },
+    {
+      "audit": "jkp_allocation_diagnostic/metrics.csv",
+      "image": "visual_figures/jkp_allocation.png",
+      "name": "jkp_allocation",
+      "presentation_table": "visual_tables/jkp_allocation.csv"
+    },
+    {
+      "audit": "prospective_summary.json",
+      "image": "visual_figures/prospective_timeline.png",
+      "name": "prospective_timeline",
+      "presentation_table": "visual_tables/prospective_timeline.csv"
+    }
+  ],
+  "human_review_complete": false,
+  "no_image_report": "REPORT.md",
+  "pdf": "manuscript.pdf",
+  "pdf_sha256": "8cc18d9c6d1360b138eac177818c9be1ec2a7e3cdd4ec3da8e5064febc5f8bd1",
+  "primary_calibration_maximum_coverage": 400,
+  "primary_calibration_minimum_coverage": 0.984,
+  "spend_summary_sha256": "8cf4a639a824156f7e0ef2d01f2f1b91dc4c0adcf2d11aa4ddd0c2dc7e2eed59",
+  "status": "complete",
+  "visual_report": "VISUAL_REPORT.md"
+}

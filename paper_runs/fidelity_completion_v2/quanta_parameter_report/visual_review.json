@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "Readable explicit foreground/background colors",
+    "No clipped or overlapping labels, legends or intervals",
+    "Forest plot uses grouped estimates and pointwise99 intervals with2pp margin band",
+    "Wealth panels use identical y-limits and saved963-session net paths",
+    "Numbers and roles agree with adjacent generated tables"
+  ],
+  "independent_human_source_review": false,
+  "method": "Both final PNGs streamed directly from Bouchet and actually inspected by the assistant; no local project copy.",
+  "model_factor_account_reruns": 0,
+  "presentation_revision": "Matched the two wealth-panel y-axis scales before final inspection",
+  "recorded_at_utc": "2026-09-20T22:00:33.235215+00:00",
+  "reviewed_images": [
+    {
+      "path": "visual_figures/effects_99.png",
+      "sha256": "00268f731cf8d7be0e585326ba3bced33081c431657be71f51b152e1568eb5f1"
+    },
+    {
+      "path": "visual_figures/opening_wealth.png",
+      "sha256": "6c63c66f59b0f831c06e6c2a9672dc10f32cf51110c50e5a7537696ad0a7a2c9"
+    }
+  ],
+  "status": "assistant_actual_visual_review_pass"
+}

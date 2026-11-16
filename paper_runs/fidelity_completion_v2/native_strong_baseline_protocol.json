@@ -1,0 +1,14 @@
+{
+  "frozen_at_utc": "2026-09-17T10:59:48.243688+00:00",
+  "scope": "Additional secondary controls for native factor searches; source four-feature baselines remain primary conformance controls.",
+  "arms": [
+    "source four-feature baseline",
+    "fixed new source-used factor library plus source four features",
+    "native Qlib Alpha158 baseline",
+    "same Alpha158 plus fixed new source-used factor library"
+  ],
+  "settings": "Preserve each source market/train/validation/model/cost/portfolio settings across its arms. Replace only the feature set. No retuning or selection on the evaluation period. Apply the same mechanical label embargo to every arm.",
+  "selection": "Export every actually consumed native matrix column and exact code from native snapshots. Deduplicate exact expressions only after proving identical numerical columns; retain source-feedback acceptance as a separate flag. Do not promote the best trial based on new-period performance.",
+  "JKP_claim_boundary": "Chinese Alpha158 comparisons are not JKP132 attribution. A U.S./JKP claim requires separately evidenced U.S. data and valid transfer.",
+  "prior_results_visible": "Prior v1 released-library results and historical audits were visible, so these new comparisons are exploratory, not pristine confirmatory tests."
+}

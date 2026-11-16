@@ -1,0 +1,210 @@
+{
+  "all13_asset_rows_exact": true,
+  "all208_equity_metrics_exact": true,
+  "all69_full_titles_in_pdf": true,
+  "archived_bibliography_URLs_exact": true,
+  "builder_sha256": "5536f57cd6c7e10b2f1872c28386797b70b9388ce5e72647b4f7ab726c4c01c6",
+  "canonical_comparison_fields_exact": true,
+  "contrast": [
+    {
+      "background": "#ffffff",
+      "foreground": "#172b4d",
+      "ratio": 14.102034448456891
+    },
+    {
+      "background": "#eef4f8",
+      "foreground": "#172b4d",
+      "ratio": 12.712758557124051
+    },
+    {
+      "background": "#075985",
+      "foreground": "#ffffff",
+      "ratio": 7.562998081458594
+    },
+    {
+      "background": "#ffffff",
+      "foreground": "#475569",
+      "ratio": 7.577663953533317
+    },
+    {
+      "background": "#fef3c7",
+      "foreground": "#854d0e",
+      "ratio": 6.152649034202301
+    }
+  ],
+  "equity_display_wealth_rounding_and_bold_winners_verified": true,
+  "equity_records": 3877,
+  "figures": [
+    {
+      "path": "paper_runs/fidelity_completion_v2/manuscript_v2/figures/aggregate_wealth.png",
+      "sha256": "c1f952d32fbfe1daea237ac6f7ef4cb278e6847511276c92292f3a88d7ae2005"
+    },
+    {
+      "path": "paper_runs/fidelity_completion_v2/manuscript_v2/figures/asset_wealth_gaps.png",
+      "sha256": "67fee50a0b98ae4d6adf844421c4b6a9cf2454ed6d65488a3d2ef58fe3363470"
+    },
+    {
+      "path": "paper_runs/fidelity_completion_v2/manuscript_v2/figures/evidence_scope.png",
+      "sha256": "51a3770cbfde32a533f488258c6f7aa9008f803c3b8070e26e9c10f2b8c615e1"
+    },
+    {
+      "path": "paper_runs/fidelity_completion_v2/manuscript_v2/figures/exploratory_effects.png",
+      "sha256": "83b6d27b2ef5329f680591c1f7e54a82f19acc7c336d6d40fe794a33c3af57f8"
+    },
+    {
+      "path": "paper_runs/fidelity_completion_v2/manuscript_v2/figures/primary_available.png",
+      "sha256": "31701a0c3fe270d302be6e821e07dad015c7fd672fe441356b6bb0118dc48310"
+    }
+  ],
+  "final_publication_or_archive_readiness": false,
+  "financial_recalculations": 0,
+  "historical_methods": 3,
+  "independent_human_review": false,
+  "input_files": 173,
+  "ledger_mutations": 0,
+  "model_calls": 0,
+  "page_checks": [
+    {
+      "characters": 2637,
+      "header_footer_present": true,
+      "page": 1,
+      "text_within_bounds": true
+    },
+    {
+      "characters": 1433,
+      "header_footer_present": true,
+      "page": 2,
+      "text_within_bounds": true
+    },
+    {
+      "characters": 2397,
+      "header_footer_present": true,
+      "page": 3,
+      "text_within_bounds": true
+    },
+    {
+      "characters": 1500,
+      "header_footer_present": true,
+      "page": 4,
+      "text_within_bounds": true
+    },
+    {
+      "characters": 2155,
+      "header_footer_present": true,
+      "page": 5,
+      "text_within_bounds": true
+    },
+    {
+      "characters": 2328,
+      "header_footer_present": true,
+      "page": 6,
+      "text_within_bounds": true
+    },
+    {
+      "characters": 1549,
+      "header_footer_present": true,
+      "page": 7,
+      "text_within_bounds": true
+    },
+    {
+      "characters": 2132,
+      "header_footer_present": true,
+      "page": 8,
+      "text_within_bounds": true
+    },
+    {
+      "characters": 2429,
+      "header_footer_present": true,
+      "page": 9,
+      "text_within_bounds": true
+    },
+    {
+      "characters": 1660,
+      "header_footer_present": true,
+      "page": 10,
+      "text_within_bounds": true
+    },
+    {
+      "characters": 1130,
+      "header_footer_present": true,
+      "page": 11,
+      "text_within_bounds": true
+    },
+    {
+      "characters": 2237,
+      "header_footer_present": true,
+      "page": 12,
+      "text_within_bounds": true
+    },
+    {
+      "characters": 1879,
+      "header_footer_present": true,
+      "page": 13,
+      "text_within_bounds": true
+    },
+    {
+      "characters": 2254,
+      "header_footer_present": true,
+      "page": 14,
+      "text_within_bounds": true
+    },
+    {
+      "characters": 2582,
+      "header_footer_present": true,
+      "page": 15,
+      "text_within_bounds": true
+    },
+    {
+      "characters": 1886,
+      "header_footer_present": true,
+      "page": 16,
+      "text_within_bounds": true
+    },
+    {
+      "characters": 1946,
+      "header_footer_present": true,
+      "page": 17,
+      "text_within_bounds": true
+    },
+    {
+      "characters": 1752,
+      "header_footer_present": true,
+      "page": 18,
+      "text_within_bounds": true
+    },
+    {
+      "characters": 1816,
+      "header_footer_present": true,
+      "page": 19,
+      "text_within_bounds": true
+    },
+    {
+      "characters": 1852,
+      "header_footer_present": true,
+      "page": 20,
+      "text_within_bounds": true
+    },
+    {
+      "characters": 1879,
+      "header_footer_present": true,
+      "page": 21,
+      "text_within_bounds": true
+    },
+    {
+      "characters": 1600,
+      "header_footer_present": true,
+      "page": 22,
+      "text_within_bounds": true
+    }
+  ],
+  "paper_links": 69,
+  "pdf_pages": 22,
+  "pdf_sha256": "2c156f08bceb13b9b32395d20e501b3461ddea4dc32ccdeaca8c70981601172c",
+  "primary_available": 3,
+  "primary_denominator": 4,
+  "printed_primary_parameter_legacy_rounding_verified": true,
+  "recorded_at_utc": "2026-09-22T20:31:41.122052+00:00",
+  "status": "PASS_numeric_content_layout_pending_actual_assistant_visual_review",
+  "study_jobs_rerun": 0,
+  "validator_sha256": "e1d4644b21a610fa29385de59844ed367c2580282b70ba145fccf9b4770c40e4"
+}

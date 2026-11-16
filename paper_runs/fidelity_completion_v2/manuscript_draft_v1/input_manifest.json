@@ -1,0 +1,737 @@
+{
+  "AMZN_retry_authorized": false,
+  "bindings": [
+    {
+      "bytes": 1201,
+      "path": "artifacts/fidelity_completion_v2/finagent_AAPL_walltime_continuation_v2_full_replay_validation.json",
+      "sha256": "aa2d11e49dd5396dcc9675de8b4a26db3ec86522f9cb0d6f5cb968c15afb1fdc"
+    },
+    {
+      "bytes": 1316,
+      "path": "artifacts/fidelity_completion_v2/finagent_GOOGL_company_news_xml_repair_full_replay_validation.json",
+      "sha256": "b7c2d3003ebc49b090fcceafafd29e2da38adfa7346c5726736abca148607d70"
+    },
+    {
+      "bytes": 1201,
+      "path": "artifacts/fidelity_completion_v2/finagent_MSFT_walltime_continuation_v2_full_replay_validation.json",
+      "sha256": "d488cc84ba11f9f248cb308ff895618d33e6ae1a66a6d9087755e5a186b184ac"
+    },
+    {
+      "bytes": 1229,
+      "path": "artifacts/fidelity_completion_v2/finagent_TSLA_schema_repair_walltime_continuation_v2_full_replay_validation.json",
+      "sha256": "7fb1077f6d4dc2e910fb9194873318a55ba35ea9a46a586617dff75e3ab2449d"
+    },
+    {
+      "bytes": 11794,
+      "path": "artifacts/fidelity_completion_v2/final_equity_account_jobs.json",
+      "sha256": "c890a8c051be7d74737ecc8049b0fb596f0e48cdf3cd9081efb24c218aa320d7"
+    },
+    {
+      "bytes": 1012,
+      "path": "artifacts/fidelity_completion_v2/finmem_AMZN_full_replay_validation.json",
+      "sha256": "5ce65ae9ae9b466bb2a9f81c8aa1a4a2b83ae6eaffcf40be9bd81ea9ea353414"
+    },
+    {
+      "bytes": 1012,
+      "path": "artifacts/fidelity_completion_v2/finmem_COIN_full_replay_validation.json",
+      "sha256": "a49540fc2119564ca395a2424bb8d6c382b1304a5f734cb2d024aa441940f3fd"
+    },
+    {
+      "bytes": 1012,
+      "path": "artifacts/fidelity_completion_v2/finmem_MSFT_full_replay_validation.json",
+      "sha256": "c08fb23031b4ef073f2f0afac7f9798fa06e4cd50f685e642680c1cd762e89b4"
+    },
+    {
+      "bytes": 1012,
+      "path": "artifacts/fidelity_completion_v2/finmem_NFLX_full_replay_validation.json",
+      "sha256": "a1e1010240033ba74d5466de5eb79e68163a481026919ee66b7418afebbfc847"
+    },
+    {
+      "bytes": 2532,
+      "path": "artifacts/fidelity_completion_v2/manuscript_draft_setup_20260920_2243/historical_method_bindings.json",
+      "sha256": "c81f095d1a371dca550efca9a7d3d4567221e0ca6e91bd15fe2227c388f82e1c"
+    },
+    {
+      "bytes": 6966,
+      "path": "artifacts/fidelity_completion_v2/quanta_parameter_economic_completion_20260920_2141/archive_request_preflight.json",
+      "sha256": "76b6ee10ffb6fec44478b983880c1825282b3819f1baa8c1d7218f5815408a4c"
+    },
+    {
+      "bytes": 420329,
+      "path": "artifacts/fidelity_completion_v2/quanta_parameter_economic_completion_20260920_2141/validation.json",
+      "sha256": "bb7673ac3442880cfd456c82c8f1afc5b8153d1945a3894424461a79ffa0f479"
+    },
+    {
+      "bytes": 12646,
+      "path": "artifacts/fidelity_completion_v2/source_review_snapshots/2026-09-17T203109.455084_0000/evidence/scripts/analyze_native_oos_v2.py",
+      "sha256": "688baa6f46e574c8de1e61ccd171b8f1fbb33c194a2806838dd5311b4c2284d4"
+    },
+    {
+      "bytes": 12140,
+      "path": "artifacts/fidelity_completion_v2/source_review_snapshots/2026-09-17T203109.455084_0000/evidence/scripts/analyze_native_secondary_oos_v2.py",
+      "sha256": "35aa9eef1149332d897a6ac969d807ce8d8838a217a3eea6db66438b6d043d97"
+    },
+    {
+      "bytes": 7584,
+      "path": "artifacts/fidelity_completion_v2/source_review_snapshots/2026-09-17T203109.455084_0000/evidence/scripts/native_secondary_evidence_v2.py",
+      "sha256": "d0728346b55b87960f125d469bcb70663fcec5308789da6ff46435c802925483"
+    },
+    {
+      "bytes": 49111,
+      "path": "artifacts/fidelity_completion_v2/source_review_snapshots/2026-09-17T203109.455084_0000/source_review_evidence_manifest.json",
+      "sha256": "bcc525b9677baccebdaec52cb3bb6e839af60ac99161da3252db9161cbf78db7"
+    },
+    {
+      "bytes": 1031,
+      "path": "artifacts/fidelity_completion_v2/tradingagents_AAPL_full_replay_validation.json",
+      "sha256": "7463cab581d077220301f3e483490fce40463a845fc9228e9ac8048ac03c5708"
+    },
+    {
+      "bytes": 1031,
+      "path": "artifacts/fidelity_completion_v2/tradingagents_AMZN_full_replay_validation.json",
+      "sha256": "f6508ea69981ed2a49c6bf22ec136598846ebe46d406ab98e72d688041153c33"
+    },
+    {
+      "bytes": 1033,
+      "path": "artifacts/fidelity_completion_v2/tradingagents_GOOGL_full_replay_validation.json",
+      "sha256": "a3fa9eab2bbc13b309c4411956a455d5754940028d8738287f3a2bb8b98f6e69"
+    },
+    {
+      "bytes": 1783,
+      "path": "artifacts/fidelity_completion_v2/tradingagents_GOOGL_single_news_source_full_replay_validation.json",
+      "sha256": "87df23b63dca311282a22838d97991c2da674a9ab35751dc4da781618ca33cbd"
+    },
+    {
+      "bytes": 478,
+      "path": "artifacts/publication_upgrade_v1/prospective_efs_v1/latest_forecast_summary.json",
+      "sha256": "0e424c7160f24af3f8c35ac13d7d31098f9d05fba28e6d30df2751e428357ac0"
+    },
+    {
+      "bytes": 1119,
+      "path": "artifacts/publication_upgrade_v1/prospective_efs_v1/outcomes.jsonl",
+      "sha256": "dc3a0e793ae30455298f73024a942c5dd044a5960d4340f71673e2e5e990e590"
+    },
+    {
+      "bytes": 22665,
+      "path": "paper_runs/fidelity_completion_v2/alpha_observed_cost_attribution.json",
+      "sha256": "1d6b523f13334f4d53914c976e20908ba900e92447eff34d0aa5c6cb4a088002"
+    },
+    {
+      "bytes": 3947,
+      "path": "paper_runs/fidelity_completion_v2/alpha_observed_history_sensitivity/comparisons.json",
+      "sha256": "805e8fb84acb64f27ecfac94f2fda5eac30b0e35894701880f780ff761f1f151"
+    },
+    {
+      "bytes": 2108,
+      "path": "paper_runs/fidelity_completion_v2/alpha_observed_history_sensitivity/completion.json",
+      "sha256": "2ba46271423bce725a48b7fd3b35aa6118f356dcf05b7b1dcaf83274d14ce516"
+    },
+    {
+      "bytes": 57147,
+      "path": "paper_runs/fidelity_completion_v2/alpha_observed_history_sensitivity/daily_net_returns.csv",
+      "sha256": "899b0f8204a472acdd2e6cfe17134c89bcd235d4199bf5d3929d68cff8a490c8"
+    },
+    {
+      "bytes": 18968,
+      "path": "paper_runs/fidelity_completion_v2/alpha_observed_history_sensitivity/execution_evidence.json",
+      "sha256": "fa64e64323d588bfcac1286da83a077028f5ed7580a9a4ff5113061830803579"
+    },
+    {
+      "bytes": 83748,
+      "path": "paper_runs/fidelity_completion_v2/alpha_observed_history_sensitivity/observed_source_catalogue.json",
+      "sha256": "67d2f123c3bd414433cfc836b6cae9b1080584c3ec50240c3f7ef7d979997da5"
+    },
+    {
+      "bytes": 1742,
+      "path": "paper_runs/fidelity_completion_v2/alpha_observed_history_sensitivity/performance.json",
+      "sha256": "ddd1656b53f6ea0c8c8b94774234b27f0b0160671dbadc273be3c1f0d41a646a"
+    },
+    {
+      "bytes": 3213,
+      "path": "paper_runs/fidelity_completion_v2/archive_request_handling_v5.json",
+      "sha256": "f40b430c5e70929ba096707ff28bd1cd9ee319ac76943976147b0d474646d448"
+    },
+    {
+      "bytes": 6414,
+      "path": "paper_runs/fidelity_completion_v2/efs_economic_completion.json",
+      "sha256": "11651b539c2f6000b6131de4dfcee9aa8bada98d68406e177750c855b9959ab8"
+    },
+    {
+      "bytes": 1776,
+      "path": "paper_runs/fidelity_completion_v2/efs_pooled_analysis/chronological_reconstruction_diagnostics.json",
+      "sha256": "c5bc8f652c9debe38dd653be47e7bbaac3da84c51ded723fa16185d89b131d93"
+    },
+    {
+      "bytes": 2734,
+      "path": "paper_runs/fidelity_completion_v2/efs_pooled_analysis/completion.json",
+      "sha256": "1af92366cf33de5b266df0f1a6cb2aae5f66b635cd036ca15861421c39a1fae9"
+    },
+    {
+      "bytes": 2670969,
+      "path": "paper_runs/fidelity_completion_v2/efs_pooled_analysis/daily_pool_returns.csv",
+      "sha256": "7faaba76c7493804530469f23cc560676f01e17e66dfb8dd5d7f6975a10eb70a"
+    },
+    {
+      "bytes": 2220,
+      "path": "paper_runs/fidelity_completion_v2/efs_pooled_analysis/descriptive_comparisons.json",
+      "sha256": "3f93702dc4cd9470ef9d8eb90e2b3bddb8c7e2ff6a86772aefa810a0f00c2899"
+    },
+    {
+      "bytes": 658,
+      "path": "paper_runs/fidelity_completion_v2/efs_pooled_analysis/execution_evidence.json",
+      "sha256": "8ae321c78c038cd61528654876c9ff606fc6fd0166387a789f9da173085f3e06"
+    },
+    {
+      "bytes": 3990,
+      "path": "paper_runs/fidelity_completion_v2/efs_pooled_analysis/factor_attribution_diagnostics.json",
+      "sha256": "92d4e76966e0c956d07ecf1eee0f09806e6e6aaf6e0fd405faed560bdbc64ddb"
+    },
+    {
+      "bytes": 5191,
+      "path": "paper_runs/fidelity_completion_v2/efs_pooled_analysis/gross_factor_allocation_diagnostics.json",
+      "sha256": "bc5ab104ddc94330c5ccd367694741c05d7b8ba1b97b6379f80ef3b8c01e2bd0"
+    },
+    {
+      "bytes": 20661,
+      "path": "paper_runs/fidelity_completion_v2/efs_pooled_analysis/performance.json",
+      "sha256": "75be9c0aababa316938e5acde2a7cd24ee6ac97476bf36b94d8e52ded4417a6f"
+    },
+    {
+      "bytes": 4000,
+      "path": "paper_runs/fidelity_completion_v2/efs_pooled_analysis/primary_comparisons.json",
+      "sha256": "3e0febb6fcc7905dafb57ab7e99e630fbc8333448a06bd8dc51c8d54bef3bfed"
+    },
+    {
+      "bytes": 6879,
+      "path": "paper_runs/fidelity_completion_v2/native_grouped_oos_quantaalpha/comparisons.json",
+      "sha256": "fae531f2c6b6c9875f775de7b343b047980b9b23dd22020e8f1aa563f7771a2f"
+    },
+    {
+      "bytes": 1451,
+      "path": "paper_runs/fidelity_completion_v2/native_grouped_oos_quantaalpha/completion.json",
+      "sha256": "5924ef7f07cabc35b51b35ca3f34bb6948efd15091fcb3251e63c1b3e5657121"
+    },
+    {
+      "bytes": 553329,
+      "path": "paper_runs/fidelity_completion_v2/native_grouped_oos_quantaalpha/daily_net_returns.csv",
+      "sha256": "ca66191ad4ba6ed0801bfa3acb31c23c03b0bbedeff7d41e61f356d6db403cd3"
+    },
+    {
+      "bytes": 5213,
+      "path": "paper_runs/fidelity_completion_v2/native_grouped_oos_quantaalpha/execution_evidence.json",
+      "sha256": "a61970a0ac10cfb66c94dad0ce5a750cdfd2dfa8844300683e50c4e2128ec270"
+    },
+    {
+      "bytes": 3722,
+      "path": "paper_runs/fidelity_completion_v2/native_grouped_oos_quantaalpha/performance.json",
+      "sha256": "794280ca68d4e1226666bcb4109e6313796bac09e1266ae1e1b3ee68513534ef"
+    },
+    {
+      "bytes": 55201,
+      "path": "paper_runs/fidelity_completion_v2/native_secondary_oos_quantaalpha/comparisons.json",
+      "sha256": "199888aaafe9554a36e1e421ce990fb4fc639ec5f6380cab91300b9a45db9b40"
+    },
+    {
+      "bytes": 1906,
+      "path": "paper_runs/fidelity_completion_v2/native_secondary_oos_quantaalpha/completion.json",
+      "sha256": "f32cafd01a0d5ce5a1d68e2a13ef6184e0ffde7ee6ac4c9cb4ea5aaf33fa7200"
+    },
+    {
+      "bytes": 4247155,
+      "path": "paper_runs/fidelity_completion_v2/native_secondary_oos_quantaalpha/daily_net_returns.csv",
+      "sha256": "480a5821d507051186d4044c89afbcd286cbc1bfbb3bda7e76a2cb4729f7ade1"
+    },
+    {
+      "bytes": 2018,
+      "path": "paper_runs/fidelity_completion_v2/native_secondary_oos_quantaalpha/descriptive_distribution.json",
+      "sha256": "ec75e8fad4eeb24f5535ecd21261debd3a50435b8f94bad44ea70bcbc2b3ef3f"
+    },
+    {
+      "bytes": 46056,
+      "path": "paper_runs/fidelity_completion_v2/native_secondary_oos_quantaalpha/execution_evidence.json",
+      "sha256": "e22bad24bc92e75dd034c9dfc63a25ff09e87d958ba75161454606caea4b994f"
+    },
+    {
+      "bytes": 20637,
+      "path": "paper_runs/fidelity_completion_v2/native_secondary_oos_quantaalpha/performance.json",
+      "sha256": "f03e0590009bcabc0bf88c7419be6b99d84b9cfec6fb617ec6ae725f188a2a37"
+    },
+    {
+      "bytes": 179248,
+      "path": "paper_runs/fidelity_completion_v2/paper_dispositions.json",
+      "sha256": "27666e0ca526a13ccbdc125fbc10636ce48362e682c8864d2bb91f96a5f0eba4"
+    },
+    {
+      "bytes": 2334,
+      "path": "paper_runs/fidelity_completion_v2/primary_run_overrides.json",
+      "sha256": "63791716191a0e7f359c53398e054d54b63f30e3e91276046ab79dfadd040c15"
+    },
+    {
+      "bytes": 316276,
+      "path": "paper_runs/fidelity_completion_v2/progress.json",
+      "sha256": "9d5f0da88f7f4b25cc2cc91c14720ed20961559234a1f6642c677d6780a8e875"
+    },
+    {
+      "bytes": 7004,
+      "path": "paper_runs/fidelity_completion_v2/project_primary_family/0683d5d31e026175/comparisons.json",
+      "sha256": "b886001ffc79a5f71e381e92b809ffffd944d67babbe50b50840e7a876408377"
+    },
+    {
+      "bytes": 980,
+      "path": "paper_runs/fidelity_completion_v2/project_primary_family/0683d5d31e026175/completion.json",
+      "sha256": "6f03e1e4cb73694e05b61a95d629697308e624190286da1e3d25d30ff82dab4a"
+    },
+    {
+      "bytes": 544,
+      "path": "paper_runs/fidelity_completion_v2/project_primary_family/0683d5d31e026175/evidence.json",
+      "sha256": "0ceacf234893107b664be005f342d0b5859062144287e587eb4c7ebe08ec9f9d"
+    },
+    {
+      "bytes": 185,
+      "path": "paper_runs/fidelity_completion_v2/project_primary_family/latest.json",
+      "sha256": "09da126e0bf19063ddcaf7b24cbd00f83f5f93f38c3ce293293244dc4a3cfd82"
+    },
+    {
+      "bytes": 1208,
+      "path": "paper_runs/fidelity_completion_v2/protocol.json",
+      "sha256": "38a52b2ef4ba58a213fb9992620f48703203c6446881b8a8430056ce5b38709c"
+    },
+    {
+      "bytes": 7555,
+      "path": "paper_runs/fidelity_completion_v2/quanta_paper_parameter_sensitivity/comparisons.json",
+      "sha256": "cdb21b954110845bbeeb9639eec91ce9f3ea3168da2aa503ab35c307375bb879"
+    },
+    {
+      "bytes": 1638,
+      "path": "paper_runs/fidelity_completion_v2/quanta_paper_parameter_sensitivity/completion.json",
+      "sha256": "8394e0f8d5f47825425a94d83f5e789e69fd3438614aa8c81c93cce6c4625fd7"
+    },
+    {
+      "bytes": 1012376,
+      "path": "paper_runs/fidelity_completion_v2/quanta_paper_parameter_sensitivity/daily_net_returns.csv",
+      "sha256": "57cc6f465a33b20a2300a19ea9dcbccdfcb47fd0895729c3fc8412d5e2e35482"
+    },
+    {
+      "bytes": 39201,
+      "path": "paper_runs/fidelity_completion_v2/quanta_paper_parameter_sensitivity/execution_evidence.json",
+      "sha256": "e430add8e024a36bcaeeb0d0bba04d207e525cc5c626ebd5a1200998bef398fc"
+    },
+    {
+      "bytes": 4351,
+      "path": "paper_runs/fidelity_completion_v2/quanta_paper_parameter_sensitivity/performance.json",
+      "sha256": "5279b0b93300f5bfbf491107f1a04315a14899065406a13467ed3243513de38e"
+    },
+    {
+      "bytes": 44524,
+      "path": "paper_runs/fidelity_completion_v2/quanta_paper_parameter_sensitivity/source_evidence.json",
+      "sha256": "6c530445710cd44a3a3bd31af55b97ccce21a452d6f279f5ed29ffa66367c7de"
+    },
+    {
+      "bytes": 68889,
+      "path": "paper_runs/fidelity_completion_v2/quanta_parameter_economic_completion.json",
+      "sha256": "6a9c2bb99157fc0c73d7a72df1189ecf3172c1e347c27271ef70fd342c435e46"
+    },
+    {
+      "bytes": 1636,
+      "path": "paper_runs/fidelity_completion_v2/tradingagents_news_report/policy_diagnostics.json",
+      "sha256": "13f4a3b4278485a7031c6fa79ee808d5d7c1dc6cc1d02960cb16cb081d0ddcbc"
+    },
+    {
+      "bytes": 3523,
+      "path": "paper_runs/paper_replication_audits/aapm/manifest.json",
+      "sha256": "19ecf4fa046caf8940cdf8303e237bd356f8f72e439bc2637bc7370236b77800"
+    },
+    {
+      "bytes": 3116,
+      "path": "paper_runs/paper_replication_audits/agentic_ai_screening/manifest.json",
+      "sha256": "0194e2051ae94674f13d6273738a8016476226b2f1fd4828ed7c7527fafb88b8"
+    },
+    {
+      "bytes": 1360,
+      "path": "paper_runs/paper_replication_audits/agora/manifest.json",
+      "sha256": "f6362dcef21e4ac5ac36a0b36ab64b95515103a23c7af86e31bb56331d48e2f5"
+    },
+    {
+      "bytes": 1575,
+      "path": "paper_runs/paper_replication_audits/alpha_gpt_lineage/manifest.json",
+      "sha256": "9799932dd5fba3c5eb83a670a03e43020919e83f599b61acaeca15175fc736a1"
+    },
+    {
+      "bytes": 5163,
+      "path": "paper_runs/paper_replication_audits/alpha_jungle/manifest.json",
+      "sha256": "b5c932161c6544db7b07ed37a86571ac5523fe571b785c7a8068b495262bbe97"
+    },
+    {
+      "bytes": 8727,
+      "path": "paper_runs/paper_replication_audits/alpha_r1/manifest.json",
+      "sha256": "d22a72592bc4210a700deb10142e991e06f6937d0350d8fae41a30d9bd8cd090"
+    },
+    {
+      "bytes": 21125,
+      "path": "paper_runs/paper_replication_audits/alphaagent/manifest.json",
+      "sha256": "e0f4b491e012914710e7770c819ae717ba643ba8a4940186306ab32820f61677"
+    },
+    {
+      "bytes": 1626,
+      "path": "paper_runs/paper_replication_audits/alphaagentevo/manifest.json",
+      "sha256": "e20a7dd715a0952379ee79691796dc8bf6264b28a0767684ee87408697405c51"
+    },
+    {
+      "bytes": 1588,
+      "path": "paper_runs/paper_replication_audits/alphaagents/manifest.json",
+      "sha256": "637dd678f634de8982342552702985a46fe1c07e9b28bed7202cb2787a843a7e"
+    },
+    {
+      "bytes": 4058,
+      "path": "paper_runs/paper_replication_audits/alphacrafter/manifest.json",
+      "sha256": "eac24b6e22142449b795c2ba6033403e8072be6f1a7daf84cf4f29832cd0e897"
+    },
+    {
+      "bytes": 2207,
+      "path": "paper_runs/paper_replication_audits/alphalogics/manifest.json",
+      "sha256": "f1ee4692249d061a1406d037754d9009b2458a019141ad0e6445c5496c68689a"
+    },
+    {
+      "bytes": 12507,
+      "path": "paper_runs/paper_replication_audits/alphamemo/manifest.json",
+      "sha256": "c2b85b64e973ff6c22edbb47ad120e834044262d6891470bd64688f449780a9d"
+    },
+    {
+      "bytes": 10140,
+      "path": "paper_runs/paper_replication_audits/alphaquanter/manifest.json",
+      "sha256": "eb47cb9eb39adb46cb6473eb464e5103506f156164b22a69bff0a838b91a1d77"
+    },
+    {
+      "bytes": 2690,
+      "path": "paper_runs/paper_replication_audits/alphaschema/manifest.json",
+      "sha256": "e270a848fb12d163d9dd2849144ea9fb3b7848265a9eb052d5b247d551a427c1"
+    },
+    {
+      "bytes": 3325,
+      "path": "paper_runs/paper_replication_audits/atlas/manifest.json",
+      "sha256": "d3552ff9e2f872a875b187f2eef102d2640a77ba0c2e6efb5d49c76b6f32b5f8"
+    },
+    {
+      "bytes": 7007,
+      "path": "paper_runs/paper_replication_audits/automate_strategy_finding/manifest.json",
+      "sha256": "d06420db4c3d6ce96909f288c8c4301ca9ca578e2db06cf8ad81ae9bc58a8889"
+    },
+    {
+      "bytes": 1559,
+      "path": "paper_runs/paper_replication_audits/blindtrade/manifest.json",
+      "sha256": "63155afcca3d08087321d06d949fcf0b38909a464919d08d64ac3afbbe25c758"
+    },
+    {
+      "bytes": 3693,
+      "path": "paper_runs/paper_replication_audits/chain_of_alpha/manifest.json",
+      "sha256": "034658f7391e241e20f60539306cc3ae7fd62bb36a4ff43754c5f5c90f3ce994"
+    },
+    {
+      "bytes": 3077,
+      "path": "paper_runs/paper_replication_audits/cogalpha/manifest.json",
+      "sha256": "c8ce2004d9e36b68bdc742990ef96e6d119cd2487c5fcc336fbd4e3b92b772e7"
+    },
+    {
+      "bytes": 11086,
+      "path": "paper_runs/paper_replication_audits/contesttrade/manifest.json",
+      "sha256": "6394c90665eee2447bcb3dcecaf701d2f3d4af1371ebf6923389d8fc48ccdfb4"
+    },
+    {
+      "bytes": 15033,
+      "path": "paper_runs/paper_replication_audits/cryptotrade/manifest.json",
+      "sha256": "fcaab851d68db04a0f0467353165366451b08dc50eb6f536cc4ba7f3c10f5fcf"
+    },
+    {
+      "bytes": 6060,
+      "path": "paper_runs/paper_replication_audits/efs/manifest.json",
+      "sha256": "258389e5dc57d3ddbe47f97f505635e90130ca7f18aede3c7ca5e3406a655d7e"
+    },
+    {
+      "bytes": 3768,
+      "path": "paper_runs/paper_replication_audits/factfin/manifest.json",
+      "sha256": "838103a05842836ec7a27cd98bccdfd028f201440c069afcfe26d67ba601b334"
+    },
+    {
+      "bytes": 1660,
+      "path": "paper_runs/paper_replication_audits/factorengine/manifest.json",
+      "sha256": "6ccd4923b41570fc41fadf389960d2d39e836c744c594356a6060a87aaaefcdf"
+    },
+    {
+      "bytes": 1599,
+      "path": "paper_runs/paper_replication_audits/factormad/manifest.json",
+      "sha256": "77db38576b854aca7d49e623a4daee02b60ae48eda6ec42b66957581169fb250"
+    },
+    {
+      "bytes": 2497,
+      "path": "paper_runs/paper_replication_audits/factorminer/manifest.json",
+      "sha256": "ba6ddbaef576e99f1651fd6a4a460138f60992478bc26026209ea8d9d1b01772"
+    },
+    {
+      "bytes": 1472,
+      "path": "paper_runs/paper_replication_audits/fama/manifest.json",
+      "sha256": "d3b2c07ff42dd3e09005e43f3c3305c6e29d4a30a7bc0101d02a110c5f633d1c"
+    },
+    {
+      "bytes": 5227,
+      "path": "paper_runs/paper_replication_audits/fin_analyst/manifest.json",
+      "sha256": "0ffc643e326b3d7ae69426f3b151eb530dfc70d5c123d0b3c385ce85d4683334"
+    },
+    {
+      "bytes": 7849,
+      "path": "paper_runs/paper_replication_audits/finagent/manifest.json",
+      "sha256": "ce7d418955c91d4f43e9ee911421acf9964d8603fae08e0b13882375964aaa5b"
+    },
+    {
+      "bytes": 5288,
+      "path": "paper_runs/paper_replication_audits/fincon/manifest.json",
+      "sha256": "fc7d7dda87dc0c9eacaf30241d4d09c2fcbf28b70589684a0d9c50cf19556465"
+    },
+    {
+      "bytes": 13022,
+      "path": "paper_runs/paper_replication_audits/finmem/manifest.json",
+      "sha256": "071103d5ab3af93ccd22ec9b0a69444c886db24da18cdd7e634e82627eb43799"
+    },
+    {
+      "bytes": 1823,
+      "path": "paper_runs/paper_replication_audits/finpos/manifest.json",
+      "sha256": "60eea32a3ab6cee93e267aef648879594347617f74c93547f43e95da25e563f3"
+    },
+    {
+      "bytes": 8784,
+      "path": "paper_runs/paper_replication_audits/finrl_deepseek/manifest.json",
+      "sha256": "36b9c305308031ccabf8c68bf06ab4ac9d0bf6d08272492683f7dfd5380bcf1b"
+    },
+    {
+      "bytes": 1536,
+      "path": "paper_runs/paper_replication_audits/finrs/manifest.json",
+      "sha256": "80f2a55b82331ececd043ce259baf2f00c196d7a51f9db0fa98831c321ecbaea"
+    },
+    {
+      "bytes": 3007,
+      "path": "paper_runs/paper_replication_audits/finvision/manifest.json",
+      "sha256": "9471f485d3b5892346986d5f8b1dfe4724fb455fb945770595dd9ddf7fed7887"
+    },
+    {
+      "bytes": 4616,
+      "path": "paper_runs/paper_replication_audits/flag_trader/manifest.json",
+      "sha256": "e1e89baa1a4a6cfef0c221d1c336ebd5171c3c525320918601bfe4086dadaddb"
+    },
+    {
+      "bytes": 2467,
+      "path": "paper_runs/paper_replication_audits/gpt_signal/manifest.json",
+      "sha256": "620fac1631b00d35520622bfb2b38274a3bde9ba1702f571246dcba3207f5f9c"
+    },
+    {
+      "bytes": 7031,
+      "path": "paper_runs/paper_replication_audits/guruagents/manifest.json",
+      "sha256": "3a8697ad47ed8f0f55cf2213ebddc03f59a7c7fa092bcf5e8db436fc4e0a15f7"
+    },
+    {
+      "bytes": 3271,
+      "path": "paper_runs/paper_replication_audits/hedgeagents/manifest.json",
+      "sha256": "ed0d7828ab6bf86ee907819789f80fc7741bebbaa95eea248d4b42116ec68edb"
+    },
+    {
+      "bytes": 1858,
+      "path": "paper_runs/paper_replication_audits/hubble/manifest.json",
+      "sha256": "0bae112d04ad47149aacd3f993a38a063a8449a7fd1e4d7b0bed45fc1bc5f750"
+    },
+    {
+      "bytes": 2802,
+      "path": "paper_runs/paper_replication_audits/janus_q/manifest.json",
+      "sha256": "b5a1dc255385963276298271320a420c4b52313e0acdf068813ca23d5772e0d1"
+    },
+    {
+      "bytes": 1488,
+      "path": "paper_runs/paper_replication_audits/llmfactor/manifest.json",
+      "sha256": "21d678907355832cc90ee84ba7fd3792c352a6de32738229295b90fa546b5037"
+    },
+    {
+      "bytes": 7779,
+      "path": "paper_runs/paper_replication_audits/maci/manifest.json",
+      "sha256": "b5bf330c955abd8e6a7a6f8155abca010eeba2355b43b9553a3297cbd5fb03a9"
+    },
+    {
+      "bytes": 1449,
+      "path": "paper_runs/paper_replication_audits/macro_economists_machine/manifest.json",
+      "sha256": "f4a83615bef1dd04b8fa9ef9cf7b91819f87a48fc1e3cc621a6fa98f86591539"
+    },
+    {
+      "bytes": 2771,
+      "path": "paper_runs/paper_replication_audits/madevolve_trading/manifest.json",
+      "sha256": "0cc0a5badc6e7705cf58da2d41e6f860c1d0f957d2c127135a6406a43a1403b0"
+    },
+    {
+      "bytes": 2829,
+      "path": "paper_runs/paper_replication_audits/marketsenseai/manifest.json",
+      "sha256": "d8fe3bcf1adf616f06a1de3978493626b3a0bedfbceefa3e19a2697c87ef4170"
+    },
+    {
+      "bytes": 8820,
+      "path": "paper_runs/paper_replication_audits/mass/manifest.json",
+      "sha256": "6c78118e53d9b13cbfcaa7c74bfa435ea23b83aac5273c0c7aaa46c63a3b7fc0"
+    },
+    {
+      "bytes": 1369,
+      "path": "paper_runs/paper_replication_audits/metaps/manifest.json",
+      "sha256": "4075e9c1da2069cbe85b3b37105421037ea64dd70b65a5281243b23b925f6eb6"
+    },
+    {
+      "bytes": 3046,
+      "path": "paper_runs/paper_replication_audits/mm_arc/manifest.json",
+      "sha256": "cc0499fa5dfaee06b4672e68a1b4a7c8a0c0984c74e12ec07991846b9ee5d8f0"
+    },
+    {
+      "bytes": 5789,
+      "path": "paper_runs/paper_replication_audits/mountainlion/manifest.json",
+      "sha256": "80655ca8043161858178685b8a6d86c2d0ccdc3208026ade4cd1bb1f615657af"
+    },
+    {
+      "bytes": 6198,
+      "path": "paper_runs/paper_replication_audits/p1gpt/manifest.json",
+      "sha256": "c6202c68a54a348d2f7b1a95e6c914baf7b7c20b7ed0aae94cff5ca0ec6379bc"
+    },
+    {
+      "bytes": 18383,
+      "path": "paper_runs/paper_replication_audits/quantaalpha/manifest.json",
+      "sha256": "a6d28a6eecf66724307fe7d007deeadec292db4ccc607a60c080c843fae8f032"
+    },
+    {
+      "bytes": 1544,
+      "path": "paper_runs/paper_replication_audits/quantagent_self_improving/manifest.json",
+      "sha256": "cabe41a67e038eeb7e67fbb9aad088c648f398246517e56f4fa3a3a2d2cb7290"
+    },
+    {
+      "bytes": 3081,
+      "path": "paper_runs/paper_replication_audits/quantagents/manifest.json",
+      "sha256": "4417fe95a6892b79300d154061a6193d910d9ef2c2d68f10f79e7b6804e281bd"
+    },
+    {
+      "bytes": 10609,
+      "path": "paper_runs/paper_replication_audits/quantevolver/manifest.json",
+      "sha256": "feded6b9052288986203d000c9efb65a1f00d34c75f8837e379cc47f1a09decf"
+    },
+    {
+      "bytes": 13231,
+      "path": "paper_runs/paper_replication_audits/quantharness/manifest.json",
+      "sha256": "b5c7f0b2d3233aed815893695c1ac59d66e52790af3002dbf8be6b7b0f6272b0"
+    },
+    {
+      "bytes": 3257,
+      "path": "paper_runs/paper_replication_audits/raptor/manifest.json",
+      "sha256": "b627a62461fb866e800c11566d38e620eafc8766834b8c353ffb82c4448c67a6"
+    },
+    {
+      "bytes": 6763,
+      "path": "paper_runs/paper_replication_audits/rd_agent/manifest.json",
+      "sha256": "9f40023c7f2c451fe5e6105de3e07dcbe199bf008dac41dcbec465b4949f34d1"
+    },
+    {
+      "bytes": 1461,
+      "path": "paper_runs/paper_replication_audits/sharp/manifest.json",
+      "sha256": "3a5de51116e4310588eeca7aa3aad2cc43c3c7b6c22f615333f83b72e6b10da2"
+    },
+    {
+      "bytes": 2142,
+      "path": "paper_runs/paper_replication_audits/stratllm/manifest.json",
+      "sha256": "a6f2fe70a78fac9ea2e0de43b71596c7eaf5fbba56141a0d659c2b78346717c6"
+    },
+    {
+      "bytes": 1729,
+      "path": "paper_runs/paper_replication_audits/timi/manifest.json",
+      "sha256": "98c1d682877e7970745e51ea7da912b128b9f907fa63afd797a5f21d4ed94f69"
+    },
+    {
+      "bytes": 4183,
+      "path": "paper_runs/paper_replication_audits/trading_r1/manifest.json",
+      "sha256": "9462f973bc266eba24711379b5dfe22e5e4bbadb76d3dad9b336f564975d391a"
+    },
+    {
+      "bytes": 17786,
+      "path": "paper_runs/paper_replication_audits/tradingagents/manifest.json",
+      "sha256": "7eb67d3e99bf61454e75a68b0136511fb0d7578769caff75131c61ac72aea2f3"
+    },
+    {
+      "bytes": 4474,
+      "path": "paper_runs/paper_replication_audits/tradinggroup/manifest.json",
+      "sha256": "c0d49fb9ebfb74e87fe9cf7313915fa36ef837775c4bff558390e1f364181632"
+    },
+    {
+      "bytes": 2587,
+      "path": "paper_runs/paper_replication_audits/treevo/manifest.json",
+      "sha256": "67752888dbc11e34faa7579f7ec8aa234e6173149d94739eb9da01ecfa16a112"
+    },
+    {
+      "bytes": 2049,
+      "path": "paper_runs/paper_replication_audits/trusttrade/manifest.json",
+      "sha256": "aa4d8234eba41f5a6347c54119c28612f26d7506808457c6a62e20e4ed13a010"
+    },
+    {
+      "bytes": 1521,
+      "path": "paper_runs/paper_replication_audits/xalpha/manifest.json",
+      "sha256": "d58aaec62818168b90b500ed579ae25d780c48d08178c156cfd431be9b00fa28"
+    },
+    {
+      "bytes": 25821,
+      "path": "paper_runs/publication_upgrade_v1/analysis/paired_effects.csv",
+      "sha256": "61f1366c992618a16148696b47a9dab860175dd5201cbcc0478a60e718daa7b0"
+    },
+    {
+      "bytes": 637,
+      "path": "paper_runs/publication_upgrade_v1/analysis/status.json",
+      "sha256": "feb7e3cfe78f3de986da540f2e0ea3cd77f67ee7c9ca3ec7101790baf6da5f91"
+    },
+    {
+      "bytes": 16029,
+      "path": "scripts/alpha_observed_history_evidence_v2.py",
+      "sha256": "c1dfba0f8ecc5f77ed2d45ad32092e8af4abcb466f64b3180495da90517d74d7"
+    },
+    {
+      "bytes": 9428,
+      "path": "scripts/analyze_alpha_observed_history_v2.py",
+      "sha256": "084fbc2f37bb83183cfc1fb66848657e0235bd2cba3e8cfff4767483dc1b4be5"
+    },
+    {
+      "bytes": 12493,
+      "path": "scripts/analyze_native_oos_v2.py",
+      "sha256": "b4830bcd64727703b7f0fc33d928bc7131deac441fb2cdff1130998a40cbe711"
+    },
+    {
+      "bytes": 8496,
+      "path": "scripts/analyze_quanta_paper_parameter_v7.py",
+      "sha256": "45c57471eeb8ce9c3389f68c985764e56ee502a9b209853ce8fec07f9aa8946b"
+    },
+    {
+      "bytes": 63649,
+      "path": "scripts/build_publication_report.py",
+      "sha256": "9fb5b92785706543dbd12ce948e13a638bc4b76e8b8069579a8cf3a5c1154c07"
+    },
+    {
+      "bytes": 7463,
+      "path": "scripts/native_secondary_evidence_v2.py",
+      "sha256": "9d0b168138f48d4ee210a46b1add1a6b1a2bc6581f50150936f3fe1196dc35b9"
+    },
+    {
+      "bytes": 11323,
+      "path": "scripts/quanta_paper_evaluation_evidence_v7.py",
+      "sha256": "84cb730c03fc8f1c9af223cb01cf94337331a34869ec1484aa4b1716bb91de01"
+    },
+    {
+      "bytes": 926,
+      "path": "src/alpha_evolve/fidelity_inference_v2.py",
+      "sha256": "d4de175ff82e3e1028edb50f49b45a3a6efd0b2aae3fb4803c049654054430c9"
+    },
+    {
+      "bytes": 15255,
+      "path": "src/alpha_evolve/publication_inference.py",
+      "sha256": "60daa77c578640a4ef0be2ed5dd64b863b75f0c780efb21bf2c21c5670216b81"
+    }
+  ],
+  "final_equity_accounts_missing": true,
+  "human_review": false,
+  "new_study_execution": false,
+  "private_input_bundle": "artifacts/fidelity_completion_v2/manuscript_draft_setup_20260920_2243/inputs.json",
+  "private_input_bundle_sha256": "50eeaa3648925ae14b2e186d03cdb3a8721e82f6d852dcc20d613945894cca2e",
+  "recorded_at_utc": "2026-09-20T23:02:44.907581+00:00",
+  "status": "interim_manuscript_inputs_verified_final_equity_closure_missing"
+}

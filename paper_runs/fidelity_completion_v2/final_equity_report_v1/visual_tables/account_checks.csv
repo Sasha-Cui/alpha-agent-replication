@@ -1,0 +1,14 @@
+case,symbol,decisions,valuation_days,completed_training_and_test_records,maximum_independent_account_error
+finmem,TSLA,126,127,538,4.440892098500626e-16
+finmem,NFLX,126,127,412,4.440892098500626e-16
+finmem,AMZN,126,127,412,4.440892098500626e-16
+finmem,MSFT,126,127,412,5.551115123125783e-16
+finmem,COIN,126,127,412,5.551115123125783e-16
+tradingagents,AAPL,61,61,61,4.440892098500626e-16
+tradingagents,GOOGL,61,61,61,5.551115123125783e-16
+tradingagents,AMZN,61,61,61,4.440892098500626e-16
+finagent,TSLA,147,147,397,0.0
+finagent,AAPL,147,147,397,0.0
+finagent,AMZN,147,147,397,0.0
+finagent,GOOGL,147,147,397,0.0
+finagent,MSFT,147,147,397,0.0

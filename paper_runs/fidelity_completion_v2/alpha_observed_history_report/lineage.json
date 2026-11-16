@@ -1,0 +1,78 @@
+{
+  "analysis_completion_sha256": "2ba46271423bce725a48b7fd3b35aa6118f356dcf05b7b1dcaf83274d14ce516",
+  "analysis_source_files": {
+    "scripts/alpha_observed_history_evidence_v2.py": "c1dfba0f8ecc5f77ed2d45ad32092e8af4abcb466f64b3180495da90517d74d7",
+    "scripts/analyze_alpha_observed_history_v2.py": "084fbc2f37bb83183cfc1fb66848657e0235bd2cba3e8cfff4767483dc1b4be5",
+    "scripts/analyze_native_oos_v2.py": "b4830bcd64727703b7f0fc33d928bc7131deac441fb2cdff1130998a40cbe711",
+    "scripts/native_secondary_evidence_v2.py": "9d0b168138f48d4ee210a46b1add1a6b1a2bc6581f50150936f3fe1196dc35b9",
+    "src/alpha_evolve/publication_inference.py": "60daa77c578640a4ef0be2ed5dd64b863b75f0c780efb21bf2c21c5670216b81"
+  },
+  "builder_sha256": "92f75de20b50250b2c408d42fb56a6ff91a17b007d72da624ab85ef61787bf85",
+  "materialization_audit_sha256": "dda0b1a51eb91f8b0c36367ed665ad827d38b3380da6a721626d5e4700520c59",
+  "native_audit_sha256": "1721413656e5778415a126973b8b6403ac2169660cb9b8eff4fa7177dc860f6f",
+  "new_model_calls": 0,
+  "numeric_recomputation": [
+    {
+      "arm": "alpha158",
+      "execution": "native",
+      "metrics_recomputed": [
+        "observations",
+        "start",
+        "end",
+        "cagr",
+        "annualized_arithmetic_return",
+        "annualized_volatility",
+        "sharpe_zero_cash_rate",
+        "max_drawdown",
+        "ending_wealth"
+      ]
+    },
+    {
+      "arm": "alpha158_plus_library",
+      "execution": "native",
+      "metrics_recomputed": [
+        "observations",
+        "start",
+        "end",
+        "cagr",
+        "annualized_arithmetic_return",
+        "annualized_volatility",
+        "sharpe_zero_cash_rate",
+        "max_drawdown",
+        "ending_wealth"
+      ]
+    },
+    {
+      "arm": "alpha158",
+      "execution": "opening_information",
+      "metrics_recomputed": [
+        "observations",
+        "start",
+        "end",
+        "cagr",
+        "annualized_arithmetic_return",
+        "annualized_volatility",
+        "sharpe_zero_cash_rate",
+        "max_drawdown",
+        "ending_wealth"
+      ]
+    },
+    {
+      "arm": "alpha158_plus_library",
+      "execution": "opening_information",
+      "metrics_recomputed": [
+        "observations",
+        "start",
+        "end",
+        "cagr",
+        "annualized_arithmetic_return",
+        "annualized_volatility",
+        "sharpe_zero_cash_rate",
+        "max_drawdown",
+        "ending_wealth"
+      ]
+    }
+  ],
+  "presentation_helpers_sha256": "18faed2601356feb2bfc9807ef770fbf1098ba6d4757034c499b072731e144ad",
+  "source_results_overwritten": false
+}

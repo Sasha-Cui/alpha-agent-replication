@@ -1,0 +1,4 @@
+pool,backend,ce_increment_bps,mean_sleeve_weight_input_units
+Grammar pool,grammar_101_103,0.0,0.0
+GPT-4.1 pool,gpt41,-3.3640352327166374,0.0012004385359760967
+DeepSeek pool,deepseek_v3,-6.8641890990605265,0.0013270168877896477

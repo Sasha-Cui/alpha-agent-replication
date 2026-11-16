@@ -1,0 +1,14 @@
+{
+  "all8_fee_clock_combinations_full_path_equal": true,
+  "builder_sha256": "87f4a096b07f3bcc4f2404cf89a9e233734aed03153e2a6acdf9e4d307026674",
+  "complete_account_sha256": "c0ac7e9d7a4418520f25c71e484bee5728546b7b11b3424ac3e67013a876007d",
+  "new_model_calls": 0,
+  "no_statistical_significance_claim": true,
+  "outputs": {
+    "REPORT.md": "b88fec4b4a6d1d85ec349951d3d1e363f8b930465ca0850feb98ed051b76ffd4",
+    "comparisons_full_audit.csv": "bfa2df49d91f1fdf3a804b9e5c53dfa3e48925a0930942c6346cf8dc4269e530",
+    "policy_diagnostics.json": "13f4a3b4278485a7031c6fa79ee808d5d7c1dc6cc1d02960cb16cb081d0ddcbc"
+  },
+  "rows_per_path": 61,
+  "status": "pass"
+}

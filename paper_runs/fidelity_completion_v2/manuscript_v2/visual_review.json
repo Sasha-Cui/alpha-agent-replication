@@ -1,0 +1,48 @@
+{
+  "after_url_and_prose_refinement_pages_actually_inspected": [
+    6,
+    10,
+    11,
+    13,
+    14,
+    15,
+    16
+  ],
+  "final_render_manifest": "artifacts/fidelity_completion_v2/manuscript_v2_setup_20260922/rendered_sealed/manifest.json",
+  "final_render_manifest_sha256": "b95eea0f1b94b73ef2ed91eaa6ad102a0c982f2f9359431d16a7dea8a99d0774",
+  "final_spacing_revision_pages_actually_inspected": [
+    9,
+    14
+  ],
+  "independent_human_review": false,
+  "initial_pages_actually_inspected": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22
+  ],
+  "inspection": "All22 pages were streamed directly from remote PNGs. Tables, all69 full paper titles, five figures, source/budget/claim notes, header/footer and page numbers remain readable; no clipped/overlapping/invisible text or blank panels. Bibliography URLs were corrected to exact archived URLs and reinspected. Within-row equity wealth winners are bold; separate markets/dates and missing primary remain explicit. No local project/image downloads and no human-review attestation.",
+  "pdf_sha256": "2c156f08bceb13b9b32395d20e501b3461ddea4dc32ccdeaca8c70981601172c",
+  "recorded_at_utc": "2026-09-22T20:33:31.494060+00:00",
+  "reviewer": "assistant",
+  "status": "pass_actual_assistant_all22_final_pages",
+  "unchanged_final_pages_verified_by_byte_identical_rendered_PNGs": true
+}

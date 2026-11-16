@@ -1,0 +1,37 @@
+{
+  "AMZN_retry_authorized": true,
+  "archive_created": false,
+  "budget_snapshot": {
+    "executed_runtime_project_soft_stop": 450,
+    "hard_ceiling": 1000,
+    "hard_ceiling_exclusive": true,
+    "ledger_mutations": 0,
+    "project_committed_usd": 371.0659255700031,
+    "recorded_at_utc": "2026-09-22T17:02:39.881086+00:00",
+    "study_committed_usd": {
+      "fidelity_v2_alphaagent_source_search": 12.773321939999931,
+      "fidelity_v2_efs_trials": 11.423824000000025,
+      "fidelity_v2_finagent_source_settings": 145.10718514000212,
+      "fidelity_v2_finmem_paper_assets": 38.90290199999999,
+      "fidelity_v2_input_summaries": 2.157388999999997,
+      "fidelity_v2_quantaalpha_fresh_search": 50.90319363999986,
+      "fidelity_v2_tradingagents_alphabet_news_repair": 2.4153969500000008,
+      "fidelity_v2_tradingagents_source_roles": 6.575148200000011
+    }
+  },
+  "final13_equity_accounts_missing": false,
+  "historical_method_versions_resolved": 3,
+  "independent_human_review": false,
+  "legacy_primary_count": 6,
+  "new_equity_replay_records": 3877,
+  "new_full_paper_reproductions": 0,
+  "new_source_model_account_analysis_execution": false,
+  "paper_count": 69,
+  "pointwise_confidence": 0.99,
+  "primary_margin": 0.02,
+  "primary_plot_uses_group_mean_table_uses_full_mean": true,
+  "source_case_economics_preserved": true,
+  "status": "integrated_v2_computational_closure_not_archive_certificate",
+  "v2_primary_available": 3,
+  "v2_primary_denominator": 4
+}

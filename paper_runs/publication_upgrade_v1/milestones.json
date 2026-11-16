@@ -1,0 +1,65 @@
+{
+  "status": "current_data_evidence_complete",
+  "scope": "All authorized current-data scientific work and publication tooling; archive verification is recorded separately in package_manifest.json",
+  "completed_at_utc": "2026-09-09T04:23:53.371429+00:00",
+  "complete_cases": [
+    "EFS",
+    "GuruAgents",
+    "QuantaAlpha",
+    "FinMem",
+    "TradingAgents",
+    "FinAgent"
+  ],
+  "open_cases": [],
+  "workstreams": [
+    {
+      "id": 1,
+      "name": "Economic fidelity",
+      "status": "complete",
+      "evidence": "Six executed cases; source pins, model traces, explicit account adapters and full applicable cached replays"
+    },
+    {
+      "id": 2,
+      "name": "Matched controls",
+      "status": "complete",
+      "evidence": "Primary controls for all six cases, ten matched EFS grammar seeds, costs/cadence/information-lag variants"
+    },
+    {
+      "id": 3,
+      "name": "Economic bounds and power",
+      "status": "complete",
+      "evidence": "Six-case Holm family, paired grouped-t99% intervals,2pp economic margin and explicit detection limits"
+    },
+    {
+      "id": 4,
+      "name": "Inference and attribution calibration",
+      "status": "complete",
+      "evidence": "Independent-seed calibration and identified-versus-regularized JKP diagnostics"
+    },
+    {
+      "id": 5,
+      "name": "Independent review and prospective workflow",
+      "status": "executable_work_complete",
+      "evidence": "Six outcome-free packets/code bundle, actual empty human ledger, immutable prospective forecast",
+      "external_conditions": [
+        "Independent human source review pending",
+        "Prospective outcome pending September9 evaluation close"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Controlled adaptations and manuscript",
+      "status": "complete",
+      "evidence": "Final six-case analysis, Markdown reports,18-page manuscript and all-page visual QA",
+      "delivery_verification": "Separate package_manifest.json records final archive/backup checksums"
+    }
+  ],
+  "human_review_complete": false,
+  "prospective_outcome_observed": false,
+  "prospective_evaluation_at_utc": "2026-09-09T20:00:00+00:00",
+  "positive_primary_comparisons": 0,
+  "inconclusive_primary_comparisons": 6,
+  "project_committed_usd": 100.8075647,
+  "paid_execution_required": false,
+  "further_work": "Independent review and prospective observations; no implied submission, further experiments or real orders."
+}

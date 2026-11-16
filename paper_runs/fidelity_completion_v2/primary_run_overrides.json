@@ -1,0 +1,26 @@
+{
+  "finagent_AAPL": {
+    "admission_evidence": "artifacts/fidelity_completion_v2/finagent_aapl_full_replay_20260920_0429/validation.json",
+    "reason": "Same trajectory continued after the preserved walltime interruption. All original209training and overlapping16NFS/68transport records, exact returned-response settlement, full397-record source/replay and current V3admission pass. Original TIMEOUT run remains preserved.",
+    "recipe": "paper_runs/fidelity_completion_v2/recipes/finagent_AAPL.json",
+    "run_directory": "finagent_AAPL_walltime_continuation_v2"
+  },
+  "finagent_GOOGL": {
+    "admission_evidence": "artifacts/fidelity_completion_v2/completion_admission_20260919_after_reset/validation.json",
+    "reason": "Same-issuer news mapping corrected before any GOOGL FinAgent decision. Original input/recipe and all costs retained; original security prices unchanged. Full source, full replay, all preserved prefixes and current V3 admission now pass. Original failed/interrupted run remains preserved.",
+    "recipe": "paper_runs/fidelity_completion_v2/recipes/finagent_GOOGL_company_news.json",
+    "run_directory": "finagent_GOOGL_company_news_xml_repair"
+  },
+  "finagent_MSFT": {
+    "admission_evidence": "artifacts/fidelity_completion_v2/finagent_msft_full_replay_20260920_0246/validation.json",
+    "reason": "Same trajectory continued after the preserved walltime interruption. All original229training and overlapping42NFS/83transport records, exact returned-response settlement, full397-record source/replay and current V3admission pass. Original TIMEOUT run remains preserved.",
+    "recipe": "paper_runs/fidelity_completion_v2/recipes/finagent_MSFT.json",
+    "run_directory": "finagent_MSFT_walltime_continuation_v2"
+  },
+  "finagent_TSLA": {
+    "admission_evidence": "artifacts/fidelity_completion_v2/completion_admission_20260919_after_reset/validation.json",
+    "reason": "Lossless correction of the literal released prompt/parser key mismatch; all38completed prefix records and raw responses preserved. Full source, full replay, all preserved prefixes and current V3 admission now pass. Original failed/interrupted run remains preserved.",
+    "recipe": "paper_runs/fidelity_completion_v2/recipes/finagent_TSLA.json",
+    "run_directory": "finagent_TSLA_schema_repair_walltime_continuation_v2"
+  }
+}

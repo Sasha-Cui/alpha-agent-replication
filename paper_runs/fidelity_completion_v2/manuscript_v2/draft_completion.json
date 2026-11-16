@@ -1,0 +1,17 @@
+{
+  "archive_complete": false,
+  "builder_sha256": "5536f57cd6c7e10b2f1872c28386797b70b9388ce5e72647b4f7ab726c4c01c6",
+  "figures": 5,
+  "human_review": false,
+  "inputs": 173,
+  "model_calls": 0,
+  "numeric_validation_sha256": "17bd47b05d5572ccd265af28fef5ead214455cac337256ba20ef9e2f1d3efecd",
+  "pages": 22,
+  "paper_titles": 69,
+  "pdf_sha256": "2c156f08bceb13b9b32395d20e501b3461ddea4dc32ccdeaca8c70981601172c",
+  "scope": "Integrated manuscript complete; preserve this version. Public/private bundle validation and durable second copies remain separate.",
+  "source_jobs_rerun": 0,
+  "status": "complete_integrated_v2_manuscript_numeric_and_assistant_visual_QA",
+  "validator_sha256": "e1d4644b21a610fa29385de59844ed367c2580282b70ba145fccf9b4770c40e4",
+  "visual_review_sha256": "0028c3c4a034cd986fbf85455825088591c5bfe8affd395532f4800c3ae8f163"
+}

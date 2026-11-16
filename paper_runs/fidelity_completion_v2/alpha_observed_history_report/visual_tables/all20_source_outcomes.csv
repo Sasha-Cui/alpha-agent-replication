@@ -1,0 +1,21 @@
+trial,native_status,attempted_rounds,failed_round_indices,unattempted_round_indices,completed_trajectories,used_program_count
+1,native_round_budget_exhausted,5,[],[],5,7
+2,native_round_budget_exhausted,5,[4],[],4,8
+3,native_round_budget_exhausted,5,[3],[],4,8
+4,native_round_budget_exhausted,5,[],[],5,7
+5,native_round_budget_exhausted,5,[],[],5,6
+6,native_round_budget_exhausted,5,[4],[],4,9
+7,native_round_budget_exhausted,5,[0],[],4,5
+8,native_final_attempt_failed,5,[4],[],4,8
+9,native_round_budget_exhausted,5,[],[],5,9
+10,native_round_budget_exhausted,5,[],[],5,9
+11,native_round_budget_exhausted,5,[],[],5,10
+12,native_early_abort,3,[2],"[3, 4]",2,2
+13,native_round_budget_exhausted,5,[],[],5,10
+14,native_early_abort,3,[2],"[3, 4]",2,4
+15,native_final_attempt_failed,5,[4],[],4,7
+16,native_round_budget_exhausted,5,[0],[],4,7
+17,native_round_budget_exhausted,5,[1],[],4,9
+18,native_round_budget_exhausted,5,[],[],5,11
+19,native_round_budget_exhausted,5,[],[],5,13
+20,native_round_budget_exhausted,5,[],[],5,10

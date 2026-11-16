@@ -1,0 +1,11 @@
+{
+  "PDF_operation_marker_not_repeated_per_user_instruction": true,
+  "builder_sha256": "5536f57cd6c7e10b2f1872c28386797b70b9388ce5e72647b4f7ab726c4c01c6",
+  "content_model_sha256": "24c20a6d6e445f63cd4d67cf168c76ada060cb0d4eaf3a3b916cdfcc0e89e6b8",
+  "input_bundle_sha256": "7837e3bd5c14b73187a82ac140d833e1d082f044662027f907be7d4de442f7d1",
+  "pdf_sha256": "2c156f08bceb13b9b32395d20e501b3461ddea4dc32ccdeaca8c70981601172c",
+  "recorded_at_utc": "2026-09-22T20:31:34.713871+00:00",
+  "source_files_unchanged": true,
+  "status": "built_pending_numeric_and_visual_QA",
+  "study_jobs_rerun": 0
+}

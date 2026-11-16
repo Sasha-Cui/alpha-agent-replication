@@ -1,0 +1,57 @@
+{
+  "all7tasks_retained": true,
+  "comparisons_recomputed": 32,
+  "each_figure_followed_by_table": true,
+  "figure_text_within_canvas": true,
+  "figures": [
+    {
+      "path": "visual_figures/all_library_intervals.png",
+      "pixel_std": 30.09225167285571,
+      "sha256": "686af9db65c31e8124f1e746ad23e3ff71c3f6a0b2e4ec88dc3e962cf17bc4e7",
+      "shape": [
+        1024,
+        1600,
+        3
+      ]
+    },
+    {
+      "path": "visual_figures/execution_information.png",
+      "pixel_std": 27.78333614741763,
+      "sha256": "391afa0b5155ead4a91e017d6dcdffbdd52726b630d2a8259692e2ba7f4ee09e",
+      "shape": [
+        1024,
+        1600,
+        3
+      ]
+    }
+  ],
+  "links_exist": true,
+  "no_image_counterpart_pass": true,
+  "outputs": {
+    "REPORT.md": "bf8d59d849c2c716b436c60594e6e22eb310cc7aa422c17053603044dd9e75aa",
+    "VISUAL_REPORT.md": "4f98390ebbc6819041e3a1136bd6b432eac69f6679633ccf17ab960b847d36ac",
+    "lineage.json": "3eb06282f249388b39d0addc5b3b28b7cca654455f4c71ba1bbb6ec275f72625",
+    "visual_figures/all_library_intervals.pdf": "3fc1a45db838566813bb471e8d554e822aabeb856ee37fdf998986d5c98aa50d",
+    "visual_figures/all_library_intervals.png": "686af9db65c31e8124f1e746ad23e3ff71c3f6a0b2e4ec88dc3e962cf17bc4e7",
+    "visual_figures/all_library_intervals_preview.png": "8e3619b64592df097ca96a4506bfbd176a94bcfd6dd0b9c52fb868d6ea454ac8",
+    "visual_figures/execution_information.pdf": "b4fa60faa9f74d4eb4647dba0db8af56113613b6e90c37dc184345f0c6fc6711",
+    "visual_figures/execution_information.png": "391afa0b5155ead4a91e017d6dcdffbdd52726b630d2a8259692e2ba7f4ee09e",
+    "visual_figures/execution_information_preview.png": "a752dab480ae83280801cbf4ece916f0421e6122b2417ca58380e0e207b9aa1c",
+    "visual_tables/comparisons_full_audit.csv": "0287e247bc30846e6d5a06cf899ae1d97abb1b9b12e4dfa185d365d93d18e555",
+    "visual_tables/opening_presentation.csv": "4b92a214b8497f94b1becd064a7af57106734994a64e4152e6d25f82bb216866",
+    "visual_tables/timing_presentation.csv": "684d33b40c3c0e76b8acb01beeed995291847914266d14e5588bff7224946cde"
+  },
+  "scope": "Completed single-case report; no complete primary or secondary family, significant-alpha or full-paper claim.",
+  "status": "pass_numeric_layout_and_assistant_visual_review",
+  "text_contrast_ratio": 14.102034448456893,
+  "visual_review": {
+    "findings": "Both actual rendered previews inspected. Text/axes/legend are visible, aligned and within the canvas; no clipped or overlapping labels. Stable explicit foreground/background colors. Figure1 shows all8libraries/99percent intervals; figure2 retains matchingtask identities across execution rules.",
+    "human_source_review": false,
+    "images": [
+      "all_library_intervals_preview.png",
+      "execution_information_preview.png"
+    ],
+    "reviewed_utc": "2026-09-17T21:22:09.759719+00:00",
+    "reviewer_type": "assistant"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "full_universe_proof_raw_infinity_program_flags": 12,
+  "raw_infinity_scopes_differ": "Proof flags cover full universe and overlapping prefixes/native matrices; library cells cover the membership-filtered fixed matrix and are not summed with proof checks.",
+  "raw_library_infinite_cells": 32359,
+  "raw_library_infinite_columns": 7,
+  "raw_library_missing_cells": 1977960
+}

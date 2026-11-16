@@ -1,0 +1,23 @@
+{
+  "allowed_verdicts": [
+    "approved_for_conditional_mechanism_comparison",
+    "changes_required",
+    "not_economically_comparable"
+  ],
+  "case": "EFS",
+  "human_attestation": null,
+  "independent_of_implementation": null,
+  "judgments": {
+    "claim_boundary": null,
+    "control": null,
+    "economics": null,
+    "information": null,
+    "mechanism": null
+  },
+  "packet_sha256": "56502258fb585684f25a94cd3b6224db1c9f9f2076e32cb4446fc57315ff88a3",
+  "required_changes": [],
+  "reviewed_at_utc": null,
+  "reviewer_name": null,
+  "reviewer_relationship_to_implementation": null,
+  "verdict": null
+}
