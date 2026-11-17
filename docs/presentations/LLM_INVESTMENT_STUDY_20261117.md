@@ -1,6 +1,6 @@
 # LLM investment study presentation
 
-Verified November 17, 2026. Provisional study. 13 slides: 11 main slides plus two evidence appendices.
+Verified November 17, 2026. Provisional study. This text accompanies the primary [Beamer PDF](LLM_INVESTMENT_STUDY_20261117_beamer.pdf) and [LaTeX source](LLM_INVESTMENT_STUDY_20261117_beamer.tex). 13 slides: 11 main slides plus two evidence appendices.
 
 [Portable PDF](LLM_INVESTMENT_STUDY_20261117.pdf) · [Editable presentation](https://chatgpt.com/space/page_8240054152248191a27a0ae77e9bb674). PowerPoint export is available in the editable viewer. The PDF preserves the reviewed slide appearance; this Markdown provides searchable slide text and notes.
 
@@ -14,7 +14,7 @@ Provisional · Status verified November 17, 2026
 
 ### Speaking notes
 
-Status verified November 17, 2026 from saved source/replay and economic receipts. Both mechanisms completed source/replay. EFS economics completed; screening retains18 failed primary/control-related paths. Overall paper remains provisional. Source: paper_runs/native_monthly_implementation_v2_20261116/status.json and verification.json in https://github.com/Sasha-Cui/alpha-agent-replication . No scientific job was rerun for this reporting update.
+Status verified November 17, 2026 from saved source/replay and economic receipts. Both mechanisms completed source/replay. EFS economics completed; screening retains 18 failed primary/control-related paths. Overall paper remains provisional. Source: paper_runs/native_monthly_implementation_v2_20261116/status.json and verification.json in https://github.com/Sasha-Cui/alpha-agent-replication . No scientific job was rerun for this reporting update.
 
 ## Slide 2 — The investment question
 
@@ -43,7 +43,7 @@ These are overlapping review stages, not four independent success rates
 
 ### Speaking notes
 
-The code census is not only four releases. At least 24 papers had some code; supporting artifacts and central strategies differ. Four monthly cases follow the resolved native-monthly scope. Two currently have usable data and bounded central implementations. Counts are not alpha successes or full-paper reproductions. Sources: user-confirmed census; all 69_native_monthly_dispositions.csv under paper_runs/native_monthly_study_v1_20261116/. Read the separate records rather than aggregate a success rate.
+The code census is not only four releases. At least 24 papers had some code; supporting artifacts and central strategies differ. Four monthly cases follow the resolved native-monthly scope. Two currently have usable data and bounded central implementations. Counts are not alpha successes or full-paper reproductions. Sources: user-confirmed census; all69_native_monthly_dispositions.csv under paper_runs/native_monthly_study_v1_20261116/. Read the separate records rather than aggregate a success rate.
 
 ## Slide 4 — The benchmark now uses actual factor returns
 
@@ -60,7 +60,7 @@ Raw-source readback and full factor rank verified; each strategy still needs its
 
 ### Speaking notes
 
-Actual French5 plus momentum1 plus fixed132 signed JKP U.S.vw_cap factors. The full panel has138 factor rank and166 residual degrees of freedom including an intercept:305-139. No proxy/PCA/reduced factor span substitutes for the main benchmark. Source: https://github.com/Sasha-Cui/alpha-agent-replication/blob/main/paper_runs/us_monthly_actual_factors_v1_20261116/benchmark_contract.json and authorized benchmark_independent_readback_v1/validation.json under artifacts/us_monthly_actual_factors_verified_v2_20261116/.
+Actual French 5 plus momentum 1 plus fixed 132 signed JKP U.S.vw_cap factors. The full panel has 138 factor rank and 166 residual degrees of freedom including an intercept: 305 - 139. No proxy/PCA/reduced factor span substitutes for the main benchmark. Source: https://github.com/Sasha-Cui/alpha-agent-replication/blob/main/paper_runs/us_monthly_actual_factors_v1_20261116/benchmark_contract.json and authorized benchmark_independent_readback_v1/validation.json under artifacts/us_monthly_actual_factors_verified_v2_20261116/.
 
 ## Slide 5 — The four monthly candidates
 
@@ -75,7 +75,7 @@ Exact author runtime is not a blanket requirement. Input gaps remain explicit un
 
 ### Speaking notes
 
-M023 and M050 each completed their bounded source and exact offline replay. EFS 12/12 economic paths pass. Screening12/30 pass;18 fail held month-end coverage, including designated LLM nonhold and universeEW control. M016 andM052 essential dated qualitative/macro inputs remain unverified; exact author runtime is not the blanket gate. Original papers: https://arxiv.org/html/2507.17211v2 ; https://arxiv.org/html/2603.23300v2 ; https://arxiv.org/html/2502.00415v1 ; https://arxiv.org/html/2604.17327v1 .
+M023 and M050 each completed their bounded source and exact offline replay. EFS 12/12 economic paths pass. Screening 12/30 pass; 18 fail held month-end coverage, including designated LLM nonhold and universeEW control. M016 and M052 essential dated qualitative/macro inputs remain unverified; exact author runtime is not the blanket gate. Original papers: https://arxiv.org/html/2507.17211v2 ; https://arxiv.org/html/2603.23300v2 ; https://arxiv.org/html/2502.00415v1 ; https://arxiv.org/html/2604.17327v1 .
 
 ## Slide 6 — The implementations being evaluated
 
@@ -103,7 +103,7 @@ Controls: same-universe equal weight; sentiment and combined screens separately
 
 ### Speaking notes
 
-EFS286 months Aug1999–May2023, three stochastic search trajectories on one shared market path, bounded base search onFF25. It omits some revised-paper pruning/weighting refinements and underlying-stock costs. Screening intended232 months Jan2005–Apr2024, with20 annual rules in each raw/logBM variant; source/replay complete but primary/control paths financially blocked. Current weights/accounting and sparse news are transfer limitations. Frozen contract: paper_runs/native_monthly_implementation_v2_20261116/native_evaluation_protocol_v2.json .
+EFS: 286 months August 1999–May 2023, three stochastic search trajectories on one shared market path, bounded base search on FF25. It omits some revised-paper pruning/weighting refinements and underlying-stock costs. Screening intended 232 months January 2005–April 2024, with 20 annual rules in each raw/log BM variant; source/replay complete but primary/control paths financially blocked. Current weights/accounting and sparse news are transfer limitations. Frozen contract: paper_runs/native_monthly_implementation_v2_20261116/native_evaluation_protocol_v2.json .
 
 ## Slide 7 — What is verified, and what remains unverified
 
@@ -117,7 +117,7 @@ EFS286 months Aug1999–May2023, three stochastic search trajectories on one sha
 
 ### Speaking notes
 
-Fresh verification checked five saved source/replay state pairs, frozen helper/input bindings, scheduler COMPLETED/exit0 and every saved economic output hash. EFS 12 conditional accounts pass independent accounting. Screening also exited0 but reports12 verified paths and 18 failures; process success is not financial admission. Passed screening paths are FinBERT and buy-only secondary variants, not substitutes for the designated primary/control. Source: v2 status.json, economic_path_status.csv and verification.json.
+Fresh verification checked five saved source/replay state pairs, frozen helper/input bindings, scheduler COMPLETED/exit0 and every saved economic output hash. EFS 12 conditional accounts pass independent accounting. Screening also exited 0 but reports 12 verified paths and 18 failures; process success is not financial admission. Passed screening paths are FinBERT and buy-only secondary variants, not substitutes for the designated primary/control. Source: v2 status.json, economic_path_status.csv and verification.json.
 
 ## Slide 8 — EFS base results at 10bp turnover cost
 
@@ -136,7 +136,7 @@ Incremental value is not established. Portfolio-unit fees exclude underlying sto
 
 ### Speaking notes
 
-Primary bounded EFS base experiment at10bp each-way turnover. Terminal wealth LLM9.842143653660083, grammar9.274228261076734, initial11.360617039685973, universe7.953374704278749. Annual arithmetic means11.341201620%,11.205659892%,12.041066082%,10.490882306%; annual excess Sharpe .525752879,.501774314,.548309096,.476097029. LLM-grammar annual arithmetic increment +.135541728pp. Actual138-factor paired alpha +.177155396pp/year,99%CI[-2.425739484,+2.780050276],rawp.860833471, multiplicity-adjustedp1. LLM own actual 138 alpha -.824439269pp/year,99%CI[-3.444938318,+1.796059779],rawp.417718562. Paired and absolute effects differ. Approximate HAC/pointwise inference, modern model/data vintage and base-method limits qualify the claim. Source: paper_runs/native_monthly_implementation_v2_20261116/efs/performance.csv, matched_effects.csv and actual_factor_attribution.csv . No new research execution for reporting.
+Primary bounded EFS base experiment at 10 bp each-way turnover. Terminal wealth LLM 9.842143653660083, grammar 9.274228261076734, initial 11.360617039685973, universe 7.953374704278749. Annual arithmetic means 11.341201620%,11.205659892%,12.041066082%,10.490882306%; annual excess Sharpe .525752879,.501774314,.548309096,.476097029. LLM-grammar annual arithmetic increment +.135541728pp. Actual 138-factor paired alpha +.177155396pp/year,99%CI[-2.425739484,+2.780050276], raw p = 0.860833471, multiplicity-adjusted p = 1. LLM own actual 138 alpha -.824439269pp/year,99%CI[-3.444938318,+1.796059779], raw p = 0.417718562. Paired and absolute effects differ. Approximate HAC/pointwise inference, modern model/data vintage and base-method limits qualify the claim. Source: paper_runs/native_monthly_implementation_v2_20261116/efs/performance.csv, matched_effects.csv and actual_factor_attribution.csv . No new research execution for reporting.
 
 ## Slide 9 — Work still required before study closure
 
@@ -166,7 +166,7 @@ Report all outcomes, unresolved cases and uncertainty
 
 ### Speaking notes
 
-Source/replay is complete, not a remaining step. Screening primary/control paths block on held month-end marks in Sep2008 and Feb2007. Diagnose quote/terminal evidence; any repair needs separate version, preserved failures and the same declared calendar/policies. No automatic provider/source rerun, zero-fill or outcome-selected truncation. M016/M052 need essential historical input channels recovered or explicitly bounded. Paper closure remains. Source: current v2 status.json, screening/coverage_failures.csv and docs/RESEARCH_HANDOFF.md .
+Source/replay is complete, not a remaining step. Screening primary/control paths block on held month-end marks in September 2008 and February 2007. Diagnose quote/terminal evidence; any repair needs separate version, preserved failures and the same declared calendar/policies. No automatic provider/source rerun, zero-fill or outcome-selected truncation. M016/M052 need essential historical input channels recovered or explicitly bounded. Paper closure remains. Source: current v2 status.json, screening/coverage_failures.csv and docs/RESEARCH_HANDOFF.md .
 
 ## Slide 10 — Bounded EFS result; overall study unfinished
 
@@ -180,7 +180,7 @@ One bounded experiment cannot establish a literature-wide conclusion that LLM in
 
 ### Speaking notes
 
-EFS paired actual 138 alpha at10bp +0.177pp/year; pointwise99% CI[-2.426,+2.780], raw HACp.861. This bounded implementation does not establish incremental LLM value; uncertainty still spans the2pp margin. Screening’s primary/control are unavailable, not negative-alpha data. Do not generalize EFS or input gaps to all LLM methods. Sources: efs/actual_factor_attribution.csv, native_evaluation_protocol_v2.json and the current project brief.
+EFS paired actual 138 alpha at 10 bp +0.177pp/year; pointwise 99% CI[-2.426,+2.780], raw HAC p = 0.861. This bounded implementation does not establish incremental LLM value; uncertainty still spans the 2 pp margin. Screening’s primary/control are unavailable, not negative-alpha data. Do not generalize EFS or input gaps to all LLM methods. Sources: efs/actual_factor_attribution.csv, native_evaluation_protocol_v2.json and the current project brief.
 
 ## Slide 11 — Resolve remaining economics and revise the paper
 
@@ -196,7 +196,7 @@ A separate LLM-improvement study follows closure of this attempt
 
 ### Speaking notes
 
-Finish missing financial admission using completed frozen source, not new LLM optimization. Preserve all cases and failures. Revise the provisional paper around a69-paper review and the smaller executed monthly cohort; do not claim69 successful reproductions or universal no-alpha. A separate improvement study follows honest closure. Sources: docs/PROJECT_BRIEFING.md and docs/RESEARCH_HANDOFF.md .
+Finish missing financial admission using completed frozen source, not new LLM optimization. Preserve all cases and failures. Revise the provisional paper around a 69-paper review and the smaller executed monthly cohort; do not claim 69 successful reproductions or universal no-alpha. A separate improvement study follows honest closure. Sources: docs/PROJECT_BRIEFING.md and docs/RESEARCH_HANDOFF.md .
 
 ## Slide 12 — Appendix · Limits that affect interpretation
 
@@ -213,7 +213,7 @@ These limits qualify the claim; they are not observations of zero performance
 
 ### Speaking notes
 
-Primary10bp turnover per side;0/25bp sensitivities. Cash/distribution and terminal conventions are conditional; missing held returns remain failures. The base EFS reconstruction does not implement every revised-paper refinement. No pristine holdout or human review is claimed. Sources: native_evaluation_protocol_v2.json; native_timing_amendment.json; factor_design_calibration_v1. Brief: https://chatgpt.com/space/page_241af5d039988191a8303e6573d61289 .
+Primary 10 bp turnover per side; 0/25 bp sensitivities. Cash/distribution and terminal conventions are conditional; missing held returns remain failures. The base EFS reconstruction does not implement every revised-paper refinement. No pristine holdout or human review is claimed. Sources: native_evaluation_protocol_v2.json; native_timing_amendment.json; factor_design_calibration_v1. Brief: https://chatgpt.com/space/page_241af5d039988191a8303e6573d61289 .
 
 ## Slide 13 — Appendix · Where the evidence lives
 

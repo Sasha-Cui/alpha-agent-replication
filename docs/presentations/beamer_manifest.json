@@ -13,12 +13,12 @@
   "compiled_with": "TeX Live 2024 / pdfTeX 1.40.26",
   "files": {
     "LLM_INVESTMENT_STUDY_20261117_beamer.tex": {
-      "bytes": 22406,
-      "sha256": "94993e05a010a9901921a358b38dd276c4ca534eb0f362823ac80f22698840f5"
+      "bytes": 22492,
+      "sha256": "edcea5529a49929932a678ad8845a04412ccae63f2d0f7531e9a951a52f40487"
     },
     "LLM_INVESTMENT_STUDY_20261117_beamer.pdf": {
       "bytes": 137007,
-      "sha256": "5436dd1ca932b55f3d3bcbc47f51dcfefa5ee0f864a16bef1cd50b941a465852"
+      "sha256": "f9d4c3daeb0127bcc8e1795d07a7b6e27d524261018439e9dc1141dea78d7cc4"
     },
     "BEAMER_README.md": {
       "bytes": 1642,
@@ -27,5 +27,9 @@
   },
   "all13_slides_visually_inspected": true,
   "minimum_declared_text_contrast_ratio": 6.6138160256812535,
-  "all_fonts_embedded": true
+  "all_fonts_embedded": true,
+  "source_markdown": "LLM_INVESTMENT_STUDY_20261117.md",
+  "source_markdown_sha256": "39d674f11190650490e1079c04492a13286afe76c65bb57e6f722a904b93e159",
+  "speaker_notes_refined_for_readability": true,
+  "visible_slides_match_pre_cleanup_reviewed_renders": true
 }
