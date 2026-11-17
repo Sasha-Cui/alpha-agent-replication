@@ -14,10 +14,12 @@ contains the actual benchmark and early study records. Corrected-input and trans
 private `artifacts/` directories, linked from the guide. Not every working
 artifact is distributed in a public source checkout.
 
-The current benchmark is verified. The [native-monthly admission audit](native_monthly_study_v1_20261116/REPORT.md)
-and [U.S.contract](native_monthly_study_v1_20261116/monthly_US_contract_v1.json)
-are fixed: four native monthly candidates, no admitted executable central
-method, and financial execution blocked. The paper remains provisional.
+The [current v2 package](native_monthly_implementation_v2_20261116/README.md)
+records completed source/replay for two methods, completed EFS conditional
+economics, and screening's blocked primary. The paper remains provisional.
+The earlier [v1 admission audit](native_monthly_study_v1_20261116/REPORT.md) is
+preserved as a dated strict-gate checkpoint; it is superseded for current
+paper-based central-method admission.
 
 ## Historical studies
 

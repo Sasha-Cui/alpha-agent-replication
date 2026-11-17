@@ -1,72 +1,38 @@
 # Collaborator handoff
 
-Start with [the current study](docs/CURRENT_STUDY.md). The reopened monthly
-U.S. investment study is provisional; earlier completed packages do not close
-its remaining economic evaluation work.
+Read [the project briefing](docs/PROJECT_BRIEFING.md) for the goal, verified work,
+results and remaining gaps. The [technical handoff](docs/RESEARCH_HANDOFF.md)
+provides working paths and job/receipt checks. The study and paper are provisional.
+
+## Current evidence
+
+Two paper-based native monthly implementations completed source and exact offline
+replay. EFS completed 12 conditional research accounts; screening completed 12
+secondary paths but 18 paths remain blocked, including its primary and control.
+The [current v2 package](paper_runs/native_monthly_implementation_v2_20261116/README.md)
+contains aggregate results and failure dispositions. The v1 empty-cohort decision
+is preserved as historical evidence, not current admission.
 
 ## A first reading
 
-1. Read the [project overview](README.md) and
-   [current status snapshot](docs/study/status.json).
-2. Find the paper in the [69-paper mechanism inventory](docs/study/method_readiness.csv).
-   Read its precise boundary before treating it as executable or unavailable.
-3. Follow its audit directory under `paper_runs/paper_replication_audits/`.
-   The manifest, source provenance, and method-specification audit describe
-   what was actually recovered.
-4. For an evaluated variant, inspect its versioned protocol, input bindings,
-   launch/completion records, and independent account validation together.
-   A code-execution receipt alone does not establish valid returns.
-5. Use the exact declared factor panel and calendar for attribution. Do not
-   substitute the historical characteristic-built benchmark for actual
-   FF5 + momentum + JKP132.
+1. [README](README.md) and [current status](docs/study/status.json).
+2. [69-paper inventory](docs/study/method_readiness.csv): source/code release,
+   native monthly eligibility, executed mechanism and financial admission differ.
+3. [Current study](docs/CURRENT_STUDY.md), the exact contract and source/input hashes.
+4. Source completion plus exact replay, then independent accounts and actual-factor
+   inference on the same complete calendar. Scheduler success alone is insufficient.
+5. [Presentation](docs/presentations/LLM_INVESTMENT_STUDY_20261117.pdf) and
+   [speaking notes](docs/presentations/LLM_INVESTMENT_STUDY_20261117.md).
 
-## How to read the readiness record
+The main benchmark is actual FF5+momentum+JKP132; RF is separate. A proxy panel
+or reduced model does not replace it. Missing/blocked cases are not zero-return
+observations. Only native monthly investment methods are eligible.
 
-The current inventory distinguishes actual central-mechanism execution evidence,
-released code that still needs an input/runtime bridge, partial supporting
-artifacts, native-task mismatches, and cases without an established complete
-central runtime.
+## Access and preservation
 
-Eight records currently have central-mechanism execution evidence. This does
-not mean eight methods have passed admission to a new monthly evaluation.
-Earlier source runs with invalid economic inputs remain useful execution
-evidence but cannot supply admitted performance results.
-
-Native-monthly scope is fixed. The [admission audit](paper_runs/native_monthly_study_v1_20261116/REPORT.md)
-records four monthly experiment candidates, no admitted executable central
-method, and the resulting block on financial evaluation. Do not manufacture
-eligibility by sampling daily actions or aggregating daily trading returns.
-
-## Evidence hierarchy
-
-Use each study's frozen protocol and completion receipts for that study.
-Current navigation guides explain scope; they do not overwrite those records.
-
-Keep these questions separate:
-
-- Was attributable source code or a selected policy released?
-- Does the central mechanism execute?
-- Are the needed historical inputs and financial accounts valid?
-- Was a source component, a transferred variant, or the full paper reproduced?
-- Is the performance comparison identified on its declared calendar?
-
-Missing cases stay in the inventory. They do not become zero returns or
-negative-alpha observations.
-
-## Public checkout and authorized evidence
-
-The public source tree contains code, compact audits, and selected aggregate
-artifacts. Newer working evidence and licensed inputs may require the
-authorized Bouchet checkout. See [current evidence locations](docs/CURRENT_STUDY.md#evidence-locations)
-and the [data guide](docs/DATA_AND_ARTIFACTS.md).
-
-On Bouchet, use the canonical JSS checkout and existing central environments.
-Keep source, response stores, raw inputs, and sealed artifacts intact. See
-[development](docs/DEVELOPMENT.md) and [operating instructions](AGENTS.md).
-
-## Historical work
-
-Use the [study index](paper_runs/README.md) to locate earlier packages.
-The [previous collaborator guide](docs/history/COLLABORATOR_HANDOFF_before_20261116_cleanup.md)
-retains its original numerical discussion as dated history. Its older
-“current” labels are not the status of the reopened study.
+Public aggregates omit licensed stock-level inputs, holdings, private replies and
+accounting stores. Authorized readers use the Bouchet links in the current study.
+Keep frozen studies, failed attempts, original helpers and archive paths intact.
+Use [development](docs/DEVELOPMENT.md) and [operating instructions](AGENTS.md).
+The [historical study index](paper_runs/README.md#historical-studies) preserves
+older evidence without promoting it to the current economic conclusion.

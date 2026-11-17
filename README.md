@@ -5,43 +5,34 @@ performance on U.S. equities beyond **actual FF5 + momentum + JKP132**. It keeps
 source-code audits, component experiments, transferred methods, and full-paper
 reproduction claims separate.
 
-**Status on November 16, 2026: provisional.** The actual 138-factor benchmark is
-verified. Native-monthly scope and the admission/U.S.contract are fixed.
-The current executable cohort is empty after source admission, so financial
-evaluation is blocked and the investment study is not complete. Earlier manuscripts
-and completed studies remain historical evidence.
+**Verified November 17, 2026; paper provisional.** Both paper-based monthly implementations completed source execution and exact offline replay. EFS completed 12 of 12 declared economic paths. Screening completed 12 of 30 paths; the other 18, including the designated LLM-screening primary and its equal-weight control, remain blocked by unpriced held month-end assets. Overall study and paper closure remain unfinished.
+
+## What we have done
+
+- Reviewed 69 papers and retained each paper's separate evidence and gaps. At least 24 have some released code; four have native monthly investment experiments.
+- Verified the actual 138-factor benchmark and recovered unmodified CRSP monthly data and opening prices.
+- Implemented two bounded paper-based central methods: EFS and Agentic AI Screening. All five primary source variants completed exact offline replay.
+- Completed EFS's 12 conditional economic paths and actual-factor analysis. Screening's primary comparison remains unavailable; its 12 completed secondary paths cannot replace it.
+
+## Current EFS finding
+
+At 10bp per-side portfolio-unit costs, LLM search versus matched grammar has paired actual 138-factor alpha **+0.177pp/year**, pointwise99% CI **[−2.426,+2.780]**, raw HAC p **0.861**. This bounded experiment does not establish incremental LLM value. It is not proof that all LLM investment methods lack alpha.
+
+## What remains unfinished
+
+- Resolve or explicitly bound screening's held-asset payoff/price gaps, then admit its designated primary and equal-weight control in a separately versioned account if feasible.
+- Recover and verify essential historical inputs for MarketSenseAI 2.0 and Signal or Noise, or retain their explicit unavailable status.
+- Reconcile the results, failures, sensitivity cases and uncertainty into the provisional paper. No full-paper or pristine-holdout claim is made.
 
 ## Start here
 
-1. [Current study](docs/CURRENT_STUDY.md): the research question, completed work,
-   remaining decisions, and evidence locations.
-2. [Collaborator handoff](COLLABORATOR_HANDOFF.md): a short route from a paper
-   record to its implementation, input checks, and results.
-3. [Documentation index](docs/README.md): current guides and dated historical
-   studies.
-4. [Development guide](docs/DEVELOPMENT.md): environments and checks that do not
-   launch experiments.
+1. [Project briefing](docs/PROJECT_BRIEFING.md): what we wanted, what we did and what is still missing.
+2. [Boss presentation](docs/presentations/LLM_INVESTMENT_STUDY_20261117.pdf), [slide text and notes](docs/presentations/LLM_INVESTMENT_STUDY_20261117.md), and [editable deck](https://chatgpt.com/space/page_8240054152248191a27a0ae77e9bb674).
+3. [Current study](docs/CURRENT_STUDY.md) and [v2 aggregate evidence](paper_runs/native_monthly_implementation_v2_20261116/README.md).
+4. [Technical handoff](docs/RESEARCH_HANDOFF.md): exact locations, completed jobs and remaining checks.
+5. [Documentation index](docs/README.md) and [development guide](docs/DEVELOPMENT.md).
 
-The [69-paper mechanism inventory](docs/study/method_readiness.csv) is a dated
-readiness record, not a list of 69 runnable strategies. Its
-[status snapshot](docs/study/status.json) records provenance and the distinction
-between executed mechanisms and methods admitted to a monthly evaluation.
-
-## Current claim boundaries
-
-- A repository link, prompt collection, scoring script, or web demonstration is
-  not automatically an executable investment method.
-- A working source mechanism is not automatically a financially valid result.
-  Inputs, trading clocks, funding, costs, and corporate actions need separate
-  checks.
-- Only paper-native monthly investment experiments are eligible. Daily, weekly,
-  and quarterly methods are excluded; monthly inputs or charts do not make a
-  strategy eligible. The scope is settled.
-- The benchmark uses the five actual French factors, actual momentum, and the
-  fixed 132 actual JKP factor-return series. RF is separate. Characteristic
-  proxies and reduced factor models do not replace that benchmark.
-- Inconclusive evidence is not proof of no alpha. No full-paper reproduction or
-  external human review is asserted by the current readiness inventory.
+The [69-paper inventory](docs/study/method_readiness.csv) and [status snapshot](docs/study/status.json) separate source admission from financial admission. Only native monthly methods are eligible; monthly aggregation of daily/quarterly trading does not create eligibility. The dated v1 empty-cohort gate is historical and superseded by the paper-based v2 review.
 
 ## Repository map
 

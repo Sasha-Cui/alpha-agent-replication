@@ -6,13 +6,17 @@ specific evidence package they describe.
 
 ## Current reader guides
 
+- [Project briefing](PROJECT_BRIEFING.md): objective, verified v2 outcomes and unfinished work.
+- [Technical handoff](RESEARCH_HANDOFF.md): exact evidence and remaining economic work.
+- [Presentation](presentations/LLM_INVESTMENT_STUDY_20261117.pdf) and [speaking notes](presentations/LLM_INVESTMENT_STUDY_20261117.md).
 - [Project overview](../README.md): goal, status, repository layout, and access.
 - [Collaborator handoff](../COLLABORATOR_HANDOFF.md): a route through a paper's
   source, inputs, execution evidence, and results.
 - [Current study](CURRENT_STUDY.md): the actual benchmark, locked native-monthly
   scope, admission outcome, and completion criteria.
-- [Native-monthly admission report](../paper_runs/native_monthly_study_v1_20261116/REPORT.md):
-  all69 dispositions, four candidate blockers, and factor-design checks.
+- [Historical v1 native-monthly admission report](../paper_runs/native_monthly_study_v1_20261116/REPORT.md):
+  original all 69 dispositions and strict-gate/factor-design evidence, superseded for current source admission.
+- [Current v2 execution and economics](../paper_runs/native_monthly_implementation_v2_20261116/README.md).
 - [Method readiness CSV](study/method_readiness.csv) and
   [status snapshot](study/status.json): all 69 records with dated provenance.
 - [Development](DEVELOPMENT.md): environments and validation scopes.

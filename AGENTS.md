@@ -6,19 +6,21 @@ The repository's active research goal is to evaluate executable investment
 mechanisms on monthly U.S. equities against actual FF5 + momentum + JKP132.
 The study and paper remain provisional. Read
 [the current study](docs/CURRENT_STUDY.md) and the newest private
-`artifacts/us_monthly_actual_factors_verified_v2_20261116/HANDOFF.md`.
+`artifacts/native_monthly_implementation_v2_20261116/HANDOFF.md`.
 
 The user has resolved scope: ONLY papers with an explicit native monthly
 investment experiment are eligible. Drop daily, weekly and quarterly methods;
 no retiming or monthly aggregation creates eligibility. Daily input data may
 support a genuinely monthly decision process. Do not reopen this scope question.
 
-The current task authorizes the native-monthly study, with the paper provisional
-until its economic work is complete. Read the frozen admission and U.S.contract
-in `paper_runs/native_monthly_study_v1_20261116/`. Its current executable cohort
-is empty after source admission; no model or portfolio job may be launched as
-a substitute. New source evidence requires a separately versioned admission.
-Preserve all prior research and evidence.
+Faithful paper-based central implementations are allowed without the authors'
+exact runtime or every published result. The v2 review supersedes the historical
+v1 empty-cohort rule. Both EFS and Agentic AI Screening completed source and exact
+offline replay. EFS completed 12 conditional economic paths; screening has 12
+completed secondary paths and 18 blocked paths, including its primary/control.
+The study and paper remain provisional. Read the current v2 status package and
+`artifacts/native_monthly_implementation_v2_20261116/HANDOFF.md`.
+Do not rerun completed source or regenerate responses to update documentation.
 
 ## Work location and execution
 
@@ -48,8 +50,8 @@ Preserve all prior research and evidence.
 - All historical and uncertain charges count toward the user's strict
   total of less than USD 1,000. The current bounded runtime route is stricter
   at USD 800; legacy study caps remain unchanged. Paid work requires an admitted native-monthly case and its
-  validated runtime/data/budget bindings. The empty current cohort opens no
-  new paid route.
+  validated runtime/data/budget bindings. Documentation work opens no new paid
+  route and does not authorize retrying or regenerating completed source.
 - Any subsequently authorized model calls must use the canonical accounting
   stores under `runs/economic_fidelity/openrouter`. Read only the permitted
   `OPENROUTER_API_KEY` from the designated parent KnowledgeTemplate
