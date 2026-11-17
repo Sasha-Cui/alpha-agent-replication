@@ -6,6 +6,7 @@ Historical snapshot contents and private evidence payloads are outside this chec
 """
 
 import argparse
+import hashlib
 import csv
 import json
 import re
@@ -22,6 +23,10 @@ DOCUMENTS = (
     "docs/DEVELOPMENT.md",
     "scripts/README.md",
     "paper_runs/README.md",
+    "docs/PROJECT_BRIEFING.md",
+    "docs/RESEARCH_HANDOFF.md",
+    "docs/presentations/LLM_INVESTMENT_STUDY_20261117.md",
+    "paper_runs/native_monthly_implementation_v2_20261116/README.md",
 )
 LINK = re.compile(r"!?\[[^\]\n]*\]\(([^)\n]+)\)")
 FENCE = re.compile(r"^\s*(`{3,}|~{3,})")
@@ -54,6 +59,38 @@ def heading_anchors(text):
         counts[base] = count + 1
         anchors.add(base if count == 0 else "{}-{}".format(base, count))
     return anchors
+
+
+def validate_v2_admission(status, package, paths):
+    """Check source versus financial admission without treating exit0 as success."""
+    errors = []
+    if len({(r["paper_id"], r["arm"], str(r["fee_bps"])) for r in paths}) != len(paths):
+        errors.append("V2 economic path identities must be unique.")
+    for case, record in package["cases"].items():
+        own = [r for r in paths if r["paper_id"] == case]
+        good = sum(r["status"] == "verified_conditional_account" for r in own)
+        failed = sum(r["status"] == "blocked" for r in own)
+        if (good, failed) != (record["verified_paths"], record["failed_paths"]):
+            errors.append(case + ": economic path counts disagree with saved status.")
+        if good + failed != len(own):
+            errors.append(case + ": unrecognized economic path state.")
+        primary = {"M023": {"LLM_pooled", "grammar_pooled"},
+                   "M050": {"ratio_LLMS_nonhold", "ratio_universe_EW"}}.get(case, set())
+        admitted_primary = {r["arm"] for r in own if str(r["fee_bps"]) == "10"
+                            and r["status"] == "verified_conditional_account"}
+        if record["primary_comparison_admitted"] and not primary.issubset(admitted_primary):
+            errors.append(case + ": primary financial admission lacks complete primary/control paths.")
+        if not record["source_complete"] or not record["exact_replay_complete"]:
+            errors.append(case + ": admitted source lacks complete exact replay.")
+    source = sorted(package["source_admitted_paper_ids"])
+    if source != sorted(status["mechanism_inventory"]["monthly_admitted_paper_ids"]):
+        errors.append("V2 source admission disagrees with the current inventory.")
+    financial = sorted(k for k, v in package["cases"].items() if v["primary_comparison_admitted"])
+    if financial != sorted(status["mechanism_inventory"]["primary_economic_comparison_admitted_paper_ids"]):
+        errors.append("V2 financial admission disagrees with the current status.")
+    if status["study_status"] == "complete" and financial != source:
+        errors.append("Study cannot claim completion while a source-admitted primary remains blocked.")
+    return errors
 
 
 def check(root):
@@ -116,6 +153,28 @@ def check(root):
             errors.append("Monthly-admission IDs disagree between CSV and status snapshot.")
         if status["mechanism_inventory"]["paper_count"] != len(rows):
             errors.append("Paper count disagrees between CSV and status snapshot.")
+        expected_csv = status["mechanism_inventory"].get("csv_sha256")
+        if expected_csv and hashlib.sha256(inventory_path.read_bytes()).hexdigest() != expected_csv:
+            errors.append("Readiness CSV hash disagrees with the current snapshot.")
+        current = status.get("native_monthly_study", {})
+        if current.get("version") == 2:
+            package_path = root / current["status_path"]
+            package = json.loads(package_path.read_text(encoding="utf-8"))
+            if hashlib.sha256(package_path.read_bytes()).hexdigest() != current["status_sha256"]:
+                errors.append("V2 aggregate status hash disagrees with the current snapshot.")
+            with (package_path.parent / "economic_path_status.csv").open(newline="", encoding="utf-8") as handle:
+                paths = list(csv.DictReader(handle))
+            errors.extend(validate_v2_admission(status, package, paths))
+            verification = json.loads((package_path.parent / "verification.json").read_text())
+            for relative, expected in verification["exports"].items():
+                actual = hashlib.sha256((package_path.parent / relative).read_bytes()).hexdigest()
+                if actual != expected:
+                    errors.append("V2 export hash changed: " + relative)
+            manifest_path = root / "docs/presentations/presentation_assets.json"
+            manifest = json.loads(manifest_path.read_text())
+            for name, item in manifest["files"].items():
+                if hashlib.sha256((manifest_path.parent / name).read_bytes()).hexdigest() != item["sha256"]:
+                    errors.append("Presentation asset hash changed: " + name)
         benchmark = status["benchmark"]
         if benchmark["factor_count"] != 5 + 1 + benchmark["jkp_factor_count"]:
             errors.append("Benchmark count must equal FF5 + momentum + JKP factors.")
