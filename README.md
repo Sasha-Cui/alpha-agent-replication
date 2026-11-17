@@ -6,8 +6,9 @@ source-code audits, component experiments, transferred methods, and full-paper
 reproduction claims separate.
 
 **Status on November 16, 2026: provisional.** The actual 138-factor benchmark is
-verified. The executable-method cohort and monthly transfer contract are not
-final, and the reopened investment study is not complete. Earlier manuscripts
+verified. Native-monthly scope and the admission/U.S.contract are fixed.
+The current executable cohort is empty after source admission, so financial
+evaluation is blocked and the investment study is not complete. Earlier manuscripts
 and completed studies remain historical evidence.
 
 ## Start here
@@ -33,9 +34,9 @@ between executed mechanisms and methods admitted to a monthly evaluation.
 - A working source mechanism is not automatically a financially valid result.
   Inputs, trading clocks, funding, costs, and corporate actions need separate
   checks.
-- A monthly transfer changes a method when its native decisions are daily or
-  quarterly. Whether those transfers are included is still an unresolved scope
-  choice; they are not silently counted as faithful monthly replications.
+- Only paper-native monthly investment experiments are eligible. Daily, weekly,
+  and quarterly methods are excluded; monthly inputs or charts do not make a
+  strategy eligible. The scope is settled.
 - The benchmark uses the five actual French factors, actual momentum, and the
   fixed 132 actual JKP factor-return series. RF is separate. Characteristic
   proxies and reduced factor models do not replace that benchmark.

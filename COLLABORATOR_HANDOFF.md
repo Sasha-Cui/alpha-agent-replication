@@ -2,7 +2,7 @@
 
 Start with [the current study](docs/CURRENT_STUDY.md). The reopened monthly
 U.S. investment study is provisional; earlier completed packages do not close
-its remaining cohort, transfer, or evaluation work.
+its remaining economic evaluation work.
 
 ## A first reading
 
@@ -32,9 +32,10 @@ not mean eight methods have passed admission to a new monthly evaluation.
 Earlier source runs with invalid economic inputs remain useful execution
 evidence but cannot supply admitted performance results.
 
-The monthly-only scope decision remains visible in the current-study guide.
-Do not manufacture monthly eligibility by sampling a completed daily action
-path or aggregating daily trading returns.
+Native-monthly scope is fixed. The [admission audit](paper_runs/native_monthly_study_v1_20261116/REPORT.md)
+records four monthly experiment candidates, no admitted executable central
+method, and the resulting block on financial evaluation. Do not manufacture
+eligibility by sampling daily actions or aggregating daily trading returns.
 
 ## Evidence hierarchy
 

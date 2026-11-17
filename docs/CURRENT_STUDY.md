@@ -1,103 +1,91 @@
-# Current monthly U.S. investment study
+# Current native monthly U.S. investment study
 
-**Provisional as of November 16, 2026.** The research question is whether
-published LLM investment mechanisms deliver useful investment performance on
-U.S. equities beyond actual FF5 + momentum + JKP132. The current benchmark
-is verified; the execution cohort and transfer contract are not final.
+**Provisional as of November 16, 2026.** Scope is fixed: only papers with a
+native monthly investment experiment are eligible. Daily, weekly and quarterly
+methods are excluded. The admission audit is complete; the current executable
+cohort is empty, so the financial study remains blocked and incomplete.
 
-## Scope still to resolve
+## Locked scope and current outcome
 
-The earlier user instruction was to include only papers about monthly investing
-and drop the others. The latest request calls for evaluating central mechanisms
-under a defensible monthly U.S. transfer contract. Whether that permits adapting
-daily or quarterly methods to monthly decisions is still pending clarification.
+The user explicitly confirmed native-monthly papers only. This is no longer a
+pending design choice. Daily historical inputs may support monthly decisions;
+monthly charts, forecast horizons or aggregation of daily trading do not establish
+eligibility. Earlier nonmonthly runs remain historical evidence.
 
-Until resolved, existing daily and quarterly runs are historical evidence, not
-newly admitted monthly evaluations. Monthly reporting of a daily strategy does
-not establish monthly investment decisions.
+The [native-monthly report](../paper_runs/native_monthly_study_v1_20261116/REPORT.md)
+retains all 69 records. Three papers establish monthly individual-stock experiments:
+MarketSenseAI 2.0, Signal or Noise, and Agentic AI Screening. EFS additionally has
+monthly experiments on preformed equity portfolios. None currently passes the
+central-method source admission. Precise blockers are recorded separately; they
+are not assigned zero returns or zero alpha.
 
-## What is complete
+## Benchmark and data already verified
 
-The benchmark contains 305 calendar months from August 1999 through December
-2024: the five actual French factors, actual momentum, and the original fixed
-132 actual JKP U.S. monthly `vw_cap` long-minus-short factor series. RF is
-separate from these 138 factors.
+The actual benchmark contains 305 calendar months, August 1999–December 2024:
+French FF5, momentum and the original fixed 132 JKP U.S. monthly vw_cap factor
+returns. RF is separate. The full factor rank is 138, with 166 residual degrees of
+freedom including an intercept. No factor proxies, principal components or
+regularized residuals replace that risk span.
 
-Independent readback verified the pinned raw archives, identities, units,
-directions, calendar, and full factor span. The full panel has factor rank 138
-and 166 residual degrees of freedom with an intercept. Each method needs its
-own calendar and rank check; these full-panel figures do not validate a short
-method history.
+Actual CRSP opening prices and unmodified monthly records are recovered and
+integrity-checked. Missing returns and vendor delisting flags remain preserved.
+Data integrity is separate from valid funded portfolio accounts.
 
-Actual CRSP opening prices and unmodified monthly records have been recovered.
-The monthly conversion preserves all vendor values, missing returns, and event
-flags, and passed complete row-group readback. Data integrity is separate from
-portfolio-accounting admission.
+## Source executability and inference are separate gates
 
-## Method readiness
+The [69-paper readiness CSV](study/method_readiness.csv) preserves historical
+execution evidence. Its eight executed central mechanisms are nonmonthly and
+excluded from the active cohort. They are not eight admitted monthly strategies.
 
-The [69-paper inventory](study/method_readiness.csv) separates central-mechanism
-execution evidence from release, input, runtime, and economic-accounting gaps.
-The [status snapshot](study/status.json) identifies its source receipts.
+The source gate accepts runnable attributable central code/policies or a complete
+paper-specified central algorithm. Missing old outputs or checkpoints alone do
+not bar a fresh run. In the four monthly cases, the current source/specification
+gaps leave substantive central mappings unresolved. A new reconstruction cannot
+silently be presented as their original implementation.
 
-Eight records have evidence that a central mechanism actually executes:
-FinMem, FinAgent, TradingAgents, FinRL-DeepSeek, AlphaAgent, GuruAgents,
-QuantaAlpha, and AlphaMemo. This is not a final monthly cohort. Some execution
-evidence comes from historical or input-invalid runs; their financial results
-are not admitted by this inventory.
+Separately, the three stock papers report native histories with 6–35 observations.
+The [factor-design check](../paper_runs/native_monthly_study_v1_20261116/native_calendar_factor_design.json)
+shows that the available short calendars cannot identify an intercept and 138
+unrestricted factor exposures. EFS has a long enough monthly overlap but remains
+blocked at source admission. Short paths could support descriptive performance
+if executable; they do not supply an identified actual 138-factor alpha.
 
-Other substantial releases remain individually recorded. For example,
-training code may support fresh training even when an old checkpoint is
-unavailable. A missing historical checkpoint alone is not evidence that the
-method cannot be executed.
+## What remains to complete the economic study
 
-## What remains before a result can be admitted
+A genuinely executable native-monthly central method must first pass source
+admission in a new version with its needed inputs available. Its complete
+monthly U.S.clock, period, funding, costs and controls must be bound before
+strategy outcomes are inspected. Then source/conformance checks, independent
+accounts and the actual-factor analysis can run.
 
-1. Resolve scope and freeze the eligible central-method variants.
-2. Fix each variant's input coverage, source/data/model bindings, monthly
-   decision clock, and any transfer choices before inspecting outcomes.
-3. Execute the real supported mechanism, with complete request/prefix records
-   and the required replay or conformance checks.
-4. Validate funded portfolio accounts, costs, missing observations, corporate
-   actions, and settlement assumptions independently.
-5. Attribute the complete declared monthly path to the actual 138-factor span,
-   reporting rank, residual degrees of freedom, uncertainty, and matched controls.
-6. Reconcile the cohort, failures, results, and limitations into the provisional
-   paper before marking this study complete.
+The [frozen U.S.contract](../paper_runs/native_monthly_study_v1_20261116/monthly_US_contract_v1.json)
+blocks model/portfolio dispatch when the cohort is empty. No new paid call or
+financial result was generated by the admission audit. The paper stays
+provisional; this is not a finding that LLM methods lack alpha.
 
-The draft contract specifies causal inputs, explicit funding and cash, turnover
-costs, chronological training/validation, and source-specific controls. It does
-not authorize silently replacing a central agent with a deterministic proxy.
+## Claims and uncertainty
 
-Monthly CRSP delisting flags distinguish included, excluded, and partial
-payoffs. Do not compound a delisting return twice, treat an incomplete payoff
-as complete because its number is finite, or silently drop a held delisting.
-
-## Inference and claims
-
-The actual 138-factor intercept is retrospective attribution, not a tradable
-hedge portfolio. Short paths can leave that intercept unidentified. The saved
-finite-design calibration also shows that approximate HAC intervals can
-undercover with persistent errors.
-
-Retain the stated 2-percentage-point annual economic margin and the declared
-multiplicity accounting. Insignificance does not prove no alpha, and a
-successful software check does not reproduce an entire paper.
+The 138-factor intercept is retrospective attribution, not a tradable hedge.
+Retain the stated 2pp/year economic margin, original 69-family accounting and
+finite-sample limitations. Prior calibration shows approximate HAC intervals
+can undercover with persistent errors. Insignificance does not prove no alpha.
+Component execution, author-output checks and human review remain distinct.
 
 ## Evidence locations
 
-The compact [status snapshot](study/status.json) and benchmark contract are
-readable in the source checkout. The other working-evidence links below
-require authorized Bouchet access:
+Public compact records:
 
+- [Admission and execution preflight](../paper_runs/native_monthly_study_v1_20261116/execution_preflight.json).
+- [All 69 scope dispositions](../paper_runs/native_monthly_study_v1_20261116/all69_native_monthly_dispositions.csv).
+- [Four candidate blockers](../paper_runs/native_monthly_study_v1_20261116/eligible_case_blockers.json).
 - [Benchmark contract](../paper_runs/us_monthly_actual_factors_v1_20261116/benchmark_contract.json).
-- [Independent benchmark readback](https://ood-bouchet.ycrc.yale.edu/pun/sys/dashboard/files/fs//nfs/roberts/project/pi_jss233/zc362/alpha_evolve/artifacts/us_monthly_actual_factors_verified_v2_20261116/benchmark_independent_readback_v1/validation.json).
-- [CRSP recovery receipt](https://ood-bouchet.ycrc.yale.edu/pun/sys/dashboard/files/fs//nfs/roberts/project/pi_jss233/zc362/alpha_evolve/artifacts/us_monthly_actual_factors_verified_v2_20261116/CRSP_opening_price_recovery_completion_v1.json).
-- [Transfer contract draft](https://ood-bouchet.ycrc.yale.edu/pun/sys/dashboard/files/fs//nfs/roberts/project/pi_jss233/zc362/alpha_evolve/artifacts/monthly_us_transfer_contract_v1_20261116/monthly_us_transfer_contract_draft_v1.json).
-- [Detailed mechanism inventory](https://ood-bouchet.ycrc.yale.edu/pun/sys/dashboard/files/fs//nfs/roberts/project/pi_jss233/zc362/alpha_evolve/artifacts/monthly_us_transfer_contract_v1_20261116/all69_mechanism_readiness.json).
+- [Status snapshot](study/status.json).
 
-The newest working continuation is
-`artifacts/us_monthly_actual_factors_verified_v2_20261116/HANDOFF.md`.
-The November evidence-paper directory is
-`paper_runs/llm_investment_evidence_paper_v1_20261105/`; its study correction
-keeps the paper provisional. Sealed earlier manuscripts remain unchanged.
+Detailed working evidence requires authorized Bouchet access:
+
+- [Native-monthly source audit](https://ood-bouchet.ycrc.yale.edu/pun/sys/dashboard/files/fs//nfs/roberts/project/pi_jss233/zc362/alpha_evolve/artifacts/native_monthly_study_v1_20261116).
+- [CRSP recovery receipt](https://ood-bouchet.ycrc.yale.edu/pun/sys/dashboard/files/fs//nfs/roberts/project/pi_jss233/zc362/alpha_evolve/artifacts/us_monthly_actual_factors_verified_v2_20261116/CRSP_opening_price_recovery_completion_v1.json).
+
+The current working handoff is
+`artifacts/native_monthly_study_v1_20261116/HANDOFF.md`. Sealed manuscripts and
+all prior studies remain preserved.

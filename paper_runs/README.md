@@ -14,8 +14,10 @@ contains the actual benchmark and early study records. Corrected-input and trans
 private `artifacts/` directories, linked from the guide. Not every working
 artifact is distributed in a public source checkout.
 
-The current benchmark is verified. Cohort admission, the final monthly transfer
-contract, new financial evaluations, and paper closure remain open.
+The current benchmark is verified. The [native-monthly admission audit](native_monthly_study_v1_20261116/REPORT.md)
+and [U.S.contract](native_monthly_study_v1_20261116/monthly_US_contract_v1.json)
+are fixed: four native monthly candidates, no admitted executable central
+method, and financial execution blocked. The paper remains provisional.
 
 ## Historical studies
 

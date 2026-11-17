@@ -8,14 +8,17 @@ The study and paper remain provisional. Read
 [the current study](docs/CURRENT_STUDY.md) and the newest private
 `artifacts/us_monthly_actual_factors_verified_v2_20261116/HANDOFF.md`.
 
-A scope question is pending: whether the latest transfer request permits
-adapting daily or quarterly methods to monthly decisions, superseding the
-earlier instruction to drop nonmonthly papers. Do not infer an answer from
-silence or from a documentation cleanup request.
+The user has resolved scope: ONLY papers with an explicit native monthly
+investment experiment are eligible. Drop daily, weekly and quarterly methods;
+no retiming or monthly aggregation creates eligibility. Daily input data may
+support a genuinely monthly decision process. Do not reopen this scope question.
 
-The current cleanup authorizes organization and reader documentation, not new
-scientific runs or publication. Preserve the pending research work and all
-existing evidence.
+The current task authorizes the native-monthly study, with the paper provisional
+until its economic work is complete. Read the frozen admission and U.S.contract
+in `paper_runs/native_monthly_study_v1_20261116/`. Its current executable cohort
+is empty after source admission; no model or portfolio job may be launched as
+a substitute. New source evidence requires a separately versioned admission.
+Preserve all prior research and evidence.
 
 ## Work location and execution
 
@@ -44,8 +47,9 @@ existing evidence.
   out of public Git. Do not inspect credentials or dump ledgers.
 - All historical and uncertain charges count toward the user's strict
   total of less than USD 1,000. The current bounded runtime route is stricter
-  at USD 800; legacy study caps remain unchanged. No paid work is authorized
-  by this cleanup itself.
+  at USD 800; legacy study caps remain unchanged. Paid work requires an admitted native-monthly case and its
+  validated runtime/data/budget bindings. The empty current cohort opens no
+  new paid route.
 - Any subsequently authorized model calls must use the canonical accounting
   stores under `runs/economic_fidelity/openrouter`. Read only the permitted
   `OPENROUTER_API_KEY` from the designated parent KnowledgeTemplate

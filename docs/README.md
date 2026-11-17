@@ -9,8 +9,10 @@ specific evidence package they describe.
 - [Project overview](../README.md): goal, status, repository layout, and access.
 - [Collaborator handoff](../COLLABORATOR_HANDOFF.md): a route through a paper's
   source, inputs, execution evidence, and results.
-- [Current study](CURRENT_STUDY.md): the actual benchmark, method readiness,
-  unresolved scope, and completion criteria.
+- [Current study](CURRENT_STUDY.md): the actual benchmark, locked native-monthly
+  scope, admission outcome, and completion criteria.
+- [Native-monthly admission report](../paper_runs/native_monthly_study_v1_20261116/REPORT.md):
+  all69 dispositions, four candidate blockers, and factor-design checks.
 - [Method readiness CSV](study/method_readiness.csv) and
   [status snapshot](study/status.json): all 69 records with dated provenance.
 - [Development](DEVELOPMENT.md): environments and validation scopes.
