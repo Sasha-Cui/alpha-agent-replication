@@ -58,16 +58,18 @@ small maintenance pass:
 python -m ruff check scripts/check_repository_docs.py
 ```
 
-The existing CI workflow runs broader source lint and
-`scripts/validate_submission_package.py`. That validator concerns the older
-tracked submission and compact evidence. It is not a certificate for the
-reopened study. The dated [validation status](VALIDATION_STATUS.md) describes
-its original scope.
+The CI workflow runs full-scope lint through
+[`check_frozen_lint.py`](../scripts/check_frozen_lint.py), followed by
+`scripts/validate_submission_package.py`. All Python files are linted. A
+[hash-bound historical record](ci/README.md) preserves 4,878 exact diagnostics in
+130 unchanged frozen helpers/regression files; new findings or changed frozen
+bytes fail. This is not a claim that raw Ruff has no historical findings.
 
-The November 16 public-snapshot validation recorded 453 passing tests and
-36 passing subtests. Ruff also recorded 4,929 style/unused-code findings in
-the historical snapshot; this cleanup preserves the frozen source bytes and
-does not claim that the broader lint gate is green.
+The package validator concerns the older tracked submission and compact
+evidence. It is not a certificate for the reopened economic study. The dated
+[validation status](VALIDATION_STATUS.md) retains its original scope. Historical
+453-test/36-subtest and 4,929-lint-finding records are dated snapshots, not the
+current CI outcome.
 
 A full test suite may inspect many frozen evidence packages and external
 runtime assumptions. Do not rerun source jobs, simulations, accounts, paper

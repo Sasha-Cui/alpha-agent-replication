@@ -21,6 +21,7 @@ DOCUMENTS = (
     "docs/README.md",
     "docs/CURRENT_STUDY.md",
     "docs/DEVELOPMENT.md",
+    "docs/ci/README.md",
     "scripts/README.md",
     "paper_runs/README.md",
     "docs/PROJECT_BRIEFING.md",
