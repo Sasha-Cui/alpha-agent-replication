@@ -1,0 +1,31 @@
+{
+  "economic_output_hashes_checked": true,
+  "exact_saved_source_replay_state_equality": true,
+  "exports": {
+    "economic_path_status.csv": "0cd10985bb83051aa20951eed49f9b0772e022e6c61182c728c441f5c56aaf1c",
+    "efs/actual_factor_attribution.csv": "c1049a223b9376a610d469c21a485a2dd7c5f0000a08609699615201e76e2c15",
+    "efs/matched_effects.csv": "415ded838f84b21ec6c1baaa21202abf8e2aa36e053e4bcd37b723128e1fd994",
+    "efs/performance.csv": "f94379d309b6d86a386046f668aafaae9f0201e20cc84faa1c500535368ea02c",
+    "method_review.csv": "986a1168c6ec3bac6aa5b97cd8e54af30138aad844871a252d79cde4c0d1b0f6",
+    "native_evaluation_protocol_v2.json": "4c0c32666744cc9bee475d56c9d322a533d54656ca16daac064eaf139a2a2a77",
+    "screening/actual_factor_attribution.csv": "5a9d0a80d6eb438f99c9c666d1770cba6305043749774adc5601e8040f2785ea",
+    "screening/coverage_failures.csv": "c2cece77aff5f706fb6841383d231af42d32090f78262fb3e3a3d1a1efb9477f",
+    "screening/performance.csv": "979aaaa34e7333e28501691785b4de354a2b6b6afb7a68c44bd5aa1db89facb2",
+    "source_replay_status.csv": "07482e9ca892c3ac98d3a80929ab6af6b8329c001cc148aabbbfa9d4c21521b9",
+    "status.json": "483da34c340819fc61189cd7e5fdc83fd530c3ed19705a1d8e177eca80229f80"
+  },
+  "financial_path_counts": {
+    "M023": {
+      "failed_paths": 0,
+      "verified_paths": 12
+    },
+    "M050": {
+      "failed_paths": 18,
+      "verified_paths": 12
+    }
+  },
+  "new_scientific_runs": 0,
+  "snapshot_date": "2026-11-17",
+  "source_variants_checked": 5,
+  "status": "PASS_readback_saved_source_replay_and_economic_receipts"
+}

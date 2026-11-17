@@ -1,0 +1,5 @@
+paper_id,title,implementation_from_paper_allowed,source_replay_complete,primary_economic_comparison_admitted,remaining_gap,status
+M016,MarketSenseAI 2.0,True,False,False,"Dated qualitative fundamentals, earnings-call and macro-research input channels not yet recovered and verified; reasonable reconstructed prompts are allowed.",input_gap
+M023,Evolutionary Factor Search base monthly experiment,True,True,True,Bounded base search on FF25; not all revised-paper pruning/weighting refinements or underlying-stock implementation costs.,bounded_economic_evaluation_complete
+M050,Designing Agentic AI-Based Screening,True,True,False,LLM-screened primary paths and equal-weight control blocked by unpriced held month-end assets; secondary completed paths cannot replace them.,primary_economic_comparison_blocked
+M052,Signal or Noise,True,False,False,Same unverified historical qualitative/macro channels; absence of original recommendations alone does not exclude fresh implementation.,input_gap

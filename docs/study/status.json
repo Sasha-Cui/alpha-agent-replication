@@ -1,44 +1,54 @@
 {
-  "snapshot_date": "2026-11-16",
-  "study_status": "provisional",
-  "monthly_transfer_scope_question_pending": false,
   "benchmark": {
+    "contract_path": "paper_runs/us_monthly_actual_factors_v1_20261116/benchmark_contract.json",
+    "end": "2024-12-31",
     "factor_count": 138,
+    "factor_rank": 138,
+    "independent_readback_sha256": "a05e2f70470a3b5c2482543bfe87ef5777280927679ec5a78a48610f0b7fccc1",
+    "intercept_design_rank": 139,
     "jkp_factor_count": 132,
     "months": 305,
-    "start": "1999-08-31",
-    "end": "2024-12-31",
-    "factor_rank": 138,
-    "intercept_design_rank": 139,
+    "panel_sha256": "4df228c9bdcf87b6d6cd3d89f49a6d296a106e2aedb20d482e6961c2627caa14",
     "residual_df": 166,
     "risk_free_is_separate": true,
-    "panel_sha256": "4df228c9bdcf87b6d6cd3d89f49a6d296a106e2aedb20d482e6961c2627caa14",
-    "contract_path": "paper_runs/us_monthly_actual_factors_v1_20261116/benchmark_contract.json",
-    "independent_readback_sha256": "a05e2f70470a3b5c2482543bfe87ef5777280927679ec5a78a48610f0b7fccc1"
+    "start": "1999-08-31"
+  },
+  "claim_boundaries": [
+    "Two paper-based central methods completed source/replay; only EFS has an admitted primary economic comparison.",
+    "Screening has12 completed secondary paths and18 retained failures; no failed primary is replaced with a secondary.",
+    "Missing methods and financial paths are not zero-alpha observations.",
+    "No full-paper, pristine historical snapshot, untouched holdout or external human-review claim.",
+    "The paper remains provisional."
+  ],
+  "historical_native_monthly_v1": {
+    "admission_audit_complete": true,
+    "all69_dispositions_sha256": "cf42d40555c81a8c369412a803045aa7cbc4d6e63c611774cd9ac368fe6b8e0d",
+    "candidate_count": 4,
+    "contract_path": "paper_runs/native_monthly_study_v1_20261116/monthly_US_contract_v1.json",
+    "contract_sha256": "cbf3e576b64bc4fc09190e3bd0b057f5fab034e5ac36c258415e40cf056f1a09",
+    "executable_methods": 0,
+    "execution_preflight_path": "paper_runs/native_monthly_study_v1_20261116/execution_preflight.json",
+    "execution_preflight_sha256": "fe23d8712f28bd2bfb6a677e87dd58aef26a63d1f8b136fe1717c630dab604a6",
+    "financial_evaluations_completed": 0,
+    "paid_model_requests": 0,
+    "paper_provisional": true
   },
   "mechanism_inventory": {
-    "paper_count": 69,
     "central_execution_evidence_paper_ids": [
       "M006",
       "M009",
       "M014",
       "M017",
       "M019",
+      "M023",
       "M033",
       "M043",
+      "M050",
       "M059"
     ],
-    "monthly_admitted_paper_ids": [],
-    "source_snapshot_sha256": "ba1340523dc8f1af6e32a6a8cec57b5ae62b90786e79a4bf4f6dd68102c9a090",
-    "csv_sha256": "b2a4cf5cc1c31d50e4dcc8c2b5063eee9c7aad430eafadae230cb022a674726d",
+    "csv_sha256": "f3b0a4fcc35d755514e324f6fc23342b39e54f20fc2dc5722e30a3159dfa2ab1",
+    "current_snapshot_basis": "v2 saved source/replay/economic receipts plus retained69-paper historical source audits",
     "execution_evidence_is_not_monthly_admission": true,
-    "native_monthly_candidate_paper_ids": [
-      "M016",
-      "M023",
-      "M050",
-      "M052"
-    ],
-    "native_monthly_executable_cohort_finalized": true,
     "historical_executed_nonmonthly_paper_ids": [
       "M006",
       "M009",
@@ -48,39 +58,87 @@
       "M033",
       "M043",
       "M059"
-    ]
+    ],
+    "historical_source_snapshot_sha256": "ba1340523dc8f1af6e32a6a8cec57b5ae62b90786e79a4bf4f6dd68102c9a090",
+    "monthly_admitted_paper_ids": [
+      "M023",
+      "M050"
+    ],
+    "native_monthly_candidate_paper_ids": [
+      "M016",
+      "M023",
+      "M050",
+      "M052"
+    ],
+    "native_monthly_executable_cohort_finalized": true,
+    "paper_count": 69,
+    "primary_economic_comparison_admitted_paper_ids": [
+      "M023"
+    ],
+    "source_snapshot_sha256": "483da34c340819fc61189cd7e5fdc83fd530c3ed19705a1d8e177eca80229f80"
   },
-  "software_validation": {
-    "captured_public_snapshot_pytest": "453 passed, 36 subtests passed",
-    "public_snapshot_validation_sha256": "dc72c8aefb155e0fecb556f5a48bc9b9f46ec6726df04a4a16a9fd081d1e80c6",
-    "ruff_findings_in_historical_snapshot": 4929,
-    "full_lint_gate_claimed_green": false
+  "monthly_transfer_scope_question_pending": false,
+  "native_monthly_scope_locked": true,
+  "native_monthly_study": {
+    "candidate_count": 4,
+    "cases": {
+      "M023": {
+        "economic_status": "complete_verified_conditional_research_accounts",
+        "exact_replay_complete": true,
+        "failed_paths": 0,
+        "financial_completion_not_inferred_from_exit": true,
+        "job_id": 33615291,
+        "maximum_independent_account_error": 1.6653345369377348e-15,
+        "months": 286,
+        "primary_comparison_admitted": true,
+        "scheduler_exit_code": "0:0",
+        "source_complete": true,
+        "verified_paths": 12
+      },
+      "M050": {
+        "economic_status": "partial_financial_coverage_failures_retained",
+        "exact_replay_complete": true,
+        "failed_paths": 18,
+        "financial_completion_not_inferred_from_exit": true,
+        "job_id": 33615292,
+        "maximum_independent_account_error": 2.042810365310288e-14,
+        "months": 232,
+        "primary_comparison_admitted": false,
+        "scheduler_exit_code": "0:0",
+        "source_complete": true,
+        "verified_paths": 12
+      }
+    },
+    "paper_provisional": true,
+    "primary_economic_comparison_admitted_paper_ids": [
+      "M023"
+    ],
+    "source_admitted_paper_ids": [
+      "M023",
+      "M050"
+    ],
+    "source_variants_complete": 5,
+    "status_path": "paper_runs/native_monthly_implementation_v2_20261116/status.json",
+    "status_sha256": "483da34c340819fc61189cd7e5fdc83fd530c3ed19705a1d8e177eca80229f80",
+    "verification_path": "paper_runs/native_monthly_implementation_v2_20261116/verification.json",
+    "verification_sha256": "5c755abe44a2cd10d050d69b704cc7bad9682e2f06e93476550f5711af0fc028",
+    "version": 2
   },
   "private_evidence": {
-    "working_handoff": "artifacts/native_monthly_study_v1_20261116/HANDOFF.md",
-    "transfer_contract": "paper_runs/native_monthly_study_v1_20261116/monthly_US_contract_v1.json",
-    "source_snapshot_date_utc": "2026-11-16T20:04:17.286176+00:00",
-    "requires_authorized_Bouchet_access": true
+    "requires_authorized_Bouchet_access": true,
+    "source_snapshot_date_utc": "2026-11-17T08:45:02.240535+00:00",
+    "transfer_contract": "paper_runs/native_monthly_implementation_v2_20261116/native_evaluation_protocol_v2.json",
+    "working_handoff": "artifacts/native_monthly_implementation_v2_20261116/HANDOFF.md"
   },
-  "claim_boundaries": [
-    "The native-monthly cohort has no admitted executable central method; the financial study is blocked, not complete.",
-    "No missing method is assigned zero return or zero alpha.",
-    "Current manuscript remains provisional."
-  ],
-  "native_monthly_scope_locked": true,
-  "study_execution_status": "blocked_no_admitted_executable_native_monthly_central_method",
   "scientific_objective_complete": false,
-  "native_monthly_study": {
-    "admission_audit_complete": true,
-    "execution_preflight_path": "paper_runs/native_monthly_study_v1_20261116/execution_preflight.json",
-    "execution_preflight_sha256": "fe23d8712f28bd2bfb6a677e87dd58aef26a63d1f8b136fe1717c630dab604a6",
-    "contract_path": "paper_runs/native_monthly_study_v1_20261116/monthly_US_contract_v1.json",
-    "contract_sha256": "cbf3e576b64bc4fc09190e3bd0b057f5fab034e5ac36c258415e40cf056f1a09",
-    "all69_dispositions_sha256": "cf42d40555c81a8c369412a803045aa7cbc4d6e63c611774cd9ac368fe6b8e0d",
-    "candidate_count": 4,
-    "executable_methods": 0,
-    "financial_evaluations_completed": 0,
-    "paid_model_requests": 0,
-    "paper_provisional": true
-  }
+  "snapshot_date": "2026-11-17",
+  "software_validation": {
+    "captured_public_snapshot_pytest": "453 passed, 36 subtests passed",
+    "full_lint_gate_claimed_green": false,
+    "public_snapshot_validation_sha256": "dc72c8aefb155e0fecb556f5a48bc9b9f46ec6726df04a4a16a9fd081d1e80c6",
+    "ruff_findings_in_historical_snapshot": 4929
+  },
+  "study_execution_status": "source_replay_complete_efs_economics_complete_screening_primary_blocked",
+  "study_status": "provisional",
+  "verified_at_utc": "2026-11-17T08:45:02.240535+00:00"
 }

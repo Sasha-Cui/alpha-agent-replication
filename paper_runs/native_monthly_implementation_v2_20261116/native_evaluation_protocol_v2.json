@@ -1,0 +1,54 @@
+{
+  "EFS_funding": "preformed equity-portfolio units; unit turnover fee excludes unobserved underlying-stock implementation costs",
+  "M023_primary_central_mechanism": "paper EFS base equal-factor-weight monthly FF25, pooled3LLM trajectories versus matched grammar,10bp portfolio-unit turnover",
+  "M050_primary_central_mechanism": "published LLM-S screened equal-weight ablation: raw BM/nonhold versus same universe EW,10bp each-way turnover",
+  "at_utc": "2026-11-17T02:46:25.715681+00:00",
+  "bound_helpers": {
+    "evaluate_monthly.py": "1f56169bb675669b81045023a585e70b813f87bffadde3af4b2e88bf48bffffc",
+    "evaluate_native_clock_v2.py": "3975618a080c4398af77c798667c0a07cb87f239c8c6f13a86f15aaec8ceefeb",
+    "monthly_core.py": "e3f758d96db85feb9641560cdd7c495cfe97c77ecb02bed655047dd9b55d050c",
+    "opening_accounts_v1.py": "62a03a8ad0c7bb299305ea0a6602c724fd102a7a6a56c336e5fcfb707520120e",
+    "run_efs_monthly_native_clock.py": "977522ce647146d66319e81da1a8c8d6a5e71c8ecb1a543f71a2cfbb5794114e"
+  },
+  "cash": "French monthlyRF geometrically accrued over calendar days at dayclose; no daily decisions",
+  "common_long_windows": {
+    "M023": [
+      "1999-08",
+      "2023-05"
+    ],
+    "M050": [
+      "2005-01",
+      "2024-04"
+    ]
+  },
+  "dividends": "prior-close holdings get cash-equivalent distribution; current-open buyers excluded. Ret-RetX uses6decimal vendor precision. Distribution entitlement credited at day close, not exact historical payment-date settlement.",
+  "economic_margin_annual": 0.02,
+  "factor_controls": "fixed actual138 plus separateFF6 sensitivity; never proxy or regularize main risk span",
+  "final_liquidation": "positions marked at last close, no assumed final liquidation",
+  "missing_open": "new order remains cash without renormalizing; existing unquoted holding locked until observed quote/terminal event",
+  "multiplicity": "conservative69x192 p-values for all reported tests/arms/timings/fees; pointwise99% intervals are not simultaneous margins",
+  "news_archive": "4589 original author-linked articles; sparse/nonuniform historical coverage, not an exhaustive historical news feed. Zero observed articles invokes paper HOLD but is not proof no relevant news. Report coverage and screening components separately.",
+  "no_strategy_PnL_previously_computed": true,
+  "other_screening_arms": [
+    "ensemble_nonhold",
+    "FinBERT_nonhold",
+    "ensemble_buyonly"
+  ],
+  "pre_execution_implementation_corrections": [
+    "Preserve earliest discovery identity when an identical factor code occurs across trajectories; only current asof accepted pool hashes are eligible.",
+    "Explicitly name existing NAV column wealth for shared effect summaries."
+  ],
+  "primary_BM": "ratio",
+  "primary_fee_bps": 10,
+  "primary_timing": "native t-1 information, t monthly period; M050 actual first opening",
+  "prior_protocol_preserved_unexecuted": true,
+  "sensitivity_BM": "log",
+  "sensitivity_fees": [
+    0,
+    25
+  ],
+  "status": "frozen_before_first_strategy_PnL",
+  "terminal_events": "unmodified CIZ terminal total return once, cash-equivalent vendor valuation, not independently certified settlement/exchange ratios",
+  "timing_amendment_sha256": "d60494c9b96b2e61d183d0a2a1e16790654d344571b1f2e91f7897199cb6c6b1",
+  "unpriced_monthend": "fail account, no zero return/alpha imputation or silent month omission"
+}

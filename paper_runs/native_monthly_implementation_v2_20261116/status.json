@@ -1,0 +1,307 @@
+{
+  "cases": {
+    "M023": {
+      "economic_status": "complete_verified_conditional_research_accounts",
+      "exact_replay_complete": true,
+      "failed_paths": 0,
+      "financial_completion_not_inferred_from_exit": true,
+      "job_id": 33615291,
+      "maximum_independent_account_error": 1.6653345369377348e-15,
+      "months": 286,
+      "primary_comparison_admitted": true,
+      "scheduler_exit_code": "0:0",
+      "source_complete": true,
+      "verified_paths": 12
+    },
+    "M050": {
+      "economic_status": "partial_financial_coverage_failures_retained",
+      "exact_replay_complete": true,
+      "failed_paths": 18,
+      "financial_completion_not_inferred_from_exit": true,
+      "job_id": 33615292,
+      "maximum_independent_account_error": 2.042810365310288e-14,
+      "months": 232,
+      "primary_comparison_admitted": false,
+      "scheduler_exit_code": "0:0",
+      "source_complete": true,
+      "verified_paths": 12
+    }
+  },
+  "efs_primary": {
+    "absolute_actual138_attribution": {
+      "CI99_high_annualized": "0.017960597793172453",
+      "CI99_low_annualized": "-0.034449383181186524",
+      "alpha_SE_annualized": "0.010173418887297787",
+      "alpha_annualized": "-0.008244392694007037",
+      "alpha_monthly": "-0.0006870327245005864",
+      "alpha_t_hac": "-0.8103856516024056",
+      "arm": "LLM_pooled",
+      "benchmark": "actual_FF5_MOM_JKP132",
+      "case": "M023",
+      "comparison": "absolute_net_excess",
+      "condition_number_scaled_factors": "1437.6825143450137",
+      "conservative69x192_p": "1.0",
+      "conservative69x192_superiority_p": "1.0",
+      "control": "",
+      "degenerate": "False",
+      "factor_rank": "138",
+      "fee_bps": "10",
+      "hac_small_sample_multiplier": "1.945578231292517",
+      "inference": "Approximate retrospective Newey-West HAC intercept, not a forecast or a robust high-dimensional asymptotic guarantee.",
+      "intercept_design_rank": "139",
+      "intercept_information_norm": "89.97394710973428",
+      "lag12_SE_annualized": "0.009392513878071126",
+      "lag12_p": "0.380072836731171",
+      "lags": "5",
+      "max_normalized_span_error": "1.0103029524088925e-14",
+      "months": "286",
+      "p_two_sided_hac": "0.41771856181292033",
+      "residual_df": "147",
+      "stated_factor_count": "138",
+      "superiority_over_2pp_one_sided_p": "0.9972508691634807"
+    },
+    "fee_bps_per_side": 10,
+    "interpretation": "No demonstrated incremental LLM value in this bounded experiment; paired 99% interval crosses zero and the 2pp/year margin. Not proof of no alpha across papers.",
+    "months": 286,
+    "paired_vs_grammar_actual138_attribution": {
+      "CI99_high_annualized": "0.027800502764278562",
+      "CI99_low_annualized": "-0.024257394837719118",
+      "alpha_SE_annualized": "0.010105075194671066",
+      "alpha_annualized": "0.0017715539632797233",
+      "alpha_monthly": "0.00014762949693997694",
+      "alpha_t_hac": "0.17531328853583952",
+      "arm": "LLM_pooled",
+      "benchmark": "actual_FF5_MOM_JKP132",
+      "case": "M023",
+      "comparison": "paired_increment",
+      "condition_number_scaled_factors": "1437.6825143450137",
+      "conservative69x192_p": "1.0",
+      "conservative69x192_superiority_p": "1.0",
+      "control": "grammar_pooled",
+      "degenerate": "False",
+      "factor_rank": "138",
+      "fee_bps": "10",
+      "hac_small_sample_multiplier": "1.945578231292517",
+      "inference": "Approximate retrospective Newey-West HAC intercept, not a forecast or a robust high-dimensional asymptotic guarantee.",
+      "intercept_design_rank": "139",
+      "intercept_information_norm": "89.97394710973428",
+      "lag12_SE_annualized": "0.01077787392202934",
+      "lag12_p": "0.8694402567125168",
+      "lags": "5",
+      "max_normalized_span_error": "1.0103029524088925e-14",
+      "months": "286",
+      "p_two_sided_hac": "0.8608334707309004",
+      "residual_df": "147",
+      "stated_factor_count": "138",
+      "superiority_over_2pp_one_sided_p": "0.9643757386047239"
+    },
+    "paired_vs_grammar_mean_increment": {
+      "annualized_mean_increment": "0.0013554172785282044",
+      "case": "M023",
+      "control_wealth": "9.274228261076722",
+      "fee_bps": "10",
+      "left": "LLM_pooled",
+      "left_wealth": "9.842143653660065",
+      "months": "286",
+      "right": "grammar_pooled"
+    },
+    "paper_id": "M023",
+    "performance": {
+      "LLM_pooled": {
+        "CAGR_12month_convention": "0.10069780214419999",
+        "annualized_arithmetic_return": "0.11341201620036592",
+        "annualized_excess_Sharpe": "0.5257528794504489",
+        "annualized_mean_excess_return": "0.09750572249407224",
+        "arm": "LLM_pooled",
+        "case": "M023",
+        "end": "2023-05-31",
+        "ending_wealth": "9.842143653660083",
+        "fee_bps": "10",
+        "first_open_execution": "False",
+        "max_drawdown": "-0.5302206430870204",
+        "maximum_independent_account_error": "5.551115123125783e-16",
+        "mean_cash_weight": "-2.0962252912502955e-17",
+        "mean_oneway_stock_or_portfolio_unit_turnover": "0.5138837308306048",
+        "months": "286",
+        "start": "1999-08-31"
+      },
+      "grammar_pooled": {
+        "CAGR_12month_convention": "0.09795636750318537",
+        "annualized_arithmetic_return": "0.11205659892183772",
+        "annualized_excess_Sharpe": "0.5017743144789476",
+        "annualized_mean_excess_return": "0.09615030521554403",
+        "arm": "grammar_pooled",
+        "case": "M023",
+        "end": "2023-05-31",
+        "ending_wealth": "9.274228261076734",
+        "fee_bps": "10",
+        "first_open_execution": "False",
+        "max_drawdown": "-0.5278676106008532",
+        "maximum_independent_account_error": "6.661338147750939e-16",
+        "mean_cash_weight": "-3.3384328712504705e-17",
+        "mean_oneway_stock_or_portfolio_unit_turnover": "0.7009330781526099",
+        "months": "286",
+        "start": "1999-08-31"
+      },
+      "initial_library": {
+        "CAGR_12month_convention": "0.10734410511678405",
+        "annualized_arithmetic_return": "0.1204106608240798",
+        "annualized_excess_Sharpe": "0.548309096118023",
+        "annualized_mean_excess_return": "0.10450436711778609",
+        "arm": "initial_library",
+        "case": "M023",
+        "end": "2023-05-31",
+        "ending_wealth": "11.360617039685973",
+        "fee_bps": "10",
+        "first_open_execution": "False",
+        "max_drawdown": "-0.5367134527745621",
+        "maximum_independent_account_error": "6.661338147750939e-16",
+        "mean_cash_weight": "-2.7949670550003944e-17",
+        "mean_oneway_stock_or_portfolio_unit_turnover": "0.464432224393099",
+        "months": "286",
+        "start": "1999-08-31"
+      },
+      "universe_EW": {
+        "CAGR_12month_convention": "0.09090108891947413",
+        "annualized_arithmetic_return": "0.10490882305751606",
+        "annualized_excess_Sharpe": "0.4760970291656282",
+        "annualized_mean_excess_return": "0.08900252935122237",
+        "arm": "universe_EW",
+        "case": "M023",
+        "end": "2023-05-31",
+        "ending_wealth": "7.953374704278749",
+        "fee_bps": "10",
+        "first_open_execution": "False",
+        "max_drawdown": "-0.539754524944677",
+        "maximum_independent_account_error": "6.661338147750939e-16",
+        "mean_cash_weight": "0.0",
+        "mean_oneway_stock_or_portfolio_unit_turnover": "0.022459960930559953",
+        "months": "286",
+        "start": "1999-08-31"
+      }
+    },
+    "portfolio_unit_fee_not_underlying_stock_cost": true,
+    "window_end": "2023-05-31",
+    "window_start": "1999-08-31"
+  },
+  "input_gap_paper_ids": [
+    "M016",
+    "M052"
+  ],
+  "native_monthly_only": true,
+  "no_new_model_data_account_or_scientific_execution": true,
+  "paper_based_central_implementation_allowed": true,
+  "primary_economic_comparison_admitted_paper_ids": [
+    "M023"
+  ],
+  "private_holdings_and_security_identifiers_excluded_from_public_failures": true,
+  "receipt_hashes": [
+    {
+      "path": "artifacts/native_monthly_implementation_v2_20261116/case_protocol_M023_native_clock.json",
+      "role": "M023 frozen source protocol",
+      "sha256": "785f1ca062309cead91fad83962969f8425183224d9bda5fa168572cb2a3f11e"
+    },
+    {
+      "path": "artifacts/native_monthly_implementation_v2_20261116/M023_native_clock/101/source/completion.json",
+      "role": "source completion",
+      "sha256": "f4803541aa09cd22c5dfc3072a609687db15e061d493b21ad62a9b45f0ee6677"
+    },
+    {
+      "path": "artifacts/native_monthly_implementation_v2_20261116/M023_native_clock/101/replay_validation.json",
+      "role": "exact offline replay",
+      "sha256": "a01d2f9b05dd2e5935c9c64e15c66c6d7b1706f1c094919098dd81a51f832356"
+    },
+    {
+      "path": "artifacts/native_monthly_implementation_v2_20261116/M023_native_clock/102/source/completion.json",
+      "role": "source completion",
+      "sha256": "76eabe2d0fdbfc0924547f4dd3cdff08b5e8d947a656bed3daff2ad14d29134f"
+    },
+    {
+      "path": "artifacts/native_monthly_implementation_v2_20261116/M023_native_clock/102/replay_validation.json",
+      "role": "exact offline replay",
+      "sha256": "2eb3ebf5c2259aa854f34b05d88359c981130158974202a712f95d46ffe193f7"
+    },
+    {
+      "path": "artifacts/native_monthly_implementation_v2_20261116/M023_native_clock/103/source/completion.json",
+      "role": "source completion",
+      "sha256": "ce8d1ea399c759871926f44c64fbc849d73e945db0422fe0217b7f01823d14fc"
+    },
+    {
+      "path": "artifacts/native_monthly_implementation_v2_20261116/M023_native_clock/103/replay_validation.json",
+      "role": "exact offline replay",
+      "sha256": "0ea7508dce5a5e095ba2982a459970cf902d584f1ea402a3c3416cdb8b897401"
+    },
+    {
+      "path": "artifacts/native_monthly_implementation_v2_20261116/case_protocol_M050_native_clock.json",
+      "role": "M050 frozen source protocol",
+      "sha256": "a53b1878be5134909418ca957a4eb94bf77f5816b105d91a78347db52af62ef6"
+    },
+    {
+      "path": "artifacts/native_monthly_implementation_v2_20261116/M050_native_clock/ratio/source/completion.json",
+      "role": "source completion",
+      "sha256": "7cb7ba925f795544cddadac42ec214ddae344ab7a1dd6e7b4b74874dc5e4e0c7"
+    },
+    {
+      "path": "artifacts/native_monthly_implementation_v2_20261116/M050_native_clock/ratio/replay_validation.json",
+      "role": "exact offline replay",
+      "sha256": "bbbb2f3bc5700b88612b1cd528fdf5943365073d55d00066fbf4db0c494e06fe"
+    },
+    {
+      "path": "artifacts/native_monthly_implementation_v2_20261116/M050_native_clock/log/source/completion.json",
+      "role": "source completion",
+      "sha256": "a6408c42f9177de6342525939c8a5064d0951049aacd255ae236726f4d6f1ea0"
+    },
+    {
+      "path": "artifacts/native_monthly_implementation_v2_20261116/M050_native_clock/log/replay_validation.json",
+      "role": "exact offline replay",
+      "sha256": "2d502af5d14492c1258a8b155ca7ffc3c2bf76f0021a2759c731486038f60466"
+    },
+    {
+      "path": "artifacts/native_monthly_implementation_v2_20261116/native_evaluation_protocol_v2.json",
+      "role": "frozen economic protocol",
+      "sha256": "4c0c32666744cc9bee475d56c9d322a533d54656ca16daac064eaf139a2a2a77"
+    },
+    {
+      "path": "artifacts/native_monthly_implementation_v2_20261116/evaluation_native_clock_v2/M023/completion.json",
+      "role": "economic completion including retained failures",
+      "sha256": "7177154250e7f9b601e72c72e08d72d87604d1da0c94d3751c138e4ed0e253cf"
+    },
+    {
+      "path": "artifacts/native_monthly_implementation_v2_20261116/evaluation_native_clock_v2/M050/completion.json",
+      "role": "economic completion including retained failures",
+      "sha256": "1a552e566bf67d5c323614d47f094a44abd45a3da41aae01a877de00df7821a7"
+    }
+  ],
+  "scheduler_readback": [
+    "33614757_0|COMPLETED|0:0|01:41:45",
+    "33614757_0.batch|COMPLETED|0:0|01:41:45",
+    "33614757_0.extern|COMPLETED|0:0|01:41:45",
+    "33614757_1|COMPLETED|0:0|02:57:53",
+    "33614757_1.batch|COMPLETED|0:0|02:57:53",
+    "33614757_1.extern|COMPLETED|0:0|02:57:53",
+    "33614757_2|COMPLETED|0:0|02:16:45",
+    "33614757_2.batch|COMPLETED|0:0|02:16:45",
+    "33614757_2.extern|COMPLETED|0:0|02:16:45",
+    "33614758_0|COMPLETED|0:0|00:47:45",
+    "33614758_0.batch|COMPLETED|0:0|00:47:45",
+    "33614758_0.extern|COMPLETED|0:0|00:47:45",
+    "33614758_1|COMPLETED|0:0|00:41:03",
+    "33614758_1.batch|COMPLETED|0:0|00:41:03",
+    "33614758_1.extern|COMPLETED|0:0|00:41:03",
+    "33615291|COMPLETED|0:0|00:05:28",
+    "33615291.batch|COMPLETED|0:0|00:05:28",
+    "33615291.extern|COMPLETED|0:0|00:05:28",
+    "33615292|COMPLETED|0:0|00:00:22",
+    "33615292.batch|COMPLETED|0:0|00:00:22",
+    "33615292.extern|COMPLETED|0:0|00:00:22"
+  ],
+  "scientific_objective_complete": false,
+  "snapshot_date": "2026-11-17",
+  "source_admitted_paper_ids": [
+    "M023",
+    "M050"
+  ],
+  "source_variants_complete": 5,
+  "study_status": "provisional",
+  "verified_at_utc": "2026-11-17T08:45:02.240535+00:00"
+}

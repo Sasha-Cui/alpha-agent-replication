@@ -1,0 +1,16 @@
+{
+  "current_status_path": "paper_runs/native_monthly_implementation_v2_20261116/status.json",
+  "current_status_sha256": "483da34c340819fc61189cd7e5fdc83fd530c3ed19705a1d8e177eca80229f80",
+  "no_full_paper_reproduction_claim": true,
+  "primary_economic_comparison_admitted_paper_ids": [
+    "M023"
+  ],
+  "scientific_goal_complete": false,
+  "snapshot_date": "2026-11-17",
+  "source_admitted_paper_ids": [
+    "M023",
+    "M050"
+  ],
+  "status": "paper_provisional_v2_source_complete_economics_partial",
+  "supersedes_v1_empty_cohort_for_current_source_admission": true
+}
