@@ -27,6 +27,8 @@ DOCUMENTS = (
     "docs/PROJECT_BRIEFING.md",
     "docs/RESEARCH_HANDOFF.md",
     "docs/presentations/LLM_INVESTMENT_STUDY_20261117.md",
+    "docs/presentations/README.md",
+    "docs/presentations/BEAMER_README.md",
     "paper_runs/native_monthly_implementation_v2_20261116/README.md",
 )
 LINK = re.compile(r"!?\[[^\]\n]*\]\(([^)\n]+)\)")
@@ -60,6 +62,33 @@ def heading_anchors(text):
         counts[base] = count + 1
         anchors.add(base if count == 0 else "{}-{}".format(base, count))
     return anchors
+
+
+def validate_presentation_manifest(manifest_path):
+    """Check delivered files and the Markdown-to-Beamer provenance link offline."""
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    errors = []
+    directory = manifest_path.parent
+    for name, item in manifest["files"].items():
+        if Path(name).name != name:
+            errors.append("Presentation manifest requires a local filename: " + name)
+            continue
+        path = directory / name
+        if not path.is_file():
+            errors.append("Missing presentation asset: " + name)
+            continue
+        data = path.read_bytes()
+        if hashlib.sha256(data).hexdigest() != item["sha256"]:
+            errors.append("Presentation asset hash changed: " + name)
+        if len(data) != item["bytes"]:
+            errors.append("Presentation asset size changed: " + name)
+    source = manifest.get("source_markdown")
+    if source:
+        if Path(source).name != source or not (directory / source).is_file():
+            errors.append("Missing presentation source Markdown: " + source)
+        elif hashlib.sha256((directory / source).read_bytes()).hexdigest() != manifest["source_markdown_sha256"]:
+            errors.append("Beamer source Markdown changed; rebuild and verify the presentation.")
+    return errors
 
 
 def validate_v2_admission(status, package, paths):
@@ -171,11 +200,8 @@ def check(root):
                 actual = hashlib.sha256((package_path.parent / relative).read_bytes()).hexdigest()
                 if actual != expected:
                     errors.append("V2 export hash changed: " + relative)
-            manifest_path = root / "docs/presentations/presentation_assets.json"
-            manifest = json.loads(manifest_path.read_text())
-            for name, item in manifest["files"].items():
-                if hashlib.sha256((manifest_path.parent / name).read_bytes()).hexdigest() != item["sha256"]:
-                    errors.append("Presentation asset hash changed: " + name)
+            for name in ("presentation_assets.json", "beamer_manifest.json"):
+                errors.extend(validate_presentation_manifest(root / "docs/presentations" / name))
         benchmark = status["benchmark"]
         if benchmark["factor_count"] != 5 + 1 + benchmark["jkp_factor_count"]:
             errors.append("Benchmark count must equal FF5 + momentum + JKP factors.")

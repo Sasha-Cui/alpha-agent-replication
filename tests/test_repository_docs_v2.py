@@ -1,6 +1,9 @@
 """Status regressions: completed source/processes cannot hide missing financial paths."""
 import copy
 import importlib.util
+import hashlib
+import json
+import tempfile
 from pathlib import Path
 import unittest
 
@@ -44,6 +47,43 @@ class V2AdmissionStatusTests(unittest.TestCase):
         bad = copy.deepcopy(self.package)
         bad["cases"]["M050"]["failed_paths"] = 1
         self.assertTrue(any("path counts" in x for x in DOCS.validate_v2_admission(self.status, bad, self.paths)))
+
+
+class PresentationManifestTests(unittest.TestCase):
+    """Checksum guards only; TeX compilation and layout are checked separately."""
+
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        self.tex = self.root / "deck.tex"
+        self.pdf = self.root / "deck.pdf"
+        self.md = self.root / "slides.md"
+        self.tex.write_text("editable source version1\n")
+        self.pdf.write_bytes(b"compiled-PDF-fixture\n")
+        self.md.write_text("source slide text\n")
+        self.manifest = self.root / "beamer_manifest.json"
+        files = {p.name: {"sha256": hashlib.sha256(p.read_bytes()).hexdigest(),
+                         "bytes": p.stat().st_size} for p in [self.tex, self.pdf]}
+        self.manifest.write_text(json.dumps({"files": files, "source_markdown": self.md.name,
+            "source_markdown_sha256": hashlib.sha256(self.md.read_bytes()).hexdigest()}))
+
+    def test_matching_source_and_deliverables_pass(self):
+        self.assertEqual(DOCS.validate_presentation_manifest(self.manifest), [])
+
+    def test_stale_latex_source_fails(self):
+        self.tex.write_text("changed source without rebuilt manifest\n")
+        self.assertTrue(any("hash changed" in e for e in DOCS.validate_presentation_manifest(self.manifest)))
+
+    def test_missing_compiled_pdf_fails(self):
+        self.pdf.unlink()
+        self.assertTrue(any("Missing presentation asset" in e for e in
+                            DOCS.validate_presentation_manifest(self.manifest)))
+
+    def test_changed_slide_markdown_fails_provenance(self):
+        self.md.write_text("changed slide text\n")
+        self.assertTrue(any("source Markdown changed" in e for e in
+                            DOCS.validate_presentation_manifest(self.manifest)))
 
 
 if __name__ == "__main__":
