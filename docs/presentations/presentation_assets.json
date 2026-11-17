@@ -1,0 +1,20 @@
+{
+  "all13_slide_renders_visually_inspected": true,
+  "files": {
+    "LLM_INVESTMENT_STUDY_20261117.md": {
+      "bytes": 14029,
+      "sha256": "f2856ec18a5f37cf57cc388ca7c82a57267bf3fd5be3b71862e4db1a97e2079a"
+    },
+    "LLM_INVESTMENT_STUDY_20261117.pdf": {
+      "bytes": 1036875,
+      "sha256": "1761d1b3ee4368721a526cf74f2a67286f4739023aff3453f072a699d4e3ae4a"
+    }
+  },
+  "minimum_declared_text_contrast_ratio": 6.6138160256812535,
+  "native_editable_deck": "https://chatgpt.com/space/page_8240054152248191a27a0ae77e9bb674",
+  "pdf_embedded_images_exactly_match_all13_reviewed_renders": true,
+  "pdf_is_rendered_slides_markdown_has_searchable_text_and_notes": true,
+  "slides": 13,
+  "snapshot_date": "2026-11-17",
+  "status": "PASS_reviewed_slide_render_export"
+}

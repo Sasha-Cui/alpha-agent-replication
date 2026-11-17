@@ -7,3 +7,6 @@ tests/test_retained_benchmark_ladder.py -delta
 
 # Keep downloaded source papers opaque in diffs and merges.
 literature_review/papers/*.pdf binary
+
+# Presentation exports are binary even when their PDF streams use ASCII85.
+docs/presentations/*.pdf binary
