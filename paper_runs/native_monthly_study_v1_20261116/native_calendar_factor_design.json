@@ -1,0 +1,81 @@
+{
+  "status": "completed_design_only_not_performance_analysis",
+  "windows": [
+    {
+      "case": "M016_SP100",
+      "calendar_start": "2023-01-31",
+      "calendar_end": "2024-12-31",
+      "months": 24,
+      "stated_factors": 138,
+      "factor_rank": 24,
+      "intercept_design_rank": 24,
+      "intercept_identifiable": false,
+      "residual_df": 0,
+      "intercept_information_norm": 3.825975390321907e-29,
+      "factor_design_only_no_strategy_return_used": true
+    },
+    {
+      "case": "M016_SP500",
+      "calendar_start": "2024-01-31",
+      "calendar_end": "2024-12-31",
+      "months": 12,
+      "stated_factors": 138,
+      "factor_rank": 12,
+      "intercept_design_rank": 12,
+      "intercept_identifiable": false,
+      "residual_df": 0,
+      "intercept_information_norm": 3.1837933096654273e-29,
+      "factor_design_only_no_strategy_return_used": true
+    },
+    {
+      "case": "M050_medium",
+      "calendar_start": "2021-10-31",
+      "calendar_end": "2024-04-30",
+      "months": 31,
+      "stated_factors": 138,
+      "factor_rank": 31,
+      "intercept_design_rank": 31,
+      "intercept_identifiable": false,
+      "residual_df": 0,
+      "intercept_information_norm": 1.4681441003261674e-28,
+      "factor_design_only_no_strategy_return_used": true
+    },
+    {
+      "case": "M050_short",
+      "calendar_start": "2023-11-30",
+      "calendar_end": "2024-04-30",
+      "months": 6,
+      "stated_factors": 138,
+      "factor_rank": 6,
+      "intercept_design_rank": 6,
+      "intercept_identifiable": false,
+      "residual_df": 0,
+      "intercept_information_norm": 6.828577210819383e-30,
+      "factor_design_only_no_strategy_return_used": true
+    },
+    {
+      "case": "M023_FF_monthly_overlap",
+      "calendar_start": "1999-08-31",
+      "calendar_end": "2023-05-31",
+      "months": 286,
+      "stated_factors": 138,
+      "factor_rank": 138,
+      "intercept_design_rank": 139,
+      "intercept_identifiable": true,
+      "residual_df": 147,
+      "intercept_information_norm": 89.97394710973435,
+      "factor_design_only_no_strategy_return_used": true
+    }
+  ],
+  "M052": {
+    "native_sample_months": [
+      19,
+      35
+    ],
+    "full_pinned_factor_calendar_covers_native_sample": false,
+    "both_native_sample_lengths_less_than139_parameters": true,
+    "first_Friday_to_first_Friday_returns_not_silently_relabelled_calendar_months": true
+  },
+  "source_panel_sha256": "4df228c9bdcf87b6d6cd3d89f49a6d296a106e2aedb20d482e6961c2627caa14",
+  "no_reduced_factor_substitution": true
+}

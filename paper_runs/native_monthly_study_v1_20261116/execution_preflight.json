@@ -1,0 +1,30 @@
+{
+  "status": "blocked_no_admitted_executable_native_monthly_central_method",
+  "admission_audit_complete": true,
+  "original_papers_screened": 69,
+  "scope_counts": {
+    "excluded_no_native_monthly_funded_investment_rule": 5,
+    "excluded_nonmonthly_or_native_task": 46,
+    "excluded_no_verified_native_monthly_experiment": 14,
+    "eligible_native_monthly_central_execution_blocked": 4
+  },
+  "verified_native_monthly_individual_stock_papers": [
+    "M016",
+    "M050",
+    "M052"
+  ],
+  "verified_native_monthly_equity_portfolio_papers": [
+    "M023"
+  ],
+  "executable_cohort": [],
+  "admitted_source_variants": 0,
+  "financial_evaluations_completed": 0,
+  "paid_model_requests": 0,
+  "new_scientific_job_submissions": 0,
+  "scientific_objective_complete": false,
+  "paper_provisional": true,
+  "no_no_alpha_conclusion": true,
+  "contract_sha256": "cbf3e576b64bc4fc09190e3bd0b057f5fab034e5ac36c258415e40cf056f1a09",
+  "helper_sha256": "280e7189790c9d2d7298e35cd1da1dea83cee31c27b873aa788904aa1c935694",
+  "at_utc": "2026-11-16T21:57:49.370218+00:00"
+}

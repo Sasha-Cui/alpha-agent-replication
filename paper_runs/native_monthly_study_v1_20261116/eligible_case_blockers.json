@@ -1,0 +1,70 @@
+{
+  "status": "native_monthly_case_source_admission_not_passed",
+  "cases": [
+    {
+      "paper_id": "M016",
+      "scope": "native_monthly_individual_US_equities",
+      "cadence": "Monthly equal-weight and capitalization-weight stock portfolios, Table4.",
+      "primary_url": "https://arxiv.org/html/2502.00415v1",
+      "blocking_core_objects": [
+        "Attributable operational agent/synthesis implementation or a complete specification of its central prompts/decision mapping.",
+        "Native monthly stock signal/holding records, or a runnable means to generate them from the specified dated inputs."
+      ],
+      "secondary_limit": "Published12/24-month stock paths cannot identify intercept plus138 unrestricted factor slopes.",
+      "author_release_check_receipts_sha256": "76fd3d12332f0c589b4bf6136e6e8914b0ea73cd227d5ef7a76ad0020a0ce6f5",
+      "checked_primary_links_sha256": "c6898db3c87f153a69cc733e4d51f8362f267c844d25f4d35c378349ed6a7a00",
+      "admitted": false,
+      "bounded_negative_check_is_not_nonexistence_proof": true,
+      "full_paper_reproduction": false
+    },
+    {
+      "paper_id": "M023",
+      "scope": "native_monthly_preformed_US_equity_portfolios",
+      "cadence": "FF25/32/49/100 monthly-return experiments; daily US50 experiment excluded.",
+      "primary_url": "https://arxiv.org/abs/2507.17211",
+      "blocking_core_objects": [
+        "Attributable EFS central search/runtime release or complete monthly-native source specification.",
+        "Exact monthly search/selection schedule and associated native generation-to-allocation contract."
+      ],
+      "secondary_limit": "Existing paper-guided daily EFS runs and reproduced cited baselines are separate evidence, not this native monthly central implementation.",
+      "author_release_check_receipts_sha256": "76fd3d12332f0c589b4bf6136e6e8914b0ea73cd227d5ef7a76ad0020a0ce6f5",
+      "checked_primary_links_sha256": "c6898db3c87f153a69cc733e4d51f8362f267c844d25f4d35c378349ed6a7a00",
+      "admitted": false,
+      "bounded_negative_check_is_not_nonexistence_proof": true,
+      "full_paper_reproduction": false
+    },
+    {
+      "paper_id": "M050",
+      "scope": "native_monthly_individual_US_equities",
+      "cadence": "Monthly FinBERT screening/portfolio update with annual LLM-S rules.",
+      "primary_url": "https://arxiv.org/html/2603.23300v2",
+      "blocking_core_objects": [
+        "Central agent tools are names/snippets without implementations or a complete input/output contract.",
+        "FinBERT checkpoint/tokenization and complete sentiment-to-selection implementation are not identified.",
+        "Source descriptions conflict on raw versus log book-to-market and do not resolve the buy/sell/non-hold mapping for the screened equal-weight comparison."
+      ],
+      "secondary_limit": "Equal-weight ablation is described, but it does not supply the missing central screening pipeline. Replaying the printed2024 deterministic rule is a component, not fresh LLM-S execution. Published31/6-month paths cannot identify actual138-control alpha. Absence of old outputs alone is not the exclusion reason.",
+      "author_release_check_receipts_sha256": "76fd3d12332f0c589b4bf6136e6e8914b0ea73cd227d5ef7a76ad0020a0ce6f5",
+      "checked_primary_links_sha256": "c6898db3c87f153a69cc733e4d51f8362f267c844d25f4d35c378349ed6a7a00",
+      "admitted": false,
+      "bounded_negative_check_is_not_nonexistence_proof": true,
+      "full_paper_reproduction": false
+    },
+    {
+      "paper_id": "M052",
+      "scope": "native_monthly_individual_US_equities",
+      "cadence": "First-Friday monthly recommendations and one-month forward stock portfolios.",
+      "primary_url": "https://arxiv.org/html/2604.17327v1",
+      "blocking_core_objects": [
+        "Executable four-specialist/synthesis central pipeline or complete source specification.",
+        "Released live recommendation/thesis/holding panel required by the fixed-cohort live-generation design."
+      ],
+      "secondary_limit": "Published19/35-month native paths are shorter than139 parameters and extend beyond the pinned factor calendar. Shared operational family with M016, not an independent new runtime.",
+      "author_release_check_receipts_sha256": "76fd3d12332f0c589b4bf6136e6e8914b0ea73cd227d5ef7a76ad0020a0ce6f5",
+      "checked_primary_links_sha256": "c6898db3c87f153a69cc733e4d51f8362f267c844d25f4d35c378349ed6a7a00",
+      "admitted": false,
+      "bounded_negative_check_is_not_nonexistence_proof": true,
+      "full_paper_reproduction": false
+    }
+  ]
+}

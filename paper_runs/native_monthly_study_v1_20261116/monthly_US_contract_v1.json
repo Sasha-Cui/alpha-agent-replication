@@ -1,0 +1,38 @@
+{
+  "status": "frozen_native_monthly_admission_and_US_evaluation_contract",
+  "scope_authorization_sha256": "c66a1e2a8b5e7de98c13bed4181369da5643fc85e8a8f8f410a704a6fdfbf95e",
+  "original_corpus_papers": 69,
+  "scope": "Only explicit paper-native monthly investment experiments; no daily/weekly/quarterly retiming. Daily historical inputs may support genuine monthly decisions.",
+  "admission": "Attributable runnable central source/policy OR a complete paper-specified central algorithm. Original author outputs/checkpoints are not required merely to rerun a fully implemented algorithm; missing central mapping cannot be silently invented.",
+  "executable_paper_ids": [],
+  "native_monthly_candidate_ids": [
+    "M016",
+    "M023",
+    "M050",
+    "M052"
+  ],
+  "new_paid_request_routes_allowed": [],
+  "primary_benchmark": {
+    "contract_path": "paper_runs/us_monthly_actual_factors_v1_20261116/benchmark_contract.json",
+    "contract_sha256": "8615b3ed6a75778e03441ef417a3b348f0a4493d4f0dc60aaf7234201b4a7104",
+    "panel_sha256": "4df228c9bdcf87b6d6cd3d89f49a6d296a106e2aedb20d482e6961c2627caa14",
+    "factor_count": 138,
+    "RF_separate": true,
+    "no_source_or_factor_rebuild": true
+  },
+  "clock": "Preserve each admitted paper native monthly decision timing, with strictly asof information and the next executable quote. Record calendar-month portfolio NAV for actual published monthly-factor attribution; do not silently shift factors or substitute monthly reports of daily decisions.",
+  "portfolio": "Source-specific funded rule fixed before outcomes; exact self-finance costs/cash/drift, no pre-fill returns, no omitted held delistings. Raw CRSP total returns/flags used once; incomplete payoffs or missing held returns cannot be zero-filled. Source rule-to-portfolio ambiguities block faithful primary admission rather than being selected by performance.",
+  "costs": "10bp per side primary with0/25bp predeclared sensitivities where compatible with source; any different native fee rule remains a separately labelled comparison.",
+  "data": "Permanent identifiers and historical membership, physical future-row-removal input gates, source field units and filing availability, no evaluation matrices passed into generation. Present-day restatement/model vintages disclosed, no pristine snapshot claim.",
+  "calendar": "Complete predeclared native or defensibly transferred historical period fixed before outcomes. A longer period requires a new pre-outcome binding; training months are not counted as evaluation observations.",
+  "inference": "Actual FF5+MOM+JKP132 span with rank/intercept/df checks on the complete declared monthly calendar; no pseudoinverse alpha for unidentified short paths. FF6 may be a named sensitivity only. Preserve2pp/year margin and original69 family denominator; no zero-alpha imputation or missing-case removal. HAC uncertainty is approximate and prior persistence undercoverage stays disclosed.",
+  "blocked_execution_rule": "If executable cohort is empty, no strategy source/model/portfolio job is submitted and no economic result is manufactured. The economic study remains incomplete and the paper provisional.",
+  "provider_budget": "Strict project total<1000 including historical and uncertain charges; current800runtime limit and legacy caps unchanged. No paid adaptation is opened by this empty admission.",
+  "source_receipts": {
+    "release_checks": "76fd3d12332f0c589b4bf6136e6e8914b0ea73cd227d5ef7a76ad0020a0ce6f5",
+    "all69_dispositions": "cf42d40555c81a8c369412a803045aa7cbc4d6e63c611774cd9ac368fe6b8e0d",
+    "case_blockers": "09c75a42568866cf4f3f00fa941bb7216f17194c4d0f81defacfd4b0d445709e",
+    "native_calendar_design": "5d8f7a85c601e384217f40843d112f80543f64fca4bf5898e6c38fec9dac5cea"
+  },
+  "at_utc": "2026-11-16T21:57:49.366598+00:00"
+}
