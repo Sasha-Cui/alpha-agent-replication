@@ -1,0 +1,240 @@
+% Source: verified Pages deck and repository slide text, November 17, 2026.
+% Compile twice with pdflatex. Speaker notes are editable below and hidden in the PDF.
+\documentclass[aspectratio=169,10pt,xcolor=table]{beamer}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{array}
+\usepackage{ragged2e}
+\definecolor{Navy}{HTML}{10243A}
+\definecolor{Ink}{HTML}{182B43}
+\definecolor{Muted}{HTML}{42566F}
+\definecolor{Teal}{HTML}{00695C}
+\definecolor{Paper}{HTML}{FFFFFF}
+\definecolor{Light}{HTML}{EFF3F7}
+\setbeamercolor{normal text}{fg=Ink,bg=Paper}
+\setbeamercolor{background canvas}{bg=Paper}
+\setbeamercolor{frametitle}{fg=Navy,bg=Paper}
+\setbeamercolor{title}{fg=Navy,bg=Paper}
+\setbeamercolor{structure}{fg=Teal,bg=Paper}
+\setbeamercolor{itemize item}{fg=Teal,bg=Paper}
+\setbeamercolor{enumerate item}{fg=Teal,bg=Paper}
+\setbeamercolor{note page}{fg=Ink,bg=Paper}
+\setbeamercolor{note title}{fg=Navy,bg=Paper}
+\setbeamercolor{page number in head/foot}{fg=Muted,bg=Paper}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{frametitle}{\vspace{.18cm}\insertframetitle\par\vspace{.18cm}}
+\setbeamerfont{frametitle}{size=\large,series=\bfseries}
+\setbeamersize{text margin left=.65cm,text margin right=.65cm}
+\setbeamertemplate{footline}{\hfill\textcolor{Muted}{\scriptsize\insertframenumber/\inserttotalframenumber}\hspace{.65cm}\vspace{.18cm}}
+\setbeameroption{hide notes}
+\setlength{\parskip}{.2em}
+\hypersetup{colorlinks=true,urlcolor=Teal,linkcolor=Navy,pdftitle={LLM Investment Study -- Executive Briefing},pdfsubject={Provisional native monthly study, status verified November 17 2026}}
+\title{LLM investment methods}
+\subtitle{Results, completed work and remaining gaps}
+\date{November 17, 2026}
+\begin{document}
+{\setbeamercolor{background canvas}{bg=Navy}
+\begin{frame}[plain]
+\vspace{1.2cm}
+{\color{Paper}\fontsize{24}{28}\selectfont\bfseries LLM investment methods\par}
+\vspace{.55cm}
+{\color{Light}\large Results, completed work and remaining gaps\par}
+\vspace{.9cm}
+{\color{Paper}\normalsize Native monthly U.S. equity study\par}
+\vfill
+{\color{Light}\small Provisional \textperiodcentered{} Status verified November 17, 2026\par}
+\note{\footnotesize Status verified November 17, 2026 from saved source/replay and economic receipts. Both mechanisms completed source/replay. EFS economics completed; screening retains18 failed primary/control-related paths. Overall paper remains provisional. Source: paper\_runs/native\_monthly\_implementation\_v2\_20261116/status.json and verification.json in \url{https://github.com/Sasha-Cui/alpha-agent-replication} . No scientific job was rerun for this reporting update.}
+\end{frame}
+}
+
+\begin{frame}[t]
+\frametitle{The investment question}
+\relax
+{\Large\color{Ink}\bfseries Do published LLM investment methods add useful net performance beyond established equity factors?}\par\medskip
+\vspace{.2cm}
+{\small\color{Muted} Population: U.S. equities with native monthly investment decisions}\par\medskip
+{\small\color{Ink} Test: matched controls, explicit turnover costs and actual FF5 + momentum + JKP132}\par\medskip
+{\small\color{Muted} Implement the central method from the paper; exact author runtime and every published result are not required}\par\medskip
+\note{\footnotesize Goal: incremental investment value after costs and actual-factor risk adjustment. Native monthly only is fixed; monthly reporting of daily trading is not eligibility. Paper-based central implementation is allowed. Sources: user scope instructions; artifacts/native\_monthly\_implementation\_v2\_20261116/native\_evaluation\_protocol\_v2.json. No performance conclusion is established by this setup.}
+\end{frame}
+
+\begin{frame}[t]
+\frametitle{69 papers reviewed; four monthly candidates}
+\relax
+{\fontsize{8.2}{10.2}\selectfont\renewcommand{\arraystretch}{1.23}\setlength{\tabcolsep}{4pt}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.35\linewidth}>{\raggedright\arraybackslash}p{0.12\linewidth}>{\raggedright\arraybackslash}p{0.46\linewidth}}
+\rowcolor{Navy} \textcolor{Paper}{\textbf{Stage}} & \textcolor{Paper}{\textbf{Count}} & \textcolor{Paper}{\textbf{Meaning}}\\
+\rowcolor{Paper} \textcolor{Ink}{Original research census} & \textcolor{Ink}{69} & \textcolor{Ink}{Each paper retains its own evidence and gaps}\\[2pt]
+\rowcolor{Light} \textcolor{Ink}{Papers with some released code} & \textcolor{Ink}{At least 24} & \textcolor{Ink}{A release can be a component, not a runnable strategy}\\[2pt]
+\rowcolor{Paper} \textcolor{Ink}{Native monthly investment candidates} & \textcolor{Ink}{4} & \textcolor{Ink}{Three stock systems; EFS also tests preformed equity portfolios}\\[2pt]
+\rowcolor{Light} \textcolor{Ink}{Central methods with completed source/replay} & \textcolor{Ink}{2} & \textcolor{Ink}{EFS and Agentic AI Screening; financial admission differs}\\[2pt]
+\end{tabular}
+}
+\par\vspace{.3cm}
+{\scriptsize\color{Muted} These are overlapping review stages, not four independent success rates}\par\medskip
+\note{\footnotesize The code census is not only four releases. At least 24 papers had some code; supporting artifacts and central strategies differ. Four monthly cases follow the resolved native-monthly scope. Two currently have usable data and bounded central implementations. Counts are not alpha successes or full-paper reproductions. Sources: user-confirmed census; all69\_native\_monthly\_dispositions.csv under paper\_runs/native\_monthly\_study\_v1\_20261116/. Read the separate records rather than aggregate a success rate.}
+\end{frame}
+
+\begin{frame}[t]
+\frametitle{The benchmark now uses actual factor returns}
+\relax
+{\fontsize{9}{10.2}\selectfont\renewcommand{\arraystretch}{1.23}\setlength{\tabcolsep}{4pt}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.68\linewidth}>{\raggedright\arraybackslash}p{0.26\linewidth}}
+\rowcolor{Navy} \textcolor{Paper}{\textbf{Factor family}} & \textcolor{Paper}{\textbf{Number of series}}\\
+\rowcolor{Paper} \textcolor{Ink}{Fama--French equity factors} & \textcolor{Ink}{5}\\[2pt]
+\rowcolor{Light} \textcolor{Ink}{Momentum} & \textcolor{Ink}{1}\\[2pt]
+\rowcolor{Paper} \textcolor{Ink}{JKP signed U.S. monthly factors} & \textcolor{Ink}{132}\\[2pt]
+\rowcolor{Light} \textcolor{Ink}{Total risk controls} & \textcolor{Ink}{138}\\[2pt]
+\end{tabular}
+}
+\par\vspace{.3cm}
+{\small\color{Muted} 305 months: August 1999--December 2024. The risk-free series is separate.}\par\medskip
+{\small\color{Muted} Raw-source readback and full factor rank verified; each strategy still needs its own calendar and rank check}\par\medskip
+\note{\footnotesize Actual French5 plus momentum1 plus fixed132 signed JKP U.S.vw\_cap factors. The full panel has138 factor rank and166 residual degrees of freedom including an intercept:305-139. No proxy/PCA/reduced factor span substitutes for the main benchmark. Source: \url{https://github.com/Sasha-Cui/alpha-agent-replication/blob/main/paper_runs/us_monthly_actual_factors_v1_20261116/benchmark_contract.json} and authorized benchmark\_independent\_readback\_v1/validation.json under artifacts/us\_monthly\_actual\_factors\_verified\_v2\_20261116/.}
+\end{frame}
+
+\begin{frame}[t]
+\frametitle{The four monthly candidates}
+\relax
+{\fontsize{8.2}{10.2}\selectfont\renewcommand{\arraystretch}{1.23}\setlength{\tabcolsep}{4pt}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.23\linewidth}>{\raggedright\arraybackslash}p{0.36\linewidth}>{\raggedright\arraybackslash}p{0.34\linewidth}}
+\rowcolor{Navy} \textcolor{Paper}{\textbf{Paper}} & \textcolor{Paper}{\textbf{Central method}} & \textcolor{Paper}{\textbf{Verified November 17}}\\
+\rowcolor{Paper} \textcolor{Ink}{EFS} & \textcolor{Ink}{LLM factor evolution and sparse portfolios} & \textcolor{Ink}{Source/replay complete; 12 economic paths pass}\\[2pt]
+\rowcolor{Light} \textcolor{Ink}{Agentic AI Screening} & \textcolor{Ink}{Annual LLM rules and monthly sentiment screening} & \textcolor{Ink}{Source/replay complete; 18 economic paths blocked}\\[2pt]
+\rowcolor{Paper} \textcolor{Ink}{MarketSenseAI 2.0} & \textcolor{Ink}{Specialist analyses with qualitative fundamentals and retrieval} & \textcolor{Ink}{Essential historical input channels not yet verified}\\[2pt]
+\rowcolor{Light} \textcolor{Ink}{Signal or Noise} & \textcolor{Ink}{Synthesized recommendations and strong-buy portfolios} & \textcolor{Ink}{Same historical input gap}\\[2pt]
+\end{tabular}
+}
+\par\vspace{.3cm}
+{\scriptsize\color{Muted} Exact author runtime is not a blanket requirement. Input gaps remain explicit unfinished work.}\par\medskip
+\note{\footnotesize M023 and M050 each completed their bounded source and exact offline replay. EFS 12/12 economic paths pass. Screening12/30 pass;18 fail held month-end coverage, including designated LLM nonhold and universeEW control. M016 andM052 essential dated qualitative/macro inputs remain unverified; exact author runtime is not the blanket gate. Original papers: \url{https://arxiv.org/html/2507.17211v2} ; \url{https://arxiv.org/html/2603.23300v2} ; \url{https://arxiv.org/html/2502.00415v1} ; \url{https://arxiv.org/html/2604.17327v1} .}
+\end{frame}
+
+\begin{frame}[t]
+\frametitle{The implementations being evaluated}
+\relax
+\begin{columns}[T,onlytextwidth]
+\begin{column}{.475\textwidth}
+{\normalsize\color{Teal}\bfseries EFS base experiment}\par\medskip
+{\small\color{Ink} Monthly FF25 equity portfolios\\ Three LLM evolution trajectories\\ Past-only factor selection and pooling}\par\medskip
+\vspace{.12cm}
+{\small\color{Ink}\bfseries 286 completed economic months\\ August 1999--May 2023}\par\medskip
+{\scriptsize\color{Muted} Controls: grammar search, initial library and universe equal weight}\par\medskip
+\end{column}
+\begin{column}{.475\textwidth}
+{\normalsize\color{Teal}\bfseries LLM screening experiment}\par\medskip
+{\small\color{Ink} Historical S\&P 500 stock universe\\ Annual rules and exact replay complete\\ First-opening account coverage failed}\par\medskip
+\vspace{.12cm}
+{\small\color{Ink}\bfseries 232-month intended transfer\\ Primary comparison blocked}\par\medskip
+{\scriptsize\color{Muted} Controls: same-universe equal weight; sentiment and combined screens separately}\par\medskip
+\end{column}
+\end{columns}
+\note{\footnotesize EFS286 months Aug1999--May2023, three stochastic search trajectories on one shared market path, bounded base search onFF25. It omits some revised-paper pruning/weighting refinements and underlying-stock costs. Screening intended232 months Jan2005--Apr2024, with20 annual rules in each raw/logBM variant; source/replay complete but primary/control paths financially blocked. Current weights/accounting and sparse news are transfer limitations. Frozen contract: paper\_runs/native\_monthly\_implementation\_v2\_20261116/native\_evaluation\_protocol\_v2.json .}
+\end{frame}
+
+\begin{frame}[t]
+\frametitle{What is verified, and what remains unverified}
+\relax
+{\fontsize{8.2}{10.2}\selectfont\renewcommand{\arraystretch}{1.23}\setlength{\tabcolsep}{4pt}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.3\linewidth}>{\raggedright\arraybackslash}p{0.31\linewidth}>{\raggedright\arraybackslash}p{0.32\linewidth}}
+\rowcolor{Navy} \textcolor{Paper}{\textbf{Evidence}} & \textcolor{Paper}{\textbf{Verified status}} & \textcolor{Paper}{\textbf{Interpretation}}\\
+\rowcolor{Paper} \textcolor{Ink}{Actual factor benchmark} & \textcolor{Ink}{Raw readback and rank pass} & \textcolor{Ink}{The intended 138 controls are available}\\[2pt]
+\rowcolor{Light} \textcolor{Ink}{CRSP market inputs} & \textcolor{Ink}{Raw values, opens and event flags recovered} & \textcolor{Ink}{Inputs are not complete funded accounts}\\[2pt]
+\rowcolor{Paper} \textcolor{Ink}{Source and offline replay} & \textcolor{Ink}{All five primary variants pass} & \textcolor{Ink}{Three EFS trajectories; two screening variants}\\[2pt]
+\rowcolor{Light} \textcolor{Ink}{EFS economics} & \textcolor{Ink}{12 of 12 conditional paths pass} & \textcolor{Ink}{Completed bounded base experiment}\\[2pt]
+\rowcolor{Paper} \textcolor{Ink}{Screening economics} & \textcolor{Ink}{12 of 30 paths pass; 18 blocked} & \textcolor{Ink}{Primary and matched control remain unavailable}\\[2pt]
+\end{tabular}
+}
+\par\vspace{.3cm}
+\note{\footnotesize Fresh verification checked five saved source/replay state pairs, frozen helper/input bindings, scheduler COMPLETED/exit0 and every saved economic output hash. EFS 12 conditional accounts pass independent accounting. Screening also exited0 but reports12 verified paths and 18 failures; process success is not financial admission. Passed screening paths are FinBERT and buy-only secondary variants, not substitutes for the designated primary/control. Source: v2 status.json, economic\_path\_status.csv and verification.json.}
+\end{frame}
+
+\begin{frame}[t]
+\frametitle{EFS base results at 10bp turnover cost}
+\relax
+{\fontsize{9}{10.2}\selectfont\renewcommand{\arraystretch}{1.23}\setlength{\tabcolsep}{4pt}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.25\linewidth}>{\raggedright\arraybackslash}p{0.15\linewidth}>{\raggedright\arraybackslash}p{0.15\linewidth}>{\raggedright\arraybackslash}p{0.18\linewidth}>{\raggedright\arraybackslash}p{0.15\linewidth}}
+\rowcolor{Navy} \textcolor{Paper}{\textbf{Metric}} & \textcolor{Paper}{\textbf{LLM search}} & \textcolor{Paper}{\textbf{Grammar}} & \textcolor{Paper}{\textbf{Initial library}} & \textcolor{Paper}{\textbf{Universe EW}}\\
+\rowcolor{Paper} \textcolor{Ink}{Terminal wealth} & \textcolor{Ink}{9.842} & \textcolor{Ink}{9.274} & \textcolor{Ink}{\textbf{11.361}} & \textcolor{Ink}{7.953}\\[2pt]
+\rowcolor{Light} \textcolor{Ink}{Annual mean return} & \textcolor{Ink}{11.341\%} & \textcolor{Ink}{11.206\%} & \textcolor{Ink}{\textbf{12.041\%}} & \textcolor{Ink}{10.491\%}\\[2pt]
+\rowcolor{Paper} \textcolor{Ink}{Annual excess Sharpe} & \textcolor{Ink}{0.526} & \textcolor{Ink}{0.502} & \textcolor{Ink}{\textbf{0.548}} & \textcolor{Ink}{0.476}\\[2pt]
+\end{tabular}
+}
+\par\vspace{.3cm}
+{\scriptsize\color{Muted} Higher is better in each row; bold marks the best value. August 1999--May 2023, 286 months.}\par\medskip
+{\normalsize\color{Ink}\bfseries LLM minus grammar alpha: +0.177pp/year\\ Pointwise 99\% CI [\ensuremath{-}2.426,+2.780]; raw HAC p = 0.861}\par\medskip
+{\scriptsize\color{Muted} Incremental value is not established. Portfolio-unit fees exclude underlying stock costs.}\par\medskip
+\note{\footnotesize Primary bounded EFS base experiment at10bp each-way turnover. Terminal wealth LLM9.842143653660083, grammar9.274228261076734, initial11.360617039685973, universe7.953374704278749. Annual arithmetic means11.341201620\%,11.205659892\%,12.041066082\%,10.490882306\%; annual excess Sharpe .525752879,.501774314,.548309096,.476097029. LLM-grammar annual arithmetic increment +.135541728pp. Actual138-factor paired alpha +.177155396pp/year,99\%CI[-2.425739484,+2.780050276],rawp.860833471, multiplicity-adjustedp1. LLM own actual 138 alpha -.824439269pp/year,99\%CI[-3.444938318,+1.796059779],rawp.417718562. Paired and absolute effects differ. Approximate HAC/pointwise inference, modern model/data vintage and base-method limits qualify the claim. Source: paper\_runs/native\_monthly\_implementation\_v2\_20261116/efs/performance.csv, matched\_effects.csv and actual\_factor\_attribution.csv . No new research execution for reporting.}
+\end{frame}
+
+\begin{frame}[t]
+\frametitle{Work still required before study closure}
+\relax
+\begin{enumerate}
+\setlength{\itemsep}{.45em}
+\item \textbf{Screening held-asset payoffs}\par {\small\color{Muted} Verify the missing quote or terminal value at blocked endpoints}
+\item \textbf{Primary and control accounts}\par {\small\color{Muted} Reuse frozen policies in a separate version; retain original failures}
+\item \textbf{Remaining monthly inputs}\par {\small\color{Muted} Recover or bound essential inputs for the other two cases}
+\item \textbf{Paper closure}\par {\small\color{Muted} Report all outcomes, unresolved cases and uncertainty}
+\end{enumerate}
+\note{\footnotesize Source/replay is complete, not a remaining step. Screening primary/control paths block on held month-end marks in Sep2008 and Feb2007. Diagnose quote/terminal evidence; any repair needs separate version, preserved failures and the same declared calendar/policies. No automatic provider/source rerun, zero-fill or outcome-selected truncation. M016/M052 need essential historical input channels recovered or explicitly bounded. Paper closure remains. Source: current v2 status.json, screening/coverage\_failures.csv and docs/RESEARCH\_HANDOFF.md .}
+\end{frame}
+
+\begin{frame}[t]
+\frametitle{Bounded EFS result; overall study unfinished}
+\relax
+{\Large\color{Ink}\bfseries The completed EFS test does not establish incremental LLM value}\par\medskip
+\vspace{.15cm}
+{\normalsize\color{Teal}\bfseries Screening's primary is unavailable, not a negative result}\par\medskip
+{\small\color{Ink} Two other monthly papers still have unverified input channels}\par\medskip
+{\small\color{Muted} One bounded experiment cannot establish a literature-wide conclusion that LLM investment methods lack alpha}\par\medskip
+\note{\footnotesize EFS paired actual 138 alpha at10bp +0.177pp/year; pointwise99\% CI[-2.426,+2.780], raw HACp.861. This bounded implementation does not establish incremental LLM value; uncertainty still spans the2pp margin. Screening's primary/control are unavailable, not negative-alpha data. Do not generalize EFS or input gaps to all LLM methods. Sources: efs/actual\_factor\_attribution.csv, native\_evaluation\_protocol\_v2.json and the current project brief.}
+\end{frame}
+
+\begin{frame}[t]
+\frametitle{Resolve remaining economics and revise the paper}
+\relax
+{\large\color{Ink}\bfseries Complete the missing primary comparison}\par\medskip
+{\small\color{Muted} Keep completed source fixed. Resolve or bound held-payoff gaps and preserve every financial failure.}\par\medskip
+\vspace{.15cm}
+{\large\color{Ink}\bfseries Then reconcile the provisional paper}\par\medskip
+{\small\color{Muted} Describe a 69-paper review plus tests of the executable monthly cohort. Do not present it as 69 successful reproductions.}\par\medskip
+{\scriptsize\color{Teal}\bfseries A separate LLM-improvement study follows closure of this attempt}\par\medskip
+\note{\footnotesize Finish missing financial admission using completed frozen source, not new LLM optimization. Preserve all cases and failures. Revise the provisional paper around a69-paper review and the smaller executed monthly cohort; do not claim69 successful reproductions or universal no-alpha. A separate improvement study follows honest closure. Sources: docs/PROJECT\_BRIEFING.md and docs/RESEARCH\_HANDOFF.md .}
+\end{frame}
+
+\begin{frame}[t]
+\frametitle{Appendix \textperiodcentered{} Limits that affect interpretation}
+\relax
+{\fontsize{8.2}{10.2}\selectfont\renewcommand{\arraystretch}{1.23}\setlength{\tabcolsep}{4pt}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.42\linewidth}>{\raggedright\arraybackslash}p{0.52\linewidth}}
+\rowcolor{Navy} \textcolor{Paper}{\textbf{Condition}} & \textcolor{Paper}{\textbf{Implication}}\\
+\rowcolor{Paper} \textcolor{Ink}{Current model weights and accounting vintage} & \textcolor{Ink}{Retrospective transfer; no pristine historical snapshot}\\[2pt]
+\rowcolor{Light} \textcolor{Ink}{Sparse historical news archive} & \textcolor{Ink}{Report observed coverage; missing articles are not no news}\\[2pt]
+\rowcolor{Paper} \textcolor{Ink}{Preformed FF25 equity portfolios} & \textcolor{Ink}{Portfolio-unit results do not certify stock implementation costs}\\[2pt]
+\rowcolor{Light} \textcolor{Ink}{Short native stock-paper windows} & \textcolor{Ink}{Cannot identify an unrestricted 138-factor intercept}\\[2pt]
+\rowcolor{Paper} \textcolor{Ink}{Conditional vendor terminal valuations} & \textcolor{Ink}{Keep settlement and held-price coverage gaps explicit}\\[2pt]
+\rowcolor{Light} \textcolor{Ink}{Approximate statistical inference} & \textcolor{Ink}{Pointwise uncertainty is not a simultaneous economic guarantee}\\[2pt]
+\end{tabular}
+}
+\par\vspace{.3cm}
+{\scriptsize\color{Muted} These limits qualify the claim; they are not observations of zero performance}\par\medskip
+\note{\footnotesize Primary10bp turnover per side;0/25bp sensitivities. Cash/distribution and terminal conventions are conditional; missing held returns remain failures. The base EFS reconstruction does not implement every revised-paper refinement. No pristine holdout or human review is claimed. Sources: native\_evaluation\_protocol\_v2.json; native\_timing\_amendment.json; factor\_design\_calibration\_v1. Brief: \url{https://chatgpt.com/space/page_241af5d039988191a8303e6573d61289} .}
+\end{frame}
+
+\begin{frame}[t]
+\frametitle{Appendix \textperiodcentered{} Where the evidence lives}
+\relax
+{\normalsize\bfseries\href{https://github.com/Sasha-Cui/alpha-agent-replication/blob/main/docs/PROJECT_BRIEFING.md}{Project briefing}}\par
+{\small\color{Muted} Objective, completed work, four-case review and unfinished work}\par\medskip
+{\normalsize\bfseries\href{https://github.com/Sasha-Cui/alpha-agent-replication/blob/main/docs/RESEARCH_HANDOFF.md}{Technical handoff}}\par
+{\small\color{Muted} Saved jobs, exact working paths and checks needed to resume}\par\medskip
+{\normalsize\bfseries\href{https://github.com/Sasha-Cui/alpha-agent-replication}{Public repository}}\par
+{\small\color{Muted} Paper census, benchmark contract, code and historical guides}\par\medskip
+{\normalsize\bfseries\href{https://ood-bouchet.ycrc.yale.edu/pun/sys/dashboard/files/fs//nfs/roberts/project/pi_jss233/zc362/alpha_evolve/artifacts/native_monthly_implementation_v2_20261116}{Authorized Bouchet workspace}}\par
+{\small\color{Muted} Protocols, source/replay records, licensed inputs and account checks}\par\medskip
+{\scriptsize\color{Muted} Repository includes the current briefing, portable deck and aggregate evidence}\par\medskip
+\note{\footnotesize Current repo: \url{https://github.com/Sasha-Cui/alpha-agent-replication} . Brief: docs/PROJECT\_BRIEFING.md; handoff: docs/RESEARCH\_HANDOFF.md; presentation and notes: docs/presentations/; evidence: paper\_runs/native\_monthly\_implementation\_v2\_20261116/. Live brief \url{https://chatgpt.com/space/page_241af5d039988191a8303e6573d61289} ; technical Page \url{https://chatgpt.com/space/page_2666d39e8e648191a18735ae9fedb6a0} . Fresh saved-evidence status verified November 17, 2026. Licensed inputs, holdings and replies remain private.}
+\end{frame}
+\end{document}
