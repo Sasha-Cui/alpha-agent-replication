@@ -37,7 +37,7 @@ jobs:
           python -m pip check
       - name: Check repository navigation and study status
         run: python scripts/check_repository_docs.py
-      - name: Lint Python sources and tests
-        run: python -m ruff check src scripts tests
+      - name: Lint all Python and verify frozen-source debt
+        run: python scripts/check_frozen_lint.py
       - name: Validate public repository and submission package
         run: python scripts/validate_submission_package.py

@@ -1,0 +1,1193 @@
+{
+  "configuration_sha256": "ae1a3eaa50b4830bd0c8250259759abd260a471a57df0f9d1bf262a7ffc5f471",
+  "diagnostic_count": 4878,
+  "files": {
+    "scripts/admit_finagent_amzn_manual_v1.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 4,
+        "E701": 3,
+        "E702": 11
+      },
+      "sha256": "dabb1b28ff59411c92c6ed6a13780c9bd01b1ee33cdccef8357d12e576425112"
+    },
+    "scripts/alpha_constructor_abort_v3.py": {
+      "diagnostics": {
+        "E401": 2,
+        "E402": 2,
+        "E701": 44,
+        "E702": 41
+      },
+      "sha256": "90e7ff29c1e1951ce12b44188f56fb9d8431654021067417dee875d3feebbe25"
+    },
+    "scripts/alpha_observed_history_evidence_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E701": 49,
+        "E702": 23,
+        "E731": 2
+      },
+      "sha256": "c1dfba0f8ecc5f77ed2d45ad32092e8af4abcb466f64b3180495da90517d74d7"
+    },
+    "scripts/analyze_alpha_observed_history_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 6,
+        "E701": 6,
+        "E702": 5
+      },
+      "sha256": "084fbc2f37bb83183cfc1fb66848657e0235bd2cba3e8cfff4767483dc1b4be5"
+    },
+    "scripts/analyze_quanta_paper_parameter_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 6,
+        "E701": 6,
+        "E702": 6
+      },
+      "sha256": "9a8f041f07d844a67d849439351957d6c01d1974370facfb56feb575cac29054"
+    },
+    "scripts/analyze_quanta_paper_parameter_v3.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 6,
+        "E701": 6,
+        "E702": 6
+      },
+      "sha256": "66e15e9114e93a217c16b51a1b8fa0de5c86bfad2ee4c0bd7b871283545a86c3"
+    },
+    "scripts/analyze_quanta_paper_parameter_v4.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 6,
+        "E701": 6,
+        "E702": 6
+      },
+      "sha256": "040b241961a73c4d46888dc5e2d1fb1f4a6148e0ec58aa5bc456b66fcfeae356"
+    },
+    "scripts/analyze_quanta_paper_parameter_v5.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 6,
+        "E701": 6,
+        "E702": 6
+      },
+      "sha256": "1f13092b37b12248ad3393ad2bbb1d53093b4f244e8a555daaa0fc228bb31add"
+    },
+    "scripts/analyze_quanta_paper_parameter_v6.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 6,
+        "E701": 6,
+        "E702": 6
+      },
+      "sha256": "e4005177bbe5fca82a1f8b8a470366b7aa5e7c023d55231d9924f240e2290029"
+    },
+    "scripts/analyze_quanta_paper_parameter_v7.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 6,
+        "E701": 6,
+        "E702": 6
+      },
+      "sha256": "45c57471eeb8ce9c3389f68c985764e56ee502a9b209853ce8fec07f9aa8946b"
+    },
+    "scripts/audit_alpha_observed_costs_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 2,
+        "E701": 12,
+        "E702": 17,
+        "E741": 1
+      },
+      "sha256": "a0a77d2da1dceb3661386c386d1fa98e310f1b152fcbfa3d12f0e1637864943f"
+    },
+    "scripts/audit_quanta_native_population_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 3,
+        "E701": 5,
+        "E702": 21,
+        "F401": 1
+      },
+      "sha256": "61accbf6683fc2a6421792f8d65b1652200ef24a4e7ffc38e6e2df649a2419d7"
+    },
+    "scripts/audit_quanta_native_population_v3.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 3,
+        "E701": 5,
+        "E702": 21,
+        "F401": 1
+      },
+      "sha256": "67ab7bcbbd5a311f302ceb69cc8c256a1353104a054304da9e22c6f3884809c7"
+    },
+    "scripts/build_alpha_observed_history_catalogue_v2.py": {
+      "diagnostics": {
+        "E402": 2,
+        "E701": 2,
+        "E702": 1
+      },
+      "sha256": "85afba7332ad0c3f2f9eccb4c48dbddac0ad995ef64d36c1492b92b4861c58e6"
+    },
+    "scripts/build_alpha_observed_report_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 4,
+        "E701": 22,
+        "E702": 25,
+        "F541": 1
+      },
+      "sha256": "92f75de20b50250b2c408d42fb56a6ff91a17b007d72da624ab85ef61787bf85"
+    },
+    "scripts/build_efs_pooled_report_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 6,
+        "E701": 43,
+        "E702": 77
+      },
+      "sha256": "9922b0735826f645186963e32195e34ad9094e747c1198770c06b4e0904c420e"
+    },
+    "scripts/build_fidelity_manuscript_draft_v1.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 1,
+        "E701": 21,
+        "E702": 80,
+        "E741": 1,
+        "F401": 4,
+        "F841": 1
+      },
+      "sha256": "6f6022537fba1d16b935961277f232497f452167fe4f9d658ea26242fb06ab4f"
+    },
+    "scripts/build_fidelity_manuscript_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 1,
+        "E701": 24,
+        "E702": 86,
+        "E741": 1,
+        "F401": 3,
+        "F841": 1
+      },
+      "sha256": "5536f57cd6c7e10b2f1872c28386797b70b9388ce5e72647b4f7ab726c4c01c6"
+    },
+    "scripts/build_fidelity_source_review_manifest_v3.py": {
+      "diagnostics": {
+        "E701": 67
+      },
+      "sha256": "fe9cae9dcad6f30ae842cf9d86b2d7d4b151894321be2e0aa48b90d6afe9e002"
+    },
+    "scripts/build_final_equity_report_v1.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 1,
+        "E701": 6,
+        "E702": 64,
+        "E741": 1,
+        "F401": 1
+      },
+      "sha256": "3c9a532245f848b4088e99d7f1fe0c45ade70233737b895235e9fb0844184a1c"
+    },
+    "scripts/build_quanta_parameter_report_v1.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 1,
+        "E701": 7,
+        "E702": 48,
+        "E741": 1,
+        "F401": 1
+      },
+      "sha256": "00f42268cb0141f92be82f472e5e58cef644bcfff09a7cbf6218ea6f7f5edc49"
+    },
+    "scripts/close_quanta_continued_source_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 3,
+        "E701": 2,
+        "E702": 4,
+        "F401": 1
+      },
+      "sha256": "c568e51e3a477455048128d1b78689075b7c749f86ae7bb19ff41a027647bfbd"
+    },
+    "scripts/close_quanta_continued_source_v3.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 3,
+        "E701": 2,
+        "E702": 5,
+        "F401": 1
+      },
+      "sha256": "387e543ef06cfd58b95bc7776a645d3f4129b9cbf90b7e0129b0a7188a6bb36a"
+    },
+    "scripts/close_quanta_continued_source_v4.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 3,
+        "E701": 2,
+        "E702": 5,
+        "F401": 1
+      },
+      "sha256": "9a70ae6f0e6ece456845e15c9e6bcc268700f790a13a00ce8033f074c73d3866"
+    },
+    "scripts/close_quanta_continued_source_v5.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 3,
+        "E701": 2,
+        "E702": 5,
+        "F401": 1
+      },
+      "sha256": "9b0d5a5bbf3c1da08b62c7a6a674af458819267e8aa049a0bca2cb60c51070e1"
+    },
+    "scripts/complete_alphaagent_failure_diagnosis_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 2,
+        "E701": 1,
+        "E702": 8,
+        "F401": 1
+      },
+      "sha256": "d37d569447e6a88d1c559d14b1d0dd0a6aa30ed8cf04ca316f1fb637fb68231d"
+    },
+    "scripts/diagnose_alphaagent_early_abort_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 2,
+        "E701": 8,
+        "E702": 14
+      },
+      "sha256": "71c77c02e2c8f1581b96bb03267bf69c269fc752eef751c3bc7fcec20e960270"
+    },
+    "scripts/diagnose_alphaagent_final_http400_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 2,
+        "E701": 2,
+        "E702": 1
+      },
+      "sha256": "9c7cb6a26b46259ea4ed4a9cfc6bc9b55cd09b1e76760bded5ded9eec35c0099"
+    },
+    "scripts/dispatch_fidelity_package_v1.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E701": 2,
+        "E702": 7
+      },
+      "sha256": "9e6c82306e16703bf25063dc76c8921d5ec0affb4617d7c17dfe8f24f7010ec3"
+    },
+    "scripts/fidelity_alpha_early_abort_v2.py": {
+      "diagnostics": {
+        "E701": 11,
+        "E702": 1
+      },
+      "sha256": "f8c81f688c7725bbdc97396a722981066af49171323c197796ae4295ab683892"
+    },
+    "scripts/fidelity_archive_readiness_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 1,
+        "E701": 23,
+        "E702": 21
+      },
+      "sha256": "ccc4fea01d0b70fb6ec027843c586c689c42f8873628068d6ffca6d253e4865e"
+    },
+    "scripts/fidelity_archive_readiness_v3.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 2,
+        "E701": 22,
+        "E702": 37
+      },
+      "sha256": "dda0f705c66c73a2bc4ea0bff4e90ee6a560b9880e8358fc87a6484f5319775b"
+    },
+    "scripts/fidelity_archive_readiness_v4.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 2,
+        "E701": 22,
+        "E702": 37
+      },
+      "sha256": "5aa4521fd22895ae497a01bc8a286160a59bb420747cf727eeb2830e80f9d336"
+    },
+    "scripts/fidelity_archive_readiness_v5.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 2,
+        "E701": 22,
+        "E702": 37
+      },
+      "sha256": "aa1563a6d4056a71cd4ff51c71ff3482250990ee5967542b521ad9318697550b"
+    },
+    "scripts/fidelity_equity_evidence_v2.py": {
+      "diagnostics": {
+        "E701": 18,
+        "E702": 7
+      },
+      "sha256": "5c25ecf56c903c7ee00e8d4b6a8e8110a417e59fadc63f4eac0644399da5eb50"
+    },
+    "scripts/fidelity_equity_evidence_v3.py": {
+      "diagnostics": {
+        "E702": 2,
+        "F401": 1
+      },
+      "sha256": "9ab18f9a9b8b1febf378a5c5d1c96ce01842a6aef342c89a99fe9838ab7744e0"
+    },
+    "scripts/fidelity_package_core_v1.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E701": 20,
+        "E702": 49,
+        "F401": 1
+      },
+      "sha256": "6731e2eda77a5a463a0affc24bf9d5ec402114f98c6e19a1db24767ac4668af9"
+    },
+    "scripts/fidelity_package_core_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E701": 21,
+        "E702": 48,
+        "F401": 1
+      },
+      "sha256": "a55f054e19cd03ae2aeb532907721fab2ca37b2a29f9e3d3950a071d0d1666c7"
+    },
+    "scripts/finagent_amzn_manual_retry_v1.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 2,
+        "E701": 8,
+        "E702": 32,
+        "F841": 1
+      },
+      "sha256": "2ca2f8aee2e0978481f160593d6fb049d803767328dcc4744f1dc49f9993dfa0"
+    },
+    "scripts/finagent_googl_xml_alias_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 1,
+        "E701": 18,
+        "E702": 11,
+        "F401": 1
+      },
+      "sha256": "62e34ad8bce0344ead792e4a24c1347c3189f0bfe392b74bb622443fd7e5fdec"
+    },
+    "scripts/finagent_googl_xml_continuation_evidence_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E701": 30,
+        "E702": 9
+      },
+      "sha256": "cb621e400d66913acdd4ae3abd8f1cd5f663d6decc1f4c9146890315abafe1ea"
+    },
+    "scripts/finagent_walltime_evidence_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E701": 43,
+        "E702": 26
+      },
+      "sha256": "5ca62c1a8d4335e245e3cd19f4b892d1f2148a703012310f4de392458a4fa127"
+    },
+    "scripts/finalize_alphaagent_early_abort_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 3,
+        "E701": 4,
+        "E702": 4
+      },
+      "sha256": "b722a93d9bfa54e4bf3ee439a7f380ab02797d04e256fd3bbe0141145a9b4f12"
+    },
+    "scripts/finalize_alphaagent_terminal_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 2,
+        "E701": 2,
+        "E702": 2
+      },
+      "sha256": "463bbe86d91a67f8e10937cf4e70bdb340cb1d08fb07919ac63ce20ae40fa17f"
+    },
+    "scripts/finalize_fidelity_release_v1.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 2,
+        "E701": 19,
+        "E702": 65
+      },
+      "sha256": "83022107ffe39c08d0c3aefe99259063e322e4a5b180a1be212d3664c2d140aa"
+    },
+    "scripts/finish_fidelity_archive_copy_v1.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 2,
+        "E701": 3,
+        "E702": 17
+      },
+      "sha256": "93996856f33b81629624c956cd7ae7521092133f8f1c54d1b37e702ab5fc66d2"
+    },
+    "scripts/finish_fidelity_archive_copy_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 2,
+        "E701": 4,
+        "E702": 20
+      },
+      "sha256": "fb37a4069fce5fdc106e87543a210940eabb6b54978995d97bcd1e0eef131c92"
+    },
+    "scripts/package_fidelity_completion_v1.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 1,
+        "E701": 48,
+        "E702": 82,
+        "F401": 1
+      },
+      "sha256": "918430075c1ae7b86c4279845b3ea818f75bd47f833134a3c2a52b364864b7db"
+    },
+    "scripts/package_fidelity_completion_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 1,
+        "E701": 49,
+        "E702": 82,
+        "F401": 1
+      },
+      "sha256": "6b29b60c5e1f044dd3825688b2498fc7afc593ea3ad1c065704cf1df50e131ab"
+    },
+    "scripts/prepare_quantaalpha_fidelity_v2.py": {
+      "diagnostics": {
+        "E701": 8,
+        "E702": 7
+      },
+      "sha256": "3e9a57ecf3212c91301c73dccfda3d83f3b49cea5ac68e94d8a711a3cecec863"
+    },
+    "scripts/probe_finagent_googl_xml_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 3,
+        "E701": 10,
+        "E702": 7
+      },
+      "sha256": "6c4a810140a46ffea28e676a4be32bf01c9b4aa899f263211ea9b49ba1d4da39"
+    },
+    "scripts/probe_finagent_walltime_prefix_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 3,
+        "E701": 20,
+        "E702": 17,
+        "F401": 1
+      },
+      "sha256": "5b7c9ad816fb2025d6076a1cc5c1f36d42d0e264a63e875ca15e32ed02170c6a"
+    },
+    "scripts/probe_quanta_walltime_reconstruction_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 4,
+        "E701": 48,
+        "E702": 57,
+        "F841": 1
+      },
+      "sha256": "d96354d1f73fcdf8175113ce194f63aeb1f24060f94a9ae857be247d35d06949"
+    },
+    "scripts/probe_quanta_walltime_reconstruction_v3.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 4,
+        "E701": 49,
+        "E702": 59,
+        "F841": 1
+      },
+      "sha256": "1a2035ec5becd81214114a9251c8778b19ea7c367115c08721fa354b7e44481c"
+    },
+    "scripts/probe_quanta_walltime_reconstruction_v4.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 4,
+        "E701": 53,
+        "E702": 63,
+        "F401": 1
+      },
+      "sha256": "113f291507bc6b60a221c667a2e3d27b656f26c7018a7c5f338f1082c60a8168"
+    },
+    "scripts/quanta_continued_matrix_lineage_v1.py": {
+      "diagnostics": {
+        "E701": 9,
+        "E702": 8
+      },
+      "sha256": "6ea2acdc5cd50229cfb466218a2a1543ba1d1b05ca21a3cc2904fface24e47ab"
+    },
+    "scripts/quanta_continued_source_admission_v2.py": {
+      "diagnostics": {
+        "E701": 14,
+        "E702": 13
+      },
+      "sha256": "24ed5b9819fd3fce330b14df227c065e425c4f4edeae7f270eb31ace6b864a7b"
+    },
+    "scripts/quanta_continued_source_admission_v3.py": {
+      "diagnostics": {
+        "E701": 16,
+        "E702": 16
+      },
+      "sha256": "6d8438398aafcc387fa51238225697b5b816578418c40d61a19cffb690cc3afe"
+    },
+    "scripts/quanta_continued_source_admission_v4.py": {
+      "diagnostics": {
+        "E701": 16,
+        "E702": 18
+      },
+      "sha256": "9fc1669f901083cd88852a408600e69030667dbda3fdd20b1bd0ef9cb0c8cc23"
+    },
+    "scripts/quanta_native_population_v2.py": {
+      "diagnostics": {
+        "E701": 6,
+        "E702": 3
+      },
+      "sha256": "8fb69e18929fc8549dd1b4fd586c9f373f8d8f0a908f2f70a69fa4ad5cc6a9c2"
+    },
+    "scripts/quanta_native_population_v3.py": {
+      "diagnostics": {
+        "E701": 6,
+        "E702": 3
+      },
+      "sha256": "077727b20568f8ffb7cc389ef9d2cbf29684ff0e245fe876284db1952ec28d58"
+    },
+    "scripts/quanta_paper_evaluation_evidence_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E701": 27,
+        "E702": 14
+      },
+      "sha256": "02ab906e2dd8699e2bfee0126f09690ae7abd4cce71708df9a6620d71cb048c2"
+    },
+    "scripts/quanta_paper_evaluation_evidence_v3.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 1,
+        "E701": 27,
+        "E702": 14
+      },
+      "sha256": "e4bd54ec253e178dc913a21852810d812a81623db23037f6fd4836f7478c7c53"
+    },
+    "scripts/quanta_paper_evaluation_evidence_v4.py": {
+      "diagnostics": {
+        "E701": 3,
+        "E702": 10
+      },
+      "sha256": "efdfd99135acc5f575ed562e199a4ffd75c63be80416c08ff3e45c2eccb11795"
+    },
+    "scripts/quanta_paper_evaluation_evidence_v5.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 2,
+        "E701": 27,
+        "E702": 14,
+        "F401": 1
+      },
+      "sha256": "b16a078294c198ed467e62b1e48aac34ab83ec85fff3541f7ea2db11889a6782"
+    },
+    "scripts/quanta_paper_evaluation_evidence_v6.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 2,
+        "E701": 27,
+        "E702": 14,
+        "F401": 1
+      },
+      "sha256": "0671e14f042276014ebf7a6cb66a2e7ece46a57a0a975feff005c3f94ce7b4c7"
+    },
+    "scripts/quanta_paper_evaluation_evidence_v7.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 2,
+        "E701": 30,
+        "E702": 15
+      },
+      "sha256": "84cb730c03fc8f1c9af223cb01cf94337331a34869ec1484aa4b1716bb91de01"
+    },
+    "scripts/quanta_walltime_continuation_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E701": 25,
+        "E702": 1,
+        "F401": 2
+      },
+      "sha256": "d88f6306e2306b2114fde9e61554ffc6bbab4cf1e30b58b8ca437a797ee5a8be"
+    },
+    "scripts/quanta_walltime_continuation_v3.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E701": 31,
+        "E702": 3,
+        "F401": 1
+      },
+      "sha256": "1f4ea0468b5f86ccef645016c184df4208fd95999e3a3e185b83cce0fa61ca1d"
+    },
+    "scripts/quanta_walltime_reconstruction_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E701": 6,
+        "E702": 1
+      },
+      "sha256": "dcaa9c852ee6b935eb717035c50b6e8d9005aa2863eada722c5426b44dbde01a"
+    },
+    "scripts/quanta_walltime_reconstruction_v3.py": {
+      "diagnostics": {
+        "E701": 3,
+        "F401": 6
+      },
+      "sha256": "7bef1d31daf02a877e5fe7d536ffcf84c6833c7ae50370aa26c625e21cce856e"
+    },
+    "scripts/recover_efs_pool_walltime_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 2,
+        "E701": 15,
+        "E702": 36,
+        "F401": 1
+      },
+      "sha256": "6aaac3a48d0255071c4f31965fc89e1a6efb52bcabdeed6160e2e420648e06d1"
+    },
+    "scripts/replay_alphaagent_early_abort_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 6,
+        "E701": 5,
+        "E702": 5
+      },
+      "sha256": "25fbc057b1783dfc9bc058796e1e92603a5bb60d6f70be66f1065c9ab9edb0fe"
+    },
+    "scripts/replay_alphaagent_terminal_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 6,
+        "E701": 5,
+        "E702": 5
+      },
+      "sha256": "715b71a09cd6eb124aec5c2b5e6046e7e4bcd28ffea6184536ff0364942d3fcd"
+    },
+    "scripts/restore_fidelity_archive_v1.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E701": 20,
+        "E702": 24,
+        "F401": 1
+      },
+      "sha256": "299ad6a17f45714dcd8ab96b0364e10a02771527fce144c3d1fefe4601bf525f"
+    },
+    "scripts/restore_fidelity_archive_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E701": 20,
+        "E702": 24,
+        "F401": 1
+      },
+      "sha256": "eeaad7442157b91f86cdb0f881aabdc2ccea278dd8b0af0498115387fe076641"
+    },
+    "scripts/run_alpha_constructor_abort_v3.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E702": 3
+      },
+      "sha256": "ace717e9e6453a3ae96b76e527ca0e755848c828a78ec9fa62cd192019566229"
+    },
+    "scripts/run_finagent_amzn_continuation_v1.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 4,
+        "E701": 8,
+        "E702": 44,
+        "F401": 1,
+        "F841": 1
+      },
+      "sha256": "3ce15e05c50015b1edf3c8d2da138f23dbe707345eae337f6190d8497a8d337b"
+    },
+    "scripts/run_finagent_googl_xml_continuation_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 5,
+        "E701": 4,
+        "E702": 11
+      },
+      "sha256": "8f723dae7adcf51a7b45c135aa373472106958a5c02028b3ce729ce2747f6c18"
+    },
+    "scripts/run_finagent_walltime_continuation_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 4,
+        "E701": 4,
+        "E702": 17
+      },
+      "sha256": "25eb412fc5278cc51c8a8cf80672f6df32457dd087cc216790f727ad9eee4919"
+    },
+    "scripts/run_final_equity_accounts_v3_guarded.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 3,
+        "E701": 4,
+        "E702": 17
+      },
+      "sha256": "b44717be7ef082897f33df0dc9827ea06751e7a972fef589a838a602ba458554"
+    },
+    "scripts/run_quanta_paper_eval_stage_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 2,
+        "E701": 4,
+        "E702": 7,
+        "F401": 2
+      },
+      "sha256": "55457852d36e8cc6130cdd20735b406f1dabe5de48c90090888a707b46f6613a"
+    },
+    "scripts/run_quanta_paper_eval_stage_v3.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 2,
+        "E701": 4,
+        "E702": 7,
+        "F401": 2
+      },
+      "sha256": "05b49afd4aa5ea302afc28c8b7ac837f146ed0943648baf78c71f4e3b87ae3dd"
+    },
+    "scripts/run_quanta_paper_eval_stage_v4.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 2,
+        "E701": 4,
+        "E702": 7,
+        "F401": 2
+      },
+      "sha256": "7c0b20f87b03a928ef7fc8c5ccb94683f81452db8fb70fe112665f96248076c8"
+    },
+    "scripts/run_quanta_paper_eval_stage_v5.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 2,
+        "E701": 4,
+        "E702": 7,
+        "F401": 2
+      },
+      "sha256": "92a6216a408ceb549602d1e0c0290366bac810b2c142167b7b726e01f39706aa"
+    },
+    "scripts/run_quanta_paper_eval_stage_v6.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 2,
+        "E701": 4,
+        "E702": 7,
+        "F401": 2
+      },
+      "sha256": "48b3391c54660a14227902ad4fe0eec606c4580f62ab821852693b1f19dd8cee"
+    },
+    "scripts/run_quanta_paper_eval_stage_v7.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 2,
+        "E701": 4,
+        "E702": 7,
+        "F401": 2
+      },
+      "sha256": "24fc6aed6cf02a8ca1156e94193addecab5dcd25efd9d8cb661c4066faac6ca6"
+    },
+    "scripts/run_quanta_walltime_continuation_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 7,
+        "E701": 83,
+        "E702": 96,
+        "F401": 2
+      },
+      "sha256": "f72a76cb376af2eb296fffe6aece29133102526f5c54abb12971d0a75f586634"
+    },
+    "scripts/run_quanta_walltime_continuation_v3.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 8,
+        "E701": 84,
+        "E702": 103,
+        "F401": 3,
+        "F841": 2
+      },
+      "sha256": "b28dba76a3c9a2f6707af01468da12e3d4cfd0e4019df2e11a97edb40e8d3326"
+    },
+    "scripts/settle_finagent_walltime_responses_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 3,
+        "E701": 18,
+        "E702": 25
+      },
+      "sha256": "1f8c76e5a7a3d3d2f4830dde5e3a5b8d90fced6f8e2c644084ee163d7a36b80a"
+    },
+    "scripts/submit_alpha_observed_history_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 2,
+        "E701": 11,
+        "E702": 11
+      },
+      "sha256": "5c02c7c6a14a046e60bbd00491fd439d78e704b82351d7e2b217a9d10e0b7e82"
+    },
+    "scripts/submit_alpha_secondary_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 1,
+        "E701": 11,
+        "E702": 11
+      },
+      "sha256": "8c95cdd5579a2cc82e8189a5e3f84478b0096c70ff1b082d584b3f67a7394f33"
+    },
+    "scripts/submit_quanta_paper_eval_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 2,
+        "E701": 11,
+        "E702": 16
+      },
+      "sha256": "4b6abf5898fdd86be04869c545f19c8a75d7589826761cb937f1ac9e8c4ebf36"
+    },
+    "scripts/submit_quanta_paper_eval_v3.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 2,
+        "E701": 11,
+        "E702": 16,
+        "F401": 1
+      },
+      "sha256": "9d39e2b7b7cf02c0d29299b0afa95fc44e95b69ac6af754eafc9a954a39dc2cf"
+    },
+    "scripts/submit_quanta_paper_eval_v4.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 2,
+        "E701": 11,
+        "E702": 16,
+        "F401": 1
+      },
+      "sha256": "33574809a5457c0bfdf771636549f294b0d7f31484cc8cb954344f56f272b9ed"
+    },
+    "scripts/submit_quanta_paper_eval_v5.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 2,
+        "E701": 11,
+        "E702": 16,
+        "F401": 1
+      },
+      "sha256": "9617c6b1a884736d97ffc7a43fbf6271fe8ebf2d947eeb74fed8b97adc421bcf"
+    },
+    "scripts/submit_quanta_paper_eval_v6.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 2,
+        "E701": 11,
+        "E702": 16,
+        "F401": 1
+      },
+      "sha256": "57a0d04d7b2057a4e0a7e6c7fd94a175ee8cc4f60b1a17a5356b935bc1531974"
+    },
+    "scripts/submit_quanta_paper_eval_v7.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 2,
+        "E701": 17,
+        "E702": 18
+      },
+      "sha256": "7d3c9474732ecd28cb10ffa94fd654865cd49fdc20142d0dda81e22c297014ec"
+    },
+    "scripts/summarize_fidelity_completion_v3.py": {
+      "diagnostics": {
+        "E701": 16
+      },
+      "sha256": "3ce26cd2c5f35638fabc6b5b90da9a21944a33e7f1a9082b4d2a1cececcd9377"
+    },
+    "scripts/validate_fidelity_manuscript_draft_v1.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 1,
+        "E701": 16,
+        "E702": 21,
+        "E741": 3,
+        "F401": 1
+      },
+      "sha256": "742989c9b75b33ad42f07bfaaf433f2e457569b334d1907232c894ebe439055f"
+    },
+    "scripts/validate_fidelity_manuscript_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 1,
+        "E701": 17,
+        "E702": 23,
+        "E741": 3,
+        "F401": 1
+      },
+      "sha256": "e1d4644b21a610fa29385de59844ed367c2580282b70ba145fccf9b4770c40e4"
+    },
+    "scripts/validate_final_equity_report_v1.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 1,
+        "E701": 11,
+        "E702": 21,
+        "E741": 1
+      },
+      "sha256": "e7ca38408e35bec0a2975961dc32b15adbc144470f740de9f27d24f0f05f1152"
+    },
+    "scripts/validate_quanta_parameter_report_v1.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 1,
+        "E701": 6,
+        "E702": 18,
+        "E741": 1
+      },
+      "sha256": "e7cc68ddcb67c8218b11a60fbe4e54bec640e3b1b7167f261e4a6b1ddf1a2145"
+    },
+    "tests/test_alpha_constructor_abort_v3.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E701": 8,
+        "E702": 18
+      },
+      "sha256": "4225566109038b17ebba107e21a71546a751455edae30997679ed2da30200e6d"
+    },
+    "tests/test_alpha_early_abort_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E701": 8,
+        "E702": 13
+      },
+      "sha256": "3426bb98ff020664cc93e4adafe0c32cab405c1fc9d1957af83f663f24125f86"
+    },
+    "tests/test_alpha_observed_financial_scope_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E701": 2,
+        "E702": 6
+      },
+      "sha256": "64080b6467bcd44489b3a6825dfceb2aa6d4b01f88f240a6a38227d37f6846fd"
+    },
+    "tests/test_alpha_observed_history_scope_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E701": 6,
+        "E702": 7,
+        "F401": 1
+      },
+      "sha256": "0756c981ef6750c71766a90a2a4b26d70aeb177f9903dcaf55d7d81432deb105"
+    },
+    "tests/test_alpha_secondary_submission_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E701": 3,
+        "E702": 9
+      },
+      "sha256": "a118ee68ad17d068d9b1f337070ad0813e88d97a62cd532ddd5f6d146f9ddce7"
+    },
+    "tests/test_alpha_terminal_failure_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E701": 7,
+        "E702": 9
+      },
+      "sha256": "27329ad32d0aec589085af5e7afb8a2e7d6dc98d1729ca3a6daa86948164b06a"
+    },
+    "tests/test_fidelity_archive_readiness_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E701": 7,
+        "E702": 9
+      },
+      "sha256": "0966d8673280ce3f8495eff2315be43e7c099f94ee4d3a831e5c684fb18098b5"
+    },
+    "tests/test_fidelity_archive_readiness_v3.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 1,
+        "E701": 14,
+        "E702": 33
+      },
+      "sha256": "f3ec7768df069660462701f254df0234b17e2fc3b2ab0a654306b066f9c69f0e"
+    },
+    "tests/test_fidelity_archive_readiness_v4.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 1,
+        "E701": 14,
+        "E702": 33
+      },
+      "sha256": "68e83d7500e498536ac0ad138964e421043a8e943fcd49d501d077102fb98761"
+    },
+    "tests/test_fidelity_archive_readiness_v5.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 1,
+        "E701": 14,
+        "E702": 33
+      },
+      "sha256": "04ddc97130a5077816ac34b8769c603f8643815fdfdad57fe6d24cee1b065593"
+    },
+    "tests/test_fidelity_equity_evidence_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E701": 7,
+        "E702": 10,
+        "F401": 1
+      },
+      "sha256": "00e451e45bad1721fb1f42b9cfbff4142af8e144b520f133af401ca991d24238"
+    },
+    "tests/test_finagent_googl_xml_alias_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E701": 6,
+        "E702": 2
+      },
+      "sha256": "003a9135f4f629ec7563e08c7f911ef4e3c0cda0c05b6d1012a438d5ee8b3fd7"
+    },
+    "tests/test_finagent_googl_xml_continuation_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 1,
+        "E701": 9,
+        "E702": 26
+      },
+      "sha256": "a4585360cf919903de5c904b64dba3199620ce3fa287a607b83f1b9f9b4c1ff0"
+    },
+    "tests/test_finagent_walltime_continuation_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 1,
+        "E701": 9,
+        "E702": 15,
+        "F401": 2
+      },
+      "sha256": "88784d317364d08c580378af80054a31ccc351f2145b9c483a7cb1664b8a4442"
+    },
+    "tests/test_quanta_continued_matrix_lineage_v1.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E701": 6,
+        "E702": 17
+      },
+      "sha256": "c2890af6670a96f0c802d41ed8bfe939c74af2202995fe4834be240511d96335"
+    },
+    "tests/test_quanta_continued_proof_admission_v7.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E701": 5,
+        "E702": 9,
+        "F401": 1
+      },
+      "sha256": "6f3103c160fb0dfe985a9c3e1a6df64d439ac03d42fd2a007fb5dcf5673f3d3a"
+    },
+    "tests/test_quanta_paper_eval_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E701": 4,
+        "E702": 11,
+        "F401": 1
+      },
+      "sha256": "723a0ba9fb61662e9cd8354e0edc23ada2417c2167dee35a63931523064dc5ad"
+    },
+    "tests/test_quanta_paper_eval_v3.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E701": 4,
+        "E702": 11,
+        "F401": 2
+      },
+      "sha256": "4d6fa23c5f83fe29883bb650468cd80efd808a538389893f768d310e9cc32e37"
+    },
+    "tests/test_quanta_paper_eval_v4.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 1,
+        "E701": 7,
+        "E702": 11,
+        "F401": 2
+      },
+      "sha256": "dfc9a2260c91d1eed776bdf04b01827308b6b2fded88a92849ba309e267b091b"
+    },
+    "tests/test_quanta_paper_eval_v5.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 1,
+        "E701": 7,
+        "E702": 11,
+        "F401": 2
+      },
+      "sha256": "bcbb1474b5b5f96459f71ed281b66b931526de8e0f7ede8c0dcd9f33a1766693"
+    },
+    "tests/test_quanta_paper_eval_v6.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 1,
+        "E701": 7,
+        "E702": 11,
+        "F401": 2
+      },
+      "sha256": "08d057196423e5eb55447eac4821425047e753df6fad45606ff543f4a6be6f61"
+    },
+    "tests/test_quanta_paper_eval_v7.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 1,
+        "E701": 7,
+        "E702": 11,
+        "F401": 2
+      },
+      "sha256": "83ab4c4c6994aeb61c578e4168c55a1cc14bb32caac328b73f3ff1b78469f745"
+    },
+    "tests/test_quanta_terminal_wiring_v4.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E701": 7,
+        "E702": 10
+      },
+      "sha256": "7f6231897799d2be42be4c2c172db594a934ab793a8e90adb7fabbcb9ca86cf5"
+    },
+    "tests/test_quanta_walltime_continuation_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 2,
+        "E701": 12,
+        "E702": 1
+      },
+      "sha256": "42ec6030bc8b270c55ab5a260a8bb0c5522922c10af6c727eb8118c810c1ab9d"
+    },
+    "tests/test_quanta_walltime_continuation_v3.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 2,
+        "E701": 17,
+        "E702": 3
+      },
+      "sha256": "9311cdd2cf5676f25219f83559b9feed90e981b1a0fee350a8cd2c83a9f95ac6"
+    },
+    "tests/test_quanta_walltime_reconstruction_v2.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E701": 9,
+        "E702": 2
+      },
+      "sha256": "7bbfb048c46d3f7433ad47fe8e02f8b7afcf417316a160ace1a4b53edbf0176a"
+    },
+    "tests/test_quanta_walltime_reconstruction_v3.py": {
+      "diagnostics": {
+        "E401": 1,
+        "E402": 1,
+        "E701": 9,
+        "E702": 2
+      },
+      "sha256": "42c25273fce31403dc413ba547291569dd882fb955fc06603c8bb09e5653409b"
+    }
+  },
+  "origin_commit": "67271f909999f3275f60ef028e24f9a3df471b28",
+  "reason": "Preserve exact frozen historical research helpers and bound regression bytes; all files still lint, new findings are strict and there is no auto-update mode.",
+  "ruff_version": "ruff 0.12.12",
+  "schema_version": 1,
+  "scope": [
+    "src",
+    "scripts",
+    "tests"
+  ]
+}
