@@ -8,7 +8,7 @@ specific evidence package they describe.
 
 - [Project briefing](PROJECT_BRIEFING.md): objective, verified v2 outcomes and unfinished work.
 - [Technical handoff](RESEARCH_HANDOFF.md): exact evidence and remaining economic work.
-- [Presentation](presentations/LLM_INVESTMENT_STUDY_20261117.pdf) and [speaking notes](presentations/LLM_INVESTMENT_STUDY_20261117.md).
+- [Presentation](presentations/LLM_INVESTMENT_STUDY_20261117_beamer.pdf) and [speaking notes](presentations/LLM_INVESTMENT_STUDY_20261117.md).
 - [Project overview](../README.md): goal, status, repository layout, and access.
 - [Collaborator handoff](../COLLABORATOR_HANDOFF.md): a route through a paper's
   source, inputs, execution evidence, and results.

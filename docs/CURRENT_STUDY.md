@@ -18,13 +18,13 @@ The [v2 status package](../paper_runs/native_monthly_implementation_v2_20261116/
 - Partial: screening has 12 completed secondary paths and 18 blocked paths, including the LLM-screening primary and equal-weight control.
 - Not done: resolve or bound screening payoff gaps and the other two cases' input gaps; reconcile the bounded study into the provisional paper.
 
-Read the [project briefing](PROJECT_BRIEFING.md), [technical handoff](RESEARCH_HANDOFF.md), [presentation](presentations/LLM_INVESTMENT_STUDY_20261117.pdf), and [slide text](presentations/LLM_INVESTMENT_STUDY_20261117.md). A scheduler COMPLETED/exit0 is not financial admission: screening's retained failures demonstrate why both are checked.
+Read the [project briefing](PROJECT_BRIEFING.md), [technical handoff](RESEARCH_HANDOFF.md), [presentation](presentations/LLM_INVESTMENT_STUDY_20261117_beamer.pdf), and [slide text](presentations/LLM_INVESTMENT_STUDY_20261117.md). A scheduler COMPLETED/exit0 is not financial admission: screening's retained failures demonstrate why both are checked.
 
 ## Benchmark and inference
 
 Actual FF5 + momentum + fixed132 signed JKP U.S. vw_cap factors, with RF separate, cover 305 months August 1999–December 2024. The complete EFS window has286 months, rank138 and147 residual degrees of freedom. Screening's attempted232-month design has93 residual degrees of freedom, but design identification cannot repair a missing primary portfolio path. Short published stock windows remain too short for139 unrestricted parameters. No reduced factor substitute is used.
 
-The 2pp/year economic margin, conservative multiplicity accounting and approximate HAC limits remain explicit. Insignificance is not equivalence, missing cases are not zero-alpha observations, and pointwise99% intervals are not simultaneous margin bounds.
+The 2pp/year economic margin, conservative multiplicity accounting and approximate HAC limits remain explicit. Insignificance is not equivalence, missing cases are not zero-alpha observations, and pointwise 99% intervals are not simultaneous margin bounds.
 
 ## Evidence locations
 

@@ -2,7 +2,7 @@
 
 **Verified November 17, 2026; paper provisional.** Both paper-based monthly implementations completed source execution and exact offline replay. EFS completed 12 of 12 declared economic paths. Screening completed 12 of 30 paths; the other 18, including the designated LLM-screening primary and its equal-weight control, remain blocked by unpriced held month-end assets. Overall study and paper closure remain unfinished.
 
-[Presentation](presentations/LLM_INVESTMENT_STUDY_20261117.pdf) · [Slide text and speaking notes](presentations/LLM_INVESTMENT_STUDY_20261117.md) · [Technical handoff](RESEARCH_HANDOFF.md) · [Editable presentation](https://chatgpt.com/space/page_8240054152248191a27a0ae77e9bb674)
+[Presentation](presentations/LLM_INVESTMENT_STUDY_20261117_beamer.pdf) · [Slide text and speaking notes](presentations/LLM_INVESTMENT_STUDY_20261117.md) · [Technical handoff](RESEARCH_HANDOFF.md) · [Editable presentation](https://chatgpt.com/space/page_8240054152248191a27a0ae77e9bb674)
 
 ## What we wanted to find out
 

@@ -101,7 +101,7 @@ schema expected by `scripts/check_repository_docs.py`; run that offline check
 after changes. The v1 empty-cohort checkpoint is historical and superseded for
 current source admission.
 
-The [presentation](presentations/LLM_INVESTMENT_STUDY_20261117.pdf) and
+The [presentation](presentations/LLM_INVESTMENT_STUDY_20261117_beamer.pdf) and
 [speaking notes](presentations/LLM_INVESTMENT_STUDY_20261117.md) are the portable
 management summary. Live editable versions are linked there. Public documents
 exclude licensed stock inputs, holdings and private responses.

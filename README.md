@@ -16,7 +16,7 @@ reproduction claims separate.
 
 ## Current EFS finding
 
-At 10bp per-side portfolio-unit costs, LLM search versus matched grammar has paired actual 138-factor alpha **+0.177pp/year**, pointwise99% CI **[−2.426,+2.780]**, raw HAC p **0.861**. This bounded experiment does not establish incremental LLM value. It is not proof that all LLM investment methods lack alpha.
+At 10bp per-side portfolio-unit costs, LLM search versus matched grammar has paired actual 138-factor alpha **+0.177pp/year**, pointwise 99% CI **[−2.426,+2.780]**, raw HAC p **0.861**. This bounded experiment does not establish incremental LLM value. It is not proof that all LLM investment methods lack alpha.
 
 ## What remains unfinished
 
@@ -27,7 +27,7 @@ At 10bp per-side portfolio-unit costs, LLM search versus matched grammar has pai
 ## Start here
 
 1. [Project briefing](docs/PROJECT_BRIEFING.md): what we wanted, what we did and what is still missing.
-2. [Beamer presentation](docs/presentations/LLM_INVESTMENT_STUDY_20261117_beamer.pdf), [LaTeX source](docs/presentations/LLM_INVESTMENT_STUDY_20261117_beamer.tex), [slide text and notes](docs/presentations/LLM_INVESTMENT_STUDY_20261117.md), and [editable deck](https://chatgpt.com/space/page_8240054152248191a27a0ae77e9bb674).
+2. [Presentation hub](docs/presentations/README.md): the primary Beamer PDF, editable LaTeX, speaking notes and earlier formats.
 3. [Current study](docs/CURRENT_STUDY.md) and [v2 aggregate evidence](paper_runs/native_monthly_implementation_v2_20261116/README.md).
 4. [Technical handoff](docs/RESEARCH_HANDOFF.md): exact locations, completed jobs and remaining checks.
 5. [Documentation index](docs/README.md) and [development guide](docs/DEVELOPMENT.md).

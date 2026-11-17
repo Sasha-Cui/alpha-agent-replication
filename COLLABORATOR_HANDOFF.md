@@ -21,7 +21,7 @@ is preserved as historical evidence, not current admission.
 3. [Current study](docs/CURRENT_STUDY.md), the exact contract and source/input hashes.
 4. Source completion plus exact replay, then independent accounts and actual-factor
    inference on the same complete calendar. Scheduler success alone is insufficient.
-5. [Presentation](docs/presentations/LLM_INVESTMENT_STUDY_20261117.pdf) and
+5. [Presentation](docs/presentations/LLM_INVESTMENT_STUDY_20261117_beamer.pdf) and
    [speaking notes](docs/presentations/LLM_INVESTMENT_STUDY_20261117.md).
 
 The main benchmark is actual FF5+momentum+JKP132; RF is separate. A proxy panel
