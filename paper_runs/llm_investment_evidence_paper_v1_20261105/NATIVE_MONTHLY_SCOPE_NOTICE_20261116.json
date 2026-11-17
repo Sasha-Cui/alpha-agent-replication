@@ -1,0 +1,11 @@
+{
+  "status": "paper_remains_provisional_economic_study_blocked",
+  "native_monthly_scope_locked": true,
+  "scope_question_pending": false,
+  "admission_audit": "paper_runs/native_monthly_study_v1_20261116/execution_preflight.json",
+  "admission_sha256": "fe23d8712f28bd2bfb6a677e87dd58aef26a63d1f8b136fe1717c630dab604a6",
+  "executable_central_methods": 0,
+  "financial_evaluations_completed": 0,
+  "no_alpha_conclusion": false,
+  "scientific_goal_complete": false
+}

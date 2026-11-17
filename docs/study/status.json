@@ -1,7 +1,7 @@
 {
   "snapshot_date": "2026-11-16",
   "study_status": "provisional",
-  "monthly_transfer_scope_question_pending": true,
+  "monthly_transfer_scope_question_pending": false,
   "benchmark": {
     "factor_count": 138,
     "jkp_factor_count": 132,
@@ -30,8 +30,25 @@
     ],
     "monthly_admitted_paper_ids": [],
     "source_snapshot_sha256": "ba1340523dc8f1af6e32a6a8cec57b5ae62b90786e79a4bf4f6dd68102c9a090",
-    "csv_sha256": "538d27623ba4b461b1e1c17ae732f28365d5ef6cdc5e24f2130c00c4b2159813",
-    "execution_evidence_is_not_monthly_admission": true
+    "csv_sha256": "b2a4cf5cc1c31d50e4dcc8c2b5063eee9c7aad430eafadae230cb022a674726d",
+    "execution_evidence_is_not_monthly_admission": true,
+    "native_monthly_candidate_paper_ids": [
+      "M016",
+      "M023",
+      "M050",
+      "M052"
+    ],
+    "native_monthly_executable_cohort_finalized": true,
+    "historical_executed_nonmonthly_paper_ids": [
+      "M006",
+      "M009",
+      "M014",
+      "M017",
+      "M019",
+      "M033",
+      "M043",
+      "M059"
+    ]
   },
   "software_validation": {
     "captured_public_snapshot_pytest": "453 passed, 36 subtests passed",
@@ -40,14 +57,30 @@
     "full_lint_gate_claimed_green": false
   },
   "private_evidence": {
-    "working_handoff": "artifacts/us_monthly_actual_factors_verified_v2_20261116/HANDOFF.md",
-    "transfer_contract": "artifacts/monthly_us_transfer_contract_v1_20261116/monthly_us_transfer_contract_draft_v1.json",
+    "working_handoff": "artifacts/native_monthly_study_v1_20261116/HANDOFF.md",
+    "transfer_contract": "paper_runs/native_monthly_study_v1_20261116/monthly_US_contract_v1.json",
     "source_snapshot_date_utc": "2026-11-16T20:04:17.286176+00:00",
     "requires_authorized_Bouchet_access": true
   },
   "claim_boundaries": [
-    "No completed monthly-method cohort or full-paper reproduction is asserted.",
+    "The native-monthly cohort has no admitted executable central method; the financial study is blocked, not complete.",
     "No missing method is assigned zero return or zero alpha.",
     "Current manuscript remains provisional."
-  ]
+  ],
+  "native_monthly_scope_locked": true,
+  "study_execution_status": "blocked_no_admitted_executable_native_monthly_central_method",
+  "scientific_objective_complete": false,
+  "native_monthly_study": {
+    "admission_audit_complete": true,
+    "execution_preflight_path": "paper_runs/native_monthly_study_v1_20261116/execution_preflight.json",
+    "execution_preflight_sha256": "fe23d8712f28bd2bfb6a677e87dd58aef26a63d1f8b136fe1717c630dab604a6",
+    "contract_path": "paper_runs/native_monthly_study_v1_20261116/monthly_US_contract_v1.json",
+    "contract_sha256": "cbf3e576b64bc4fc09190e3bd0b057f5fab034e5ac36c258415e40cf056f1a09",
+    "all69_dispositions_sha256": "cf42d40555c81a8c369412a803045aa7cbc4d6e63c611774cd9ac368fe6b8e0d",
+    "candidate_count": 4,
+    "executable_methods": 0,
+    "financial_evaluations_completed": 0,
+    "paid_model_requests": 0,
+    "paper_provisional": true
+  }
 }
